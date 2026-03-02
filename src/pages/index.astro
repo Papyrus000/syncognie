@@ -96,7 +96,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     <div class="articles">
       {articles.map(article => (
         <a class="article-link" href={`/articles/${article.slug}`}>
-          <p class="step-label">{article.data.date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</p>
+          <p class="step-label">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
           <p class="step-text">{article.data.title}</p>
           <span class="arrow">Lire →</span>
         </a>
