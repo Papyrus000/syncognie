@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Étape 0 — Syncognie">
+  <style>
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 1.75rem;
+    }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: 2.5rem 0 3rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .68rem;
+      font-weight: 300;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: color .2s, gap .2s;
+      opacity: 0;
+      animation: rise .8s .05s ease forwards;
+    }
+    .back:hover { color: var(--accent); gap: .75rem; }
+    .back svg {
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none; stroke-width: 1.5;
+      transition: transform .2s;
+    }
+    .back:hover svg { transform: translateX(-3px); }
+    article {
+      padding-bottom: 5rem;
+      opacity: 0;
+      animation: rise .9s .2s ease forwards;
+    }
+    .eyebrow {
+      font-family: 'Mulish', sans-serif;
+      font-size: .65rem;
+      font-weight: 300;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+    .rule {
+      width: 2.5rem;
+      height: 1px;
+      background: var(--rule);
+      margin-bottom: 2.5rem;
+    }
+    .content {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      line-height: 1.85;
+    }
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem 0 3rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .65rem;
+      font-weight: 300;
+      letter-spacing: .1em;
+      color: var(--ink-soft);
+      opacity: 0;
+      animation: rise .8s .4s ease forwards;
+    }
+  </style>
+
+  <div class="wrap">
+    <a class="back" href="/">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Syncognie
+    </a>
+
+    <article>
+      <p class="eyebrow">Étape 0</p>
+      <h1>Démarrage</h1>
+      <div class="rule"></div>
+      <p class="content">En cours.</p>
+
+      <p class="content">Tout commence ici.</p>
+    </article>
+
+    <footer>© 2026 Syncognie</footer>
+  </div>
+</Base>

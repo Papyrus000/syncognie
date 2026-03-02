@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Syncognie">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .center {
+      text-align: center;
+      opacity: 0;
+      animation: rise 1s .1s ease forwards;
+    }
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .logo span { color: var(--accent); }
+    .rule {
+      width: 2.5rem;
+      height: 1px;
+      background: var(--rule);
+      margin: 2rem auto;
+    }
+    .etape-link {
+      display: inline-block;
+      text-decoration: none;
+    }
+    .step-label {
+      font-family: 'Mulish', sans-serif;
+      font-size: .68rem;
+      font-weight: 300;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+      transition: opacity .2s;
+    }
+    .step-text {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      transition: color .2s;
+    }
+    .etape-link:hover .step-text { color: var(--accent); }
+    .etape-link:hover .step-label { opacity: .6; }
+    .arrow {
+      display: block;
+      margin-top: .6rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .7rem;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity .2s, transform .2s;
+    }
+    .etape-link:hover .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    footer {
+      position: fixed;
+      bottom: 2rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .65rem;
+      font-weight: 300;
+      letter-spacing: .1em;
+      color: var(--ink-soft);
+      opacity: 0;
+      animation: rise .8s .5s ease forwards;
+    }
+  </style>
+
+  <div class="center">
+    <p class="logo">Syn<span>cognie</span></p>
+    <div class="rule"></div>
+    <a class="etape-link" href="/etape-0">
+      <p class="step-label">Étape 0</p>
+      <p class="step-text">Démarrage.</p>
+      <span class="arrow">Lire →</span>
+    </a>
+  </div>
+
+  <footer>© 2026 Syncognie</footer>
+</Base>
