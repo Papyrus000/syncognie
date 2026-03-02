@@ -21,11 +21,11 @@ const date = article.data.date.toLocaleDateString('fr-FR', {
 
 <Base title={`${article.data.title} — Syncognie`}>
   <style>
-    .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 1.75rem;
-    }
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 1.75rem;
+}
     .back {
       display: inline-flex;
       align-items: center;
@@ -101,6 +101,18 @@ const date = article.data.date.toLocaleDateString('fr-FR', {
       margin-bottom: 1.5rem;
     }
     .content li { margin-bottom: .4rem; }
+
+.content img {
+  display: block;
+  width: auto;
+  max-width: 80%;
+  max-height: 300px;
+  border-radius: 8px;
+  margin: 2rem auto;
+  box-shadow: 0 8px 30px rgba(0,0,0,.12);
+  object-fit: contain;
+}
+
     footer {
       border-top: 1px solid var(--rule);
       padding: 2rem 0 3rem;
@@ -112,6 +124,7 @@ const date = article.data.date.toLocaleDateString('fr-FR', {
       opacity: 0;
       animation: rise .8s .4s ease forwards;
     }
+
   </style>
 
   <div class="wrap">
