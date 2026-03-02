@@ -88,6 +88,15 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
       opacity: 0;
       animation: rise .8s .5s ease forwards;
     }
+    .step-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+  margin-top: .4rem;
+  font-style: normal;
+  line-height: 1.6;
+}
   </style>
 
   <div class="center">
@@ -97,8 +106,11 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
       {articles.map(article => (
         <a class="article-link" href={`/articles/${article.slug}`}>
           <p class="step-label">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-          <p class="step-text">{article.data.title}</p>
-          <span class="arrow">Lire →</span>
+<p class="step-text">{article.data.title}</p>
+{article.data.description && (
+  <p class="step-desc">{article.data.description}</p>
+)}
+<span class="arrow">Lire →</span>
         </a>
       ))}
     </div>
