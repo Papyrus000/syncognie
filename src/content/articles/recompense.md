@@ -3,6 +3,4 @@ title: Le circuit de la récompense
 description: Neurosciences
 date: 2026-03-02
 ---
-Voici la description du circuit de la récompense
-
-![description](/images/dopamine.png)
+Et s'il fallait commencer... pourquoi ne pas débuter par le circuit de la récompense ? 
