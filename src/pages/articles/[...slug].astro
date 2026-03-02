@@ -1,7 +1,25 @@
 ---
-import Base from '../layouts/Base.astro';
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map(article => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+
+const date = article.data.date.toLocaleDateString('fr-FR', {
+  month: 'long',
+  year: 'numeric'
+});
 ---
-<Base title="Étape 0 — Syncognie">
+
+<Base title={`${article.data.title} — Syncognie`}>
   <style>
     .wrap {
       max-width: var(--max);
@@ -36,7 +54,7 @@ import Base from '../layouts/Base.astro';
       opacity: 0;
       animation: rise .9s .2s ease forwards;
     }
-    .eyebrow {
+    .date {
       font-family: 'Mulish', sans-serif;
       font-size: .65rem;
       font-weight: 300;
@@ -58,12 +76,31 @@ import Base from '../layouts/Base.astro';
       background: var(--rule);
       margin-bottom: 2.5rem;
     }
-    .content {
+    .content { 
       font-size: 1.05rem;
-      font-style: italic;
       color: var(--ink-mid);
       line-height: 1.85;
     }
+    .content p { margin-bottom: 1.5rem; }
+    .content h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 2.5rem 0 1rem;
+    }
+    .content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 2rem 0 .75rem;
+    }
+    .content strong { color: var(--ink); font-weight: 700; }
+    .content em { font-style: italic; }
+    .content ul, .content ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .content li { margin-bottom: .4rem; }
     footer {
       border-top: 1px solid var(--rule);
       padding: 2rem 0 3rem;
@@ -84,19 +121,12 @@ import Base from '../layouts/Base.astro';
     </a>
 
     <article>
-      <p class="eyebrow">Étape 0</p>
-      <h1>La première pierre...</h1>
+      <p class="date">{date}</p>
+      <h1>{article.data.title}</h1>
       <div class="rule"></div>
-      <p class="content">J'espère qu'elle ne fera pas trop mal... ou passons par 
-      les mots.</p>
-
-      <p class="content">Je ne sais pas. C'est un fait ! Partant de là, j'espère 
-      m'inspirer, apprendre des autres. Relier les idées, les concepts, les 
-      découvertes pour un quelconque bénéfice, une amélioration et...
-       pourquoi pas voir émerger de belles idées !</p>
-
-<img src="images/dopamine.png" alt="Description de l'image" width="600">
-     
+      <div class="content">
+        <Content />
+      </div>
     </article>
 
     <footer>© 2026 Syncognie</footer>

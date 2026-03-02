@@ -1,6 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
+
 <Base title="Syncognie">
   <style>
     body {
@@ -30,7 +35,13 @@ import Base from '../layouts/Base.astro';
       background: var(--rule);
       margin: 2rem auto;
     }
-    .etape-link {
+    .articles {
+      margin-top: .5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .article-link {
       display: inline-block;
       text-decoration: none;
     }
@@ -41,7 +52,7 @@ import Base from '../layouts/Base.astro';
       letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: .75rem;
+      margin-bottom: .4rem;
       transition: opacity .2s;
     }
     .step-text {
@@ -50,11 +61,11 @@ import Base from '../layouts/Base.astro';
       color: var(--ink-mid);
       transition: color .2s;
     }
-    .etape-link:hover .step-text { color: var(--accent); }
-    .etape-link:hover .step-label { opacity: .6; }
+    .article-link:hover .step-text { color: var(--accent); }
+    .article-link:hover .step-label { opacity: .6; }
     .arrow {
       display: block;
-      margin-top: .6rem;
+      margin-top: .4rem;
       font-family: 'Mulish', sans-serif;
       font-size: .7rem;
       color: var(--accent);
@@ -62,7 +73,7 @@ import Base from '../layouts/Base.astro';
       transform: translateX(-4px);
       transition: opacity .2s, transform .2s;
     }
-    .etape-link:hover .arrow {
+    .article-link:hover .arrow {
       opacity: 1;
       transform: translateX(0);
     }
@@ -82,11 +93,15 @@ import Base from '../layouts/Base.astro';
   <div class="center">
     <p class="logo">Syn<span>cognie</span></p>
     <div class="rule"></div>
-    <a class="etape-link" href="/etape-0">
-      <p class="step-label">Étape 0</p>
-      <p class="step-text">La première pierre...</p>
-      <span class="arrow">Lire →</span>
-    </a>
+    <div class="articles">
+      {articles.map(article => (
+        <a class="article-link" href={`/articles/${article.slug}`}>
+          <p class="step-label">{article.data.date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</p>
+          <p class="step-text">{article.data.title}</p>
+          <span class="arrow">Lire →</span>
+        </a>
+      ))}
+    </div>
   </div>
 
   <footer>© 2026 Syncognie</footer>
