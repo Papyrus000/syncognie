@@ -126,6 +126,64 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
       animation: rise .8s .4s ease forwards;
     }
 
+/* Le Cadre style WoW / Forum - Version Vert Émeraude */
+
+.wow-frame {
+    /* Retour au fond translucide d'origine */
+    background: rgba(26, 23, 20, 0.02); 
+    border: 1px solid var(--rule);
+    border-left: 4px solid #2ecc71;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin: 4rem 0 2rem;
+    
+    /* OMBRE GLOBALE : Subtile pour l'effet "posé" sans être agressive */
+    box-shadow: 0 10px 25px -15px rgba(26, 23, 20, 0.1);
+  }
+
+  .wow-frame-title {
+    /* On s'assure de garder la police Mulish des menus */
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #2ecc71;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .tag-item {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: white; /* La bulle reste blanche pour ressortir du cadre */
+    color: var(--ink-mid);
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    /* Petite ombre sur la bulle seule */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+  }
+
+  .tag-item:hover {
+    border-color: #2ecc71;
+    color: #2ecc71;
+    box-shadow: 0 4px 12px rgba(46, 204, 113, 0.15);
+    transform: translateY(-2px);
+  }
+
   </style>
 
   <div class="wrap">
@@ -138,9 +196,27 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
       <p class="date">{date} · {readTime} min de lecture</p>
       <h1>{article.data.title}</h1>
       <div class="rule"></div>
+
+
+
       <div class="content">
         <Content />
       </div>
+
+{article.data.tags && (
+<div class="wow-frame">
+  <div class="wow-frame-title">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+    Codex
+  </div>
+  <ul class="tag-list">
+    {article.data.tags.map((tag) => (
+      <li class="tag-item">{tag}</li>
+    ))}
+  </ul>
+</div>
+)}
+
     </article>
 
     <footer>© 2026 Syncognie</footer>
