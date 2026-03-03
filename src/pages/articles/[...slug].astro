@@ -185,6 +185,14 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
     transform: translateY(-2px);
   }
 
+  .version {
+  font-family: 'Mulish', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: var(--ink-soft);
+  opacity: .5;
+}
+
   </style>
 
 <Header />      <!-- ← ajoute cette ligne -->
@@ -222,6 +230,6 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
 
     </article>
 
-    <footer>© 2026 Syncognie</footer>
+    <footer>© 2026 Syncognie · <span class="version">v0.2</span></footer>
   </div>
 </Base>

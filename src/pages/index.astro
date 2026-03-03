@@ -95,6 +95,14 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     opacity: 0;
     animation: rise .8s .5s ease forwards;
   }
+
+  .version {
+  font-family: 'Mulish', sans-serif;
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: var(--ink-soft);
+  opacity: .5;
+}
 </style>
 
   <div class="center">
@@ -114,5 +122,5 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     </div>
   </div>
 
-  <footer>© 2026 Syncognie</footer>
+  <footer>© 2026 Syncognie · <span class="version">v0.2</span></footer>
 </Base>
