@@ -16,6 +16,10 @@ Le **système de récompense** est l'un des circuits les plus anciens, les plus 
 
 Il vaut la peine qu'on s'y penche quelques minutes 😉
 
+![description](/src/assets/images/dopamine.jpeg)
+
+*Avec / sans dopamine*
+
 ---
 
 ## C'est quoi, au fond ? 🔬
