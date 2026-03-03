@@ -193,10 +193,21 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
   opacity: .5;
 }
 
+.progress-bar {
+  position: fixed;
+  top: 52px;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--pop-orange);  /* ← orange vif au lieu de l'accent marron */
+  z-index: 99;
+  transition: width .1s linear;
+  box-shadow: 0 0 6px rgba(255, 128, 0, 0.5);  /* ← léger halo lumineux */
+}
   </style>
 
 <Header />      <!-- ← ajoute cette ligne -->
-
+<div class="progress-bar" id="progress"></div>
   <div class="wrap">
     <a class="back" href="/">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -232,4 +243,14 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
 
     <footer>© 2026 Syncognie · <span class="version">v0.2</span></footer>
   </div>
+
+  <script>
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop;
+    const total = doc.scrollHeight - doc.clientHeight;
+    bar.style.width = `${(scrolled / total) * 100}%`;
+  });
+</script>
 </Base>
