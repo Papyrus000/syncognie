@@ -17,6 +17,8 @@ const date = article.data.date.toLocaleDateString('fr-FR', {
   month: 'long',
   year: 'numeric'
 });
+const wordCount = article.body.split(/\s+/).length;
+const readTime = Math.max(1, Math.round(wordCount / 200));
 ---
 
 <Base title={`${article.data.title} — Syncognie`}>
@@ -105,7 +107,7 @@ const date = article.data.date.toLocaleDateString('fr-FR', {
 .content img {
   display: block;
   width: auto;
-  max-width: 80%;
+  max-width: 200px;
   max-height: 300px;
   border-radius: 8px;
   margin: 2rem auto;
@@ -134,7 +136,7 @@ const date = article.data.date.toLocaleDateString('fr-FR', {
     </a>
 
     <article>
-      <p class="date">{date}</p>
+      <p class="date">{date} · {readTime} min de lecture</p>
       <h1>{article.data.title}</h1>
       <div class="rule"></div>
       <div class="content">
