@@ -17,7 +17,6 @@ Le **système de récompense** est l'un des circuits les plus anciens, les plus 
 Il vaut la peine qu'on s'y penche quelques minutes 😉
 
 ![Le cerveau et la dopamine](../../assets/images/dopamine.jpeg)
-
 *Avec / sans dopamine*
 
 ---
