@@ -11,12 +11,14 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   <Header />      <!-- ← ajoute cette ligne -->
 
 <style>
-  .center {
-    text-align: center;
-    opacity: 0;
-    animation: rise 1s .1s ease forwards;
-    padding: 6rem 2rem 4rem;
-  }
+.center {
+  text-align: center;
+  opacity: 0;
+  animation: rise 1s .1s ease forwards;
+  padding: 6rem 2rem 4rem;
+  max-width: var(--max);      /* ← 620px, même largeur que les articles */
+  margin: 0 auto;
+}
   .logo {
     font-size: 2.2rem;
     font-weight: 700;
