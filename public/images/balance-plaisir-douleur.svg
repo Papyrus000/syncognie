@@ -1,0 +1,89 @@
+<svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f1117;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1d2e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pleasureGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f4a261;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#e76f51;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="painGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#457b9d;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#1d3557;stop-opacity:0.95" />
+    </linearGradient>
+    <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e76f51;stop-opacity:0.6" />
+      <stop offset="50%" style="stop-color:#f4d03f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#457b9d;stop-opacity:0.6" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="dropShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="520" fill="url(#bgGrad)" rx="12"/>
+  <line x1="400" y1="30" x2="400" y2="490" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+  <line x1="50" y1="260" x2="750" y2="260" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1" stroke-dasharray="4,6"/>
+
+  <text x="400" y="42" text-anchor="middle" fill="#f4d03f" font-size="13" letter-spacing="4" opacity="0.8" font-style="italic">HOMÉOSTASIE CÉRÉBRALE</text>
+
+  <polygon points="400,310 385,338 415,338" fill="#f4d03f" opacity="0.9" filter="url(#glow)"/>
+  <rect x="370" y="338" width="60" height="8" rx="4" fill="#f4d03f" opacity="0.6"/>
+  <rect x="350" y="346" width="100" height="5" rx="2.5" fill="#f4d03f" opacity="0.35"/>
+
+  <g transform="rotate(-6, 400, 308)">
+    <rect x="120" y="302" width="560" height="10" rx="5" fill="url(#beamGrad)" opacity="0.9" filter="url(#dropShadow)"/>
+    <line x1="180" y1="312" x2="180" y2="338" stroke="#e76f51" stroke-width="2" stroke-opacity="0.7" stroke-dasharray="3,3"/>
+    <line x1="620" y1="312" x2="620" y2="288" stroke="#457b9d" stroke-width="2" stroke-opacity="0.7" stroke-dasharray="3,3"/>
+    <ellipse cx="180" cy="345" rx="72" ry="12" fill="#e76f51" opacity="0.15"/>
+    <rect x="116" y="333" width="128" height="64" rx="10" fill="url(#pleasureGrad)" filter="url(#dropShadow)"/>
+    <text x="180" y="358" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold" letter-spacing="1">PLAISIR</text>
+    <text x="180" y="378" text-anchor="middle" fill="#fde8d8" font-size="11" opacity="0.85">dopamine ↑</text>
+    <text x="180" y="394" text-anchor="middle" font-size="13" opacity="0.7">🍰 📱 🎰</text>
+    <ellipse cx="620" cy="275" rx="72" ry="12" fill="#457b9d" opacity="0.15"/>
+    <rect x="556" y="263" width="128" height="64" rx="10" fill="url(#painGrad)" filter="url(#dropShadow)"/>
+    <text x="620" y="288" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold" letter-spacing="1">DOULEUR</text>
+    <text x="620" y="308" text-anchor="middle" fill="#cde6f5" font-size="11" opacity="0.85">compensation ↓</text>
+    <text x="620" y="322" text-anchor="middle" font-size="13" opacity="0.7">😶 😤 😔</text>
+  </g>
+
+  <text x="400" y="256" text-anchor="middle" fill="#f4d03f" font-size="11" letter-spacing="3" opacity="0.65">— ÉQUILIBRE (ZÉRO) —</text>
+
+  <line x1="60" y1="400" x2="740" y2="400" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+
+  <text x="195" y="422" text-anchor="middle" fill="#a8dadc" font-size="10" letter-spacing="2" opacity="0.7">ÉTAT NORMAL</text>
+  <g transform="translate(195, 455)">
+    <polygon points="0,12 -8,26 8,26" fill="#f4d03f" opacity="0.6"/>
+    <g transform="rotate(-8, 0, 10)">
+      <rect x="-55" y="4" width="110" height="5" rx="2.5" fill="#f4d03f" opacity="0.5"/>
+      <rect x="-60" y="9" width="22" height="18" rx="4" fill="#e76f51" opacity="0.6"/>
+      <rect x="38" y="1" width="22" height="18" rx="4" fill="#457b9d" opacity="0.6"/>
+    </g>
+  </g>
+  <text x="195" y="490" text-anchor="middle" fill="#a8dadc" font-size="10" opacity="0.6">La balance revient</text>
+  <text x="195" y="503" text-anchor="middle" fill="#a8dadc" font-size="10" opacity="0.6">naturellement à zéro</text>
+
+  <line x1="400" y1="405" x2="400" y2="510" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+
+  <text x="600" y="422" text-anchor="middle" fill="#e76f51" font-size="10" letter-spacing="2" opacity="0.7">SATURATION</text>
+  <g transform="translate(600, 455)">
+    <polygon points="0,12 -8,26 8,26" fill="#f4d03f" opacity="0.6"/>
+    <g transform="rotate(18, 0, 10)">
+      <rect x="-55" y="4" width="110" height="5" rx="2.5" fill="#f4d03f" opacity="0.5"/>
+      <rect x="-60" y="-4" width="22" height="18" rx="4" fill="#e76f51" opacity="0.35"/>
+      <rect x="38" y="10" width="22" height="18" rx="4" fill="#457b9d" opacity="0.85"/>
+    </g>
+  </g>
+  <text x="600" y="490" text-anchor="middle" fill="#e76f51" font-size="10" opacity="0.8">Le niveau de base</text>
+  <text x="600" y="503" text-anchor="middle" fill="#e76f51" font-size="10" opacity="0.8">descend sous zéro</text>
+
+  <text x="400" y="460" text-anchor="middle" fill="#f4d03f" font-size="22" opacity="0.5">→</text>
+  <text x="400" y="478" text-anchor="middle" fill="#f4d03f" font-size="9" letter-spacing="1" opacity="0.45">stimuli répétés</text>
+
+  <text x="400" y="516" text-anchor="middle" fill="#ffffff" font-size="9" opacity="0.25" font-style="italic">Inspiré du modèle de A. Lembke, Dopamine Nation (2021)</text>
+</svg>
