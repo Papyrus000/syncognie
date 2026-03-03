@@ -1,0 +1,232 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+articles.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+const concepts = [
+  {
+    id: 'recompense',
+    label: 'Système de récompense',
+    description: 'Comment le cerveau oriente nos comportements vers la survie.',
+    tags: ['dopamine', 'cerveau', 'neurosciences'],
+    color: '#ff8000',
+  },
+  {
+    id: 'homeostasie',
+    label: 'Homéostasie',
+    description: "L'équilibre comme principe universel — du cerveau au métabolisme.",
+    tags: ['homéostasie', 'bien-être'],
+    color: '#2ecc71',
+  },
+  {
+    id: 'comportement',
+    label: 'Comportement & Biais',
+    description: 'Les mécanismes invisibles qui pilotent nos décisions.',
+    tags: ['comportement', 'addiction'],
+    color: '#8b5e3c',
+  },
+];
+---
+
+<Base title="Chemin de lecture — Syncognie">
+  <Header />
+
+  <div class="chemin-wrap">
+    <div class="chemin-header">
+      <p class="chemin-surtitre">Navigation conceptuelle</p>
+      <h1 class="chemin-titre">Chemin de lecture</h1>
+      <p class="chemin-sous">Un fil conducteur entre les idées — pas une table des matières, mais une carte.</p>
+    </div>
+
+    <div class="chemin-body">
+      {concepts.map((concept, i) => {
+        const linked = articles.filter(a =>
+          a.data.tags?.some(t => concept.tags.includes(t))
+        );
+        return (
+          <div class="jalon">
+            <div class="jalon-line">
+              <div class="jalon-dot" style={`background:${concept.color}`}></div>
+              {i < concepts.length - 1 && <div class="jalon-trait"></div>}
+            </div>
+            <div class="jalon-content">
+              <p class="jalon-label" style={`color:${concept.color}`}>{concept.label}</p>
+              <p class="jalon-desc">{concept.description}</p>
+              {linked.length > 0 ? (
+                <ul class="jalon-articles">
+                  {linked.map(a => (
+                    <li>
+                      <a href={`/articles/${a.slug}`} class="jalon-link">
+                        <span class="jalon-arrow">→</span>
+                        {a.data.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="jalon-empty">Articles à venir</p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  <footer class="chemin-footer">© 2026 Syncognie</footer>
+</Base>
+
+<style>
+  .chemin-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+
+  .chemin-header {
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+
+  .chemin-surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+
+  .chemin-titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .chemin-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .chemin-body {
+    opacity: 0;
+    animation: rise .9s .25s ease forwards;
+  }
+
+  .jalon {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0;
+  }
+
+  .jalon-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 20px;
+  }
+
+  .jalon-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: .3rem;
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px currentColor;
+  }
+
+  .jalon-trait {
+    width: 1px;
+    flex: 1;
+    min-height: 2.5rem;
+    background: var(--rule);
+    margin: .4rem 0;
+  }
+
+  .jalon-content {
+    padding-bottom: 2.5rem;
+    flex: 1;
+  }
+
+  .jalon-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: .5rem;
+  }
+
+  .jalon-desc {
+    font-size: .95rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .jalon-articles {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .jalon-link {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color .2s;
+  }
+
+  .jalon-link:hover { color: var(--accent); }
+
+  .jalon-arrow {
+    font-size: .7rem;
+    color: var(--accent);
+    opacity: .6;
+    transition: opacity .2s, transform .2s;
+    display: inline-block;
+  }
+
+  .jalon-link:hover .jalon-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .jalon-empty {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+    opacity: .6;
+  }
+
+  .chemin-footer {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 2rem 1.75rem 3rem;
+    border-top: 1px solid var(--rule);
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .1em;
+    color: var(--ink-soft);
+  }
+</style>
