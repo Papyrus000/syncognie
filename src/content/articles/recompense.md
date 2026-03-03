@@ -5,4 +5,4 @@ date: 2026-03-02
 ---
 Et s'il fallait commencer... pourquoi ne pas débuter par le circuit de la récompense ? 
 
-![description](/src/assets/images/dopamine.jpeg)
+![desc](../../assets/images/dopamine.jpeg)
