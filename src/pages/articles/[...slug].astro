@@ -22,7 +22,8 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
 ---
 
 <Base title={`${article.data.title} — Syncognie`}>
-  <style>
+<style is:global> 
+  
 .wrap {
   max-width: var(--max);
   margin: 0 auto;
@@ -104,16 +105,14 @@ const readTime = Math.max(1, Math.round(wordCount / 200));
     }
     .content li { margin-bottom: .4rem; }
 
-.content img {
-  display: block;
-  width: auto;
-  max-width: 200px;
-  max-height: 300px;
-  border-radius: 8px;
-  margin: 2rem auto;
-  box-shadow: 0 8px 30px rgba(0,0,0,.12);
-  object-fit: contain;
-}
+    .content img {
+    display: block;
+    max-width: 100% !important; /* Force l'image à ne jamais dépasser */
+    height: auto !important;     /* Garde les proportions */
+    border-radius: 8px;
+    margin: 2rem auto;
+    box-shadow: 0 8px 30px rgba(0,0,0,.12);
+  }
 
     footer {
       border-top: 1px solid var(--rule);
