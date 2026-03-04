@@ -14,6 +14,7 @@ const concepts = [
     description: 'Comment le cerveau oriente nos comportements vers la survie.',
     tags: ['dopamine', 'cerveau', 'neurosciences'],
     color: '#ff8000',
+    statut: 'actif',
   },
   {
     id: 'homeostasie',
@@ -21,6 +22,7 @@ const concepts = [
     description: "L'équilibre comme principe universel — du cerveau au métabolisme.",
     tags: ['homéostasie', 'bien-être'],
     color: '#2ecc71',
+    statut: 'actif',
   },
   {
     id: 'comportement',
@@ -28,9 +30,27 @@ const concepts = [
     description: 'Les mécanismes invisibles qui pilotent nos décisions.',
     tags: ['comportement', 'addiction'],
     color: '#8b5e3c',
+    statut: 'en-cours',
+  },
+  {
+    id: 'plasticite',
+    label: 'Neuroplasticité',
+    description: 'La capacité du cerveau à se reconfigurer — apprentissage, habitudes, récupération.',
+    tags: ['neuroplasticité', 'apprentissage'],
+    color: '#457b9d',
+    statut: 'a-venir',
+  },
+  {
+    id: 'metabolisme',
+    label: 'Métabolisme & Énergie',
+    description: 'Cétose, jeûne, énergie cellulaire — le carburant qui change tout.',
+    tags: ['cétose', 'jeûne', 'métabolisme'],
+    color: '#9b5de5',
+    statut: 'a-venir',
   },
 ];
 ---
+
 
 <Base title="Chemin de lecture — Syncognie">
   <Header />
@@ -42,39 +62,55 @@ const concepts = [
       <p class="chemin-sous">Un fil conducteur entre les idées — pas une table des matières, mais une carte.</p>
     </div>
 
-    <div class="chemin-body">
-      {concepts.map((concept, i) => {
-        const linked = articles.filter(a =>
-          a.data.tags?.some(t => concept.tags.includes(t))
-        );
-        return (
-          <div class="jalon">
-            <div class="jalon-line">
-              <div class="jalon-dot" style={`background:${concept.color}`}></div>
-              {i < concepts.length - 1 && <div class="jalon-trait"></div>}
-            </div>
-            <div class="jalon-content">
-              <p class="jalon-label" style={`color:${concept.color}`}>{concept.label}</p>
-              <p class="jalon-desc">{concept.description}</p>
-              {linked.length > 0 ? (
-                <ul class="jalon-articles">
-                  {linked.map(a => (
-                    <li>
-                      <a href={`/articles/${a.slug}`} class="jalon-link">
-                        <span class="jalon-arrow">→</span>
-                        {a.data.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p class="jalon-empty">Articles à venir</p>
-              )}
-            </div>
+<div class="chemin-body">
+  {concepts.map((concept, i) => {
+    const linked = articles.filter(a =>
+      a.data.tags?.some(t => concept.tags.includes(t))
+    );
+    const estGrise = concept.statut === 'a-venir';
+    return (
+      <div class={`jalon ${estGrise ? 'jalon-avenir' : ''}`}>
+        <div class="jalon-line">
+          <div class="jalon-dot" style={`background:${estGrise ? '#ccc' : concept.color}`}>
+            {concept.statut === 'en-cours' && <div class="jalon-pulse"></div>}
           </div>
-        );
-      })}
-    </div>
+          {i < concepts.length - 1 && <div class="jalon-trait"></div>}
+        </div>
+        <div class="jalon-content">
+          <div class="jalon-header-row">
+            <p class="jalon-label" style={`color:${estGrise ? 'var(--ink-soft)' : concept.color}`}>
+              {concept.label}
+            </p>
+            {concept.statut === 'en-cours' && (
+              <span class="jalon-badge badge-encours">En exploration</span>
+            )}
+            {concept.statut === 'a-venir' && (
+              <span class="jalon-badge badge-avenir">À venir</span>
+            )}
+          </div>
+          <p class="jalon-desc">{concept.description}</p>
+          {!estGrise && (
+            linked.length > 0 ? (
+              <ul class="jalon-articles">
+                {linked.map(a => (
+                  <li>
+                    <a href={`/articles/${a.slug}`} class="jalon-link">
+                      <span class="jalon-arrow">→</span>
+                      {a.data.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="jalon-empty">Articles à venir</p>
+            )
+          )}
+        </div>
+      </div>
+    );
+  })}
+</div>
+  
   </div>
 
   <Footer />
@@ -231,4 +267,64 @@ const concepts = [
     letter-spacing: .1em;
     color: var(--ink-soft);
   }
+
+.jalon-avenir {
+  opacity: .4;
+}
+
+.jalon-header-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .5rem;
+}
+
+.jalon-label {
+  margin-bottom: 0;
+}
+
+.jalon-badge {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: .2rem .5rem;
+  border-radius: 4px;
+}
+
+.badge-encours {
+  background: rgba(139,94,60,.08);
+  color: var(--accent);
+  border: 1px solid rgba(139,94,60,.2);
+}
+
+.badge-avenir {
+  background: rgba(154,145,137,.08);
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+}
+
+.jalon-pulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .2;
+  animation: ripple 2s ease-out infinite;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes ripple {
+  0% { transform: translate(-50%, -50%) scale(.5); opacity: .3; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+.jalon-dot {
+  position: relative;
+}
+  
 </style>

@@ -5,33 +5,42 @@ const currentPath = Astro.url.pathname;
 <header class="topbar">
   <a href="/" class="topbar-logo" aria-label="Syncognie — accueil">
     <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <!-- Arc gauche — synergie -->
       <path d="M16 4 C8 4, 3 9, 3 16" stroke="#f5f0e8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <!-- Arc droit — cognition -->
       <path d="M16 28 C24 28, 29 23, 29 16" stroke="#8b5e3c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-      <!-- Point de convergence -->
       <circle cx="16" cy="16" r="2.2" fill="#f5f0e8"/>
-      <!-- Boucle S — trait de liaison -->
       <path d="M16 4 C22 4, 29 9, 29 16 C29 23, 22 28, 16 28 C10 28, 3 23, 3 16 C3 9, 10 4, 16 4" stroke="#f5f0e8" stroke-width="0.4" fill="none" stroke-opacity="0.15"/>
     </svg>
     <span class="topbar-name">syncognie</span>
   </a>
 
   <nav class="topbar-nav">
-    <a href="/chemin" class={`topbar-link ${currentPath === '/chemin' ? 'active' : ''}`}>
+    <a href="/carte" class={`topbar-link ${currentPath === '/carte' ? 'active' : ''}`}>
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
         <line x1="12" y1="7" x2="7" y2="17"/><line x1="12" y1="7" x2="17" y2="17"/>
       </svg>
-      Chemin
+      Carte
+    </a>
+    <a href="/outils" class={`topbar-link ${currentPath === '/outils' ? 'active' : ''}`}>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+      Outils
+    </a>
+    <a href="/apropos" class={`topbar-link ${currentPath === '/apropos' ? 'active' : ''}`}>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      À propos
     </a>
     <a href="/contact" class={`topbar-link ${currentPath === '/contact' ? 'active' : ''}`}>
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/>
-    <polyline points="22,6 12,12 2,6"/>
-  </svg>
-  Contact
-</a>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/>
+        <polyline points="22,6 12,12 2,6"/>
+      </svg>
+      Contact
+    </a>
   </nav>
 </header>
 
@@ -48,7 +57,6 @@ const currentPath = Astro.url.pathname;
     justify-content: space-between;
     padding: 0 1.75rem;
     height: 52px;
-    backdrop-filter: blur(8px);
   }
 
   .topbar-logo {
@@ -63,7 +71,6 @@ const currentPath = Astro.url.pathname;
     font-size: .72rem;
     font-weight: 300;
     letter-spacing: .28em;
-    text-transform: lowercase;
     color: #f5f0e8;
     opacity: .85;
     transition: opacity .2s;
@@ -92,17 +99,15 @@ const currentPath = Astro.url.pathname;
   }
 
   .topbar-link:hover,
-  .topbar-link.active {
-    color: #1eff00;
-  }
+  .topbar-link.active { color: #ff8000; }
 
-  .topbar-link svg {
-    opacity: .7;
-    transition: opacity .2s;
-  }
-
+  .topbar-link svg { opacity: .7; transition: opacity .2s; }
   .topbar-link:hover svg,
-  .topbar-link.active svg {
-    opacity: 1;
+  .topbar-link.active svg { opacity: 1; }
+
+  @media (max-width: 600px) {
+    .topbar-name { display: none; }
+    .topbar-nav { gap: 1rem; }
+    .topbar-link span { display: none; }
   }
 </style>

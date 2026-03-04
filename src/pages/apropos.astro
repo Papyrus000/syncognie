@@ -1,0 +1,159 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base title="À propos — Syncognie">
+  <Header />
+
+  <div class="apropos-wrap">
+
+    <div class="apropos-header">
+      <p class="surtitre">Le laboratoire</p>
+      <h1 class="titre">À propos de Syncognie</h1>
+    </div>
+
+    <div class="apropos-body">
+
+      <div class="bloc">
+        <p class="bloc-texte">
+          Syncognie est un carnet de bord, pas un manuel. Un espace où un curieux 
+          cherche à comprendre les mécanismes qui gouvernent nos comportements, notre énergie, notre façon d'apprendre et de décider.
+        </p>
+        <p class="bloc-texte">
+          Le nom est une invention : <em>syn</em> pour la synergie, <em>cognie</em> pour la cognition. 
+          La conviction que les grandes idées se rejoignent — que l'homéostasie du cerveau, 
+          celle du métabolisme et celle des systèmes sociaux parlent le même langage.
+        </p>
+      </div>
+
+      <div class="separateur">✦</div>
+
+      <div class="bloc">
+        <p class="bloc-label">La méthode</p>
+        <p class="bloc-texte">
+          Chaque article est une expérience. Pas de certitudes définitives — des hypothèses testées, 
+          des concepts explorés, des liens tracés entre des phénomènes qui semblent sans rapport. 
+          Le lecteur est invité à questionner, pas à suivre.
+        </p>
+      </div>
+
+      <div class="bloc">
+        <p class="bloc-label">Ce que ce n'est pas</p>
+        <p class="bloc-texte">
+          Pas un blog médical. Pas un manuel scientifique. Pas de vérité absolue. 
+          Les contenus ici n'ont aucune valeur médicale et ne remplacent pas un avis professionnel. 
+          C'est le carnet d'un curieux, rien de plus — et peut-être rien de moins.
+        </p>
+      </div>
+
+      <div class="separateur">✦</div>
+
+      <div class="construction">
+        <div class="construction-dot"></div>
+        <p class="construction-texte">Cette page continue de s'écrire — comme le reste.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <Footer />
+</Base>
+
+<style>
+  .apropos-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+
+  .apropos-header {
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+
+  .surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+
+  .titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .apropos-body {
+    opacity: 0;
+    animation: rise .9s .25s ease forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .bloc-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: .75rem;
+  }
+
+  .bloc-texte {
+    font-size: 1rem;
+    color: var(--ink-mid);
+    line-height: 1.85;
+    margin-bottom: .75rem;
+  }
+
+  .bloc-texte em { font-style: italic; color: var(--accent); }
+
+  .separateur {
+    text-align: center;
+    color: var(--rule);
+    font-size: .9rem;
+    letter-spacing: .5em;
+    padding: .5rem 0;
+  }
+
+  .construction {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: rgba(26,23,20,.02);
+  }
+
+  .construction-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.8); }
+  }
+
+  .construction-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .8rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,237 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const outils = [
+  {
+    id: 'balance',
+    titre: 'Boussole dopaminergique',
+    description: 'Quelques questions pour estimer ton niveau de charge dopaminergique, ta fatigue nerveuse, et obtenir des pistes d\'équilibre adaptées.',
+    tags: ['dopamine', 'fatigue', 'bien-être'],
+    statut: 'bientot',
+    color: '#ff8000',
+  },
+  {
+    id: 'homeostasie',
+    titre: 'Tableau de bord homéostatique',
+    description: 'Visualiser en temps réel l\'équilibre entre stimuli et récupération — basé sur le modèle de la balance plaisir/douleur.',
+    tags: ['homéostasie', 'comportement'],
+    statut: 'bientot',
+    color: '#2ecc71',
+  },
+  {
+    id: 'narratif',
+    titre: 'Récits conceptuels',
+    description: 'Des concepts complexes mis en scène dans des dialogues et des narratifs — comprendre en lisant, pas en étudiant.',
+    tags: ['apprentissage', 'cognition'],
+    statut: 'idee',
+    color: '#8b5e3c',
+  },
+];
+---
+
+<Base title="Outils — Syncognie">
+  <Header />
+
+  <div class="outils-wrap">
+
+    <div class="outils-header">
+      <p class="surtitre">Expérimentation</p>
+      <h1 class="titre">Outils</h1>
+      <p class="sous">Des instruments pour explorer les concepts — pas des diagnostics, des boussoles.</p>
+    </div>
+
+    <div class="outils-grille">
+      {outils.map(outil => (
+        <div class={`outil-card statut-${outil.statut}`}>
+          <div class="outil-top">
+            <div class="outil-dot" style={`background:${outil.color}`}></div>
+            <span class={`outil-badge badge-${outil.statut}`}>
+              {outil.statut === 'bientot' ? 'Bientôt' : 'En réflexion'}
+            </span>
+          </div>
+          <h2 class="outil-titre">{outil.titre}</h2>
+          <p class="outil-desc">{outil.description}</p>
+          <div class="outil-tags">
+            {outil.tags.map(tag => (
+              <span class="outil-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="outils-note">
+      <div class="note-dot"></div>
+      <p>Ces outils naissent des articles. Chaque concept exploré devient potentiellement un instrument pratique.</p>
+    </div>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style>
+  .outils-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+
+  .outils-header {
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+
+  .surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+
+  .titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .outils-grille {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    opacity: 0;
+    animation: rise .9s .25s ease forwards;
+  }
+
+  .outil-card {
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: box-shadow .2s, transform .2s;
+    background: rgba(26,23,20,.015);
+  }
+
+  .statut-bientot:hover {
+    box-shadow: 0 8px 24px rgba(26,23,20,.08);
+    transform: translateY(-2px);
+  }
+
+  .statut-idee {
+    opacity: .55;
+  }
+
+  .outil-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .outil-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .outil-badge {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    padding: .25rem .6rem;
+    border-radius: 4px;
+  }
+
+  .badge-bientot {
+    background: rgba(255,128,0,.08);
+    color: #ff8000;
+    border: 1px solid rgba(255,128,0,.2);
+  }
+
+  .badge-idee {
+    background: rgba(154,145,137,.08);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+  }
+
+  .outil-titre {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .6rem;
+  }
+
+  .outil-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .outil-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+  }
+
+  .outil-tag {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: .2rem .5rem;
+  }
+
+  .outils-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .note-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: .35rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .3; }
+  }
+
+  .outils-note p {
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+  }
+</style>
