@@ -1,5 +1,6 @@
 ---
 import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import Reactions from '../../components/Reactions.astro';
@@ -228,7 +229,8 @@ footer {
     )}
   </article>
 
-  <footer>© 2026 Syncognie · <span class="version">v0.2</span></footer>
+  <Footer />
+
 </div>
 
 <script>

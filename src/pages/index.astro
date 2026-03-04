@@ -1,6 +1,7 @@
 ---
-import Header from '../components/Header.astro';
 import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
@@ -8,104 +9,83 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Base title="Syncognie">
-  <Header />      <!-- ← ajoute cette ligne -->
+  <Header />
 
-<style>
-.center {
-  text-align: center;
-  opacity: 0;
-  animation: rise 1s .1s ease forwards;
-  padding: 6rem 2rem 4rem;
-  max-width: var(--max);      /* ← 620px, même largeur que les articles */
-  margin: 0 auto;
-}
-  .logo {
-    font-size: 2.2rem;
-    font-weight: 700;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--ink);
-  }
-  .logo span { color: var(--accent); }
-  .rule {
-    width: 2.5rem;
-    height: 1px;
-    background: var(--rule);
-    margin: 2rem auto;
-  }
-  .articles {
-    margin-top: .5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-  .article-link {
-    display: inline-block;
-    text-decoration: none;
-  }
-  .step-label {
-    font-family: 'Mulish', sans-serif;
-    font-size: .68rem;
-    font-weight: 300;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: .4rem;
-    transition: opacity .2s;
-  }
-  .step-text {
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--ink-mid);
-    transition: color .2s;
-  }
-  .article-link:hover .step-text { color: var(--accent); }
-  .article-link:hover .step-label { opacity: .6; }
-  .arrow {
-    display: block;
-    margin-top: .4rem;
-    font-family: 'Mulish', sans-serif;
-    font-size: .7rem;
-    color: var(--accent);
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity .2s, transform .2s;
-  }
-  .article-link:hover .arrow {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .step-desc {
-    font-family: 'Mulish', sans-serif;
-    font-size: .82rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    margin-top: .4rem;
-    font-style: normal;
-    line-height: 1.6;
-  }
-  footer {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 300;
-    letter-spacing: .1em;
-    color: var(--ink-soft);
-    opacity: 0;
-    animation: rise .8s .5s ease forwards;
-  }
-
-  .version {
-  font-family: 'Mulish', sans-serif;
-  font-size: .6rem;
-  letter-spacing: .15em;
-  color: var(--ink-soft);
-  opacity: .5;
-}
-</style>
+  <style>
+    .center {
+      text-align: center;
+      opacity: 0;
+      animation: rise 1s .1s ease forwards;
+      padding: 6rem 2rem 4rem;
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .logo span { color: var(--accent); }
+    .rule {
+      width: 2.5rem;
+      height: 1px;
+      background: var(--rule);
+      margin: 2rem auto;
+    }
+    .articles {
+      margin-top: .5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .article-link {
+      display: inline-block;
+      text-decoration: none;
+    }
+    .step-label {
+      font-family: 'Mulish', sans-serif;
+      font-size: .68rem;
+      font-weight: 300;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .4rem;
+      transition: opacity .2s;
+    }
+    .step-text {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--ink-mid);
+      transition: color .2s;
+    }
+    .article-link:hover .step-text { color: var(--accent); }
+    .article-link:hover .step-label { opacity: .6; }
+    .arrow {
+      display: block;
+      margin-top: .4rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .7rem;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: opacity .2s, transform .2s;
+    }
+    .article-link:hover .arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .step-desc {
+      font-family: 'Mulish', sans-serif;
+      font-size: .82rem;
+      font-weight: 300;
+      color: var(--ink-soft);
+      margin-top: .4rem;
+      font-style: normal;
+      line-height: 1.6;
+    }
+  </style>
 
   <div class="center">
     <p class="logo">Syn<span>cognie</span></p>
@@ -114,15 +94,16 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
       {articles.map(article => (
         <a class="article-link" href={`/articles/${article.slug}`}>
           <p class="step-label">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-<p class="step-text">{article.data.title}</p>
-{article.data.description && (
-  <p class="step-desc">{article.data.description}</p>
-)}
-<span class="arrow">Lire →</span>
+          <p class="step-text">{article.data.title}</p>
+          {article.data.description && (
+            <p class="step-desc">{article.data.description}</p>
+          )}
+          <span class="arrow">Lire →</span>
         </a>
       ))}
     </div>
   </div>
 
-  <footer>© 2026 Syncognie · <span class="version">v0.2</span></footer>
+  <Footer />
+
 </Base>
