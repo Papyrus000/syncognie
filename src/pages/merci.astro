@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+---
+
+<Base title="Message envoyé — Syncognie">
+  <Header />
+  <div class="merci-wrap">
+    <p class="merci-icone">✦</p>
+    <h1 class="merci-titre">Message reçu.</h1>
+    <p class="merci-texte">Merci de prendre le temps d'écrire. Je te lis et te réponds dès que possible.</p>
+    <a href="/" class="merci-retour">← Retour à l'accueil</a>
+  </div>
+</Base>
+
+<style>
+  .merci-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 6rem 1.75rem;
+    text-align: center;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+  .merci-icone {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .merci-titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .merci-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+  .merci-retour {
+    font-family: 'Mulish', sans-serif;
+    font-size: .68rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .merci-retour:hover { opacity: .6; }
+</style>
