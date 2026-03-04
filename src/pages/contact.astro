@@ -183,3 +183,13 @@ import Header from '../components/Header.astro';
 </style>
 
 <script src="https://web3forms.com/client/script.js" async defer></script>
+
+<script>
+  document.querySelector('.contact-form').addEventListener('submit', function(e) {
+    const captchaResponse = document.querySelector('[name="h-captcha-response"]');
+    if (!captchaResponse || !captchaResponse.value) {
+      e.preventDefault();
+      alert('Merci de valider le captcha avant d\'envoyer.');
+    }
+  });
+</script>
