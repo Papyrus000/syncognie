@@ -1,0 +1,154 @@
+---
+const { slug } = Astro.props;
+const workerUrl = 'https://syncognie-reactions.kpnxnsvs8t.workers.dev';
+---
+
+<div class="reactions" id="reactions" data-slug={slug} data-worker={workerUrl}>
+  <p class="reactions-titre">Cet article t'a...</p>
+  <div class="reactions-btns">
+    <button class="reaction-btn" data-type="reflexion">
+      <span class="reaction-emoji">🧠</span>
+      <span class="reaction-label">Fait réfléchir</span>
+      <span class="reaction-count" id="count-reflexion">—</span>
+    </button>
+    <button class="reaction-btn" data-type="appris">
+      <span class="reaction-emoji">💡</span>
+      <span class="reaction-label">Appris quelque chose</span>
+      <span class="reaction-count" id="count-appris">—</span>
+    </button>
+    <button class="reaction-btn" data-type="suite">
+      <span class="reaction-emoji">🔁</span>
+      <span class="reaction-label">Donné envie de la suite</span>
+      <span class="reaction-count" id="count-suite">—</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .reactions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .reactions-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+
+  .reactions-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+  }
+
+  .reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: .6rem 1rem;
+    cursor: pointer;
+    transition: all .2s;
+    font-family: 'Mulish', sans-serif;
+  }
+
+  .reaction-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 94, 60, 0.12);
+  }
+
+  .reaction-btn.voted {
+    border-color: var(--accent);
+    background: rgba(139, 94, 60, 0.06);
+  }
+
+  .reaction-emoji { font-size: 1rem; }
+
+  .reaction-label {
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+  }
+
+  .reaction-count {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 1.2rem;
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    .reactions-btns { flex-direction: column; }
+    .reaction-btn { justify-content: space-between; }
+  }
+</style>
+
+<script>
+  const container = document.getElementById('reactions');
+  const slug = container.dataset.slug;
+  const workerUrl = container.dataset.worker;
+  const storageKey = `voted_${slug}`;
+
+  // Charger les compteurs au démarrage
+  async function loadCounts() {
+    try {
+      const res = await fetch(`${workerUrl}?slug=${slug}`);
+      const data = await res.json();
+      updateUI(data);
+    } catch(e) {
+      console.log('Réactions indisponibles');
+    }
+  }
+
+  // Mettre à jour l'affichage
+  function updateUI(data) {
+    ['reflexion', 'appris', 'suite'].forEach(type => {
+      const el = document.getElementById(`count-${type}`);
+      if (el) el.textContent = data[type] || 0;
+    });
+  }
+
+  // Marquer le bouton voté si déjà voté
+  const voted = localStorage.getItem(storageKey);
+  if (voted) {
+    const btn = document.querySelector(`[data-type="${voted}"]`);
+    if (btn) btn.classList.add('voted');
+  }
+
+  // Gérer le clic
+  container.querySelectorAll('.reaction-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const type = btn.dataset.type;
+
+      // Empêche de voter deux fois
+      if (localStorage.getItem(storageKey)) return;
+
+      btn.classList.add('voted');
+      localStorage.setItem(storageKey, type);
+
+      try {
+        const res = await fetch(`${workerUrl}?slug=${slug}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type }),
+        });
+        const data = await res.json();
+        updateUI(data);
+      } catch(e) {
+        console.log('Erreur envoi réaction');
+      }
+    });
+  });
+
+  loadCounts();
+</script>
