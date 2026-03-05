@@ -2,8 +2,16 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
 const outils = [
+  {
+    id: 'tracker',
+    titre: 'Tracker d\'habitudes',
+    description: 'Trois ancres quotidiennes. Intensité 1 à 3. Mémoire 7 jours. Pas des objectifs — des signaux.',
+    tags: ['habitudes', 'ancres', 'dopamine'],
+    statut: 'en-cours',
+    color: '#0070dd',
+    lien: '/outils/tracker',
+  },
   {
     id: 'balance',
     titre: 'Boussole dopaminergique',
@@ -26,49 +34,59 @@ const outils = [
     description: 'Des concepts complexes mis en scène dans des dialogues et des narratifs — comprendre en lisant, pas en étudiant.',
     tags: ['apprentissage', 'cognition'],
     statut: 'idee',
-    color: '#8b5e3c',
+    color: '#9a9189',
   },
 ];
----
 
+const BADGES: Record<string, string> = {
+  'actif':    'Disponible →',
+  'en-cours': 'En cours',
+  'bientot':  'Bientôt',
+  'idee':     'En réflexion',
+};
+---
 <Base title="Outils — Syncognie">
   <Header />
-
   <div class="outils-wrap">
-
     <div class="outils-header">
       <p class="surtitre">Expérimentation</p>
       <h1 class="titre">Outils</h1>
       <p class="sous">Des instruments pour explorer les concepts — pas des diagnostics, des boussoles.</p>
     </div>
-
     <div class="outils-grille">
       {outils.map(outil => (
-        <div class={`outil-card statut-${outil.statut}`}>
-          <div class="outil-top">
-            <div class="outil-dot" style={`background:${outil.color}`}></div>
-            <span class={`outil-badge badge-${outil.statut}`}>
-              {outil.statut === 'bientot' ? 'Bientôt' : 'En réflexion'}
-            </span>
+        (outil.statut === 'actif' || outil.statut === 'en-cours') ? (
+          <a href={outil.lien} class={`outil-card statut-${outil.statut}`}>
+            <div class="outil-top">
+              <div class="outil-dot" style={`background:${outil.color}`}></div>
+              <span class={`outil-badge badge-${outil.statut}`}>{BADGES[outil.statut]}</span>
+            </div>
+            <h2 class="outil-titre">{outil.titre}</h2>
+            <p class="outil-desc">{outil.description}</p>
+            <div class="outil-tags">
+              {outil.tags.map(tag => <span class="outil-tag">{tag}</span>)}
+            </div>
+          </a>
+        ) : (
+          <div class={`outil-card statut-${outil.statut}`}>
+            <div class="outil-top">
+              <div class="outil-dot" style={`background:${outil.color}`}></div>
+              <span class={`outil-badge badge-${outil.statut}`}>{BADGES[outil.statut]}</span>
+            </div>
+            <h2 class="outil-titre">{outil.titre}</h2>
+            <p class="outil-desc">{outil.description}</p>
+            <div class="outil-tags">
+              {outil.tags.map(tag => <span class="outil-tag">{tag}</span>)}
+            </div>
           </div>
-          <h2 class="outil-titre">{outil.titre}</h2>
-          <p class="outil-desc">{outil.description}</p>
-          <div class="outil-tags">
-            {outil.tags.map(tag => (
-              <span class="outil-tag">{tag}</span>
-            ))}
-          </div>
-        </div>
+        )
       ))}
     </div>
-
     <div class="outils-note">
       <div class="note-dot"></div>
       <p>Ces outils naissent des articles. Chaque concept exploré devient potentiellement un instrument pratique.</p>
     </div>
-
   </div>
-
   <Footer />
 </Base>
 
@@ -78,13 +96,11 @@ const outils = [
     margin: 0 auto;
     padding: 4rem 1.75rem 5rem;
   }
-
   .outils-header {
     margin-bottom: 3.5rem;
     opacity: 0;
     animation: rise .9s .1s ease forwards;
   }
-
   .surtitre {
     font-family: 'Mulish', sans-serif;
     font-size: .65rem;
@@ -94,14 +110,12 @@ const outils = [
     color: var(--accent);
     margin-bottom: .75rem;
   }
-
   .titre {
     font-size: 1.9rem;
     font-weight: 700;
     color: var(--ink);
     margin-bottom: 1rem;
   }
-
   .sous {
     font-family: 'Mulish', sans-serif;
     font-size: .9rem;
@@ -109,7 +123,6 @@ const outils = [
     color: var(--ink-soft);
     line-height: 1.7;
   }
-
   .outils-grille {
     display: flex;
     flex-direction: column;
@@ -118,21 +131,41 @@ const outils = [
     animation: rise .9s .25s ease forwards;
   }
 
+  /* Base card */
   .outil-card {
     border: 1px solid var(--rule);
     border-radius: 10px;
     padding: 1.5rem;
-    transition: box-shadow .2s, transform .2s;
+    transition: box-shadow .2s, transform .2s, border-color .2s;
     background: rgba(26,23,20,.015);
+    text-decoration: none;
+    display: block;
+    color: inherit;
   }
 
+  /* Actif — vert */
+  .statut-actif:hover {
+    box-shadow: 0 8px 24px rgba(46,204,113,.12);
+    transform: translateY(-2px);
+    border-color: #2ecc71;
+  }
+
+  /* En cours — bleu */
+  .statut-en-cours:hover {
+    box-shadow: 0 8px 24px rgba(0,112,221,.1);
+    transform: translateY(-2px);
+    border-color: #0070dd;
+  }
+
+  /* Bientôt — orange */
   .statut-bientot:hover {
     box-shadow: 0 8px 24px rgba(26,23,20,.08);
     transform: translateY(-2px);
   }
 
+  /* Idée — estompé */
   .statut-idee {
-    opacity: .55;
+    opacity: .45;
   }
 
   .outil-top {
@@ -141,13 +174,11 @@ const outils = [
     justify-content: space-between;
     margin-bottom: 1rem;
   }
-
   .outil-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
   }
-
   .outil-badge {
     font-family: 'Mulish', sans-serif;
     font-size: .6rem;
@@ -158,12 +189,22 @@ const outils = [
     border-radius: 4px;
   }
 
+  /* Badges couleurs */
+  .badge-actif {
+    background: rgba(46,204,113,.08);
+    color: #2ecc71;
+    border: 1px solid rgba(46,204,113,.25);
+  }
+  .badge-en-cours {
+    background: rgba(0,112,221,.07);
+    color: #0070dd;
+    border: 1px solid rgba(0,112,221,.2);
+  }
   .badge-bientot {
     background: rgba(255,128,0,.08);
     color: #ff8000;
     border: 1px solid rgba(255,128,0,.2);
   }
-
   .badge-idee {
     background: rgba(154,145,137,.08);
     color: var(--ink-soft);
@@ -176,7 +217,6 @@ const outils = [
     color: var(--ink);
     margin-bottom: .6rem;
   }
-
   .outil-desc {
     font-family: 'Mulish', sans-serif;
     font-size: .85rem;
@@ -185,13 +225,11 @@ const outils = [
     line-height: 1.7;
     margin-bottom: 1rem;
   }
-
   .outil-tags {
     display: flex;
     flex-wrap: wrap;
     gap: .4rem;
   }
-
   .outil-tag {
     font-family: 'Mulish', sans-serif;
     font-size: .65rem;
@@ -201,7 +239,6 @@ const outils = [
     border-radius: 4px;
     padding: .2rem .5rem;
   }
-
   .outils-note {
     display: flex;
     align-items: flex-start;
@@ -210,7 +247,6 @@ const outils = [
     padding-top: 2rem;
     border-top: 1px solid var(--rule);
   }
-
   .note-dot {
     width: 6px;
     height: 6px;
@@ -220,12 +256,10 @@ const outils = [
     margin-top: .35rem;
     animation: pulse 2s ease-in-out infinite;
   }
-
   @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: .3; }
   }
-
   .outils-note p {
     font-family: 'Mulish', sans-serif;
     font-size: .82rem;

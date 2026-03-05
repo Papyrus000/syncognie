@@ -12,7 +12,6 @@ const { title = 'Syncognie' } = Astro.props;
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Mulish:wght@300;400&display=swap" rel="stylesheet">
-
 <style is:global>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -23,6 +22,8 @@ const { title = 'Syncognie' } = Astro.props;
       --accent:   #8b5e3c;
       --rule:     #ddd6c8;
       --max:      620px;
+      --pop-orange: #ff8000;
+      --pop-green:  #2ecc71;
     }
     body {
       background-color: var(--bg);
@@ -37,46 +38,34 @@ const { title = 'Syncognie' } = Astro.props;
       from { opacity: 0; transform: translateY(14px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 1.5rem auto;
+      border-radius: 8px;
+    }
+    blockquote {
+      border-left: 3px solid var(--pop-orange);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      font-style: italic;
+      color: var(--pop-orange);
+      opacity: 0.9;
+    }
 
-/* Empêche les images de dépasser de leur conteneur */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 1.5rem auto; /* Centre l'image avec un peu d'espace */
-  border-radius: 8px;  /* Optionnel : pour un look plus moderne */
-}
-
-blockquote {
-  border-left: 3px solid var(--pop-orange); /* La barre verticale à gauche */
-  padding-left: 1.5rem;
-  margin: 2rem 0;
-  font-style: italic;
-  color: var(--pop-orange); /* Change la couleur du texte */
-  opacity: 0.9;
-}
-
-:root {
-  --bg:       #f5f0e8;
-  --ink:      #1a1714;
-  --accent:   #8b5e3c; /* Ton marron de base */
-  
-  --pop-orange: #ff8000; /* Energie / Attention / Action */
-  --pop-green:  #2ecc71; /* Santé / Succès / Biologie */
-}
-
-article.dialogue .content p:has(> em:only-child),
-article.dialogue .content p:has(> em:only-child) em {
-  font-family: 'Mulish', sans-serif !important;
-  font-size: 0.95rem !important;
-  font-weight: 400 !important;
-  font-style: italic;
-  color: #8a7e75 !important;
-  text-align: left;
-}
+    /* Narratif dialogue */
+    article.dialogue .content p:has(> em:only-child),
+    article.dialogue .content p:has(> em:only-child) em {
+      font-family: 'Mulish', sans-serif !important;
+      font-size: 1rem !important;
+      font-weight: 400 !important;
+      font-style: italic;
+      color: #8a7e75 !important;
+      text-align: left;
+    }
   </style>
 </head>
-
 <body>
   <slot />
 </body>

@@ -1,0 +1,402 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base title="Tracker — Syncognie">
+  <Header />
+
+  <div class="tracker-wrap">
+
+    <div class="tracker-header">
+      <p class="surtitre">Outil · Ancres</p>
+      <h1 class="titre">Tracker d'habitudes</h1>
+      <p class="sous">Trois ancres quotidiennes. Pas des objectifs — des signaux que tu t'envoies à toi-même.</p>
+    </div>
+
+    <div class="tracker-date" id="tracker-date"></div>
+    <div class="habitudes" id="habitudes-list"></div>
+
+    <div class="tracker-semaine">
+      <p class="semaine-titre">Les 7 derniers jours</p>
+      <div class="grille-semaine" id="grille-semaine"></div>
+    </div>
+
+    <div class="tracker-note">
+      <div class="note-dot"></div>
+      <p>L'inconfort que tu ressens certains matins — c'est exactement le signe que quelque chose se recalibre.</p>
+    </div>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style is:global>
+  .tracker-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+  .tracker-header {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+  .tracker-wrap .surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+  .tracker-wrap .titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .tracker-wrap .sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .tracker-date {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: rise .8s .2s ease forwards;
+  }
+  .habitudes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    animation: rise .9s .3s ease forwards;
+  }
+  .habitude-card {
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    background: rgba(26,23,20,.015);
+    transition: box-shadow .2s;
+  }
+  .habitude-card:hover {
+    box-shadow: 0 4px 16px rgba(26,23,20,.06);
+  }
+  .habitude-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .habitude-label {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .habitude-sub {
+    font-family: 'Mulish', sans-serif;
+    font-size: .75rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-top: .2rem;
+    font-style: italic;
+  }
+  .intensite {
+    display: flex;
+    gap: .4rem;
+    flex-shrink: 0;
+  }
+  .niveau-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Mulish', sans-serif;
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    transition: all .15s ease;
+  }
+  .niveau-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .niveau-btn.actif-1 { background: rgba(139,94,60,.12); border-color: var(--accent); color: var(--accent); }
+  .niveau-btn.actif-2 { background: rgba(255,128,0,.12); border-color: #ff8000; color: #ff8000; }
+  .niveau-btn.actif-3 { background: rgba(46,204,113,.12); border-color: #2ecc71; color: #2ecc71; }
+  .niveau-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+    min-height: 1rem;
+  }
+  .custom-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    padding: .3rem 0;
+    font-family: 'Libre Baskerville', serif;
+    font-size: .95rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .2s;
+    margin-bottom: .75rem;
+  }
+  .custom-input::placeholder {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-weight: 300;
+    font-family: 'Mulish', sans-serif;
+    font-size: .85rem;
+  }
+  .custom-input:focus { border-color: var(--accent); }
+  .tracker-semaine {
+    margin-top: 3rem;
+    opacity: 0;
+    animation: rise .9s .45s ease forwards;
+  }
+  .semaine-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .grille-semaine {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: .5rem;
+  }
+  .jour-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+  }
+  .jour-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 300;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .jour-nom.aujourd-hui { color: var(--accent); font-weight: 700; }
+  .jour-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    transition: all .2s;
+  }
+  .jour-dot.niveau-0 { background: transparent; }
+  .jour-dot.niveau-1 { background: rgba(139,94,60,.12); border-color: var(--accent); color: var(--accent); }
+  .jour-dot.niveau-2 { background: rgba(255,128,0,.15); border-color: #ff8000; color: #ff8000; }
+  .jour-dot.niveau-3 { background: rgba(46,204,113,.15); border-color: #2ecc71; color: #2ecc71; }
+  .jour-dot.aujourd-hui-ring { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--accent); }
+  .tracker-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    opacity: 0;
+    animation: rise .8s .6s ease forwards;
+  }
+  .tracker-note .note-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: .35rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .tracker-note p {
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+  }
+</style>
+
+<script>
+const HABITUDES_DEFAULT = [
+  { id: 'ancre', label: 'Tâche difficile le matin', sub: 'Avant toute gratification facile' },
+  { id: 'ennui', label: 'Tolérer l\'ennui', sub: 'Pause sans écran, sans remplir le vide' },
+  { id: 'gratif', label: 'Pas de gratification facile avant', sub: 'Délai choisi consciemment' },
+  { id: 'custom', label: null, sub: 'Ton ancre personnelle', custom: true },
+];
+
+const NIVEAUX = ['—', '△', '◈', '●'];
+const NIVEAUX_LABELS = ['', 'Présent, difficile', 'Fait, solide', 'Pleinement ancré'];
+
+function getTodayKey() { return new Date().toISOString().slice(0, 10); }
+
+function getStorage() {
+  try { const raw = localStorage.getItem('syncognie-tracker'); return raw ? JSON.parse(raw) : {}; }
+  catch { return {}; }
+}
+
+function setStorage(data) {
+  try { localStorage.setItem('syncognie-tracker', JSON.stringify(data)); } catch {}
+}
+
+function getLast7Days() {
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    days.push(d.toISOString().slice(0, 10));
+  }
+  return days;
+}
+
+function getDayAvg(dayData) {
+  if (!dayData) return 0;
+  const vals = Object.values(dayData).filter(v => typeof v === 'number');
+  if (!vals.length) return 0;
+  const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+  if (avg === 0) return 0;
+  if (avg < 1.5) return 1;
+  if (avg < 2.5) return 2;
+  return 3;
+}
+
+function init() {
+  const today = getTodayKey();
+  const storage = getStorage();
+  if (!storage[today]) storage[today] = {};
+
+  const dateEl = document.getElementById('tracker-date');
+  dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  const list = document.getElementById('habitudes-list');
+  list.innerHTML = '';
+
+  HABITUDES_DEFAULT.forEach(h => {
+    const card = document.createElement('div');
+    card.className = 'habitude-card';
+    const top = document.createElement('div');
+    top.className = 'habitude-top';
+    const info = document.createElement('div');
+
+    if (h.custom) {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'custom-input';
+      input.placeholder = 'Nomme ton ancre personnelle…';
+      input.value = storage['custom-label'] || '';
+      input.addEventListener('input', () => { storage['custom-label'] = input.value; setStorage(storage); });
+      info.appendChild(input);
+    } else {
+      const label = document.createElement('p');
+      label.className = 'habitude-label';
+      label.textContent = h.label;
+      info.appendChild(label);
+    }
+
+    const sub = document.createElement('p');
+    sub.className = 'habitude-sub';
+    sub.textContent = h.sub;
+    info.appendChild(sub);
+
+    const intensiteEl = document.createElement('div');
+    intensiteEl.className = 'intensite';
+    const current = storage[today][h.id] || 0;
+
+    for (let n = 1; n <= 3; n++) {
+      const btn = document.createElement('button');
+      btn.className = 'niveau-btn' + (current === n ? ` actif-${n}` : '');
+      btn.textContent = NIVEAUX[n];
+      btn.title = NIVEAUX_LABELS[n];
+      btn.addEventListener('click', () => {
+        const prev = storage[today][h.id] || 0;
+        storage[today][h.id] = prev === n ? 0 : n;
+        setStorage(storage);
+        renderNiveaux(intensiteEl, storage[today][h.id]);
+        renderLabel(niveauLabel, storage[today][h.id]);
+        renderGrille(storage);
+      });
+      intensiteEl.appendChild(btn);
+    }
+
+    const niveauLabel = document.createElement('p');
+    niveauLabel.className = 'niveau-label';
+    renderLabel(niveauLabel, current);
+
+    top.appendChild(info);
+    top.appendChild(intensiteEl);
+    card.appendChild(top);
+    card.appendChild(niveauLabel);
+    list.appendChild(card);
+  });
+
+  renderGrille(storage);
+}
+
+function renderNiveaux(el, current) {
+  el.querySelectorAll('.niveau-btn').forEach((btn, i) => {
+    const n = i + 1;
+    btn.className = 'niveau-btn' + (current === n ? ` actif-${n}` : '');
+  });
+}
+
+function renderLabel(el, n) { el.textContent = NIVEAUX_LABELS[n] || ''; }
+
+function renderGrille(storage) {
+  const days = getLast7Days();
+  const today = getTodayKey();
+  const grille = document.getElementById('grille-semaine');
+  grille.innerHTML = '';
+  const joursNoms = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
+
+  days.forEach(day => {
+    const col = document.createElement('div');
+    col.className = 'jour-col';
+    const d = new Date(day + 'T12:00:00');
+    const nomEl = document.createElement('p');
+    nomEl.className = 'jour-nom' + (day === today ? ' aujourd-hui' : '');
+    nomEl.textContent = joursNoms[d.getDay()];
+    const avg = getDayAvg(storage[day]);
+    const dot = document.createElement('div');
+    dot.className = `jour-dot niveau-${avg}` + (day === today ? ' aujourd-hui-ring' : '');
+    dot.textContent = avg > 0 ? NIVEAUX[avg] : '';
+    col.appendChild(nomEl);
+    col.appendChild(dot);
+    grille.appendChild(col);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
