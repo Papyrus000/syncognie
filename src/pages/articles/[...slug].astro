@@ -193,22 +193,24 @@ footer {
 
 /* Narratif dialogue */
 article.dialogue .content p {
-  font-family: 'Libre Baskerville', serif; /* laisser le texte narratif hors-em intact */
   font-size: 1.05rem;
   color: var(--ink-mid);
 }
 
-article.dialogue .content > p > em:only-child,
-article.dialogue .content p em {
-  display: block;
-  font-family: 'Mulish', sans-serif !important;
-  font-style: italic;
-  font-weight: 300 !important;
+article.dialogue .content p:has(> em:only-child) {
+  font-family: 'Mulish', sans-serif;
   font-size: 0.78rem;
+  font-weight: 300;
+  font-style: italic;
   color: #b0a598;
-  text-align: center;
-  margin: 0.4rem auto 1rem;
+  margin: 0.2rem auto 0.8rem;
   letter-spacing: 0.02em;
+}
+
+article.dialogue .content p:has(> em:only-child) {
+  font-size: 0.88rem;      /* ← monte ici, essaie 0.88 ou 0.92 */
+  color: #8a7e75;          /* ← plus foncé que #b0a598, essaie #8a7e75 */
+  font-weight: 400;        /* ← 300 c'est très léger, essaie 400 */
 }
 </style>
 
