@@ -1,0 +1,451 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+const recits = articles
+  .filter(a => a.data.format === 'dialogue')
+  .sort((a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime());
+
+// Extraire les personnages uniques depuis le contenu brut de tous les récits
+const personnagesMap: Record<string, number> = {};
+for (const recit of recits) {
+  const raw = recit.body || '';
+  const matches = raw.matchAll(/<Personnage nom="([^"]+)"/g);
+  for (const m of matches) {
+    const nom = m[1];
+    personnagesMap[nom] = (personnagesMap[nom] || 0) + 1;
+  }
+}
+const personnages = Object.keys(personnagesMap).sort();
+
+// Couleurs pour les personnages (extensible)
+const COULEURS_PERSO: Record<string, { bg: string, color: string }> = {
+  'Solène': { bg: 'rgba(0,112,221,.1)', color: '#0070dd' },
+  'Clara':  { bg: 'rgba(139,94,60,.1)', color: '#8b5e3c' },
+  'Lior':   { bg: 'rgba(155,89,182,.1)', color: '#9b59b6' },
+  'Marc':   { bg: 'rgba(46,204,113,.1)', color: '#2ecc71' },
+  'Yael':   { bg: 'rgba(255,128,0,.1)', color: '#ff8000' },
+};
+function getCouleur(nom: string) {
+  return COULEURS_PERSO[nom] || { bg: 'rgba(154,145,137,.1)', color: '#9a9189' };
+}
+---
+
+<Base title="Récits conceptuels — Syncognie">
+  <Header />
+
+  <div class="recits-wrap">
+
+    <div class="recits-header">
+      <p class="surtitre">Récits · Dialogue</p>
+      <h1 class="titre">Les récits conceptuels</h1>
+      <p class="sous">Des idées complexes mises en scène. Deux voix, une table, des concepts qui prennent corps. Comprendre en lisant — pas en étudiant.</p>
+    </div>
+
+    <!-- Explication du format -->
+    <div class="format-card">
+      <div class="format-inner">
+        <div class="format-icon">◎</div>
+        <div class="format-texte">
+          <p class="format-titre">Un format à part</p>
+          <p class="format-desc">Chaque récit met en scène des personnages qui explorent un concept ensemble — avec leurs doutes, leurs résistances, leurs découvertes. Ce n'est pas un cours. C'est une conversation à laquelle tu es invité à assister.</p>
+        </div>
+      </div>
+
+      {personnages.length > 0 && (
+        <div class="format-personnages">
+          <p class="perso-label">Personnages</p>
+          <div class="perso-liste">
+            {personnages.map(nom => {
+              const c = getCouleur(nom);
+              return (
+                <div class="perso-pill">
+                  <span class="perso-initiale" style={`background:${c.bg};color:${c.color}`}>
+                    {nom.charAt(0)}
+                  </span>
+                  <span class="perso-nom">{nom}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+
+    <!-- Liste des récits -->
+    {recits.length > 0 ? (
+      <div class="recits-liste">
+        <p class="liste-titre">Les récits disponibles</p>
+        {recits.map((recit, i) => (
+          <a href={`/articles/${recit.slug}`} class="recit-card">
+            <div class="recit-numero">
+              <span class="num-label">Épisode</span>
+              <span class="num-val">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="recit-body">
+              <h2 class="recit-titre">{recit.data.title}</h2>
+              {recit.data.description && (
+                <p class="recit-desc">{recit.data.description}</p>
+              )}
+              <div class="recit-meta">
+                <span class="recit-date">
+                  {new Date(recit.data.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </span>
+                {recit.data.tags && recit.data.tags.map((tag: string) => (
+                  <span class="recit-tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div class="recit-arrow">→</div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="recits-vide">
+        <p class="vide-texte">Le premier récit arrive bientôt.</p>
+      </div>
+    )}
+
+    <!-- À venir -->
+    <div class="a-venir">
+      <p class="a-venir-titre">À venir</p>
+      <div class="a-venir-liste">
+        <div class="a-venir-item">
+          <div class="av-dot"></div>
+          <p class="av-texte">Le circuit de la récompense — comment le cerveau apprend à vouloir</p>
+        </div>
+        <div class="a-venir-item">
+          <div class="av-dot"></div>
+          <p class="av-texte">La balance plaisir/douleur — et pourquoi l'équilibre se déplace</p>
+        </div>
+        <div class="a-venir-item">
+          <div class="av-dot"></div>
+          <p class="av-texte">Le jeûne dopaminergique — mythe, réalité, et ce que la science dit vraiment</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="recits-note">
+      <div class="note-dot"></div>
+      <p>Ces récits naissent des articles. Chaque concept exploré en profondeur devient, un jour, une conversation entre personnages.</p>
+    </div>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style>
+  .recits-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+  .recits-header {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+  .surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+  .titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+
+  /* Carte format */
+  .format-card {
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 1.75rem;
+    background: rgba(26,23,20,.015);
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .8s .25s ease forwards;
+  }
+  .format-inner {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  .format-icon {
+    font-size: 1.4rem;
+    color: var(--accent);
+    opacity: .6;
+    flex-shrink: 0;
+    margin-top: .1rem;
+  }
+  .format-titre {
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .5rem;
+  }
+  .format-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .83rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+
+  /* Personnages dynamiques */
+  .format-personnages {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+  }
+  .perso-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: .85rem;
+  }
+  .perso-liste {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+  }
+  .perso-pill {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .3rem .75rem .3rem .3rem;
+    border-radius: 20px;
+    border: 1px solid var(--rule);
+    background: rgba(26,23,20,.01);
+  }
+  .perso-initiale {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .perso-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: .72rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  /* Liste récits */
+  .recits-liste {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .8s .35s ease forwards;
+  }
+  .liste-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .recit-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    background: rgba(26,23,20,.012);
+    transition: all .2s ease;
+    margin-bottom: 1rem;
+  }
+  .recit-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 20px rgba(139,94,60,.08);
+    transform: translateY(-2px);
+  }
+  .recit-card:hover .recit-arrow {
+    transform: translateX(4px);
+    color: var(--accent);
+  }
+  .recit-numero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 36px;
+  }
+  .num-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .45rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .6;
+  }
+  .num-val {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: .35;
+    line-height: 1.1;
+  }
+  .recit-body { flex: 1; }
+  .recit-titre {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .4rem;
+    line-height: 1.4;
+  }
+  .recit-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .8rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin-bottom: .75rem;
+  }
+  .recit-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    align-items: center;
+  }
+  .recit-date {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-right: .25rem;
+  }
+  .recit-tag {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: .15rem .45rem;
+  }
+  .recit-arrow {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+    transition: all .2s ease;
+    margin-top: .1rem;
+  }
+
+  /* Vide */
+  .recits-vide {
+    padding: 2rem;
+    text-align: center;
+    opacity: 0;
+    animation: rise .6s .35s ease forwards;
+  }
+  .vide-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* À venir */
+  .a-venir {
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .8s .45s ease forwards;
+  }
+  .a-venir-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .a-venir-item {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    margin-bottom: .85rem;
+    opacity: .5;
+  }
+  .av-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    border: 1px solid var(--ink-soft);
+    flex-shrink: 0;
+    margin-top: .45rem;
+  }
+  .av-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .83rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* Note bas */
+  .recits-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .note-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: .35rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .3; }
+  }
+  .recits-note p {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,1006 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base title="Baromètre de charge — Syncognie">
+  <Header />
+
+  <div class="baro-wrap">
+
+    <div class="baro-header">
+      <p class="surtitre">Outil · Bienveillance</p>
+      <h1 class="titre">Baromètre de charge</h1>
+      <p class="sous">Pas un score de performance. Une photo de ce que tu portes en ce moment — pour mieux t'en occuper.</p>
+    </div>
+
+    <div id="baro-app"></div>
+
+    <div class="baro-note">
+      <div class="note-dot"></div>
+      <p>Cet outil ne juge pas. Ce que tu ressens est réel. Ce que tu fais pour tenir l'est aussi.</p>
+    </div>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style is:global>
+
+  /* ── Layout ── */
+  .baro-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+  .baro-header {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+  .baro-wrap .surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+  .baro-wrap .titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .baro-wrap .sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* ── Étape intro ── */
+  .baro-intro {
+    opacity: 0;
+    animation: rise .7s .25s ease forwards;
+  }
+  .intro-card {
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 2rem 1.75rem;
+    background: rgba(26,23,20,.015);
+    margin-bottom: 1.5rem;
+  }
+  .intro-card p {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .intro-card p:last-child { margin-bottom: 0; }
+  .intro-card strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .baro-start-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'Mulish', sans-serif;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .2s ease;
+    margin-top: .5rem;
+  }
+  .baro-start-btn:hover {
+    background: #0070dd;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(139,94,60,.2);
+  }
+
+  /* ── Questions ── */
+  .baro-question-wrap {
+    opacity: 0;
+    animation: rise .6s ease forwards;
+  }
+
+  /* Indicateur de dimension */
+  .dim-indicator {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 2rem;
+  }
+  .dim-orb {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .dim-info {}
+  .dim-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .dim-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .75rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: .1rem;
+  }
+
+  /* Barre de progression douce */
+  .baro-progress {
+    display: flex;
+    gap: .3rem;
+    margin-bottom: 2.5rem;
+  }
+  .prog-seg {
+    height: 3px;
+    flex: 1;
+    border-radius: 3px;
+    background: var(--rule);
+    transition: background .4s ease;
+  }
+  .prog-seg.done { background: var(--ink-soft); }
+  .prog-seg.active { background: var(--ink); }
+
+  /* Question texte */
+  .baro-q-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.55;
+    margin-bottom: 2rem;
+  }
+
+  /* Slider visuel custom */
+  .slider-wrap {
+    margin-bottom: 2rem;
+  }
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-bottom: .75rem;
+    font-style: italic;
+  }
+  .slider-track {
+    position: relative;
+    height: 6px;
+    background: var(--rule);
+    border-radius: 6px;
+    margin-bottom: 1.25rem;
+    cursor: pointer;
+  }
+  .slider-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border-radius: 6px;
+    transition: width .2s ease, background .3s ease;
+  }
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid var(--ink);
+    transform: translate(-50%, -50%);
+    transition: left .2s ease, border-color .3s ease, box-shadow .2s ease;
+    cursor: grab;
+    box-shadow: 0 1px 6px rgba(26,23,20,.15);
+  }
+  .slider-thumb:active { cursor: grabbing; box-shadow: 0 2px 12px rgba(26,23,20,.2); }
+
+  /* Pastilles de valeur */
+  .slider-steps {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2px;
+  }
+  .step-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .step-dot:hover { opacity: .7; }
+  .step-circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+    transition: background .2s, transform .2s;
+    border: 1.5px solid var(--rule);
+  }
+  .step-dot.active .step-circle {
+    transform: scale(1.4);
+  }
+  .step-val {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  /* Feedback immédiat */
+  .slider-feedback {
+    min-height: 2.5rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.6;
+    transition: opacity .3s ease;
+    padding: .5rem 0;
+  }
+
+  /* Navigation */
+  .baro-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  .baro-nav-btn {
+    font-family: 'Mulish', sans-serif;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: .6rem 1.3rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink-soft);
+  }
+  .baro-nav-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .baro-nav-btn.primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+  .baro-nav-btn.primary:hover {
+    background: #0070dd;
+    border-color: #0070dd;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 12px rgba(139,94,60,.2);
+  }
+  .baro-nav-btn:disabled { opacity: .25; cursor: default; pointer-events: none; }
+
+  /* ── Résultat ── */
+  .baro-resultat {
+    opacity: 0;
+    animation: rise .8s ease forwards;
+  }
+
+  /* Carte centrale avec les 3 orbes */
+  .charge-overview {
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 2.25rem 1.75rem;
+    background: rgba(26,23,20,.012);
+    margin-bottom: 2rem;
+  }
+  .charge-overview-title {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .orbes-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .orbe-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    flex: 1;
+  }
+  .orbe-svg-wrap {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .orbe-svg {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+  }
+  .orbe-bg { fill: none; stroke: var(--rule); stroke-width: 5; }
+  .orbe-fill {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    transition: stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1), stroke .4s ease;
+  }
+  .orbe-label-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Mulish', sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: center;
+  }
+  .orbe-name {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .orbe-emoji {
+    font-size: .95rem;
+  }
+
+  /* Ligne de séparation + lecture globale */
+  .charge-global {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    text-align: center;
+  }
+  .charge-global-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: .5rem;
+  }
+  .charge-global-nom {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .5rem;
+  }
+  .charge-global-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+
+  /* Message bienveillant */
+  .message-card {
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .message-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+  }
+  .message-card-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+  .message-card-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--ink-mid);
+  }
+  .message-card-texte strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Pistes */
+  .baro-pistes {
+    margin-top: 1.5rem;
+  }
+  .pistes-titre-baro {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .piste-row {
+    display: flex;
+    gap: .75rem;
+    margin-bottom: .9rem;
+    align-items: flex-start;
+  }
+  .piste-orb {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: .45rem;
+  }
+  .piste-txt {
+    font-family: 'Mulish', sans-serif;
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+
+  /* Recommencer */
+  .baro-reset {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .baro-reset-btn {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .baro-reset-btn:hover { color: var(--accent); }
+
+  /* Note bas */
+  .baro-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .baro-note .note-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: .35rem;
+  }
+  .baro-note p {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+  }
+</style>
+
+<script>
+// ── Données ──────────────────────────────────────────────────────────────
+
+const DIMENSIONS = [
+  {
+    id: 'physique',
+    nom: 'Charge physique',
+    sous: 'Corps, sommeil, énergie',
+    emoji: '🌿',
+    couleur: '#7cb87a',
+    couleurSoft: 'rgba(124,184,122,.12)',
+    couleurBord: 'rgba(124,184,122,.3)',
+    questions: [
+      {
+        texte: 'Comment décris-tu ton énergie corporelle en ce moment ?',
+        labelMin: 'Vide, épuisé',
+        labelMax: 'Plein, reposé',
+        feedbacks: [
+          'Le corps parle fort quand il est à vide. Ce que tu ressens est réel.',
+          'La fatigue s\'accumule — c\'est une information, pas un échec.',
+          'Quelque part entre deux. Le corps tient, mais surveille.',
+          'Un peu fatigué mais encore là. Tu portes beaucoup.',
+          'L\'énergie est présente. Le corps est avec toi.',
+        ]
+      },
+      {
+        texte: 'Ton sommeil des derniers jours t\'a-t-il permis de récupérer vraiment ?',
+        labelMin: 'Pas du tout',
+        labelMax: 'Complètement',
+        feedbacks: [
+          'Le manque de sommeil colore tout le reste — les émotions, les décisions, le corps.',
+          'Tu dors, mais le cerveau continue de tourner. C\'est une forme d\'épuisement aussi.',
+          'Un sommeil partiel. Mieux que rien, mais le déficit s\'accumule.',
+          'Assez pour tenir. Pas encore assez pour vraiment restaurer.',
+          'Le sommeil fait son travail. C\'est une base précieuse.',
+        ]
+      },
+    ]
+  },
+  {
+    id: 'mentale',
+    nom: 'Charge mentale',
+    sous: 'Tâches, décisions, organisation',
+    emoji: '🧭',
+    couleur: '#0070dd',
+    couleurSoft: 'rgba(0,112,221,.07)',
+    couleurBord: 'rgba(0,112,221,.2)',
+    questions: [
+      {
+        texte: 'Combien de choses tournent en arrière-plan de ton esprit en ce moment ?',
+        labelMin: 'L\'esprit est calme',
+        labelMax: 'Complètement saturé',
+        feedbacks: [
+          'Un espace mental dégagé. Rare et précieux.',
+          'Quelques choses, mais gérables. Un fond de bruit léger.',
+          'Le flux de tâches mentales est bien présent. Normal, mais usant.',
+          'Beaucoup de choses à garder en tête. La mémoire de travail tourne à plein régime.',
+          'La saturation mentale est réelle. Le cerveau filtre, priorise, sans jamais vraiment s\'arrêter.',
+        ]
+      },
+      {
+        texte: 'As-tu le sentiment d\'avoir du contrôle sur ce que tu dois accomplir ?',
+        labelMin: 'Aucun contrôle',
+        labelMax: 'Totalement maître',
+        feedbacks: [
+          'Être dépassé par les événements est épuisant — et très fréquent avec une vie chargée.',
+          'Le sentiment de subir plutôt que choisir. Ça use différemment.',
+          'Entre les deux. Tu gères, mais ce n\'est pas confortable.',
+          'Tu as un pied sur le gouvernail. Imparfait, mais réel.',
+          'Le sentiment de maîtrise protège. C\'est une vraie ressource.',
+        ]
+      },
+    ]
+  },
+  {
+    id: 'emotionnelle',
+    nom: 'Charge émotionnelle',
+    sous: 'Relations, tensions, sollicitations',
+    emoji: '🌊',
+    couleur: '#9b59b6',
+    couleurSoft: 'rgba(155,89,182,.07)',
+    couleurBord: 'rgba(155,89,182,.2)',
+    questions: [
+      {
+        texte: 'As-tu l\'impression d\'être sollicité émotionnellement au-delà de tes ressources ?',
+        labelMin: 'Non, je gère bien',
+        labelMax: 'Complètement débordé',
+        feedbacks: [
+          'Les ressources émotionnelles sont disponibles. Tu peux donner sans te vider.',
+          'Quelques sollicitations, mais tu absorbes. Le bord n\'est pas atteint.',
+          'Le mi-chemin émotionnel. Tu donnes, mais tu surveilles.',
+          'Tu donnes plus que tu ne reçois. Le déséquilibre se creuse lentement.',
+          'La surcharge émotionnelle est réelle. Donner quand on est à vide, ça coûte.',
+        ]
+      },
+      {
+        texte: 'Trouves-tu des moments pour toi — même petits — dans ta journée ?',
+        labelMin: 'Jamais',
+        labelMax: 'Régulièrement',
+        feedbacks: [
+          'Zéro espace pour soi est insoutenable à terme. Le besoin est légitime.',
+          'Très peu. Les rares interstices disparaissent vite.',
+          'Parfois. Pas toujours. Les fenêtres existent mais sont fragiles.',
+          'Quelques moments. Pas toujours suffisants, mais présents.',
+          'Tu gardes de l\'espace pour toi. C\'est une forme de sagesse.',
+        ]
+      },
+    ]
+  },
+];
+
+const LECTURES_GLOBALES = [
+  {
+    seuil: 25,
+    nom: 'Charge légère',
+    desc: 'Ton système est relativement disponible en ce moment. C\'est une bonne fenêtre pour recharger intentionnellement — pas parce que tu en as besoin d\'urgence, mais parce que tu le peux.',
+    messageTitre: 'Une invitation',
+    messageTexte: 'Quand la charge est légère, c\'est le bon moment pour consolider ce qui fonctionne. <strong>Les petites habitudes de récupération s\'installent plus facilement quand on n\'est pas à bout.</strong>',
+    messageCouleur: '#7cb87a',
+    pistes: [
+      'Profite de cet espace mental pour faire quelque chose qui te nourrit vraiment — pas juste qui occupe.',
+      'Note ce qui contribue à cet équilibre. Pour y revenir quand ce sera plus lourd.',
+      'Partage cet outil avec quelqu\'un de proche qui porte peut-être plus que toi en ce moment.',
+    ]
+  },
+  {
+    seuil: 50,
+    nom: 'Charge modérée',
+    desc: 'Tu portes un poids réel, mais tu gères. Le système tient — avec un certain coût. La vigilance est de mise : les périodes de charge modérée prolongée épuisent en douceur.',
+    messageTitre: 'Ce que tu fais compte',
+    messageTexte: 'Les micro-pauses ne sont pas du temps perdu. <strong>Elles sont la raison pour laquelle tu tiens.</strong> Chaque moment de décompression — même cinq minutes sur un jeu, une tasse de thé, un silence — est de la récupération réelle.',
+    messageCouleur: '#ff8000',
+    pistes: [
+      'Identifie ce qui prend le plus d\'énergie en ce moment — physique, mental ou émotionnel — et vois si quelque chose peut être allégé.',
+      'La régulation par les petites choses (jeux, scrolling, musique) est normale. Elle devient problématique seulement quand elle est la seule stratégie.',
+      'Essaie de nommer ta charge à quelqu\'un en qui tu as confiance. Mettre des mots réduit le poids perçu.',
+    ]
+  },
+  {
+    seuil: 75,
+    nom: 'Charge élevée',
+    desc: 'Le système est sous pression. Tu fonctionnes encore, mais les ressources sont entamées. C\'est le signal que quelque chose mérite attention — pas demain, maintenant.',
+    messageTitre: 'Tu n\'es pas en train de faillir',
+    messageTexte: 'Porter beaucoup sans flancher, ce n\'est pas de la résistance passive — c\'est un effort actif. <strong>Reconnaître que c\'est difficile n\'est pas une faiblesse. C\'est une donnée.</strong> Et les données aident à prendre de meilleures décisions.',
+    messageCouleur: '#e67e22',
+    pistes: [
+      'Une seule chose : ce soir, fais quelque chose qui te plaît vraiment, sans justification.',
+      'Si la charge physique est haute : le sommeil passe avant tout. Couche-toi plus tôt, même une fois.',
+      'Si la charge émotionnelle domine : tu as le droit de ne pas être disponible pour tout le monde tout le temps.',
+      'Ce n\'est pas le bon moment pour se lancer dans de nouveaux défis — c\'est le bon moment pour protéger ce qui reste.',
+    ]
+  },
+  {
+    seuil: 101,
+    nom: 'Charge très élevée',
+    desc: 'Les jauges sont dans le rouge. Ce que tu portes en ce moment est objectivement lourd. Aucun jugement — seulement une invitation à t\'en occuper sérieusement.',
+    messageTitre: 'Ça compte de le reconnaître',
+    messageTexte: 'La bouée — le jeu, le scroll, le carré de chocolat — n\'est pas un problème. <strong>C\'est une réponse à quelque chose de réel.</strong> Le problème serait d\'ignorer ce que ça signale. Tu viens de faire l\'inverse.',
+    messageCouleur: '#e74c3c',
+    pistes: [
+      'Parle à quelqu\'un aujourd\'hui — partenaire, ami, professionnel. Pas pour trouver des solutions. Juste pour ne pas porter seul.',
+      'Réduis temporairement une responsabilité — même petite. Déléguer ou reporter est parfois la décision la plus sage.',
+      'Le corps d\'abord : eau, nourriture, un peu de mouvement. Les bases physiques conditionnent tout le reste.',
+      'Si cet état dure depuis longtemps, consulter un médecin ou un professionnel de santé mentale n\'est pas excessif — c\'est adapté.',
+    ]
+  },
+];
+
+// ── État ──────────────────────────────────────────────────────────────────
+
+const TOUTES_QUESTIONS = DIMENSIONS.flatMap(d =>
+  d.questions.map(q => ({ ...q, dim: d }))
+);
+
+let etape = 'intro'; // intro | questions | resultat
+let qIdx = 0;
+let reponses = new Array(TOUTES_QUESTIONS.length).fill(3);
+
+// ── Render ────────────────────────────────────────────────────────────────
+
+function getApp() { return document.getElementById('baro-app'); }
+
+function renderIntro() {
+  etape = 'intro';
+  const app = getApp();
+  app.innerHTML = '';
+
+  const div = document.createElement('div');
+  div.className = 'baro-intro';
+  div.innerHTML = `
+    <div class="intro-card">
+      <p>Tu jonglais avec beaucoup en ce moment ? Ce petit baromètre t'aide à <strong>mettre des mots sur ce que tu portes</strong> — en trois dimensions : physique, mentale, émotionnelle.</p>
+      <p>Il n'y a pas de bonne réponse. Pas de score à optimiser. Juste une photo honnête de là où tu en es, <strong>sans jugement</strong>.</p>
+      <p>Ça prend 2 minutes.</p>
+    </div>
+    <button class="baro-start-btn" id="baro-start">Commencer →</button>
+  `;
+  app.appendChild(div);
+  document.getElementById('baro-start').addEventListener('click', () => {
+    qIdx = 0;
+    reponses = new Array(TOUTES_QUESTIONS.length).fill(3);
+    renderQuestion();
+  });
+}
+
+function renderQuestion() {
+  etape = 'questions';
+  const app = getApp();
+  app.innerHTML = '';
+
+  const q = TOUTES_QUESTIONS[qIdx];
+  const dim = q.dim;
+  const total = TOUTES_QUESTIONS.length;
+  const valeur = reponses[qIdx]; // 0-4
+
+  const wrap = document.createElement('div');
+  wrap.className = 'baro-question-wrap';
+
+  // Barre de progression
+  const prog = document.createElement('div');
+  prog.className = 'baro-progress';
+  for (let i = 0; i < total; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'prog-seg' + (i < qIdx ? ' done' : i === qIdx ? ' active' : '');
+    prog.appendChild(seg);
+  }
+  wrap.appendChild(prog);
+
+  // Indicateur dimension
+  const dimInd = document.createElement('div');
+  dimInd.className = 'dim-indicator';
+  dimInd.innerHTML = `
+    <div class="dim-orb" style="background:${dim.couleurSoft};border:1px solid ${dim.couleurBord}">
+      <span>${dim.emoji}</span>
+    </div>
+    <div class="dim-info">
+      <div class="dim-nom">${dim.nom}</div>
+      <div class="dim-sous">${dim.sous}</div>
+    </div>
+  `;
+  wrap.appendChild(dimInd);
+
+  // Question
+  const qText = document.createElement('p');
+  qText.className = 'baro-q-text';
+  qText.textContent = q.texte;
+  wrap.appendChild(qText);
+
+  // Slider
+  const sliderWrap = document.createElement('div');
+  sliderWrap.className = 'slider-wrap';
+
+  const labels = document.createElement('div');
+  labels.className = 'slider-labels';
+  labels.innerHTML = `<span>${q.labelMin}</span><span>${q.labelMax}</span>`;
+  sliderWrap.appendChild(labels);
+
+  const track = document.createElement('div');
+  track.className = 'slider-track';
+
+  const fill = document.createElement('div');
+  fill.className = 'slider-fill';
+  fill.style.background = dim.couleur;
+
+  const thumb = document.createElement('div');
+  thumb.className = 'slider-thumb';
+  thumb.style.borderColor = dim.couleur;
+
+  track.appendChild(fill);
+  track.appendChild(thumb);
+  sliderWrap.appendChild(track);
+
+  // Pastilles
+  const steps = document.createElement('div');
+  steps.className = 'slider-steps';
+  for (let i = 0; i <= 4; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === valeur ? ' active' : '');
+    dot.innerHTML = `
+      <div class="step-circle" style="${i === valeur ? `background:${dim.couleur};border-color:${dim.couleur}` : ''}"></div>
+      <span class="step-val">${i + 1}</span>
+    `;
+    dot.addEventListener('click', () => setVal(i));
+    steps.appendChild(dot);
+  }
+  sliderWrap.appendChild(steps);
+  wrap.appendChild(sliderWrap);
+
+  // Feedback
+  const feedback = document.createElement('div');
+  feedback.className = 'slider-feedback';
+  feedback.id = 'q-feedback';
+  wrap.appendChild(feedback);
+
+  // Nav
+  const nav = document.createElement('div');
+  nav.className = 'baro-nav';
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'baro-nav-btn';
+  prevBtn.textContent = '← Précédent';
+  prevBtn.disabled = qIdx === 0;
+  prevBtn.addEventListener('click', () => { qIdx--; renderQuestion(); });
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'baro-nav-btn primary';
+  nextBtn.id = 'q-next';
+  nextBtn.textContent = qIdx === total - 1 ? 'Voir mon baromètre →' : 'Suivant →';
+  nextBtn.addEventListener('click', () => {
+    if (qIdx === total - 1) renderResultat();
+    else { qIdx++; renderQuestion(); }
+  });
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+  wrap.appendChild(nav);
+
+  app.appendChild(wrap);
+
+  // Init slider
+  function setVal(v) {
+    reponses[qIdx] = v;
+    const pct = v / 4;
+    fill.style.width = (pct * 100) + '%';
+    thumb.style.left = (pct * 100) + '%';
+    // Pastilles
+    steps.querySelectorAll('.step-dot').forEach((d, i) => {
+      d.className = 'step-dot' + (i === v ? ' active' : '');
+      d.querySelector('.step-circle').style.cssText = i === v
+        ? `background:${dim.couleur};border-color:${dim.couleur}`
+        : '';
+    });
+    // Feedback
+    const fb = document.getElementById('q-feedback');
+    if (fb) { fb.style.opacity = '0'; setTimeout(() => { fb.textContent = q.feedbacks[v]; fb.style.opacity = '1'; }, 150); }
+  }
+
+  // Drag slider
+  function getPct(e, rect) {
+    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    return Math.max(0, Math.min(1, x / rect.width));
+  }
+  track.addEventListener('mousedown', e => {
+    const rect = track.getBoundingClientRect();
+    setVal(Math.round(getPct(e, rect) * 4));
+    const move = ev => setVal(Math.round(getPct(ev, rect) * 4));
+    const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+  track.addEventListener('touchstart', e => {
+    const rect = track.getBoundingClientRect();
+    setVal(Math.round(getPct(e, rect) * 4));
+    const move = ev => setVal(Math.round(getPct(ev, rect) * 4));
+    const end = () => { document.removeEventListener('touchmove', move); document.removeEventListener('touchend', end); };
+    document.addEventListener('touchmove', move);
+    document.addEventListener('touchend', end);
+  }, { passive: true });
+
+  setVal(valeur);
+}
+
+function renderResultat() {
+  etape = 'resultat';
+  const app = getApp();
+  app.innerHTML = '';
+
+  // Scores par dimension (0-100)
+  const scoresDim = DIMENSIONS.map(dim => {
+    const qs = TOUTES_QUESTIONS.map((q, i) => ({ q, i, dim: q.dim })).filter(x => x.dim.id === dim.id);
+    const total = qs.reduce((s, x) => s + reponses[x.i], 0);
+    const max = qs.length * 4;
+    return { dim, score: Math.round((total / max) * 100) };
+  });
+
+  // Score global inversé (plus c'est haut = plus chargé)
+  const scoreGlobal = 100 - Math.round(scoresDim.reduce((s, d) => s + d.score, 0) / scoresDim.length);
+  const lecture = LECTURES_GLOBALES.find(l => scoreGlobal < l.seuil) || LECTURES_GLOBALES[LECTURES_GLOBALES.length - 1];
+
+  const wrap = document.createElement('div');
+  wrap.className = 'baro-resultat';
+
+  // Carte orbes
+  const overview = document.createElement('div');
+  overview.className = 'charge-overview';
+  overview.innerHTML = `<p class="charge-overview-title">Ce que tu portes en ce moment</p>`;
+
+  const orbesRow = document.createElement('div');
+  orbesRow.className = 'orbes-row';
+
+  scoresDim.forEach(({ dim, score }) => {
+    const chargeScore = 100 - score; // inverser : score élevé = peu chargé
+    const circumference = 220;
+    const offset = circumference - (chargeScore / 100) * circumference;
+
+    const col = document.createElement('div');
+    col.className = 'orbe-col';
+    col.innerHTML = `
+      <div class="orbe-svg-wrap">
+        <svg class="orbe-svg" viewBox="0 0 80 80">
+          <circle class="orbe-bg" cx="40" cy="40" r="35"/>
+          <circle class="orbe-fill" cx="40" cy="40" r="35"
+            stroke="${dim.couleur}"
+            style="stroke-dashoffset:${circumference}"
+            data-offset="${offset}"
+          />
+        </svg>
+        <div class="orbe-label-center">${chargeScore}%</div>
+      </div>
+      <span class="orbe-emoji">${dim.emoji}</span>
+      <span class="orbe-name">${dim.nom.split(' ')[1]}</span>
+    `;
+    orbesRow.appendChild(col);
+  });
+  overview.appendChild(orbesRow);
+
+  const globalDiv = document.createElement('div');
+  globalDiv.className = 'charge-global';
+  globalDiv.innerHTML = `
+    <p class="charge-global-label">Charge globale estimée</p>
+    <p class="charge-global-nom">${lecture.nom}</p>
+    <p class="charge-global-desc">${lecture.desc}</p>
+  `;
+  overview.appendChild(globalDiv);
+  wrap.appendChild(overview);
+
+  // Message bienveillant
+  const msgCard = document.createElement('div');
+  msgCard.className = 'message-card';
+  msgCard.style.cssText = `background:${lecture.messageCouleur}12;border:1px solid ${lecture.messageCouleur}30`;
+  msgCard.innerHTML = `
+    <p class="message-card-titre" style="color:${lecture.messageCouleur}">${lecture.messageTitre}</p>
+    <p class="message-card-texte">${lecture.messageTexte}</p>
+  `;
+  msgCard.querySelector('::before'); // pour la ligne — on la met via style inline
+  msgCard.style.borderLeft = `3px solid ${lecture.messageCouleur}`;
+  wrap.appendChild(msgCard);
+
+  // Pistes
+  const pistesWrap = document.createElement('div');
+  pistesWrap.className = 'baro-pistes';
+  pistesWrap.innerHTML = '<p class="pistes-titre-baro">Quelques pistes</p>';
+  lecture.pistes.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'piste-row';
+    row.innerHTML = `<div class="piste-orb"></div><p class="piste-txt">${p}</p>`;
+    pistesWrap.appendChild(row);
+  });
+  wrap.appendChild(pistesWrap);
+
+  // Reset
+  const reset = document.createElement('div');
+  reset.className = 'baro-reset';
+  reset.innerHTML = '<button class="baro-reset-btn" id="baro-reset">Refaire le baromètre</button>';
+  wrap.appendChild(reset);
+
+  app.appendChild(wrap);
+
+  // Animer les orbes
+  setTimeout(() => {
+    document.querySelectorAll('.orbe-fill').forEach(el => {
+      el.style.strokeDashoffset = el.dataset.offset;
+    });
+  }, 150);
+
+  document.getElementById('baro-reset').addEventListener('click', () => {
+    renderIntro();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', renderIntro);
+</script>
