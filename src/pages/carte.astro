@@ -49,88 +49,229 @@ const concepts = [
     statut: 'a-venir',
   },
 ];
+
+// Récits liés : articles avec format: 'dialogue' ou 'recit'
+const recits = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit');
+
+// Laboratoire : nœuds de pensée en germination
+const laboratoire = [
+  {
+    id: 'conscience',
+    label: 'Conscience & Émergence',
+    etat: 'actif', // 'actif' | 'germination' | 'pause'
+    branches: [
+      'Qualia et expérience subjective',
+      'Théorie de l\'information intégrée (IIT)',
+      'Conscience comme propriété émergente',
+      'IA et conscience — frontière floue',
+    ],
+  },
+  {
+    id: 'chronobio',
+    label: 'Chronobiologie & Rythmes',
+    etat: 'germination',
+    branches: [
+      'Horloge circadienne et dopamine',
+      'Lumière bleue et désynchronisation',
+      'Jeûne intermittent et rythmes ultradian',
+    ],
+  },
+  {
+    id: 'stress',
+    label: 'Stress & Allostasie',
+    etat: 'actif',
+    branches: [
+      'Charge allostatique — quand l\'adaptation épuise',
+      'Cortisol, mémoire, hippocampe',
+      'Résilience — le rebond neurobiologique',
+      'Burnout comme effondrement allostasique',
+    ],
+  },
+  {
+    id: 'epigenetique',
+    label: 'Épigénétique & Environnement',
+    etat: 'germination',
+    branches: [
+      'Méthylation et expression génique',
+      'Transmission intergénérationnelle du stress',
+      'Alimentation comme signal épigénétique',
+    ],
+  },
+  {
+    id: 'cognition',
+    label: 'Cognition incarnée',
+    etat: 'germination',
+    branches: [
+      'Le corps comme organe cognitif',
+      'Microbiote et axe intestin-cerveau',
+      'Mouvement, posture et pensée',
+    ],
+  },
+  {
+    id: 'identite',
+    label: 'Plasticité identitaire',
+    etat: 'pause',
+    branches: [
+      'Le soi comme construction dynamique',
+      'Habitudes et identité narrative',
+      'Crises comme catalyseurs de reconfiguration',
+    ],
+  },
+];
 ---
 
-
-<Base title="Chemin de lecture — Syncognie">
+<Base title="Carte des idées — Syncognie">
   <Header />
 
-  <div class="chemin-wrap">
-    <div class="chemin-header">
-      <p class="chemin-surtitre">Navigation conceptuelle</p>
-      <h1 class="chemin-titre">Chemin de lecture</h1>
-      <p class="chemin-sous">Un fil conducteur entre les idées — pas une table des matières, mais une carte.</p>
+  <div class="carte-wrap">
+
+    <!-- EN-TÊTE -->
+    <div class="carte-header">
+      <p class="carte-surtitre">Navigation conceptuelle</p>
+      <h1 class="carte-titre">Carte des idées</h1>
+      <p class="carte-sous">Un fil conducteur entre les concepts — pas une table des matières, mais une topographie vivante.</p>
     </div>
 
-<div class="chemin-body">
-  {concepts.map((concept, i) => {
-    const linked = articles.filter(a =>
-      a.data.tags?.some(t => concept.tags.includes(t))
-    );
-    const estGrise = concept.statut === 'a-venir';
-    return (
-      <div class={`jalon ${estGrise ? 'jalon-avenir' : ''}`}>
-        <div class="jalon-line">
-          <div class="jalon-dot" style={`background:${estGrise ? '#ccc' : concept.color}`}>
-            {concept.statut === 'en-cours' && <div class="jalon-pulse"></div>}
+    <!-- SECTION 1 : LE CHEMIN -->
+    <div class="section-label">
+      <span class="section-label-text">Le Chemin</span>
+      <div class="section-rule"></div>
+    </div>
+    <p class="section-desc">Les concepts explorés, en exploration, et programmés — du plus construit au plus ouvert.</p>
+
+    <div class="chemin-body">
+      {concepts.map((concept, i) => {
+        const linked = articles.filter(a =>
+          a.data.tags?.some((t: string) => concept.tags.includes(t)) &&
+          a.data.format !== 'dialogue' &&
+          a.data.format !== 'recit'
+        );
+        const recitsLies = recits.filter(a =>
+          a.data.tags?.some((t: string) => concept.tags.includes(t))
+        );
+        const estGrise = concept.statut === 'a-venir';
+        return (
+          <div class={`jalon ${estGrise ? 'jalon-avenir' : ''}`}>
+            <div class="jalon-line">
+              <div class="jalon-dot" style={`background:${estGrise ? '#ccc' : concept.color}`}>
+                {concept.statut === 'en-cours' && <div class="jalon-pulse"></div>}
+              </div>
+              {i < concepts.length - 1 && <div class="jalon-trait"></div>}
+            </div>
+            <div class="jalon-content">
+              <div class="jalon-header-row">
+                <p class="jalon-label" style={`color:${estGrise ? 'var(--ink-soft)' : concept.color}`}>
+                  {concept.label}
+                </p>
+                {concept.statut === 'en-cours' && (
+                  <span class="jalon-badge badge-encours">En exploration</span>
+                )}
+                {concept.statut === 'a-venir' && (
+                  <span class="jalon-badge badge-avenir">À venir</span>
+                )}
+              </div>
+              <p class="jalon-desc">{concept.description}</p>
+              {!estGrise && (
+                <div class="jalon-liens">
+                  {linked.length > 0 && (
+                    <ul class="jalon-articles">
+                      {linked.map(a => (
+                        <li>
+                          <a href={`/articles/${a.slug}`} class="jalon-link">
+                            <span class="jalon-arrow">→</span>
+                            {a.data.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {linked.length === 0 && (
+                    <p class="jalon-empty">Articles à venir</p>
+                  )}
+                  {recitsLies.length > 0 && (
+                    <ul class="jalon-recits">
+                      {recitsLies.map(r => (
+                        <li>
+                          <a href={`/articles/${r.slug}`} class="jalon-recit-link">
+                            <span class="recit-icon">◈</span>
+                            <span class="recit-label">Récit ·</span> {r.data.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-          {i < concepts.length - 1 && <div class="jalon-trait"></div>}
-        </div>
-        <div class="jalon-content">
-          <div class="jalon-header-row">
-            <p class="jalon-label" style={`color:${estGrise ? 'var(--ink-soft)' : concept.color}`}>
-              {concept.label}
-            </p>
-            {concept.statut === 'en-cours' && (
-              <span class="jalon-badge badge-encours">En exploration</span>
-            )}
-            {concept.statut === 'a-venir' && (
-              <span class="jalon-badge badge-avenir">À venir</span>
-            )}
-          </div>
-          <p class="jalon-desc">{concept.description}</p>
-          {!estGrise && (
-            linked.length > 0 ? (
-              <ul class="jalon-articles">
-                {linked.map(a => (
-                  <li>
-                    <a href={`/articles/${a.slug}`} class="jalon-link">
-                      <span class="jalon-arrow">→</span>
-                      {a.data.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p class="jalon-empty">Articles à venir</p>
-            )
-          )}
-        </div>
+        );
+      })}
+    </div>
+
+    <!-- SÉPARATEUR LABORATOIRE -->
+    <div class="labo-sep">
+      <div class="labo-sep-line"></div>
+      <div class="labo-sep-centre">
+        <span class="labo-sep-icon">⌘</span>
+        <span class="labo-sep-text">Laboratoire de pensée</span>
+        <span class="labo-sep-note">En réflexion — peut évoluer, bifurquer, disparaître</span>
       </div>
-    );
-  })}
-</div>
-  
+      <div class="labo-sep-line"></div>
+    </div>
+
+    <!-- SECTION 2 : LE LABORATOIRE -->
+    <div class="labo-body">
+      {laboratoire.map((noeud) => (
+        <div class={`noeud noeud-${noeud.etat}`}>
+          <div class="noeud-gauche">
+            <div class="noeud-cercle">
+              <div class="noeud-inner"></div>
+            </div>
+            <div class="noeud-fil"></div>
+          </div>
+          <div class="noeud-droite">
+            <div class="noeud-header">
+              <span class="noeud-titre">{noeud.label}</span>
+              <span class={`noeud-etat etat-${noeud.etat}`}>
+                {noeud.etat === 'actif' && 'En réflexion active'}
+                {noeud.etat === 'germination' && 'Germination'}
+                {noeud.etat === 'pause' && 'En suspens'}
+              </span>
+            </div>
+            <ul class="noeud-branches">
+              {noeud.branches.map((b, j) => (
+                <li class="branche">
+                  <span class="branche-tiret">—</span>
+                  <span class="branche-texte">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+
   </div>
 
   <Footer />
-
 </Base>
 
 <style>
-  .chemin-wrap {
+  /* ── VARIABLES & WRAP ── */
+  .carte-wrap {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 4rem 1.75rem 5rem;
+    padding: 4rem 1.75rem 6rem;
   }
 
-  .chemin-header {
+  /* ── EN-TÊTE ── */
+  .carte-header {
     margin-bottom: 3.5rem;
     opacity: 0;
     animation: rise .9s .1s ease forwards;
   }
 
-  .chemin-surtitre {
+  .carte-surtitre {
     font-family: 'Mulish', sans-serif;
     font-size: .65rem;
     font-weight: 300;
@@ -140,14 +281,14 @@ const concepts = [
     margin-bottom: .75rem;
   }
 
-  .chemin-titre {
+  .carte-titre {
     font-size: 1.9rem;
     font-weight: 700;
     color: var(--ink);
     margin-bottom: 1rem;
   }
 
-  .chemin-sous {
+  .carte-sous {
     font-family: 'Mulish', sans-serif;
     font-size: .9rem;
     font-weight: 300;
@@ -155,9 +296,46 @@ const concepts = [
     line-height: 1.7;
   }
 
-  .chemin-body {
+  /* ── SECTION LABELS ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .6rem;
+    opacity: 0;
+    animation: rise .9s .2s ease forwards;
+  }
+
+  .section-label-text {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .section-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-bottom: 2.5rem;
     opacity: 0;
     animation: rise .9s .25s ease forwards;
+  }
+
+  /* ── CHEMIN : JALONS ── */
+  .chemin-body {
+    opacity: 0;
+    animation: rise .9s .3s ease forwards;
   }
 
   .jalon {
@@ -180,6 +358,7 @@ const concepts = [
     border-radius: 50%;
     flex-shrink: 0;
     margin-top: .3rem;
+    position: relative;
     box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px currentColor;
   }
 
@@ -196,20 +375,55 @@ const concepts = [
     flex: 1;
   }
 
+  .jalon-header-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .5rem;
+  }
+
   .jalon-label {
     font-family: 'Mulish', sans-serif;
     font-size: .72rem;
     font-weight: 700;
     letter-spacing: .18em;
     text-transform: uppercase;
-    margin-bottom: .5rem;
+    margin-bottom: 0;
+  }
+
+  .jalon-badge {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .2rem .5rem;
+    border-radius: 4px;
+  }
+
+  .badge-encours {
+    background: rgba(139,94,60,.08);
+    color: var(--accent);
+    border: 1px solid rgba(139,94,60,.2);
+  }
+
+  .badge-avenir {
+    background: rgba(154,145,137,.08);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
   }
 
   .jalon-desc {
     font-size: .95rem;
     color: var(--ink-mid);
     line-height: 1.7;
-    margin-bottom: 1rem;
+    margin-bottom: .9rem;
+  }
+
+  .jalon-liens {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
   }
 
   .jalon-articles {
@@ -256,75 +470,282 @@ const concepts = [
     opacity: .6;
   }
 
-  .chemin-footer {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 2rem 1.75rem 3rem;
-    border-top: 1px solid var(--rule);
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 300;
-    letter-spacing: .1em;
-    color: var(--ink-soft);
+  /* Récits liés */
+  .jalon-recits {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    margin-top: .2rem;
   }
 
-.jalon-avenir {
-  opacity: .4;
-}
+  .jalon-recit-link {
+    display: flex;
+    align-items: baseline;
+    gap: .45rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color .2s;
+  }
 
-.jalon-header-row {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  margin-bottom: .5rem;
-}
+  .jalon-recit-link:hover { color: #c4993a; }
 
-.jalon-label {
-  margin-bottom: 0;
-}
+  .recit-icon {
+    font-size: .68rem;
+    color: #c4993a;
+    opacity: .7;
+    transition: opacity .2s;
+  }
 
-.jalon-badge {
-  font-family: 'Mulish', sans-serif;
-  font-size: .58rem;
-  font-weight: 700;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  padding: .2rem .5rem;
-  border-radius: 4px;
-}
+  .jalon-recit-link:hover .recit-icon { opacity: 1; }
 
-.badge-encours {
-  background: rgba(139,94,60,.08);
-  color: var(--accent);
-  border: 1px solid rgba(139,94,60,.2);
-}
+  .recit-label {
+    font-weight: 600;
+    color: #c4993a;
+    opacity: .7;
+  }
 
-.badge-avenir {
-  background: rgba(154,145,137,.08);
-  color: var(--ink-soft);
-  border: 1px solid var(--rule);
-}
+  .jalon-avenir { opacity: .4; }
 
-.jalon-pulse {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: .2;
-  animation: ripple 2s ease-out infinite;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+  /* Pulse */
+  .jalon-pulse {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: .2;
+    animation: ripple 2s ease-out infinite;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-@keyframes ripple {
-  0% { transform: translate(-50%, -50%) scale(.5); opacity: .3; }
-  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
-}
+  @keyframes ripple {
+    0%   { transform: translate(-50%, -50%) scale(.5); opacity: .3; }
+    100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+  }
 
-.jalon-dot {
-  position: relative;
-}
-  
+  /* ── SÉPARATEUR LABORATOIRE ── */
+  .labo-sep {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin: 4rem 0 2.5rem;
+    opacity: 0;
+    animation: rise .9s .4s ease forwards;
+  }
+
+  .labo-sep-line {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    margin-top: 1rem;
+  }
+
+  .labo-sep-centre {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+    flex-shrink: 0;
+  }
+
+  .labo-sep-icon {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    opacity: .35;
+    line-height: 1;
+  }
+
+  .labo-sep-text {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .6;
+  }
+
+  .labo-sep-note {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: .45;
+    letter-spacing: .02em;
+  }
+
+  /* ── LABORATOIRE : NŒUDS ── */
+  .labo-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 0;
+    animation: rise .9s .5s ease forwards;
+  }
+
+  .noeud {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 0;
+  }
+
+  /* Axe gauche */
+  .noeud-gauche {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 20px;
+  }
+
+  .noeud-cercle {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #c8bdb4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: .25rem;
+    flex-shrink: 0;
+    background: var(--bg);
+    transition: border-color .3s;
+  }
+
+  .noeud-actif .noeud-cercle {
+    border-color: #a89080;
+  }
+
+  .noeud-inner {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c8bdb4;
+    transition: background .3s;
+  }
+
+  .noeud-actif .noeud-inner {
+    background: #9e7d65;
+  }
+
+  .noeud-fil {
+    width: 1px;
+    flex: 1;
+    min-height: 2rem;
+    background: var(--rule);
+    opacity: .5;
+    margin: .35rem 0;
+  }
+
+  /* Contenu nœud */
+  .noeud-droite {
+    padding-bottom: 2rem;
+    flex: 1;
+  }
+
+  .noeud-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .6rem;
+  }
+
+  .noeud-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .6;
+  }
+
+  .noeud-actif .noeud-titre {
+    opacity: .8;
+  }
+
+  .noeud-etat {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .18rem .45rem;
+    border-radius: 3px;
+  }
+
+  .etat-actif {
+    background: rgba(139,94,60,.06);
+    color: var(--accent);
+    border: 1px solid rgba(139,94,60,.15);
+    opacity: .7;
+  }
+
+  .etat-germination {
+    background: rgba(154,145,137,.06);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    opacity: .6;
+  }
+
+  .etat-pause {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px dashed var(--rule);
+    opacity: .45;
+  }
+
+  /* Branches */
+  .noeud-branches {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+
+  .branche {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+  }
+
+  .branche-tiret {
+    font-size: .65rem;
+    color: var(--ink-soft);
+    opacity: .3;
+    flex-shrink: 0;
+    font-family: 'Mulish', sans-serif;
+  }
+
+  .branche-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    opacity: .55;
+    line-height: 1.6;
+  }
+
+  .noeud-actif .branche-texte {
+    opacity: .7;
+  }
+
+  .noeud-pause {
+    opacity: .35;
+  }
+
+  /* ── ANIMATION ── */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
