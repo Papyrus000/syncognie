@@ -12,6 +12,51 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   <Header />
 
   <section class="hero">
+
+    <!-- ✦ SPIRALE FILIGRANE — SVG inline, zéro dépendance -->
+    <svg class="hero-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="210" cy="210" r="185"
+        stroke="#8b5e3c" stroke-width=".6"
+        stroke-dasharray="2 10"
+        opacity=".18"
+        class="fil-rotate"/>
+      <path d="M210 210
+               C210 188, 224 174, 240 174
+               C270 174, 295 199, 295 230
+               C295 272, 260 305, 210 305
+               C148 305, 96 253, 96 190
+               C96 116, 151 62, 225 62"
+            stroke="#c4993a" stroke-width="1.2"
+            stroke-linecap="round" opacity=".28"/>
+      <path d="M225 62
+               C272 62, 332 98, 358 155
+               C384 210, 370 285, 322 324"
+            stroke="#c4993a" stroke-width=".8"
+            stroke-linecap="round" opacity=".16"/>
+      <line x1="210" y1="210" x2="240" y2="174" stroke="#8b5e3c" stroke-width=".7" opacity=".2"/>
+      <line x1="210" y1="210" x2="295" y2="230" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
+      <line x1="210" y1="210" x2="210" y2="305" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
+      <line x1="210" y1="210" x2="96"  y2="190" stroke="#8b5e3c" stroke-width=".7" opacity=".16"/>
+      <line x1="210" y1="210" x2="225" y2="62"  stroke="#8b5e3c" stroke-width=".7" opacity=".16"/>
+      <circle cx="240" cy="174" r="4.5" fill="#c4993a" class="fil-pulse"/>
+      <circle cx="295" cy="230" r="3.5" fill="#8b5e3c" class="fil-pulse-2"/>
+      <circle cx="210" cy="305" r="4"   fill="#c4993a" class="fil-pulse-3"/>
+      <circle cx="96"  cy="190" r="3.5" fill="#8b5e3c" class="fil-pulse"/>
+      <circle cx="225" cy="62"  r="4"   fill="#c4993a" class="fil-pulse-2"/>
+      <circle cx="210" cy="210" r="28"
+        stroke="#8b5e3c" stroke-width="1"
+        opacity=".18" class="fil-pulse"/>
+      <circle cx="210" cy="210" r="52"
+        stroke="#8b5e3c" stroke-width=".5"
+        opacity=".1" class="fil-pulse-2"/>
+      <circle cx="210" cy="210" r="5"
+        fill="#8b5e3c" opacity=".25"
+        class="fil-float"/>
+      <circle cx="210" cy="210" r="2.5"
+        fill="#f5f0e8" opacity=".6"
+        class="fil-float"/>
+    </svg>
+
     <div class="hero-left">
       <p class="hero-eyebrow">Cerveau · Habitudes · Énergie</p>
       <h1 class="hero-titre">
@@ -62,6 +107,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
         <span class="portal-cta">Explorer →</span>
       </a>
     </div>
+
   </section>
 
   <div class="ornament-sep">
@@ -117,13 +163,62 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     align-items: start;
     opacity: 0;
     animation: rise .9s .1s ease forwards;
+    position: relative;
   }
 
   @media (max-width: 600px) {
-    .hero {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
+    .hero { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-filigrane { display: none; }
+  }
+
+  /* ── SPIRALE FILIGRANE ── */
+  .hero-filigrane {
+    position: absolute;
+    top: 50%;
+    left: 64%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .fil-rotate {
+    transform-origin: 210px 210px;
+    animation: fil-spin 32s linear infinite;
+  }
+  @keyframes fil-spin { to { transform: rotate(360deg); } }
+
+  .fil-pulse   { animation: fil-p 6s ease-in-out infinite; }
+  .fil-pulse-2 { animation: fil-p 6s ease-in-out infinite; animation-delay: 1.5s; }
+  .fil-pulse-3 { animation: fil-p 6s ease-in-out infinite; animation-delay: 3s; }
+  @keyframes fil-p {
+    0%,100% { opacity: .18; }
+    50%      { opacity: .55; }
+  }
+
+  .fil-float {
+    animation: fil-f 8s ease-in-out infinite;
+    transform-origin: 210px 210px;
+  }
+  @keyframes fil-f {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+
+  /* ── CONTENU HERO ── */
+  .hero-left {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-portals {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    padding-top: .6rem;
+    position: relative;
+    z-index: 1;
   }
 
   .hero-eyebrow {
@@ -191,20 +286,14 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   }
 
   /* ── PORTAILS ── */
-  .hero-portals {
-    display: flex;
-    flex-direction: column;
-    gap: .8rem;
-    padding-top: .6rem;
-  }
-
   .portal {
     display: block;
     text-decoration: none;
     padding: .95rem 1rem 1rem;
     border: 1px solid var(--rule);
     border-radius: 6px;
-    background: rgba(255, 255, 255, .28);
+    background: rgba(245, 240, 232, .75);
+    backdrop-filter: blur(2px);
     transition: transform .22s, box-shadow .22s, border-color .22s;
     position: relative;
     overflow: hidden;
