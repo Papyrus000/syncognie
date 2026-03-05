@@ -1,0 +1,771 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base title="Boussole dopaminergique — Syncognie">
+  <Header />
+
+  <div class="boussole-wrap">
+
+    <div class="boussole-header">
+      <p class="surtitre">Outil · Exploration</p>
+      <h1 class="titre">Boussole dopaminergique</h1>
+      <p class="sous">15 questions. Pas un diagnostic — une cartographie de ton circuit de récompense en ce moment.</p>
+    </div>
+
+    <div id="questionnaire"></div>
+    <div id="resultat" class="resultat hidden"></div>
+
+    <div class="boussole-note">
+      <div class="note-dot"></div>
+      <p>Ce questionnaire s'appuie sur les mécanismes décrits dans les articles Syncognie. Il ne remplace pas un avis médical.</p>
+    </div>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style is:global>
+  .boussole-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4rem 1.75rem 5rem;
+  }
+  .boussole-header {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+  .boussole-wrap .surtitre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .75rem;
+  }
+  .boussole-wrap .titre {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .boussole-wrap .sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  /* Progression */
+  .boussole-wrap .progress-wrap {
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: rise .8s .2s ease forwards;
+  }
+  .boussole-wrap .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: .6rem;
+  }
+  .boussole-wrap .progress-track {
+    height: 2px;
+    background: var(--rule);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .boussole-wrap .progress-fill {
+    height: 100%;
+    background: #0070dd;
+    border-radius: 2px;
+    transition: width .4s ease;
+  }
+
+  .boussole-wrap .domaine-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: #0070dd;
+    opacity: .8;
+    margin-bottom: 1.25rem;
+  }
+
+  .boussole-wrap .question-card {
+    opacity: 0;
+    animation: rise .6s ease forwards;
+  }
+  .boussole-wrap .question-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 1.75rem;
+  }
+  .boussole-wrap .choix-list {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+  .boussole-wrap .choix-btn {
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: .85rem 1.1rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all .15s ease;
+    line-height: 1.5;
+  }
+  .boussole-wrap .choix-btn:hover {
+    border-color: #0070dd;
+    color: var(--ink);
+    background: rgba(0, 112, 221, 0.04);
+  }
+  .boussole-wrap .choix-btn.selected {
+    border-color: #0070dd;
+    background: rgba(0, 112, 221, 0.08);
+    color: var(--ink);
+    font-weight: 400;
+    box-shadow: inset 3px 0 0 #0070dd;
+  }
+
+  .boussole-wrap .nav-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  .boussole-wrap .nav-btn {
+    font-family: 'Mulish', sans-serif;
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .65rem 1.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all .2s ease;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--ink-soft);
+  }
+  .boussole-wrap .nav-btn:hover {
+    border-color: #0070dd;
+    color: #0070dd;
+  }
+  .boussole-wrap .nav-btn.primary {
+    background: linear-gradient(135deg, #0070dd, #005bb5);
+    border-color: #0070dd;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 112, 221, 0.25);
+  }
+  .boussole-wrap .nav-btn.primary:hover {
+    background: linear-gradient(135deg, #005bb5, #004a94);
+    border-color: #005bb5;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 112, 221, 0.35);
+    transform: translateY(-1px);
+  }
+  .boussole-wrap .nav-btn:disabled { opacity: .3; cursor: default; pointer-events: none; }
+
+  .boussole-wrap .hidden { display: none; }
+  .boussole-wrap .resultat {
+    opacity: 0;
+    animation: rise .8s ease forwards;
+  }
+  .boussole-wrap .profil-header {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    background: rgba(26,23,20,.015);
+  }
+  .boussole-wrap .profil-icone {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .boussole-wrap .profil-nom {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: .75rem;
+  }
+  .boussole-wrap .profil-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .boussole-wrap .score-bar-wrap { margin: 2rem 0; }
+  .boussole-wrap .score-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: .5rem;
+  }
+  .boussole-wrap .score-bar-track {
+    height: 6px;
+    background: var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .boussole-wrap .score-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1s ease;
+  }
+  .boussole-wrap .domaines-detail { margin: 2rem 0; }
+  .boussole-wrap .domaines-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .boussole-wrap .domaine-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .85rem;
+  }
+  .boussole-wrap .domaine-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    width: 140px;
+    flex-shrink: 0;
+  }
+  .boussole-wrap .domaine-bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .boussole-wrap .domaine-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1.2s ease;
+  }
+  .boussole-wrap .domaine-score {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    width: 24px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .boussole-wrap .pistes-section {
+    margin: 2rem 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+  }
+  .boussole-wrap .pistes-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .boussole-wrap .piste-item {
+    display: flex;
+    gap: .75rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+  .boussole-wrap .piste-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #0070dd;
+    flex-shrink: 0;
+    margin-top: .4rem;
+  }
+  .boussole-wrap .piste-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--ink-mid);
+    line-height: 1.65;
+  }
+  .boussole-wrap .recommencer-wrap {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .boussole-wrap .recommencer-btn {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .boussole-wrap .recommencer-btn:hover { color: #0070dd; }
+
+  .boussole-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .boussole-note .note-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: .35rem;
+  }
+  .boussole-note p {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-style: italic;
+  }
+</style>
+
+<script>
+const QUESTIONS = [
+  {
+    domaine: 'Écrans · Réseaux',
+    texte: 'Tu ouvres une application (Instagram, X, YouTube…) sans vraiment y penser, par réflexe.',
+    choix: [
+      { texte: 'Rarement ou jamais', score: 0 },
+      { texte: 'Quelques fois par semaine', score: 1 },
+      { texte: 'Plusieurs fois par jour', score: 2 },
+      { texte: 'Quasi en continu, c\'est automatique', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Écrans · Réseaux',
+    texte: 'Après avoir passé du temps sur les réseaux, tu te sens plutôt…',
+    choix: [
+      { texte: 'Satisfait, informé, reposé', score: 0 },
+      { texte: 'Neutre, ni bien ni mal', score: 1 },
+      { texte: 'Un peu vide ou agité', score: 2 },
+      { texte: 'Irritable, insatisfait, ou encore plus en manque', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Alimentation · Sucre',
+    texte: 'Face à des aliments très sucrés ou ultra-transformés, tu peux facilement t\'arrêter après une petite quantité.',
+    choix: [
+      { texte: 'Oui, sans effort particulier', score: 0 },
+      { texte: 'Oui, mais ça demande de la volonté', score: 1 },
+      { texte: 'Difficilement — j\'ai tendance à continuer', score: 2 },
+      { texte: 'Non, une fois lancé c\'est très difficile de stopper', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Alimentation · Sucre',
+    texte: 'Tu manges souvent pour réguler une émotion (stress, ennui, tristesse) plutôt que par faim réelle.',
+    choix: [
+      { texte: 'Non, je mange quand j\'ai faim', score: 0 },
+      { texte: 'Parfois, surtout en période de stress', score: 1 },
+      { texte: 'Souvent, c\'est un réflexe', score: 2 },
+      { texte: 'Presque toujours — la nourriture régule mon état émotionnel', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Travail · Productivité',
+    texte: 'Tu ressens une agitation ou une culpabilité quand tu ne fais "rien d\'utile" pendant plus d\'une heure.',
+    choix: [
+      { texte: 'Non, je peux me reposer sans culpabilité', score: 0 },
+      { texte: 'Un peu, mais ça passe', score: 1 },
+      { texte: 'Souvent — l\'inactivité me met mal à l\'aise', score: 2 },
+      { texte: 'Tout le temps — le repos me semble presque interdit', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Travail · Productivité',
+    texte: 'Tu consultes tes emails, messages pro ou ta liste de tâches même pendant tes temps libres ou le week-end.',
+    choix: [
+      { texte: 'Non, je déconnecte vraiment', score: 0 },
+      { texte: 'Rarement, seulement si urgent', score: 1 },
+      { texte: 'Régulièrement, par habitude', score: 2 },
+      { texte: 'En permanence — je ne sais pas vraiment déconnecter', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Sommeil · Récupération',
+    texte: 'Le matin au réveil, ton premier réflexe est de regarder ton téléphone avant de te lever.',
+    choix: [
+      { texte: 'Jamais — je prends le temps de me lever d\'abord', score: 0 },
+      { texte: 'Parfois, pas systématiquement', score: 1 },
+      { texte: 'La plupart du temps', score: 2 },
+      { texte: 'Toujours, c\'est automatique', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Sommeil · Récupération',
+    texte: 'Tu as du mal à t\'endormir car ton esprit tourne encore sur des pensées, des tâches ou des contenus consommés.',
+    choix: [
+      { texte: 'Non, je m\'endors facilement', score: 0 },
+      { texte: 'Parfois, surtout en période chargée', score: 1 },
+      { texte: 'Souvent — mon cerveau ne s\'arrête pas facilement', score: 2 },
+      { texte: 'Presque toutes les nuits', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Relations · Validation',
+    texte: 'Tu vérifies régulièrement les likes, commentaires ou réactions à ce que tu postes ou envoies.',
+    choix: [
+      { texte: 'Non, ça ne m\'importe pas vraiment', score: 0 },
+      { texte: 'Un peu, par curiosité', score: 1 },
+      { texte: 'Souvent — l\'absence de retour me dérange', score: 2 },
+      { texte: 'Constamment — l\'approbation des autres influence mon humeur', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Relations · Validation',
+    texte: 'Quand tu es avec d\'autres personnes, tu arrives à être pleinement présent sans penser à ton téléphone.',
+    choix: [
+      { texte: 'Oui, facilement', score: 0 },
+      { texte: 'La plupart du temps', score: 1 },
+      { texte: 'Difficilement — je pense souvent à ce que je rate', score: 2 },
+      { texte: 'Non — je consulte mon téléphone même en conversation', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Circuit global',
+    texte: 'Les choses qui te plaisaient avant (hobbies, lectures, promenades) t\'attirent moins qu\'avant.',
+    choix: [
+      { texte: 'Non, mes intérêts sont stables', score: 0 },
+      { texte: 'Un peu, légère baisse d\'enthousiasme', score: 1 },
+      { texte: 'Oui, plusieurs activités me semblent moins intéressantes', score: 2 },
+      { texte: 'Oui — peu de choses me procurent encore du plaisir ou de l\'envie', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Circuit global',
+    texte: 'Tu arrives à rester assis sans rien faire, sans musique, sans écran, sans distraction — juste dans le silence.',
+    choix: [
+      { texte: 'Oui, c\'est même agréable parfois', score: 0 },
+      { texte: 'Oui, mais ça demande un effort', score: 1 },
+      { texte: 'Difficilement — l\'inconfort arrive vite', score: 2 },
+      { texte: 'Non — je cherche immédiatement à remplir le vide', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Circuit global',
+    texte: 'Quand tu entames quelque chose de difficile (lecture complexe, tâche exigeante), tu tiens combien de temps avant de décrocher ?',
+    choix: [
+      { texte: 'Plus d\'une heure sans difficulté', score: 0 },
+      { texte: '30 à 60 minutes', score: 1 },
+      { texte: '10 à 30 minutes', score: 2 },
+      { texte: 'Moins de 10 minutes — la distraction arrive très vite', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Circuit global',
+    texte: 'En ce moment, comment décrirais-tu ton niveau d\'énergie et de motivation en général ?',
+    choix: [
+      { texte: 'Bon — je me sens vivant, motivé, engagé', score: 0 },
+      { texte: 'Variable — avec de bonnes et de moins bonnes périodes', score: 1 },
+      { texte: 'Bas — fatigue chronique, peu d\'élan', score: 2 },
+      { texte: 'Très bas — sentiment de vide ou d\'indifférence fréquent', score: 3 },
+    ]
+  },
+  {
+    domaine: 'Circuit global',
+    texte: 'Si tu devais décrire ton rapport aux gratifications rapides (notifications, snacking, scrolling…) en ce moment :',
+    choix: [
+      { texte: 'Je les utilise consciemment, sans en dépendre', score: 0 },
+      { texte: 'Je les utilise beaucoup mais je garde le contrôle', score: 1 },
+      { texte: 'Elles prennent souvent le dessus sur mes intentions', score: 2 },
+      { texte: 'Je me sens piloté par elles plus que je ne les pilote', score: 3 },
+    ]
+  },
+];
+
+const DOMAINES = ['Écrans · Réseaux', 'Alimentation · Sucre', 'Travail · Productivité', 'Sommeil · Récupération', 'Relations · Validation', 'Circuit global'];
+
+const PROFILS = [
+  {
+    min: 0, max: 10,
+    icone: '◎',
+    nom: 'Circuit calibré',
+    couleur: '#2ecc71',
+    desc: 'Ton circuit dopaminergique semble bien équilibré en ce moment. Tu arrives à profiter des gratifications sans en dépendre, et ton seuil de tolérance à l\'inconfort est solide. Continue à entretenir tes ancres.',
+    pistes: [
+      'Maintiens une tâche difficile chaque matin avant les gratifications faciles.',
+      'Pratique des fenêtres de silence régulières — même courtes — pour consolider ta tolérance à l\'ennui.',
+      'Observe les périodes où ton équilibre vacille : quelles sont les conditions qui le fragilisent ?',
+    ]
+  },
+  {
+    min: 11, max: 24,
+    icone: '◐',
+    nom: 'Circuit sous tension',
+    couleur: '#ff8000',
+    desc: 'Ton circuit montre des signes de surcharge dans certains domaines. Tu gardes le contrôle globalement, mais certains comportements automatiques commencent à prendre de la place. C\'est le bon moment pour recalibrer.',
+    pistes: [
+      'Identifie ton domaine le plus chargé et commence par là — un seul à la fois.',
+      'Introduis des ruptures intentionnelles : 30 minutes sans écran après le réveil, repas sans téléphone.',
+      'Pratique la règle des 10 minutes : quand l\'envie d\'une gratification facile arrive, attends 10 minutes avant de céder.',
+      'Relis l\'article sur la dopamine pour ancrer la compréhension du mécanisme — comprendre change quelque chose.',
+    ]
+  },
+  {
+    min: 25, max: 35,
+    icone: '◑',
+    nom: 'Circuit surchargé',
+    couleur: '#ff4444',
+    desc: 'Plusieurs domaines montrent des signes importants de dépendance aux gratifications rapides. Ton seuil de tolérance à l\'inconfort s\'est probablement abaissé, et les activités profondes semblent moins accessibles. Ce n\'est pas une fatalité.',
+    pistes: [
+      'Ne cherche pas à tout changer d\'un coup — choisis un domaine, un comportement, une semaine.',
+      'Commence par le matin : les 30 premières minutes sans écran changent la chimie de toute la journée.',
+      'Réintroduis une activité difficile mais significative — lecture, écriture, marche longue — même 20 minutes par jour.',
+      'Considère une période de réduction volontaire de 7 jours sur le domaine le plus problématique.',
+      'Parle de ce que tu traverses à quelqu\'un en qui tu as confiance.',
+    ]
+  },
+  {
+    min: 36, max: 45,
+    icone: '○',
+    nom: 'Circuit épuisé',
+    couleur: '#9a9189',
+    desc: 'Les résultats suggèrent un circuit dopaminergique significativement épuisé. L\'anhédonie — cette difficulté à ressentir du désir ou du plaisir — est peut-être présente. Ce n\'est pas une question de volonté, c\'est une question de recalibration progressive.',
+    pistes: [
+      'Ne cherche pas à "te reprendre en main" par l\'effort seul — c\'est contre-productif à ce stade.',
+      'Commence très petit : une chose agréable et simple chaque jour, sans écran.',
+      'Le sommeil est la priorité absolue — il conditionne tout le reste du circuit.',
+      'Considère d\'en parler à un professionnel de santé — certains états nécessitent un accompagnement.',
+      'Réduis d\'abord les stimuli les plus intenses (réseaux, jeux, contenus courts) avant d\'ajouter quoi que ce soit.',
+    ]
+  },
+];
+
+let current = 0;
+let reponses = new Array(QUESTIONS.length).fill(null);
+
+function getEl(id) { return document.getElementById(id); }
+
+function render() {
+  const container = getEl('questionnaire');
+  container.innerHTML = '';
+
+  const progressWrap = document.createElement('div');
+  progressWrap.className = 'progress-wrap';
+  progressWrap.innerHTML = `
+    <div class="progress-info">
+      <span>Question ${current + 1} sur ${QUESTIONS.length}</span>
+      <span>${Math.round((current / QUESTIONS.length) * 100)}%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" style="width:${(current / QUESTIONS.length) * 100}%"></div>
+    </div>
+  `;
+  container.appendChild(progressWrap);
+
+  const q = QUESTIONS[current];
+
+  const domaineEl = document.createElement('p');
+  domaineEl.className = 'domaine-label';
+  domaineEl.textContent = q.domaine;
+  container.appendChild(domaineEl);
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  const texte = document.createElement('p');
+  texte.className = 'question-text';
+  texte.textContent = q.texte;
+  card.appendChild(texte);
+
+  const choixList = document.createElement('div');
+  choixList.className = 'choix-list';
+
+  q.choix.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choix-btn' + (reponses[current] === i ? ' selected' : '');
+    btn.textContent = c.texte;
+    btn.addEventListener('click', () => {
+      reponses[current] = i;
+      choixList.querySelectorAll('.choix-btn').forEach((b, j) => {
+        b.className = 'choix-btn' + (j === i ? ' selected' : '');
+      });
+      nextBtn.disabled = false;
+    });
+    choixList.appendChild(btn);
+  });
+
+  card.appendChild(choixList);
+
+  const nav = document.createElement('div');
+  nav.className = 'nav-btns';
+
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'nav-btn';
+  prevBtn.textContent = '← Précédent';
+  prevBtn.disabled = current === 0;
+  prevBtn.addEventListener('click', () => { current--; render(); });
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'nav-btn primary';
+  nextBtn.textContent = current === QUESTIONS.length - 1 ? 'Voir mon profil →' : 'Suivant →';
+  nextBtn.disabled = reponses[current] === null;
+  nextBtn.addEventListener('click', () => {
+    if (current === QUESTIONS.length - 1) {
+      showResultat();
+    } else {
+      current++;
+      render();
+    }
+  });
+
+  nav.appendChild(prevBtn);
+  nav.appendChild(nextBtn);
+  card.appendChild(nav);
+  container.appendChild(card);
+}
+
+function showResultat() {
+  getEl('questionnaire').innerHTML = '';
+  const resultatEl = getEl('resultat');
+  resultatEl.classList.remove('hidden');
+  resultatEl.innerHTML = '';
+
+  const scoreTotal = reponses.reduce((sum, r, i) => {
+    return sum + (r !== null ? QUESTIONS[i].choix[r].score : 0);
+  }, 0);
+  const maxScore = QUESTIONS.length * 3;
+  const profil = PROFILS.find(p => scoreTotal >= p.min && scoreTotal <= p.max) || PROFILS[PROFILS.length - 1];
+
+  const header = document.createElement('div');
+  header.className = 'profil-header';
+  header.innerHTML = `
+    <span class="profil-icone" style="color:${profil.couleur}">${profil.icone}</span>
+    <p class="profil-nom">${profil.nom}</p>
+    <p class="profil-desc">${profil.desc}</p>
+  `;
+  resultatEl.appendChild(header);
+
+  const scoreBarWrap = document.createElement('div');
+  scoreBarWrap.className = 'score-bar-wrap';
+  const pct = Math.round((scoreTotal / maxScore) * 100);
+  scoreBarWrap.innerHTML = `
+    <div class="score-bar-label">
+      <span>Charge dopaminergique estimée</span>
+      <span>${pct}%</span>
+    </div>
+    <div class="score-bar-track">
+      <div class="score-bar-fill" style="width:0%;background:${profil.couleur}" id="score-fill"></div>
+    </div>
+  `;
+  resultatEl.appendChild(scoreBarWrap);
+  setTimeout(() => {
+    const fill = document.getElementById('score-fill');
+    if (fill) fill.style.width = pct + '%';
+  }, 100);
+
+  const domainesDetail = document.createElement('div');
+  domainesDetail.className = 'domaines-detail';
+  domainesDetail.innerHTML = '<p class="domaines-titre">Par domaine</p>';
+
+  const scoresParDomaine = {};
+  const maxParDomaine = {};
+  DOMAINES.forEach(d => { scoresParDomaine[d] = 0; maxParDomaine[d] = 0; });
+
+  QUESTIONS.forEach((q, i) => {
+    if (reponses[i] !== null) scoresParDomaine[q.domaine] += q.choix[reponses[i]].score;
+    maxParDomaine[q.domaine] += 3;
+  });
+
+  const COULEURS_DOMAINE = ['#0070dd', '#ff8000', '#8b5e3c', '#2ecc71', '#9b59b6', '#9a9189'];
+
+  DOMAINES.forEach((d, idx) => {
+    const pctD = maxParDomaine[d] > 0 ? Math.round((scoresParDomaine[d] / maxParDomaine[d]) * 100) : 0;
+    const row = document.createElement('div');
+    row.className = 'domaine-row';
+    row.innerHTML = `
+      <span class="domaine-nom">${d}</span>
+      <div class="domaine-bar-track">
+        <div class="domaine-bar-fill" style="width:0%;background:${COULEURS_DOMAINE[idx]}" data-pct="${pctD}"></div>
+      </div>
+      <span class="domaine-score">${pctD}%</span>
+    `;
+    domainesDetail.appendChild(row);
+  });
+  resultatEl.appendChild(domainesDetail);
+
+  setTimeout(() => {
+    document.querySelectorAll('.domaine-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 200);
+
+  const pistesSection = document.createElement('div');
+  pistesSection.className = 'pistes-section';
+  pistesSection.innerHTML = '<p class="pistes-titre">Pistes concrètes</p>';
+  profil.pistes.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'piste-item';
+    item.innerHTML = `<div class="piste-dot"></div><p class="piste-texte">${p}</p>`;
+    pistesSection.appendChild(item);
+  });
+  resultatEl.appendChild(pistesSection);
+
+  const rec = document.createElement('div');
+  rec.className = 'recommencer-wrap';
+  rec.innerHTML = '<button class="recommencer-btn" id="recommencer">Recommencer le questionnaire</button>';
+  resultatEl.appendChild(rec);
+
+  document.getElementById('recommencer').addEventListener('click', () => {
+    current = 0;
+    reponses = new Array(QUESTIONS.length).fill(null);
+    resultatEl.classList.add('hidden');
+    resultatEl.innerHTML = '';
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
