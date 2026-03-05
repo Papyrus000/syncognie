@@ -3,120 +3,478 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
+
 const articles = await getCollection('articles');
 articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
+
 <Base title="Syncognie">
   <Header />
-  <style>
-    .center {
-      text-align: center;
-      opacity: 0;
-      animation: rise 1s .1s ease forwards;
-      padding: 6rem 2rem 4rem;
-      max-width: var(--max);
-      margin: 0 auto;
-    }
-    .logo {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-    .logo span { color: var(--accent); }
-    .rule {
-      width: 2.5rem;
-      height: 1px;
-      background: var(--rule);
-      margin: 2rem auto;
-    }
-    .articles {
-      margin-top: .5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-    .article-link {
-      display: inline-block;
-      text-decoration: none;
-    }
-    .step-label {
-      font-family: 'Mulish', sans-serif;
-      font-size: .68rem;
-      font-weight: 300;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: .4rem;
-      transition: opacity .2s;
-    }
-    .step-text {
-      font-size: 1.1rem;
-      font-style: italic;
-      color: var(--ink-mid);
-      transition: color .2s;
-    }
-    .article-link:hover .step-text { color: var(--accent); }
-    .article-link:hover .step-label { opacity: .6; }
-    .arrow {
-      display: block;
-      margin-top: .4rem;
-      font-family: 'Mulish', sans-serif;
-      font-size: .7rem;
-      color: var(--accent);
-      opacity: 0;
-      transform: translateX(-4px);
-      transition: opacity .2s, transform .2s;
-    }
-    .article-link:hover .arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .step-desc {
-      font-family: 'Mulish', sans-serif;
-      font-size: .82rem;
-      font-weight: 300;
-      color: var(--ink-soft);
-      margin-top: .4rem;
-      font-style: normal;
-      line-height: 1.6;
-    }
-    .badge-wip {
-      font-family: 'Mulish', sans-serif;
-      font-size: 0.58rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      padding: 0.15rem 0.5rem;
-      opacity: 0.6;
-      vertical-align: middle;
-      margin-left: 0.5rem;
-    }
-  </style>
-  <div class="center">
-    <p class="logo">Syn<span>cognie</span></p>
-    <div class="rule"></div>
-    <div class="articles">
-      {articles.map(article => (
-        <a class="article-link" href={`/articles/${article.slug}`}>
-          <p class="step-label">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
-          <p class="step-text">
-            {article.data.title}
-            {article.data.statut === 'en-cours' && (
-              <span class="badge-wip">En cours</span>
-            )}
-          </p>
-          {article.data.description && (
-            <p class="step-desc">{article.data.description}</p>
-          )}
-          <span class="arrow">Lire →</span>
-        </a>
-      ))}
+
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Cerveau · Habitudes · Énergie</p>
+      <h1 class="hero-titre">
+        Relier les idées.<br>
+        <em>Voir ce qui émerge.</em>
+      </h1>
+      <p class="hero-sous">
+        Notes, articles et outils autour du cerveau, des habitudes et de l'énergie.
+        Un carnet de bord ouvert — pas un manuel.
+      </p>
+      <div class="hero-note">
+        <span class="hero-note-glyph">✦</span>
+        <p class="hero-note-text">
+          Un terrain d'expérimentation : Astro, Cloudflare, Claude —
+          et des idées qui méritent d'être explorées.
+        </p>
+      </div>
     </div>
+
+    <div class="hero-portals">
+      <a class="portal portal-carte" href="/carte">
+        <div class="portal-header">
+          <div class="portal-dot"></div>
+          <span class="portal-label">Carte des idées</span>
+        </div>
+        <p class="portal-desc">Les concepts et leur fil conducteur</p>
+        <ul class="portal-items">
+          <li>Système de récompense</li>
+          <li>Homéostasie</li>
+          <li>Comportement & Biais</li>
+          <li>Neuroplasticité…</li>
+        </ul>
+        <span class="portal-cta">Explorer →</span>
+      </a>
+
+      <a class="portal portal-outils" href="/outils">
+        <div class="portal-header">
+          <div class="portal-dot"></div>
+          <span class="portal-label">Outils</span>
+        </div>
+        <p class="portal-desc">Des boussoles, pas des diagnostics</p>
+        <ul class="portal-items">
+          <li>Baromètre de charge</li>
+          <li>Tracker d'habitudes</li>
+          <li>Boussole dopamine</li>
+          <li>Récits conceptuels…</li>
+        </ul>
+        <span class="portal-cta">Explorer →</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="ornament-sep">
+    <div class="orn-line"></div>
+    <div class="orn-centre">
+      <div class="orn-diamond"></div>
+      <span class="orn-label">Publications récentes</span>
+      <div class="orn-diamond"></div>
+    </div>
+    <div class="orn-line"></div>
   </div>
+
+  <div class="articles-wrap">
+    {articles.map((article, i) => {
+      const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
+      return (
+        <a
+          class={`article-item${estRecit ? ' est-recit' : ''}`}
+          href={`/articles/${article.slug}`}
+          style={`animation-delay: ${0.42 + i * 0.1}s`}
+        >
+          <div class="article-meta">
+            <span class="article-date">
+              {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </span>
+            {estRecit && <span class="badge badge-recit">◈ Récit</span>}
+            {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
+          </div>
+          <p class="article-titre">{article.data.title}</p>
+          {article.data.description && (
+            <p class="article-desc">{article.data.description}</p>
+          )}
+          <span class="article-lire">
+            {estRecit ? 'Lire le récit →' : 'Lire →'}
+          </span>
+        </a>
+      );
+    })}
+  </div>
+
   <Footer />
 </Base>
+
+<style>
+  /* ── HERO ── */
+  .hero {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 4.5rem 1.75rem 0;
+    display: grid;
+    grid-template-columns: 1fr 168px;
+    gap: 2.5rem;
+    align-items: start;
+    opacity: 0;
+    animation: rise .9s .1s ease forwards;
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+    opacity: .75;
+  }
+
+  .hero-titre {
+    font-size: clamp(1.7rem, 3.2vw, 2.2rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.22;
+    margin-bottom: 1.3rem;
+    letter-spacing: -.015em;
+  }
+
+  .hero-titre em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold, #c4993a);
+  }
+
+  .hero-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .875rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    max-width: 42ch;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-note {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    padding: .85rem 1rem;
+    background: rgba(196, 153, 58, .07);
+    border-left: 2px solid var(--gold, #c4993a);
+    border-radius: 0 4px 4px 0;
+    max-width: 42ch;
+  }
+
+  .hero-note-glyph {
+    color: var(--gold, #c4993a);
+    opacity: .6;
+    flex-shrink: 0;
+    font-size: .75rem;
+    margin-top: .12rem;
+  }
+
+  .hero-note-text {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.68;
+  }
+
+  /* ── PORTAILS ── */
+  .hero-portals {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+    padding-top: .6rem;
+  }
+
+  .portal {
+    display: block;
+    text-decoration: none;
+    padding: .95rem 1rem 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .28);
+    transition: transform .22s, box-shadow .22s, border-color .22s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .portal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .portal-carte::before  { background: #6b7fb8; }
+  .portal-outils::before { background: var(--orange, #e8724a); }
+
+  .portal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(44, 36, 22, .09);
+  }
+
+  .portal-carte:hover  { border-color: rgba(107, 127, 184, .3); }
+  .portal-outils:hover { border-color: rgba(232, 114, 74, .3); }
+
+  .portal-header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .45rem;
+  }
+
+  .portal-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .portal-carte  .portal-dot { background: #6b7fb8; }
+  .portal-outils .portal-dot { background: var(--orange, #e8724a); }
+
+  .portal-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+
+  .portal-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .71rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: .55rem;
+  }
+
+  .portal-items {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .22rem;
+  }
+
+  .portal-items li {
+    font-family: 'Mulish', sans-serif;
+    font-size: .64rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    opacity: .65;
+    display: flex;
+    align-items: baseline;
+    gap: .35rem;
+    line-height: 1.4;
+  }
+
+  .portal-items li::before {
+    content: '—';
+    font-size: .55rem;
+    opacity: .35;
+    flex-shrink: 0;
+  }
+
+  .portal-cta {
+    display: inline-block;
+    margin-top: .6rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    opacity: 0;
+    transform: translateX(-3px);
+    transition: opacity .2s, transform .2s;
+  }
+
+  .portal:hover .portal-cta {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── SÉPARATEUR ── */
+  .ornament-sep {
+    max-width: var(--max);
+    margin: 3.5rem auto 0;
+    padding: 0 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: rise .9s .3s ease forwards;
+  }
+
+  .orn-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rule), transparent);
+  }
+
+  .orn-centre {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+  }
+
+  .orn-diamond {
+    width: 5px;
+    height: 5px;
+    background: var(--rule);
+    transform: rotate(45deg);
+  }
+
+  .orn-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .45;
+  }
+
+  /* ── ARTICLES ── */
+  .articles-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 1.75rem 1.75rem 5rem;
+  }
+
+  .article-item {
+    display: block;
+    text-decoration: none;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    position: relative;
+    animation: rise .7s ease forwards;
+  }
+
+  .article-item:last-child { border-bottom: none; }
+
+  .article-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .28s ease;
+    opacity: .5;
+  }
+
+  .article-item:hover::before { transform: scaleY(1); }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .5rem;
+    flex-wrap: wrap;
+  }
+
+  .article-date {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .6;
+  }
+
+  .badge {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    padding: .15rem .45rem;
+    border-radius: 3px;
+  }
+
+  .badge-recit {
+    background: rgba(196, 153, 58, .1);
+    color: var(--gold, #c4993a);
+    border: 1px solid rgba(196, 153, 58, .25);
+  }
+
+  .badge-wip {
+    background: rgba(139, 94, 60, .07);
+    color: var(--accent);
+    border: 1px solid rgba(139, 94, 60, .2);
+  }
+
+  .article-titre {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: .5rem;
+    transition: color .2s;
+  }
+
+  .article-item:hover .article-titre { color: var(--accent); }
+
+  .est-recit .article-titre {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
+  .article-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    margin-bottom: .6rem;
+    max-width: 56ch;
+  }
+
+  .article-lire {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity .2s, transform .2s;
+  }
+
+  .article-item:hover .article-lire {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── ANIMATION ── */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
