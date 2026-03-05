@@ -1,0 +1,372 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const total = articles.length;
+const recits = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit').length;
+const notes  = total - recits;
+---
+
+<Base title="Articles — Syncognie">
+  <Header />
+
+  <div class="page-wrap">
+
+    <!-- En-tête -->
+    <header class="page-header">
+      <p class="page-eyebrow">Publications</p>
+      <h1 class="page-titre">Articles</h1>
+      <p class="page-sous">
+        Notes, analyses et récits autour du cerveau, des habitudes et de l'énergie.
+        Écrits pour être lus lentement.
+      </p>
+      <div class="page-stats">
+        <span class="stat">
+          <span class="stat-n">{total}</span>
+          <span class="stat-label">publication{total > 1 ? 's' : ''}</span>
+        </span>
+        <span class="stat-sep">·</span>
+        <span class="stat">
+          <span class="stat-n">{recits}</span>
+          <span class="stat-label">récit{recits > 1 ? 's' : ''}</span>
+        </span>
+        <span class="stat-sep">·</span>
+        <span class="stat">
+          <span class="stat-n">{notes}</span>
+          <span class="stat-label">note{notes > 1 ? 's' : ''}</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- Séparateur ornemental -->
+    <div class="ornament-sep">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">Toutes les publications</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- Liste articles -->
+    <div class="articles-list">
+      {articles.map((article, i) => {
+        const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
+        return (
+          <a
+            class={`article-item${estRecit ? ' est-recit' : ''}`}
+            href={`/articles/${article.slug}`}
+            style={`animation-delay: ${0.15 + i * 0.08}s`}
+          >
+            <div class="article-aside">
+              <span class="article-date">
+                {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </span>
+              <div class="article-badges">
+                {estRecit && <span class="badge badge-recit">◈ Récit</span>}
+                {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
+              </div>
+            </div>
+            <div class="article-body">
+              <p class="article-titre">{article.data.title}</p>
+              {article.data.description && (
+                <p class="article-desc">{article.data.description}</p>
+              )}
+              <span class="article-lire">
+                {estRecit ? 'Lire le récit →' : 'Lire →'}
+              </span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style>
+  .page-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.75rem 5rem;
+  }
+
+  /* ── EN-TÊTE ── */
+  .page-header {
+    padding: 4rem 0 2.5rem;
+    opacity: 0;
+    animation: rise .9s .05s ease forwards;
+  }
+
+  .page-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: .7;
+    margin-bottom: 1rem;
+  }
+
+  .page-titre {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    margin-bottom: .9rem;
+  }
+
+  .page-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .875rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    max-width: 52ch;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Compteurs stats */
+  .page-stats {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+  }
+
+  .stat {
+    display: flex;
+    align-items: baseline;
+    gap: .35rem;
+  }
+
+  .stat-n {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--blue-slate, #6b7fb8);
+    line-height: 1;
+    letter-spacing: -.02em;
+  }
+
+  .stat-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .stat-sep {
+    color: var(--rule);
+    font-size: .9rem;
+    line-height: 1;
+  }
+
+  /* ── SÉPARATEUR ── */
+  .ornament-sep {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: .25rem;
+    opacity: 0;
+    animation: rise .9s .2s ease forwards;
+  }
+
+  .orn-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rule), transparent);
+  }
+
+  .orn-centre {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+  }
+
+  .orn-diamond {
+    width: 5px;
+    height: 5px;
+    background: var(--rule);
+    transform: rotate(45deg);
+  }
+
+  .orn-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .45;
+  }
+
+  /* ── LISTE ARTICLES ── */
+  .articles-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .article-item {
+    display: grid;
+    grid-template-columns: 148px 1fr;
+    gap: 1.75rem;
+    text-decoration: none;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    position: relative;
+    animation: rise .6s ease forwards;
+    transition: background .15s;
+  }
+
+  .article-item:last-child { border-bottom: none; }
+
+  /* Barre terracotta au survol — cohérente avec l'index */
+  .article-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform .28s ease;
+    opacity: .5;
+  }
+
+  .article-item:hover::before { transform: scaleY(1); }
+
+  /* Colonne gauche — date + badges */
+  .article-aside {
+    padding-top: .15rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: flex-start;
+  }
+
+  .article-date {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .55;
+    line-height: 1.5;
+  }
+
+  .article-badges {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+
+  .badge {
+    font-family: 'Mulish', sans-serif;
+    font-size: .52rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    padding: .15rem .45rem;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  .badge-recit {
+    background: rgba(196, 153, 58, .1);
+    color: #c4993a;
+    border: 1px solid rgba(196, 153, 58, .25);
+  }
+
+  .badge-wip {
+    background: rgba(139, 94, 60, .07);
+    color: var(--accent);
+    border: 1px solid rgba(139, 94, 60, .2);
+  }
+
+  /* Colonne droite — contenu */
+  .article-body {
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+  }
+
+  .article-titre {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.35;
+    transition: color .2s;
+  }
+
+  .article-item:hover .article-titre { color: var(--accent); }
+
+  .est-recit .article-titre {
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
+  .article-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.65;
+    max-width: 58ch;
+  }
+
+  .article-lire {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #148EFF;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity .2s, transform .2s;
+    margin-top: .1rem;
+  }
+
+  .article-item:hover .article-lire {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .article-item {
+      grid-template-columns: 1fr;
+      gap: .6rem;
+    }
+    .article-aside {
+      flex-direction: row;
+      align-items: center;
+      gap: .75rem;
+    }
+    .article-badges { flex-direction: row; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>

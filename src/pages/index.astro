@@ -77,18 +77,18 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     </div>
 
     <div class="hero-portals">
-      <a class="portal portal-carte" href="/carte">
+      <a class="portal portal-articles" href="/articles">
         <div class="portal-header">
           <div class="portal-dot"></div>
-          <span class="portal-label">Carte des idées</span>
+          <span class="portal-label">Articles</span>
         </div>
-        <p class="portal-desc">Les concepts et leur fil conducteur</p>
-        <ul class="portal-items">
-          <li>Système de récompense</li>
-          <li>Homéostasie</li>
-          <li>Comportement & Biais</li>
-          <li>Neuroplasticité…</li>
-        </ul>
+        <div class="portal-articles-body">
+          <p class="portal-articles-count">
+            <span class="portal-count-n">{articles.length}</span>
+            <span class="portal-count-label">{articles.length > 1 ? 'publications' : 'publication'}</span>
+          </p>
+          <p class="portal-articles-hint">Notes, récits & analyses</p>
+        </div>
         <span class="portal-cta">Explorer →</span>
       </a>
 
@@ -307,16 +307,16 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     border-radius: 6px 6px 0 0;
   }
 
-  .portal-carte::before  { background: #6b7fb8; }
-  .portal-outils::before { background: var(--orange, #e8724a); }
+  .portal-articles::before { background: #6b7fb8; }
+  .portal-outils::before   { background: var(--orange, #e8724a); }
 
   .portal:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(44, 36, 22, .09);
   }
 
-  .portal-carte:hover  { border-color: rgba(107, 127, 184, .3); }
-  .portal-outils:hover { border-color: rgba(232, 114, 74, .3); }
+  .portal-articles:hover { border-color: rgba(107, 127, 184, .3); }
+  .portal-outils:hover   { border-color: rgba(232, 114, 74, .3); }
 
   .portal-header {
     display: flex;
@@ -332,8 +332,59 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     flex-shrink: 0;
   }
 
-  .portal-carte  .portal-dot { background: #6b7fb8; }
-  .portal-outils .portal-dot { background: var(--orange, #e8724a); }
+  .portal-articles .portal-dot { background: #6b7fb8; }
+  .portal-outils   .portal-dot { background: var(--orange, #e8724a); }
+
+  .portal-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+  }
+
+  /* Corps portail articles — minimaliste */
+  .portal-articles-body {
+    padding: .55rem 0 .45rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: .1rem;
+  }
+
+  .portal-articles-count {
+    display: flex;
+    align-items: baseline;
+    gap: .4rem;
+    margin-bottom: .3rem;
+  }
+
+  .portal-count-n {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #6b7fb8;
+    line-height: 1;
+    letter-spacing: -.02em;
+  }
+
+  .portal-count-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .portal-articles-hint {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: .6;
+  }
 
   .portal-label {
     font-family: 'Mulish', sans-serif;
