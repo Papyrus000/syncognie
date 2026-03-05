@@ -4,6 +4,7 @@ import Footer from '../../components/Footer.astro';
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import Reactions from '../../components/Reactions.astro';
+import Personnage from '../../components/Personnage.astro';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
@@ -189,6 +190,26 @@ footer {
   transition: width .1s linear;
   box-shadow: 0 0 6px rgba(255, 128, 0, 0.5);
 }
+
+/* Narratif dialogue */
+article.dialogue .content p {
+  font-family: 'Libre Baskerville', serif; /* laisser le texte narratif hors-em intact */
+  font-size: 1.05rem;
+  color: var(--ink-mid);
+}
+
+article.dialogue .content > p > em:only-child,
+article.dialogue .content p em {
+  display: block;
+  font-family: 'Mulish', sans-serif !important;
+  font-style: italic;
+  font-weight: 300 !important;
+  font-size: 0.78rem;
+  color: #b0a598;
+  text-align: center;
+  margin: 0.4rem auto 1rem;
+  letter-spacing: 0.02em;
+}
 </style>
 
 <Header />
@@ -200,13 +221,13 @@ footer {
     Syncognie
   </a>
 
-  <article>
+<article class={article.data.format === 'dialogue' ? 'dialogue' : ''}>
     <p class="date">{date} · {readTime} min de lecture</p>
     <h1>{article.data.title}</h1>
     <div class="rule"></div>
 
     <div class="content">
-      <Content />
+<Content components={{ Personnage }} />
     </div>
 
     <Reactions slug={article.slug} />

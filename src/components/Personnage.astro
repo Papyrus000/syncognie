@@ -1,0 +1,62 @@
+---
+const { nom } = Astro.props;
+
+const couleurs: Record<string, string> = {
+  "Clara": "#ff7c0a",
+  "Solène": "#0070dd",
+};
+
+const couleur = couleurs[nom] ?? "#444";
+const estDroite = nom === "Solène";
+---
+
+<div class={`personnage ${estDroite ? "droite" : ""}`} style={`--c: ${couleur}`}>
+  <span class="personnage-nom">{nom}</span>
+  <div class="personnage-bulle">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .personnage {
+    margin: 0.7rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .personnage.droite {
+    align-items: flex-end;
+  }
+
+  .personnage-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 0.25rem;
+  }
+
+  .personnage-bulle {
+    background: #fdfcfa;
+    border-radius: 12px;
+    border-top-left-radius: 2px;
+    padding: 0.65rem 1rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #3d3530;
+    max-width: 88%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 2px solid var(--c);
+  }
+
+  .personnage.droite .personnage-bulle {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 2px;
+    border-left: none;
+    border-right: 2px solid var(--c);
+  }
+</style>
