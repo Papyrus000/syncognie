@@ -54,37 +54,69 @@ const notes  = total - recits;
       <div class="orn-line"></div>
     </div>
 
-    <!-- Liste articles -->
-    <div class="articles-list">
-      {articles.map((article, i) => {
-        const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
-        return (
-          <a
-            class={`article-item${estRecit ? ' est-recit' : ''}`}
-            href={`/articles/${article.slug}`}
-            style={`animation-delay: ${0.15 + i * 0.08}s`}
-          >
-            <div class="article-aside">
-              <span class="article-date">
-                {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </span>
-              <div class="article-badges">
-                {estRecit && <span class="badge badge-recit">◈ Récit</span>}
-                {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
+    <!-- Grille : liste gauche + légende droite -->
+    <div class="contenu-wrap">
+
+      <!-- Liste articles -->
+      <div class="articles-list">
+        {articles.map((article, i) => {
+          const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
+          return (
+            <a
+              class={`article-item${estRecit ? ' est-recit' : ''}`}
+              href={`/articles/${article.slug}`}
+              style={`animation-delay: ${0.15 + i * 0.08}s`}
+            >
+              <div class="article-aside">
+                <span class="article-date">
+                  {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                </span>
+                <div class="article-badges">
+                  {estRecit && <span class="badge badge-recit">◈ Récit</span>}
+                  {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
+                  {article.data.stade === 'graine' && <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>}
+                  {article.data.stade === 'pousse' && <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>}
+                  {article.data.stade === 'arbre'  && <span class="badge badge-arbre  badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>}
+                </div>
               </div>
-            </div>
-            <div class="article-body">
-              <p class="article-titre">{article.data.title}</p>
-              {article.data.description && (
-                <p class="article-desc">{article.data.description}</p>
-              )}
-              <span class="article-lire">
-                {estRecit ? 'Lire le récit →' : 'Lire →'}
-              </span>
-            </div>
-          </a>
-        );
-      })}
+              <div class="article-body">
+                <p class="article-titre">{article.data.title}</p>
+                {article.data.description && (
+                  <p class="article-desc">{article.data.description}</p>
+                )}
+                <span class="article-lire">
+                  {estRecit ? 'Lire le récit →' : 'Lire →'}
+                </span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- Légende maturité -->
+      <aside class="legende-col">
+        <div class="legende-card">
+          <p class="legende-titre">Stades de maturité</p>
+          <ul class="legende-list">
+            <li>
+              <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>
+              <span class="legende-desc">Idée posée, peu développée</span>
+            </li>
+            <li>
+              <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>
+              <span class="legende-desc">En cours d'exploration</span>
+            </li>
+            <li>
+              <span class="badge badge-arbre badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>
+              <span class="legende-desc">Consolidé, dense</span>
+            </li>
+          </ul>
+          <p class="legende-note">
+            Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.
+          </p>
+        </div>
+      </aside>
+
     </div>
 
   </div>
@@ -212,10 +244,24 @@ const notes  = total - recits;
     opacity: .45;
   }
 
+  /* ── GRILLE CONTENU (liste + légende) ── */
+  .contenu-wrap {
+    display: grid;
+    grid-template-columns: 1fr 168px;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 600px) {
+    .contenu-wrap { grid-template-columns: 1fr; }
+    .legende-col  { display: none; }
+  }
+
   /* ── LISTE ARTICLES ── */
   .articles-list {
     display: flex;
     flex-direction: column;
+    min-width: 0;
   }
 
   .article-item {
@@ -233,7 +279,6 @@ const notes  = total - recits;
 
   .article-item:last-child { border-bottom: none; }
 
-  /* Barre terracotta au survol — cohérente avec l'index */
   .article-item::before {
     content: '';
     position: absolute;
@@ -249,7 +294,6 @@ const notes  = total - recits;
 
   .article-item:hover::before { transform: scaleY(1); }
 
-  /* Colonne gauche — date + badges */
   .article-aside {
     padding-top: .15rem;
     display: flex;
@@ -298,7 +342,33 @@ const notes  = total - recits;
     border: 1px solid rgba(139, 94, 60, .2);
   }
 
-  /* Colonne droite — contenu */
+  /* Badges maturité */
+  .badge-stade {
+    display: inline-flex !important;
+    align-items: center;
+    gap: .28rem;
+  }
+
+  .badge-stade-icon { font-size: .62rem; line-height: 1; }
+
+  .badge-graine {
+    background: rgba(46, 125, 78, .07);
+    color: #2e7d4e;
+    border: 1px solid rgba(46, 125, 78, .2);
+  }
+
+  .badge-pousse {
+    background: rgba(56, 120, 60, .09);
+    color: #38783c;
+    border: 1px solid rgba(56, 120, 60, .22);
+  }
+
+  .badge-arbre {
+    background: rgba(34, 68, 34, .07);
+    color: #224422;
+    border: 1px solid rgba(34, 68, 34, .2);
+  }
+
   .article-body {
     display: flex;
     flex-direction: column;
@@ -349,6 +419,71 @@ const notes  = total - recits;
   .article-item:hover .article-lire {
     opacity: 1;
     transform: translateX(0);
+  }
+
+  /* ── LÉGENDE MATURITÉ ── */
+  .legende-col {
+    padding-top: .25rem;
+  }
+
+  .legende-card {
+    position: sticky;
+    top: 4.5rem;
+    padding: 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: rgba(245, 240, 232, .6);
+    box-shadow: 0 2px 12px rgba(44, 36, 22, .05);
+  }
+
+  .legende-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .5;
+    margin-bottom: .75rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .legende-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin-bottom: .85rem;
+  }
+
+  .legende-list li {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  .legende-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: .6;
+    padding-left: .2rem;
+  }
+
+  .legende-note {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: .45;
+    line-height: 1.6;
+    padding-top: .75rem;
+    border-top: 1px solid var(--rule);
   }
 
   /* ── RESPONSIVE ── */

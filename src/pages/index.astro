@@ -120,32 +120,64 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     <div class="orn-line"></div>
   </div>
 
-  <div class="articles-wrap">
-    {articles.map((article, i) => {
-      const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
-      return (
-        <a
-          class={`article-item${estRecit ? ' est-recit' : ''}`}
-          href={`/articles/${article.slug}`}
-          style={`animation-delay: ${0.42 + i * 0.1}s`}
-        >
-          <div class="article-meta">
-            <span class="article-date">
-              {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+  <div class="bas-wrap">
+
+    <!-- Colonne gauche : articles -->
+    <div class="articles-col">
+      {articles.slice(0, 5).map((article, i) => {
+        const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
+        return (
+          <a
+            class={`article-item${estRecit ? ' est-recit' : ''}`}
+            href={`/articles/${article.slug}`}
+            style={`animation-delay: ${0.42 + i * 0.1}s`}
+          >
+            <div class="article-meta">
+              <span class="article-date">
+                {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </span>
+              {estRecit && <span class="badge badge-recit">◈ Récit</span>}
+              {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
+              {article.data.stade === 'graine' && <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>}
+              {article.data.stade === 'pousse' && <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>}
+              {article.data.stade === 'arbre'  && <span class="badge badge-arbre  badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>}
+            </div>
+            <p class="article-titre">{article.data.title}</p>
+            {article.data.description && (
+              <p class="article-desc">{article.data.description}</p>
+            )}
+            <span class="article-lire">
+              {estRecit ? 'Lire le récit →' : 'Lire →'}
             </span>
-            {estRecit && <span class="badge badge-recit">◈ Récit</span>}
-            {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
-          </div>
-          <p class="article-titre">{article.data.title}</p>
-          {article.data.description && (
-            <p class="article-desc">{article.data.description}</p>
-          )}
-          <span class="article-lire">
-            {estRecit ? 'Lire le récit →' : 'Lire →'}
-          </span>
-        </a>
-      );
-    })}
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- Colonne droite : légende maturité -->
+    <aside class="legende-col">
+      <div class="legende-card">
+        <p class="legende-titre">Stades de maturité</p>
+        <ul class="legende-list">
+          <li>
+            <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>
+            <span class="legende-desc">Idée posée, peu développée</span>
+          </li>
+          <li>
+            <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>
+            <span class="legende-desc">En cours d'exploration</span>
+          </li>
+          <li>
+            <span class="badge badge-arbre badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>
+            <span class="legende-desc">Consolidé, dense</span>
+          </li>
+        </ul>
+        <p class="legende-note">
+          Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.
+        </p>
+      </div>
+    </aside>
+
   </div>
 
   <Footer />
@@ -294,7 +326,6 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     border-radius: 6px;
     background: rgba(245, 240, 232, .75);
     backdrop-filter: blur(2px);
-    box-shadow: 0 2px 12px rgba(44, 36, 22, .07), 0 1px 3px rgba(44, 36, 22, .05);
     transition: transform .22s, box-shadow .22s, border-color .22s;
     position: relative;
     overflow: hidden;
@@ -492,12 +523,24 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     opacity: .45;
   }
 
-  /* ── ARTICLES ── */
-  .articles-wrap {
+  /* ── GRILLE BAS (articles + légende) ── */
+  .bas-wrap {
     max-width: var(--max);
     margin: 0 auto;
     padding: 1.75rem 1.75rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 168px;
+    gap: 2.5rem;
+    align-items: start;
   }
+
+  @media (max-width: 600px) {
+    .bas-wrap { grid-template-columns: 1fr; }
+    .legende-col { display: none; }
+  }
+
+  /* ── ARTICLES ── */
+  .articles-col { min-width: 0; }
 
   .article-item {
     display: block;
@@ -566,6 +609,33 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     border: 1px solid rgba(139, 94, 60, .2);
   }
 
+  /* Badges maturité */
+  .badge-stade {
+    display: inline-flex;
+    align-items: center;
+    gap: .28rem;
+  }
+
+  .badge-stade-icon { font-size: .65rem; line-height: 1; }
+
+  .badge-graine {
+    background: rgba(46, 125, 78, .07);
+    color: #2e7d4e;
+    border: 1px solid rgba(46, 125, 78, .2);
+  }
+
+  .badge-pousse {
+    background: rgba(56, 120, 60, .09);
+    color: #38783c;
+    border: 1px solid rgba(56, 120, 60, .22);
+  }
+
+  .badge-arbre {
+    background: rgba(34, 68, 34, .07);
+    color: #224422;
+    border: 1px solid rgba(34, 68, 34, .2);
+  }
+
   .article-titre {
     font-size: 1.05rem;
     font-weight: 700;
@@ -611,6 +681,71 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   .article-item:hover .article-lire {
     opacity: 1;
     transform: translateX(0);
+  }
+
+  /* ── LÉGENDE MATURITÉ ── */
+  .legende-col {
+    padding-top: 1.6rem;
+  }
+
+  .legende-card {
+    position: sticky;
+    top: 4.5rem;
+    padding: 1rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: rgba(245, 240, 232, .6);
+    box-shadow: 0 2px 12px rgba(44, 36, 22, .05);
+  }
+
+  .legende-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .5;
+    margin-bottom: .75rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .legende-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    margin-bottom: .85rem;
+  }
+
+  .legende-list li {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  .legende-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: .6;
+    padding-left: .2rem;
+  }
+
+  .legende-note {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-soft);
+    opacity: .45;
+    line-height: 1.6;
+    padding-top: .75rem;
+    border-top: 1px solid var(--rule);
   }
 
   /* ── ANIMATION ── */

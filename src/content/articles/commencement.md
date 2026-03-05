@@ -4,6 +4,7 @@ description: C'est ici que tout commence...
 date: 2026-03-02
 category: Journal
 slug: la-premiere-pierre
+stade: pousse
 ---
 > "Le mieux est l'ennemi du bien." 
 

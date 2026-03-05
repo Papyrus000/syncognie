@@ -9,6 +9,7 @@ tags:
   - comportement
   - addiction
   - bien-être
+stade: pousse
 ---
 *Notes d'un curieux qui cherche à appréhender le monde dans lequel il évolue. Issues de tout ce que j'ai pu trouver sur Internet et choisi d'assembler, ci-dessous. Aucune valeur médicale.*
 
