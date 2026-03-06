@@ -9,17 +9,20 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Base title="Syncognie">
-  <Header />
+  <Header id="site-header" />
 
   <section class="hero">
 
-    <!-- ✦ SPIRALE FILIGRANE — SVG inline, zéro dépendance -->
-    <svg class="hero-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- ✦ SPIRALE FILIGRANE INTERACTIVE -->
+    <svg id="spirale" class="hero-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Cercle rotatif de fond -->
       <circle cx="210" cy="210" r="185"
         stroke="#8b5e3c" stroke-width=".6"
         stroke-dasharray="2 10"
         opacity=".18"
         class="fil-rotate"/>
+
+      <!-- Chemins spirale -->
       <path d="M210 210
                C210 188, 224 174, 240 174
                C270 174, 295 199, 295 230
@@ -33,16 +36,34 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
                C384 210, 370 285, 322 324"
             stroke="#c4993a" stroke-width=".8"
             stroke-linecap="round" opacity=".16"/>
+
+      <!-- Lignes rayonnantes -->
       <line x1="210" y1="210" x2="240" y2="174" stroke="#8b5e3c" stroke-width=".7" opacity=".2"/>
       <line x1="210" y1="210" x2="295" y2="230" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
       <line x1="210" y1="210" x2="210" y2="305" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
       <line x1="210" y1="210" x2="96"  y2="190" stroke="#8b5e3c" stroke-width=".7" opacity=".16"/>
       <line x1="210" y1="210" x2="225" y2="62"  stroke="#8b5e3c" stroke-width=".7" opacity=".16"/>
-      <circle cx="240" cy="174" r="4.5" fill="#c4993a" class="fil-pulse"/>
-      <circle cx="295" cy="230" r="3.5" fill="#8b5e3c" class="fil-pulse-2"/>
-      <circle cx="210" cy="305" r="4"   fill="#c4993a" class="fil-pulse-3"/>
-      <circle cx="96"  cy="190" r="3.5" fill="#8b5e3c" class="fil-pulse"/>
-      <circle cx="225" cy="62"  r="4"   fill="#c4993a" class="fil-pulse-2"/>
+
+      <!-- ✦ 5 POINTS INTERACTIFS — data-node="0..4" -->
+      <!-- node-0 : centre haut (225,62) — extrémité spirale -->
+      <circle data-node="0" cx="225" cy="62"  r="4"   fill="#c4993a" class="fil-pulse-2 node"/>
+      <!-- node-1 : droite (295,230) -->
+      <circle data-node="1" cx="295" cy="230" r="3.5" fill="#8b5e3c" class="fil-pulse-2 node"/>
+      <!-- node-2 : bas (210,305) -->
+      <circle data-node="2" cx="210" cy="305" r="4"   fill="#c4993a" class="fil-pulse-3 node"/>
+      <!-- node-3 : gauche (96,190) -->
+      <circle data-node="3" cx="96"  cy="190" r="3.5" fill="#8b5e3c" class="fil-pulse node"/>
+      <!-- node-4 : haut-droite proche (240,174) -->
+      <circle data-node="4" cx="240" cy="174" r="4.5" fill="#c4993a" class="fil-pulse node"/>
+
+      <!-- Halos d'illumination (invisibles par défaut) -->
+      <circle data-halo="0" cx="225" cy="62"  r="11" fill="none" stroke="#c4993a" stroke-width="1.5" opacity="0" class="halo"/>
+      <circle data-halo="1" cx="295" cy="230" r="10" fill="none" stroke="#8b5e3c" stroke-width="1.5" opacity="0" class="halo"/>
+      <circle data-halo="2" cx="210" cy="305" r="11" fill="none" stroke="#c4993a" stroke-width="1.5" opacity="0" class="halo"/>
+      <circle data-halo="3" cx="96"  cy="190" r="10" fill="none" stroke="#8b5e3c" stroke-width="1.5" opacity="0" class="halo"/>
+      <circle data-halo="4" cx="240" cy="174" r="12" fill="none" stroke="#c4993a" stroke-width="1.5" opacity="0" class="halo"/>
+
+      <!-- Cercles internes décoratifs -->
       <circle cx="210" cy="210" r="28"
         stroke="#8b5e3c" stroke-width="1"
         opacity=".18" class="fil-pulse"/>
@@ -57,7 +78,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
         class="fil-float"/>
     </svg>
 
-    <div class="hero-left">
+    <div class="hero-left" data-zone="hero">
       <p class="hero-eyebrow">Synergie · Cognition · Dialogue</p>
       <h1 class="hero-titre">
         Rassembler les idées.<br>
@@ -80,7 +101,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     </div>
 
     <div class="hero-portals">
-      <a class="portal portal-articles" href="/articles">
+      <a class="portal portal-articles" href="/articles" data-zone="articles">
         <div class="portal-header">
           <div class="portal-dot"></div>
           <span class="portal-label">Articles</span>
@@ -95,7 +116,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
         <span class="portal-cta">Explorer →</span>
       </a>
 
-      <a class="portal portal-outils" href="/outils">
+      <a class="portal portal-outils" href="/outils" data-zone="outils">
         <div class="portal-header">
           <div class="portal-dot"></div>
           <span class="portal-label">Outils</span>
@@ -157,8 +178,8 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
       })}
     </div>
 
-    <!-- Colonne droite : légende maturité -->
-    <aside class="legende-col">
+    <!-- Colonne droite : légende maturité cliquable -->
+    <a href="/stades" class="legende-col legende-col--link" data-zone="stades">
       <div class="legende-card">
         <p class="legende-titre">Stades de maturité</p>
         <ul class="legende-list">
@@ -178,13 +199,154 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
         <p class="legende-note">
           Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.
         </p>
+        <span class="legende-cta">En savoir plus →</span>
       </div>
-    </aside>
+    </a>
 
   </div>
 
   <Footer />
 </Base>
+
+<!-- ✦ SCRIPT SPIRALE INTERACTIVE -->
+<script>
+(function () {
+
+  // ── Configuration des zones ──────────────────────────────────────
+  // nodes    : indices des points à illuminer (0-4)
+  // color    : couleur d'illumination
+  // glow     : rayon du halo (px dans le viewBox SVG)
+  const ZONES = {
+    articles: {
+      nodes: [0, 1, 2, 3, 4],          // tous — importance max
+      color: '#6b7fb8',                  // bleu ardoise
+      glow: '#6b7fb8'
+    },
+    outils: {
+      nodes: [0, 1, 2, 3],              // 4 points
+      color: '#e8724a',                  // orange
+      glow: '#e8724a'
+    },
+    hero: {
+      nodes: [1, 2, 4],                 // 3 points
+      color: '#8b5e3c',                  // terracotta
+      glow: '#8b5e3c'
+    },
+    header: {
+      nodes: [0, 3],                     // 2 points
+      color: '#c4993a',                  // or
+      glow: '#c4993a'
+    },
+    stades: {
+      nodes: [2],                        // 1 point — importance min
+      color: '#2e7d4e',                  // vert
+      glow: '#2e7d4e'
+    }
+  };
+
+  // ── Récupération des éléments SVG ───────────────────────────────
+  const nodes = document.querySelectorAll('.node');
+  const halos = document.querySelectorAll('.halo');
+
+  // Couleurs de base (terracotta / or alternés)
+  const BASE_COLORS = ['#c4993a', '#8b5e3c', '#c4993a', '#8b5e3c', '#c4993a'];
+  const BASE_RADII  = [4, 3.5, 4, 3.5, 4.5];
+
+  // État courant
+  let activeZone = null;
+  let fadeTimers = [];
+
+  // ── Fonctions d'animation ────────────────────────────────────────
+
+  function illuminate(zoneKey) {
+    if (activeZone === zoneKey) return;
+    cancelFade();
+    activeZone = zoneKey;
+
+    const zone = ZONES[zoneKey];
+    if (!zone) return;
+
+    // Reset tous les points d'abord
+    nodes.forEach((node, i) => {
+      node.setAttribute('fill', BASE_COLORS[i]);
+      node.setAttribute('r', BASE_RADII[i]);
+      node.style.filter = '';
+    });
+    halos.forEach(h => {
+      h.setAttribute('opacity', '0');
+      h.style.transition = '';
+    });
+
+    // Illuminer les points de cette zone avec délai en cascade
+    zone.nodes.forEach((nodeIdx, order) => {
+      const node = document.querySelector(`[data-node="${nodeIdx}"]`);
+      const halo = document.querySelector(`[data-halo="${nodeIdx}"]`);
+      if (!node || !halo) return;
+
+      setTimeout(() => {
+        // Point
+        node.setAttribute('fill', zone.color);
+        node.setAttribute('r', BASE_RADII[nodeIdx] * 1.6);
+        node.style.filter = `drop-shadow(0 0 4px ${zone.color})`;
+
+        // Halo
+        halo.setAttribute('stroke', zone.glow);
+        halo.style.transition = 'opacity 0.35s ease';
+        halo.setAttribute('opacity', '0.6');
+      }, order * 60); // cascade 60ms entre chaque point
+    });
+  }
+
+  function cancelFade() {
+    fadeTimers.forEach(clearTimeout);
+    fadeTimers = [];
+  }
+
+  function fadeOut() {
+    cancelFade();
+    activeZone = null;
+
+    nodes.forEach((node, i) => {
+      const t = setTimeout(() => {
+        node.setAttribute('fill', BASE_COLORS[i]);
+        node.setAttribute('r', BASE_RADII[i]);
+        node.style.filter = '';
+      }, i * 80);
+      fadeTimers.push(t);
+    });
+
+    halos.forEach((halo, i) => {
+      const t = setTimeout(() => {
+        halo.style.transition = 'opacity 0.5s ease';
+        halo.setAttribute('opacity', '0');
+      }, i * 60);
+      fadeTimers.push(t);
+    });
+  }
+
+  // ── Attacher les écouteurs ───────────────────────────────────────
+
+  // Zones dans la page
+  document.querySelectorAll('[data-zone]').forEach(el => {
+    const zone = el.dataset.zone;
+    el.addEventListener('mouseenter', () => illuminate(zone));
+    el.addEventListener('mouseleave', fadeOut);
+    // Touch support
+    el.addEventListener('touchstart', () => illuminate(zone), { passive: true });
+    el.addEventListener('touchend', () => {
+      setTimeout(fadeOut, 800);
+    }, { passive: true });
+  });
+
+  // Header (topbar) — on écoute directement le <header> du site
+  const siteHeader = document.querySelector('header');
+  if (siteHeader) {
+    siteHeader.addEventListener('mouseenter', () => illuminate('header'));
+    siteHeader.addEventListener('mouseleave', fadeOut);
+  }
+
+})();
+</script>
 
 <style>
   /* ── HERO ── */
@@ -216,6 +378,15 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     height: 420px;
     pointer-events: none;
     z-index: 0;
+  }
+
+  /* Transitions sur les noeuds SVG */
+  .node {
+    transition: r 0.3s ease, fill 0.3s ease;
+  }
+
+  .halo {
+    transition: opacity 0.35s ease;
   }
 
   .fil-rotate {
@@ -329,7 +500,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     border-radius: 6px;
     background: rgba(245, 240, 232, .75);
     backdrop-filter: blur(2px);
-      box-shadow: 0 2px 12px rgba(44, 36, 22, .07), 0 1px 3px rgba(44, 36, 22, .05);
+    box-shadow: 0 2px 12px rgba(44, 36, 22, .07), 0 1px 3px rgba(44, 36, 22, .05);
     transition: transform .22s, box-shadow .22s, border-color .22s;
     position: relative;
     overflow: hidden;
@@ -373,14 +544,14 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   .portal-label {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
+    font-size: .72rem;
     font-weight: 700;
     letter-spacing: .18em;
     text-transform: uppercase;
     color: var(--ink-mid);
   }
 
-  /* Corps portail articles — minimaliste */
+  /* Corps portail articles */
   .portal-articles-body {
     padding: .55rem 0 .45rem;
     border-top: 1px solid var(--rule);
@@ -410,7 +581,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     font-weight: 300;
     letter-spacing: .12em;
     text-transform: uppercase;
-  color: var(--ink-mid);
+    color: var(--ink-mid);
   }
 
   .portal-articles-hint {
@@ -418,17 +589,8 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     font-size: .75rem;
     font-weight: 300;
     font-style: italic;
-  color: var(--ink-mid);
-    opacity: .7;
-  }
-
-  .portal-label {
-    font-family: 'Mulish', sans-serif;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .18em;
-    text-transform: uppercase;
     color: var(--ink-mid);
+    opacity: .7;
   }
 
   .portal-desc {
@@ -452,7 +614,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     font-family: 'Mulish', sans-serif;
     font-size: .72rem;
     font-weight: 300;
-  color: var(--ink-mid);
+    color: var(--ink-mid);
     opacity: .75;
     display: flex;
     align-items: baseline;
@@ -527,7 +689,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     opacity: .45;
   }
 
-  /* ── GRILLE BAS (articles + légende) ── */
+  /* ── GRILLE BAS ── */
   .bas-wrap {
     max-width: var(--max);
     margin: 0 auto;
@@ -613,7 +775,6 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     border: 1px solid rgba(139, 94, 60, .2);
   }
 
-  /* Badges maturité */
   .badge-stade {
     display: inline-flex;
     align-items: center;
@@ -635,7 +796,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   }
 
   .badge-arbre {
-  background: rgba(46, 125, 78, .18);
+    background: rgba(46, 125, 78, .18);
     color: #224422;
     border: 1px solid rgba(34, 68, 34, .2);
   }
@@ -687,9 +848,25 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     transform: translateX(0);
   }
 
-  /* ── LÉGENDE MATURITÉ ── */
+  /* ── LÉGENDE MATURITÉ CLIQUABLE ── */
   .legende-col {
     padding-top: 1.6rem;
+  }
+
+  .legende-col--link {
+    text-decoration: none;
+    display: block;
+  }
+
+  .legende-col--link .legende-card {
+    transition: transform .22s, box-shadow .22s, border-color .22s;
+    cursor: pointer;
+  }
+
+  .legende-col--link:hover .legende-card {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(44, 36, 22, .09);
+    border-color: rgba(46, 125, 78, .3);
   }
 
   .legende-card {
@@ -708,7 +885,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     font-weight: 700;
     letter-spacing: .22em;
     text-transform: uppercase;
-  color: var(--ink-mid);
+    color: var(--ink-mid);
     opacity: .75;
     margin-bottom: .75rem;
     padding-bottom: .5rem;
@@ -735,7 +912,7 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     font-size: .62rem;
     font-weight: 300;
     font-style: italic;
-  color: var(--ink-mid);
+    color: var(--ink-mid);
     opacity: .9;
     padding-left: .2rem;
   }
@@ -745,11 +922,30 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     font-size: .72rem;
     font-weight: 300;
     font-style: italic;
-  color: var(--ink-mid);
+    color: var(--ink-mid);
     opacity: .75;
     line-height: 1.6;
     padding-top: .75rem;
     border-top: 1px solid var(--rule);
+    margin-bottom: .6rem;
+  }
+
+  .legende-cta {
+    display: inline-block;
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    opacity: 0;
+    transform: translateX(-3px);
+    transition: opacity .2s, transform .2s;
+  }
+
+  .legende-col--link:hover .legende-cta {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   /* ── ANIMATION ── */

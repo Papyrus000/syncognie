@@ -1,0 +1,642 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+const graines = articles.filter(a => a.data.stade === 'graine').length;
+const pousses = articles.filter(a => a.data.stade === 'pousse').length;
+const arbres  = articles.filter(a => a.data.stade === 'arbre').length;
+---
+
+<Base title="Le Jardin — Syncognie">
+  <Header />
+
+  <div class="page-wrap">
+
+    <!-- En-tête -->
+    <header class="page-header">
+
+      <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="210" cy="210" r="185"
+          stroke="#8b5e3c" stroke-width=".6"
+          stroke-dasharray="2 10"
+          opacity=".15"
+          class="fil-rotate"/>
+        <path d="M210 210 C210 188, 224 174, 240 174 C270 174, 295 199, 295 230 C295 272, 260 305, 210 305 C148 305, 96 253, 96 190 C96 116, 151 62, 225 62"
+              stroke="#c4993a" stroke-width="1.2" stroke-linecap="round" opacity=".22"/>
+        <path d="M225 62 C272 62, 332 98, 358 155 C384 210, 370 285, 322 324"
+              stroke="#c4993a" stroke-width=".8" stroke-linecap="round" opacity=".12"/>
+        <line x1="210" y1="210" x2="240" y2="174" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
+        <line x1="210" y1="210" x2="295" y2="230" stroke="#8b5e3c" stroke-width=".7" opacity=".15"/>
+        <line x1="210" y1="210" x2="210" y2="305" stroke="#8b5e3c" stroke-width=".7" opacity=".15"/>
+        <line x1="210" y1="210" x2="96"  y2="190" stroke="#8b5e3c" stroke-width=".7" opacity=".13"/>
+        <line x1="210" y1="210" x2="225" y2="62"  stroke="#8b5e3c" stroke-width=".7" opacity=".13"/>
+        <circle cx="240" cy="174" r="4.5" fill="#c4993a" class="fil-pulse"/>
+        <circle cx="295" cy="230" r="3.5" fill="#8b5e3c" class="fil-pulse-2"/>
+        <circle cx="210" cy="305" r="4"   fill="#c4993a" class="fil-pulse-3"/>
+        <circle cx="96"  cy="190" r="3.5" fill="#8b5e3c" class="fil-pulse"/>
+        <circle cx="225" cy="62"  r="4"   fill="#c4993a" class="fil-pulse-2"/>
+        <circle cx="210" cy="210" r="28" stroke="#8b5e3c" stroke-width="1" opacity=".15" class="fil-pulse"/>
+        <circle cx="210" cy="210" r="52" stroke="#8b5e3c" stroke-width=".5" opacity=".08" class="fil-pulse-2"/>
+        <circle cx="210" cy="210" r="5" fill="#8b5e3c" opacity=".2" class="fil-float"/>
+        <circle cx="210" cy="210" r="2.5" fill="#f5f0e8" opacity=".6" class="fil-float"/>
+      </svg>
+
+      <p class="page-eyebrow">Jardin numérique</p>
+      <h1 class="page-titre">Le Jardin &amp; ses stades</h1>
+      <p class="page-sous">
+        Syncognie n'est pas une revue. C'est un espace vivant où les idées 
+        germent, poussent et s'enracinent à leur propre rythme — 
+        parfois lentement, parfois par bonds.
+      </p>
+    </header>
+
+    <!-- Séparateur -->
+    <div class="ornament-sep">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">Philosophie</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- Section philosophie -->
+    <section class="philosophie">
+      <div class="phil-intro">
+        <p class="phil-chapeau">
+          Sur le web, on publie pour paraître fini. Ici, on publie pour penser.
+        </p>
+        <p class="phil-texte">
+          Un jardin numérique est l'opposé d'un blog traditionnel. 
+          Il n'y a pas de "dernier article" ni de version définitive. 
+          Chaque note est une graine qu'on plante, une tige qu'on arrose, 
+          ou un arbre dont on élague les branches avec le temps.
+        </p>
+        <p class="phil-texte">
+          Cette démarche vient d'une conviction : la pensée ne naît pas complète. 
+          Elle se construit par couches, par retours, par contradictions dépassées. 
+          Montrer le processus — pas seulement le résultat — 
+          c'est une forme d'honnêteté intellectuelle.
+        </p>
+      </div>
+
+      <div class="phil-citation">
+        <span class="cit-glyph">✦</span>
+        <blockquote class="cit-texte">
+          "Une idée imparfaite partagée vaut mieux qu'une idée parfaite gardée pour soi."
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Séparateur -->
+    <div class="ornament-sep ornament-sep--mid">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">Les trois stades</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- Stades -->
+    <section class="stades-section">
+
+      <div class="stade-card stade-graine">
+        <div class="stade-header">
+          <span class="stade-emoji">🌱</span>
+          <div class="stade-titres">
+            <span class="stade-label">Stade 1</span>
+            <h2 class="stade-nom">Graine</h2>
+          </div>
+          <span class="stade-count">{graines} note{graines > 1 ? 's' : ''}</span>
+        </div>
+        <div class="stade-corps">
+          <p class="stade-def">
+            Une idée vient d'être posée. L'intuition est là, 
+            mais la pensée n'a pas encore trouvé sa forme. 
+            Ces notes sont brutes, parfois fragmentaires — 
+            elles existent pour ne pas perdre le fil.
+          </p>
+          <ul class="stade-traits">
+            <li>Ébauche ou fragment de pensée</li>
+            <li>Peut contenir des questions sans réponses</li>
+            <li>Sera enrichie au fil du temps</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stade-fleche" aria-hidden="true">
+        <div class="fleche-ligne"></div>
+        <span class="fleche-sym">↓</span>
+        <span class="fleche-label">croissance</span>
+        <div class="fleche-ligne"></div>
+      </div>
+
+      <div class="stade-card stade-pousse">
+        <div class="stade-header">
+          <span class="stade-emoji">🌿</span>
+          <div class="stade-titres">
+            <span class="stade-label">Stade 2</span>
+            <h2 class="stade-nom">Pousse</h2>
+          </div>
+          <span class="stade-count">{pousses} note{pousses > 1 ? 's' : ''}</span>
+        </div>
+        <div class="stade-corps">
+          <p class="stade-def">
+            L'exploration est en cours. Des liens se forment, 
+            des arguments prennent corps. La note a un fil directeur 
+            mais reste ouverte — elle peut encore bifurquer.
+          </p>
+          <ul class="stade-traits">
+            <li>Structure et argumentation présentes</li>
+            <li>Des zones d'ombre subsistent volontairement</li>
+            <li>En dialogue avec d'autres idées du jardin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="stade-fleche" aria-hidden="true">
+        <div class="fleche-ligne"></div>
+        <span class="fleche-sym">↓</span>
+        <span class="fleche-label">consolidation</span>
+        <div class="fleche-ligne"></div>
+      </div>
+
+      <div class="stade-card stade-arbre">
+        <div class="stade-header">
+          <span class="stade-emoji">🌳</span>
+          <div class="stade-titres">
+            <span class="stade-label">Stade 3</span>
+            <h2 class="stade-nom">Arbre</h2>
+          </div>
+          <span class="stade-count">{arbres} note{arbres > 1 ? 's' : ''}</span>
+        </div>
+        <div class="stade-corps">
+          <p class="stade-def">
+            La pensée est dense, enracinée. La note a été révisée, 
+            enrichie, confrontée. Elle ne prétend pas être définitive — 
+            mais elle tient debout et offre une prise réelle.
+          </p>
+          <ul class="stade-traits">
+            <li>Développé, structuré, relu</li>
+            <li>Appuyé sur des sources ou expériences concrètes</li>
+            <li>Point de référence dans le jardin</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Note de bas -->
+    <div class="ornament-sep ornament-sep--mid">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">À retenir</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <section class="note-finale">
+      <div class="note-encart">
+        <span class="note-glyph">✦</span>
+        <div>
+          <p class="note-texte">
+            Aucun stade n'est inférieur aux autres. Une graine fraîchement posée 
+            a autant de valeur qu'un arbre solide — elle dit simplement 
+            où en est la pensée aujourd'hui. 
+            Le jardin est honnête sur son propre état.
+          </p>
+          <a href="/articles" class="note-lien">Explorer les publications →</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <Footer />
+</Base>
+
+<style>
+  .page-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.75rem 5rem;
+  }
+
+  /* ── EN-TÊTE ── */
+  .page-header {
+    padding: 4rem 0 2.5rem;
+    position: relative;
+    overflow: visible;
+    opacity: 0;
+    animation: rise .9s .05s ease forwards;
+  }
+
+  .page-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: .7;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-titre {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: -.02em;
+    margin-bottom: .9rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .95rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    max-width: 52ch;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── FILIGRANE ── */
+  .header-filigrane {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 300px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @media (max-width: 600px) {
+    .header-filigrane { display: none; }
+  }
+
+  .fil-rotate {
+    transform-origin: 210px 210px;
+    animation: fil-spin 32s linear infinite;
+  }
+  @keyframes fil-spin { to { transform: rotate(360deg); } }
+
+  .fil-pulse   { animation: fil-p 6s ease-in-out infinite; }
+  .fil-pulse-2 { animation: fil-p 6s ease-in-out infinite; animation-delay: 1.5s; }
+  .fil-pulse-3 { animation: fil-p 6s ease-in-out infinite; animation-delay: 3s; }
+  @keyframes fil-p {
+    0%,100% { opacity: .18; }
+    50%      { opacity: .55; }
+  }
+
+  .fil-float {
+    animation: fil-f 8s ease-in-out infinite;
+    transform-origin: 210px 210px;
+  }
+  @keyframes fil-f {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+
+  /* ── SÉPARATEUR ── */
+  .ornament-sep {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: rise .9s .2s ease forwards;
+  }
+
+  .ornament-sep--mid {
+    margin: 3rem 0;
+    animation-delay: .3s;
+  }
+
+  .orn-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--rule), transparent);
+  }
+
+  .orn-centre {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+  }
+
+  .orn-diamond {
+    width: 5px;
+    height: 5px;
+    background: var(--rule);
+    transform: rotate(45deg);
+  }
+
+  .orn-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .45;
+  }
+
+  /* ── PHILOSOPHIE ── */
+  .philosophie {
+    padding: 2.5rem 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    opacity: 0;
+    animation: rise .9s .25s ease forwards;
+  }
+
+  @media (max-width: 600px) {
+    .philosophie { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+
+  .phil-chapeau {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1.5;
+    margin-bottom: 1.4rem;
+  }
+
+  .phil-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.85;
+    margin-bottom: 1rem;
+  }
+
+  .phil-texte:last-child { margin-bottom: 0; }
+
+  .phil-citation {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.75rem;
+    background: rgba(196, 153, 58, .06);
+    border: 1px solid rgba(196, 153, 58, .18);
+    border-radius: 6px;
+    position: relative;
+  }
+
+  .cit-glyph {
+    color: var(--gold, #c4993a);
+    opacity: .5;
+    font-size: .9rem;
+  }
+
+  .cit-texte {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .95rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.7;
+    margin: 0;
+    quotes: none;
+  }
+
+  /* ── STADES ── */
+  .stades-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    opacity: 0;
+    animation: rise .9s .35s ease forwards;
+  }
+
+  .stade-card {
+    padding: 2rem;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: rgba(245, 240, 232, .5);
+    position: relative;
+    transition: box-shadow .25s, transform .25s;
+  }
+
+  .stade-card:hover {
+    box-shadow: 0 4px 20px rgba(44, 36, 22, .08);
+    transform: translateY(-1px);
+  }
+
+  /* Barre colorée gauche par stade */
+  .stade-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 6px 0 0 6px;
+  }
+
+  .stade-graine::before { background: #2e7d4e; }
+  .stade-pousse::before { background: #38783c; }
+  .stade-arbre::before  { background: #224422; }
+
+  .stade-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .stade-emoji {
+    font-size: 1.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .stade-titres {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+
+  .stade-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .55;
+  }
+
+  .stade-nom {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -.01em;
+    margin: 0;
+  }
+
+  .stade-count {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .5;
+    white-space: nowrap;
+  }
+
+  .stade-corps { padding-left: .25rem; }
+
+  .stade-def {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    max-width: 58ch;
+  }
+
+  .stade-traits {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .stade-traits li {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    opacity: .8;
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    line-height: 1.5;
+  }
+
+  .stade-traits li::before {
+    content: '—';
+    font-size: .6rem;
+    opacity: .35;
+    flex-shrink: 0;
+  }
+
+  /* ── FLÈCHES ENTRE STADES ── */
+  .stade-fleche {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+    padding: .6rem 0;
+  }
+
+  .fleche-ligne {
+    width: 1px;
+    height: 18px;
+    background: var(--rule);
+    opacity: .5;
+  }
+
+  .fleche-sym {
+    font-size: .85rem;
+    color: var(--rule);
+    opacity: .5;
+    line-height: 1;
+  }
+
+  .fleche-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .52rem;
+    font-weight: 300;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .35;
+  }
+
+  /* ── NOTE FINALE ── */
+  .note-finale {
+    opacity: 0;
+    animation: rise .9s .45s ease forwards;
+  }
+
+  .note-encart {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem 1.75rem;
+    background: rgba(139, 94, 60, .05);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .note-glyph {
+    color: var(--accent);
+    opacity: .45;
+    font-size: .8rem;
+    flex-shrink: 0;
+    margin-top: .15rem;
+  }
+
+  .note-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+
+  .note-lien {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    text-decoration: none;
+    transition: opacity .2s, transform .2s;
+    transform: translateX(0);
+  }
+
+  .note-lien:hover {
+    opacity: .75;
+    transform: translateX(3px);
+  }
+
+  /* ── ANIMATION ── */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
