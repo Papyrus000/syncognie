@@ -29,7 +29,6 @@ const stadeConfig: Record<string, { emoji: string; label: string; desc: string; 
 };
 const stadeInfo = stade ? stadeConfig[stade] : null;
 
-// Couleur dominante par format pour l'ornement seuil
 const formatColor: Record<string, string> = {
   dialogue: '#c4993a',
   recit:    '#c4993a',
@@ -49,12 +48,12 @@ const ornColor = article.data.format
 .progress-bar {
   position: fixed;
   top: 52px; left: 0;
-  height: 3px;
+  height: 3px; width: 0%;
   background: var(--pop-orange, #ff8000);
   box-shadow: 0 0 6px rgba(255, 128, 0, 0.5);
   z-index: 99;
   transition: width .08s linear;
-  opacity: .75;
+  opacity: 1;
 }
 
 /* ── WRAP ── */
@@ -71,116 +70,74 @@ const ornColor = article.data.format
   gap: .5rem;
   padding: 2.5rem 0 2.75rem;
   font-family: 'Mulish', sans-serif;
-  font-size: .6rem;
-  font-weight: 700;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  text-decoration: none;
-  opacity: 0;
-  animation: rise .8s .05s ease forwards;
+  font-size: .6rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-soft); text-decoration: none;
+  opacity: 0; animation: rise .8s .05s ease forwards;
   transition: color .2s, gap .2s;
 }
 .back:hover { color: var(--accent); gap: .7rem; }
 .back-arrow {
   width: 18px; height: 18px;
-  border: 1px solid var(--rule);
-  border-radius: 3px;
+  border: 1px solid var(--rule); border-radius: 3px;
   display: flex; align-items: center; justify-content: center;
-  transition: border-color .2s, background .2s;
-  flex-shrink: 0;
+  transition: border-color .2s, background .2s; flex-shrink: 0;
 }
 .back:hover .back-arrow { border-color: var(--accent); background: rgba(139,94,60,.06); }
 .back-arrow svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform .2s; }
 .back:hover .back-arrow svg { transform: translateX(-2px); }
 
 /* ── ARTICLE ── */
-article {
-  padding-bottom: 4rem;
-  opacity: 0;
-  animation: rise .9s .15s ease forwards;
-}
+article { padding-bottom: 4rem; opacity: 0; animation: rise .9s .15s ease forwards; }
 
 /* ── META ── */
 .article-meta-top {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.1rem;
+  display: flex; align-items: center; gap: .75rem;
+  flex-wrap: wrap; margin-bottom: 1.1rem;
 }
 .date {
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 300;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--accent); opacity: .8;
+  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--accent); opacity: .8;
 }
 .readtime {
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 300;
-  letter-spacing: .1em;
-  color: var(--ink-soft); opacity: .5;
+  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
+  letter-spacing: .1em; color: var(--ink-soft); opacity: .5;
 }
 .meta-sep { color: var(--rule); font-size: .7rem; }
 
 .badge-stade-inline {
   display: inline-flex; align-items: center; gap: .25rem;
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem; font-weight: 700;
+  font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700;
   letter-spacing: .13em; text-transform: uppercase;
   padding: .15rem .4rem; border-radius: 3px;
-  text-decoration: none;
-  transition: opacity .2s;
+  text-decoration: none; transition: opacity .2s;
 }
 .badge-stade-inline:hover { opacity: .75; }
-
 .badge-wip-inline {
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem; font-weight: 700;
+  font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700;
   letter-spacing: .13em; text-transform: uppercase;
   padding: .15rem .4rem; border-radius: 3px;
-  background: rgba(139,94,60,.07);
-  color: var(--accent);
+  background: rgba(139,94,60,.07); color: var(--accent);
   border: 1px solid rgba(139,94,60,.2);
 }
 
 /* ── TITRE ── */
 h1 {
-  font-size: clamp(1.6rem, 3vw, 2rem);
-  font-weight: 700;
-  line-height: 1.25;
-  color: var(--ink);
-  margin-bottom: 1.5rem;
-  letter-spacing: -.015em;
+  font-size: clamp(1.6rem, 3vw, 2rem); font-weight: 700;
+  line-height: 1.25; color: var(--ink);
+  margin-bottom: 1.5rem; letter-spacing: -.015em;
 }
 
-/* ── ✦ ORNEMENT SEUIL — filigrane article ── */
+/* ── ORNEMENT SEUIL ── */
 .article-seuil {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  margin-bottom: 2.5rem;
+  display: flex; align-items: center; gap: .75rem; margin-bottom: 2.5rem;
 }
-.seuil-svg {
-  flex-shrink: 0;
-  overflow: visible;
-}
-.seuil-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, var(--rule), transparent);
-  opacity: .6;
-}
-.seuil-line--left {
-  background: linear-gradient(to left, var(--rule), transparent);
-}
+.seuil-svg { flex-shrink: 0; overflow: visible; }
+.seuil-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--rule), transparent); opacity: .6; }
+.seuil-line--left { background: linear-gradient(to left, var(--rule), transparent); }
 
 /* ── CONTENU ── */
-.content {
-  font-size: 1.02rem;
-  color: var(--ink-mid);
-  line-height: 1.88;
-}
+.content { font-size: 1.02rem; color: var(--ink-mid); line-height: 1.88; }
 .content p { margin-bottom: 1.5rem; }
 .content h2 { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin: 2.5rem 0 .9rem; letter-spacing: -.01em; }
 .content h3 { font-size: 1.05rem; font-weight: 700; color: var(--ink); margin: 2rem 0 .7rem; }
@@ -189,16 +146,62 @@ h1 {
 .content ul, .content ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
 .content li { margin-bottom: .4rem; }
 .content img {
-  display: block;
-  max-width: 100% !important; height: auto !important;
+  display: block; max-width: 100% !important; height: auto !important;
   border-radius: 6px; margin: 2rem auto;
   box-shadow: 0 6px 24px rgba(0,0,0,.1);
 }
 article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 
+/* ── BOUTON PARTAGE ── */
+.partage-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .75rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+}
+
+.partage-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 300;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); opacity: .45;
+}
+
+.btn-copier {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: .55rem 1rem;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.btn-copier svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; transition: transform .2s; }
+.btn-copier:hover { border-color: var(--accent); color: var(--accent); background: rgba(139,94,60,.04); }
+.btn-copier:hover svg { transform: scale(1.15); }
+
+/* État copié */
+.btn-copier.copie {
+  border-color: #2e7d4e;
+  color: #2e7d4e;
+  background: rgba(46,125,78,.05);
+}
+.btn-copier.copie svg { display: none; }
+.btn-copier .label-copie { display: none; }
+.btn-copier.copie .label-copie { display: inline; }
+.btn-copier .label-default { display: inline; }
+.btn-copier.copie .label-default { display: none; }
+
 /* ── CODEX ── */
 .codex {
-  margin: 3.5rem 0 1.5rem;
+  margin: 1.5rem 0;
   padding: 1.25rem 1.5rem;
   border: 1px solid var(--rule);
   border-left: 3px solid var(--gold, #c4993a);
@@ -212,51 +215,39 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 }
 .codex-icon { color: var(--gold,#c4993a); opacity: .55; font-size: .75rem; }
 .codex-label {
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem; font-weight: 700;
-  letter-spacing: .22em; text-transform: uppercase;
-  color: var(--ink-soft); opacity: .6;
+  font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); opacity: .6;
 }
 .codex-tags { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; }
 .codex-tag {
-  font-family: 'Mulish', sans-serif;
-  font-size: .7rem; font-weight: 400;
-  color: var(--ink-mid);
-  padding: .3rem .75rem; border-radius: 4px;
-  border: 1px solid var(--rule);
-  background: rgba(245,240,232,.7);
+  font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 400;
+  color: var(--ink-mid); padding: .3rem .75rem; border-radius: 4px;
+  border: 1px solid var(--rule); background: rgba(245,240,232,.7);
   transition: border-color .2s, color .2s, transform .15s;
 }
 .codex-tag:hover { border-color: var(--gold,#c4993a); color: var(--gold,#c4993a); transform: translateY(-1px); }
 
-/* ── ENCART STADE BAS ── */
+/* ── ENCART STADE ── */
 .stade-encart {
-  margin: 0 0 3rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
+  margin: 1.5rem 0 3rem; padding: 1rem 1.25rem;
+  border: 1px solid var(--rule); border-radius: 6px;
   background: rgba(245,240,232,.5);
   display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
 }
 .stade-encart-left { display: flex; align-items: center; gap: .6rem; flex: 1; }
 .stade-emoji-lg { font-size: 1.2rem; line-height: 1; }
 .stade-encart-label {
-  font-family: 'Mulish', sans-serif;
-  font-size: .6rem; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase;
-  margin-bottom: .2rem;
+  font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; margin-bottom: .2rem;
 }
 .stade-encart-desc {
-  font-family: 'Mulish', sans-serif;
-  font-size: .75rem; font-weight: 300;
+  font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 300;
   font-style: italic; color: var(--ink-soft); opacity: .8;
 }
 .stade-encart-lien {
-  font-family: 'Mulish', sans-serif;
-  font-size: .58rem; font-weight: 600;
+  font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 600;
   letter-spacing: .12em; text-transform: uppercase;
-  color: var(--blizzard,#148EFF);
-  text-decoration: none; white-space: nowrap;
+  color: var(--blizzard,#148EFF); text-decoration: none; white-space: nowrap;
   display: inline-flex; align-items: center;
   transition: opacity .2s, transform .2s;
 }
@@ -264,13 +255,9 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 
 /* ── FOOTER ── */
 .article-footer {
-  border-top: 1px solid var(--rule);
-  padding: 1.75rem 0 3rem;
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 300;
-  letter-spacing: .1em;
-  color: var(--ink-soft);
-  opacity: .4;
+  border-top: 1px solid var(--rule); padding: 1.75rem 0 3rem;
+  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
+  letter-spacing: .1em; color: var(--ink-soft); opacity: .4;
 }
 
 @keyframes rise {
@@ -311,22 +298,17 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 
     <h1>{article.data.title}</h1>
 
-    <!-- ✦ ORNEMENT SEUIL — calligraphique, unique à chaque article -->
+    <!-- Ornement seuil -->
     <div class="article-seuil">
       <div class="seuil-line seuil-line--left"></div>
       <svg class="seuil-svg" width="48" height="20" viewBox="0 0 48 20" fill="none" aria-hidden="true">
-        <!-- Losange central -->
-        <path d="M24 2 L38 10 L24 18 L10 10 Z"
-              stroke={ornColor} stroke-width="1" fill="none" opacity=".35"/>
-        <!-- Croix intérieure -->
+        <path d="M24 2 L38 10 L24 18 L10 10 Z" stroke={ornColor} stroke-width="1" fill="none" opacity=".35"/>
         <line x1="24" y1="5"  x2="24" y2="15" stroke={ornColor} stroke-width=".7" opacity=".25"/>
         <line x1="14" y1="10" x2="34" y2="10" stroke={ornColor} stroke-width=".7" opacity=".25"/>
-        <!-- Points aux 4 angles -->
         <circle cx="24" cy="2"  r="1.2" fill={ornColor} opacity=".4"/>
         <circle cx="38" cy="10" r="1.2" fill={ornColor} opacity=".4"/>
         <circle cx="24" cy="18" r="1.2" fill={ornColor} opacity=".4"/>
         <circle cx="10" cy="10" r="1.2" fill={ornColor} opacity=".4"/>
-        <!-- Traits latéraux -->
         <line x1="0"  y1="10" x2="7"  y2="10" stroke={ornColor} stroke-width=".7" opacity=".2" stroke-linecap="round"/>
         <line x1="41" y1="10" x2="48" y2="10" stroke={ornColor} stroke-width=".7" opacity=".2" stroke-linecap="round"/>
       </svg>
@@ -339,6 +321,20 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 
     <Reactions slug={article.slug} />
 
+    <!-- ✦ BOUTON PARTAGE — après réactions, avant Codex -->
+    <div class="partage-wrap">
+      <span class="partage-label">Partager</span>
+      <button class="btn-copier" id="btn-copier" type="button" aria-label="Copier le lien de cet article">
+        <svg viewBox="0 0 24 24">
+          <rect x="9" y="9" width="13" height="13" rx="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span class="label-default">Copier le lien</span>
+        <span class="label-copie">✓ Lien copié</span>
+      </button>
+    </div>
+
+    <!-- Codex -->
     {article.data.tags && article.data.tags.length > 0 && (
       <div class="codex">
         <div class="codex-header">
@@ -351,6 +347,7 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
       </div>
     )}
 
+    <!-- Stade -->
     {stadeInfo && (
       <div class="stade-encart">
         <div class="stade-encart-left">
@@ -371,6 +368,7 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 </div>
 
 <script>
+  // Barre de progression
   const bar = document.getElementById('progress');
   if (bar) {
     window.addEventListener('scroll', () => {
@@ -378,6 +376,28 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
       const total = doc.scrollHeight - doc.clientHeight;
       if (total > 0) bar.style.width = `${(doc.scrollTop / total) * 100}%`;
     }, { passive: true });
+  }
+
+  // Copier le lien
+  const btn = document.getElementById('btn-copier');
+  if (btn) {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        btn.classList.add('copie');
+        setTimeout(() => btn.classList.remove('copie'), 2200);
+      } catch {
+        // Fallback : sélection manuelle
+        const input = document.createElement('input');
+        input.value = window.location.href;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        btn.classList.add('copie');
+        setTimeout(() => btn.classList.remove('copie'), 2200);
+      }
+    });
   }
 </script>
 
