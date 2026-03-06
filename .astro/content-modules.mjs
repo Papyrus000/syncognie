@@ -1,7 +1,10 @@
 
 export default new Map([
-["src/content/articles/equilibre-du-desir.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fequilibre-du-desir.mdx&astroContentModuleFlag=true")],
-["src/content/articles/dialogue-1.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fdialogue-1.mdx&astroContentModuleFlag=true")],
-["src/content/articles/autour-dune-table.mdx.download/autour-dune-table.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fautour-dune-table.mdx.download%2Fautour-dune-table.mdx&astroContentModuleFlag=true")],
-["src/content/articles/autour-dune-table.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fautour-dune-table.mdx&astroContentModuleFlag=true")]]);
+["src/content/articles/ce-que-la-balance-ne-dit-pas.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fce-que-la-balance-ne-dit-pas.mdx&astroContentModuleFlag=true")],
+["src/content/articles/autour-dune-table-v3.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fautour-dune-table-v3.mdx&astroContentModuleFlag=true")],
+["src/content/articles/autour-dune-table.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fautour-dune-table.mdx&astroContentModuleFlag=true")],
+["src/content/articles/autour-dune-table-v4.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fautour-dune-table-v4.mdx&astroContentModuleFlag=true")],
+["src/content/articles/ce-quon-a-construit.mdx.download/ce-quon-a-construit.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fce-quon-a-construit.mdx.download%2Fce-quon-a-construit.mdx&astroContentModuleFlag=true")],
+["src/content/articles/ce-quon-a-construit.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fce-quon-a-construit.mdx&astroContentModuleFlag=true")],
+["src/content/articles/ce-que-la-balance-ne-dit-pas-v4.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fce-que-la-balance-ne-dit-pas-v4.mdx&astroContentModuleFlag=true")]]);
 		

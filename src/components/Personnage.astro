@@ -4,10 +4,12 @@ const { nom } = Astro.props;
 const couleurs: Record<string, string> = {
   "Clara": "#ff7c0a",
   "Solène": "#0070dd",
+  "Nathalie": "#ff7c0a",
+  "Élodie": "#0070dd",
 };
 
 const couleur = couleurs[nom] ?? "#444";
-const estDroite = nom === "Solène";
+const estDroite = nom === "Solène" || nom === "Élodie";
 ---
 
 <div class={`personnage ${estDroite ? "droite" : ""}`} style={`--c: ${couleur}`}>
