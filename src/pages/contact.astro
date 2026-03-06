@@ -6,192 +6,126 @@ import Footer from '../components/Footer.astro';
 
 <Base title="Contact — Syncognie">
   <Header />
+  <div class="page-wrap">
+    <header class="page-header">
 
-  <div class="contact-wrap">
-    <div class="contact-header">
-      <p class="contact-surtitre">Écrire</p>
-      <h1 class="contact-titre">Une pensée à partager ?</h1>
-      <p class="contact-sous">Une question, une réaction, une contradiction bienvenue.</p>
-    </div>
+      <!-- ✦ FILIGRANE CONTACT : arc ouvert + point flottant — l'invitation -->
+      <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Arc principal — ouvert, incomplet, comme un geste tendu -->
+        <path d="M80 310 C60 240, 70 160, 120 110 C170 58, 250 40, 310 70 C370 100, 400 170, 390 240"
+              stroke="#8b5e3c" stroke-width="1.2" stroke-linecap="round" opacity=".2" class="arc-main"/>
+        <!-- Arc intérieur — écho plus léger -->
+        <path d="M110 300 C95 238, 103 168, 145 124 C188 78, 255 62, 305 88 C355 114, 378 175, 368 235"
+              stroke="#c4993a" stroke-width=".8" stroke-linecap="round" opacity=".15" class="arc-inner"/>
+        <!-- Arc extérieur — très discret -->
+        <path d="M52 320 C28 242, 40 152, 96 97 C152 40, 244 18, 314 52 C384 86, 420 165, 408 248"
+              stroke="#8b5e3c" stroke-width=".5" stroke-linecap="round" opacity=".08" class="arc-outer"/>
 
-    <form
-  class="contact-form"
-  action="https://api.web3forms.com/submit"
-  method="POST"
->
-  <!-- Clé Web3Forms — invisible pour le visiteur -->
-  <input type="hidden" name="access_key" value="414ffc9f-3748-4dfe-bf17-2e9428e80c4c" />
-  
-<input
-  type="checkbox"
-  name="botcheck"
-  style="display:none"
-  tabindex="-1"
-  autocomplete="off"
-/>
+        <!-- Trait de départ — ligne d'envoi -->
+        <line x1="80" y1="310" x2="55" y2="340" stroke="#c4993a" stroke-width=".8" opacity=".2" stroke-linecap="round"/>
+        <!-- Extremité ouverte — l'arc ne se referme pas -->
+        <line x1="390" y1="240" x2="410" y2="255" stroke="#8b5e3c" stroke-width=".8" opacity=".18" stroke-linecap="round"/>
 
-  <!-- Sujet du mail que tu recevras -->
-  <input type="hidden" name="subject" value="Nouveau message — Syncognie" />
-  
-  <!-- Redirige vers une page de confirmation après envoi -->
-  <input type="hidden" name="redirect" value="https://syncognie.pages.dev/merci" /> 
+        <!-- Point d'arrivée flottant — là où la pensée atterrit -->
+        <circle cx="340" cy="340" r="6"   fill="#c4993a" opacity=".22" class="point-flottant"/>
+        <circle cx="340" cy="340" r="3"   fill="#c4993a" opacity=".4"  class="point-flottant"/>
+        <circle cx="340" cy="340" r="14"  fill="none" stroke="#c4993a" stroke-width=".7" opacity=".12" class="point-halo"/>
 
-  <div class="field">
-    <label for="name">Nom</label>
-    <input type="text" id="name" name="name" placeholder="Ton prénom" required />
+        <!-- Points jalons sur l'arc -->
+        <circle cx="120" cy="110" r="3.5" fill="#8b5e3c" opacity=".2" class="jalon-a"/>
+        <circle cx="240" cy="52"  r="3"   fill="#c4993a" opacity=".18" class="jalon-b"/>
+        <circle cx="360" cy="130" r="3.5" fill="#8b5e3c" opacity=".2"  class="jalon-a"/>
+
+        <!-- Petites lignes de connexion aux jalons -->
+        <line x1="120" y1="110" x2="240" y2="52"  stroke="#c4993a" stroke-width=".4" opacity=".1" stroke-dasharray="3 6"/>
+        <line x1="240" y1="52"  x2="360" y2="130" stroke="#c4993a" stroke-width=".4" opacity=".1" stroke-dasharray="3 6"/>
+      </svg>
+
+      <p class="page-eyebrow">Écrire</p>
+      <h1 class="page-titre">Une pensée à partager ?</h1>
+      <p class="page-sous">Une question, une réaction, une contradiction bienvenue.</p>
+    </header>
+
+    <div class="ornament-sep"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Message</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div>
+
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="414ffc9f-3748-4dfe-bf17-2e9428e80c4c" />
+      <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+      <input type="hidden" name="subject" value="Nouveau message — Syncognie" />
+      <input type="hidden" name="redirect" value="https://syncognie.pages.dev/merci" />
+
+      <div class="form-grid">
+        <div class="field"><label for="name">Nom</label><input type="text" id="name" name="name" placeholder="Ton prénom" required /></div>
+        <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="ton@email.com" required /></div>
+      </div>
+
+      <div class="field field--full"><label for="message">Message</label><textarea id="message" name="message" rows="6" placeholder="Ce que tu veux me dire..." required></textarea></div>
+
+      <div class="h-captcha" data-captcha="true"></div>
+
+      <div class="form-footer">
+        <button type="submit" class="contact-btn">
+          <span>Envoyer</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <p class="form-note">Réponse humaine garantie — pas un bot.</p>
+      </div>
+    </form>
   </div>
-
-  <div class="field">
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" placeholder="ton@email.com" required />
-  </div>
-
-  <div class="field">
-    <label for="message">Message</label>
-    <textarea id="message" name="message" rows="6" placeholder="Ce que tu veux me dire..." required></textarea>
-  </div>
-
-  
-<div class="h-captcha" data-captcha="true"></div>
-
-  <button type="submit" class="contact-btn">Envoyer →</button>
-</form>
-
-  </div>
-
-    <Footer />
-
+  <Footer />
 </Base>
 
 <style>
-  .contact-wrap {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 4rem 1.75rem 5rem;
-  }
+  .page-wrap{max-width:var(--max);margin:0 auto;padding:0 1.75rem 5rem}
+  .page-header{padding:4rem 0 2.5rem;position:relative;overflow:visible;opacity:0;animation:rise .9s .05s ease forwards}
+  .page-eyebrow{font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:300;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:1rem;position:relative;z-index:1}
+  .page-titre{font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:.9rem;position:relative;z-index:1}
+  .page-sous{font-family:'Mulish',sans-serif;font-size:.95rem;font-weight:400;color:var(--ink-soft);line-height:1.8;max-width:44ch;position:relative;z-index:1}
 
-  .contact-header {
-    margin-bottom: 3rem;
-    opacity: 0;
-    animation: rise .9s .1s ease forwards;
-  }
+  /* ── FILIGRANE ARC ── */
+  .header-filigrane{position:absolute;top:50%;right:-60px;transform:translateY(-50%);width:300px;height:300px;pointer-events:none;z-index:0}
+  @media(max-width:600px){.header-filigrane{display:none}}
+  .arc-main {animation:arc-breathe 9s ease-in-out infinite}
+  .arc-inner{animation:arc-breathe 9s ease-in-out infinite;animation-delay:2s}
+  .arc-outer{animation:arc-breathe 9s ease-in-out infinite;animation-delay:4s}
+  @keyframes arc-breathe{0%,100%{opacity:.2}50%{opacity:.38}}
+  .point-flottant{animation:pf 5s ease-in-out infinite}
+  @keyframes pf{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .point-halo{animation:ph 5s ease-in-out infinite}
+  @keyframes ph{0%,100%{opacity:.12;r:14}50%{opacity:.28;r:20}}
+  .jalon-a{animation:ja 6s ease-in-out infinite}
+  .jalon-b{animation:ja 6s ease-in-out infinite;animation-delay:2s}
+  @keyframes ja{0%,100%{opacity:.18}50%{opacity:.45}}
 
-  .contact-surtitre {
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 300;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: .75rem;
-  }
+  /* Séparateur */
+  .ornament-sep{display:flex;align-items:center;gap:1rem;opacity:0;animation:rise .9s .2s ease forwards}
+  .orn-line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rule),transparent)}
+  .orn-centre{display:flex;align-items:center;gap:.55rem}
+  .orn-diamond{width:5px;height:5px;background:var(--rule);transform:rotate(45deg)}
+  .orn-label{font-family:'Mulish',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-soft);opacity:.45}
 
-  .contact-titre {
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 1rem;
-  }
-
-  .contact-sous {
-    font-family: 'Mulish', sans-serif;
-    font-size: .9rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.7;
-  }
-
-  .contact-form {
-    opacity: 0;
-    animation: rise .9s .25s ease forwards;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-  }
-
-  label {
-    font-family: 'Mulish', sans-serif;
-    font-size: .68rem;
-    font-weight: 300;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-  }
-
-  input, textarea {
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: .95rem;
-    color: var(--ink);
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--rule);
-    padding: .6rem 0;
-    outline: none;
-    transition: border-color .2s;
-    resize: none;
-  }
-
-  input::placeholder, textarea::placeholder {
-    color: var(--ink-soft);
-    opacity: .5;
-  }
-
-  input:focus, textarea:focus {
-    border-bottom-color: var(--accent);
-  }
-
-  .contact-btn {
-    align-self: flex-start;
-    font-family: 'Mulish', sans-serif;
-    font-size: .68rem;
-    font-weight: 300;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--bg);
-    background: var(--ink);
-    border: none;
-    padding: .8rem 1.75rem;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: background .2s, transform .15s;
-  }
-
-  .contact-btn:hover {
-    background: var(--accent);
-    transform: translateX(3px);
-  }
-
-  .contact-footer {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 2rem 1.75rem 3rem;
-    border-top: 1px solid var(--rule);
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 300;
-    letter-spacing: .1em;
-    color: var(--ink-soft);
-  }
-
-  .version {
-    opacity: .5;
-  }
+  /* Formulaire */
+  .contact-form{padding-top:2rem;display:flex;flex-direction:column;gap:1.75rem;max-width:520px;opacity:0;animation:rise .9s .3s ease forwards}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  @media(max-width:500px){.form-grid{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:.5rem}
+  label{font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);opacity:.7}
+  input,textarea{font-family:'Libre Baskerville',Georgia,serif;font-size:.95rem;color:var(--ink);background:transparent;border:none;border-bottom:1px solid var(--rule);padding:.6rem 0;outline:none;transition:border-color .25s;resize:none;width:100%}
+  input::placeholder,textarea::placeholder{font-family:'Mulish',sans-serif;font-size:.85rem;color:var(--ink-soft);opacity:.45}
+  input:focus,textarea:focus{border-bottom-color:var(--accent)}
+  .form-footer{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+  .contact-btn{display:inline-flex;align-items:center;gap:.6rem;font-family:'Mulish',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--bg,#f5f0e8);background:var(--ink);border:none;padding:.85rem 1.75rem;border-radius:3px;cursor:pointer;transition:background .22s,transform .15s}
+  .contact-btn svg{transition:transform .2s}
+  .contact-btn:hover{background:var(--accent);transform:translateX(2px)}
+  .contact-btn:hover svg{transform:translateX(3px)}
+  .form-note{font-family:'Mulish',sans-serif;font-size:.72rem;font-weight:300;font-style:italic;color:var(--ink-soft);opacity:.55}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
 
 <script src="https://web3forms.com/client/script.js" async defer></script>
-
 <script>
-  document.querySelector('.contact-form').addEventListener('submit', function(e) {
-    const captchaResponse = document.querySelector('[name="h-captcha-response"]');
-    if (!captchaResponse || !captchaResponse.value) {
-      e.preventDefault();
-      alert('Merci de valider le captcha avant d\'envoyer.');
-    }
+  document.querySelector('.contact-form')?.addEventListener('submit', function(e) {
+    const cap = document.querySelector('[name="h-captcha-response"]') as HTMLInputElement;
+    if (!cap || !cap.value) { e.preventDefault(); alert('Merci de valider le captcha avant d\'envoyer.'); }
   });
 </script>

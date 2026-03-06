@@ -3,391 +3,161 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-// ── SYSTÈME DE CLASSEMENT ──────────────────────────────────────────────────
-// usage:  immediat | guide | exploration
-//         immediat    = utilisable sans contexte, fait sens tout de suite
-//         guide       = mieux avec un peu de contexte du site
-//         exploration = enrichi par la lecture des articles
-//
-// public: tous | initie | avance
-//         tous    = accessible sans prérequis
-//         initie  = mieux après quelques articles lus
-//         avance  = pour lecteurs réguliers du site
-//
-// Tri automatique : usage (0-2) × 2 + public (0-2) → score croissant
-// Les outils de même statut sont triés par score, puis par ordre d'écriture.
-//
-// color:  couleur propre à l'outil — se propage en cascade via --outil-color
-//         Tracker   #e8724a  corail, énergie matinale
-//         Boussole  #6b7fb8  bleu ardoise, introspection
-//         Baromètre #3ab87a  vert émeraude, équilibre
-//         Récits    #c4993a  or chaud, bibliothèque
-// ──────────────────────────────────────────────────────────────────────────
-
 const outils = [
-  {
-    id: 'barometre',
-    titre: 'Baromètre de charge',
-    description: 'Une photo de ce que tu portes — physique, mental, émotionnel. Sans jugement, sans culpabilité.',
-    tags: ['fatigue', 'charge mentale', 'bienveillance'],
-    statut: 'en-cours',
-    color: '#3ab87a',
-    lien: '/outils/barometre',
-    version: 'v1',
-    usage: 'immediat',
-    public: 'tous',
-  },
-  {
-    id: 'tracker',
-    titre: 'Tracker d\'habitudes',
-    description: 'Trois ancres quotidiennes. Intensité 1 à 3. Mémoire 7 jours. Pas des objectifs — des signaux.',
-    tags: ['habitudes', 'ancres', 'dopamine'],
-    statut: 'en-cours',
-    color: '#e8724a',
-    lien: '/outils/tracker',
-    version: 'v1',
-    usage: 'immediat',
-    public: 'tous',
-  },
-  {
-    id: 'boussole',
-    titre: 'Boussole dopaminergique',
-    description: 'Quelques questions pour estimer ton niveau de charge dopaminergique, ta fatigue nerveuse, et obtenir des pistes d\'équilibre adaptées.',
-    tags: ['dopamine', 'fatigue', 'bien-être'],
-    statut: 'en-cours',
-    color: '#6b7fb8',
-    lien: '/outils/boussole',
-    version: 'v1',
-    usage: 'guide',
-    public: 'tous',
-  },
-  {
-    id: 'narratif',
-    titre: 'Récits conceptuels',
-    description: 'Des concepts complexes mis en scène dans des dialogues. Comprendre en lisant, pas en étudiant.',
-    tags: ['apprentissage', 'cognition', 'dialogue'],
-    statut: 'en-cours',
-    color: '#c4993a',
-    lien: '/outils/recits',
-    version: 'v1',
-    usage: 'exploration',
-    public: 'initie',
-  },
-  {
-    id: 'homeostasie',
-    titre: 'Tableau de bord homéostatique',
-    description: 'Visualiser en temps réel l\'équilibre entre stimuli et récupération — basé sur le modèle de la balance plaisir/douleur.',
-    tags: ['homéostasie', 'comportement'],
-    statut: 'bientot',
-    color: '#2ecc71',
-    usage: 'immediat',
-    public: 'tous',
-  },
-  {
-    id: 'minuteur',
-    titre: 'Minuteur de décompression',
-    description: 'Un minuteur intentionnel pour les pauses — avec un contexte neuroscientifique sur ce qui se passe dans le cerveau pendant le repos actif.',
-    tags: ['récupération', 'pauses', 'attention'],
-    statut: 'idee',
-    color: '#9a9189',
-    usage: 'immediat',
-    public: 'tous',
-  },
-  {
-    id: 'journal',
-    titre: 'Journal de gratifications',
-    description: 'Noter chaque jour ses gratifications consommées — pas pour culpabiliser, mais pour développer la conscience du circuit.',
-    tags: ['conscience', 'habitudes', 'journal'],
-    statut: 'idee',
-    color: '#9a9189',
-    usage: 'guide',
-    public: 'initie',
-  },
-  {
-    id: 'ancres',
-    titre: 'Générateur d\'ancres',
-    description: 'Trouver ses propres ancres matinales selon son profil, ses contraintes et ses objectifs — personnalisé, pas prescriptif.',
-    tags: ['ancres', 'personnalisation', 'matin'],
-    statut: 'idee',
-    color: '#9a9189',
-    usage: 'guide',
-    public: 'tous',
-  },
+  { id: 'barometre', titre: 'Baromètre de charge', description: 'Une photo de ce que tu portes — physique, mental, émotionnel. Sans jugement, sans culpabilité.', tags: ['fatigue', 'charge mentale', 'bienveillance'], statut: 'en-cours', color: '#3ab87a', lien: '/outils/barometre', version: 'v1', usage: 'immediat', public: 'tous' },
+  { id: 'tracker', titre: 'Tracker d\'habitudes', description: 'Trois ancres quotidiennes. Intensité 1 à 3. Mémoire 7 jours. Pas des objectifs — des signaux.', tags: ['habitudes', 'ancres', 'dopamine'], statut: 'en-cours', color: '#e8724a', lien: '/outils/tracker', version: 'v1', usage: 'immediat', public: 'tous' },
+  { id: 'boussole', titre: 'Boussole dopaminergique', description: 'Quelques questions pour estimer ton niveau de charge dopaminergique, ta fatigue nerveuse, et obtenir des pistes d\'équilibre adaptées.', tags: ['dopamine', 'fatigue', 'bien-être'], statut: 'en-cours', color: '#6b7fb8', lien: '/outils/boussole', version: 'v1', usage: 'guide', public: 'tous' },
+  { id: 'narratif', titre: 'Récits conceptuels', description: 'Des concepts complexes mis en scène dans des dialogues. Comprendre en lisant, pas en étudiant.', tags: ['apprentissage', 'cognition', 'dialogue'], statut: 'en-cours', color: '#c4993a', lien: '/outils/recits', version: 'v1', usage: 'exploration', public: 'initie' },
+  { id: 'homeostasie', titre: 'Tableau de bord homéostatique', description: 'Visualiser en temps réel l\'équilibre entre stimuli et récupération — basé sur le modèle de la balance plaisir/douleur.', tags: ['homéostasie', 'comportement'], statut: 'bientot', color: '#2ecc71', usage: 'immediat', public: 'tous' },
+  { id: 'minuteur', titre: 'Minuteur de décompression', description: 'Un minuteur intentionnel pour les pauses — avec un contexte neuroscientifique sur ce qui se passe dans le cerveau pendant le repos actif.', tags: ['récupération', 'pauses', 'attention'], statut: 'idee', color: '#9a9189', usage: 'immediat', public: 'tous' },
+  { id: 'journal', titre: 'Journal de gratifications', description: 'Noter chaque jour ses gratifications consommées — pas pour culpabiliser, mais pour développer la conscience du circuit.', tags: ['conscience', 'habitudes', 'journal'], statut: 'idee', color: '#9a9189', usage: 'guide', public: 'initie' },
+  { id: 'ancres', titre: 'Générateur d\'ancres', description: 'Trouver ses propres ancres matinales selon son profil, ses contraintes et ses objectifs — personnalisé, pas prescriptif.', tags: ['ancres', 'personnalisation', 'matin'], statut: 'idee', color: '#9a9189', usage: 'guide', public: 'tous' },
 ];
 
-// ── Tri automatique ────────────────────────────────────────────────────────
 const ORDRE_STATUT: Record<string, number> = { 'actif': 0, 'en-cours': 1, 'bientot': 2, 'idee': 3 };
 const ORDRE_USAGE: Record<string, number>  = { 'immediat': 0, 'guide': 1, 'exploration': 2 };
 const ORDRE_PUBLIC: Record<string, number> = { 'tous': 0, 'initie': 1, 'avance': 2 };
-
 const outilsTries = [...outils].sort((a, b) => {
-  const statutDiff = (ORDRE_STATUT[a.statut] ?? 9) - (ORDRE_STATUT[b.statut] ?? 9);
-  if (statutDiff !== 0) return statutDiff;
-  const scoreA = (ORDRE_USAGE[a.usage ?? 'immediat'] ?? 0) * 2 + (ORDRE_PUBLIC[a.public ?? 'tous'] ?? 0);
-  const scoreB = (ORDRE_USAGE[b.usage ?? 'immediat'] ?? 0) * 2 + (ORDRE_PUBLIC[b.public ?? 'tous'] ?? 0);
-  return scoreA - scoreB;
+  const d = (ORDRE_STATUT[a.statut]??9)-(ORDRE_STATUT[b.statut]??9);
+  if (d!==0) return d;
+  return ((ORDRE_USAGE[a.usage??'immediat']??0)*2+(ORDRE_PUBLIC[a.public??'tous']??0)) - ((ORDRE_USAGE[b.usage??'immediat']??0)*2+(ORDRE_PUBLIC[b.public??'tous']??0));
 });
-
-const BADGES: Record<string, string> = {
-  'actif':    'Disponible →',
-  'en-cours': 'En cours',
-  'bientot':  'Bientôt',
-  'idee':     'En réflexion',
-};
+const BADGES: Record<string,string> = { 'actif':'Disponible','en-cours':'En cours','bientot':'Bientôt','idee':'En réflexion' };
+const actifs  = outilsTries.filter(o => o.statut==='actif'||o.statut==='en-cours');
+const bientot = outilsTries.filter(o => o.statut==='bientot');
+const idees   = outilsTries.filter(o => o.statut==='idee');
 ---
 
 <Base title="Outils — Syncognie">
   <Header />
-  <div class="outils-wrap">
-    <div class="outils-header">
-      <p class="surtitre">Expérimentation</p>
-      <h1 class="titre">Outils</h1>
-      <p class="sous">Des instruments pour explorer les concepts — pas des diagnostics, des boussoles.</p>
-    </div>
+  <div class="page-wrap">
+    <header class="page-header">
+
+      <!-- ✦ FILIGRANE OUTILS : cadran / instrument de mesure -->
+      <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="210" cy="210" r="170" stroke="#8b5e3c" stroke-width=".5" opacity=".09" class="inst-slow"/>
+        <circle cx="210" cy="210" r="130" stroke="#8b5e3c" stroke-width=".6" opacity=".12" class="inst-slow"/>
+        <circle cx="210" cy="210" r="90"  stroke="#c4993a" stroke-width=".7" opacity=".15" class="inst-mid"/>
+        <circle cx="210" cy="210" r="52"  stroke="#c4993a" stroke-width=".8" opacity=".19" class="inst-mid"/>
+        <circle cx="210" cy="210" r="22"  stroke="#8b5e3c" stroke-width="1"  opacity=".2"  class="inst-fast"/>
+        <!-- Graduations cadran -->
+        <line x1="210" y1="40"  x2="210" y2="55"  stroke="#8b5e3c" stroke-width="1.2" opacity=".2"/>
+        <line x1="210" y1="365" x2="210" y2="380" stroke="#8b5e3c" stroke-width="1.2" opacity=".2"/>
+        <line x1="40"  y1="210" x2="55"  y2="210" stroke="#8b5e3c" stroke-width="1.2" opacity=".2"/>
+        <line x1="365" y1="210" x2="380" y2="210" stroke="#8b5e3c" stroke-width="1.2" opacity=".2"/>
+        <line x1="88"  y1="88"  x2="99"  y2="99"  stroke="#8b5e3c" stroke-width=".8" opacity=".14"/>
+        <line x1="332" y1="88"  x2="321" y2="99"  stroke="#8b5e3c" stroke-width=".8" opacity=".14"/>
+        <line x1="88"  y1="332" x2="99"  y2="321" stroke="#8b5e3c" stroke-width=".8" opacity=".14"/>
+        <line x1="332" y1="332" x2="321" y2="321" stroke="#8b5e3c" stroke-width=".8" opacity=".14"/>
+        <line x1="210" y1="80"  x2="210" y2="90"  stroke="#c4993a" stroke-width=".7" opacity=".16"/>
+        <line x1="210" y1="330" x2="210" y2="340" stroke="#c4993a" stroke-width=".7" opacity=".16"/>
+        <line x1="80"  y1="210" x2="90"  y2="210" stroke="#c4993a" stroke-width=".7" opacity=".16"/>
+        <line x1="330" y1="210" x2="340" y2="210" stroke="#c4993a" stroke-width=".7" opacity=".16"/>
+        <!-- Aiguilles -->
+        <line x1="210" y1="210" x2="210" y2="102" stroke="#c4993a" stroke-width="1.1" opacity=".28" stroke-linecap="round" class="aiguille"/>
+        <line x1="210" y1="210" x2="268" y2="152" stroke="#8b5e3c" stroke-width=".7"  opacity=".18" stroke-linecap="round" class="aiguille-2"/>
+        <circle cx="210" cy="210" r="5"   fill="#c4993a" opacity=".28" class="inst-pulse"/>
+        <circle cx="210" cy="210" r="2.5" fill="#f5f0e8" opacity=".7"/>
+      </svg>
+
+      <p class="page-eyebrow">Expérimentation</p>
+      <h1 class="page-titre">Outils</h1>
+      <p class="page-sous">Des instruments pour explorer les concepts — pas des diagnostics, des boussoles.</p>
+      <div class="page-stats">
+        <span class="stat"><span class="stat-n">{actifs.length}</span><span class="stat-label">disponible{actifs.length>1?'s':''}</span></span>
+        <span class="stat-sep">·</span>
+        <span class="stat"><span class="stat-n">{bientot.length}</span><span class="stat-label">bientôt</span></span>
+        <span class="stat-sep">·</span>
+        <span class="stat"><span class="stat-n">{idees.length}</span><span class="stat-label">en réflexion</span></span>
+      </div>
+    </header>
+
+    <div class="ornament-sep"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Disponibles</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div>
+
     <div class="outils-grille">
-      {outilsTries.map(outil => (
-        (outil.statut === 'actif' || outil.statut === 'en-cours') ? (
-          <a
-            href={outil.lien}
-            class="outil-card outil-card--live"
-            style={`--outil-color: ${outil.color}`}
-          >
-            <div class="outil-top">
-              <div class="outil-dot"></div>
-              <div class="outil-top-right">
-                {outil.version && <span class="outil-version">{outil.version}</span>}
-                <span class="outil-badge badge-live">{BADGES[outil.statut]}</span>
-              </div>
-            </div>
-            <h2 class="outil-titre">{outil.titre}</h2>
-            <p class="outil-desc">{outil.description}</p>
-            <div class="outil-tags">
-              {outil.tags.map(tag => <span class="outil-tag">{tag}</span>)}
-            </div>
-          </a>
-        ) : (
-          <div class={`outil-card statut-${outil.statut}`}>
-            <div class="outil-top">
-              <div class="outil-dot" style={`background:${outil.color}`}></div>
-              <span class={`outil-badge badge-${outil.statut}`}>{BADGES[outil.statut]}</span>
-            </div>
-            <h2 class="outil-titre">{outil.titre}</h2>
-            <p class="outil-desc">{outil.description}</p>
-            <div class="outil-tags">
-              {outil.tags.map(tag => <span class="outil-tag">{tag}</span>)}
-            </div>
-          </div>
-        )
+      {actifs.map((outil,i) => (
+        <a href={outil.lien} class="outil-card outil-card--live" style={`--outil-color:${outil.color};animation-delay:${0.15+i*0.08}s`}>
+          <div class="outil-top"><div class="outil-dot"></div><div class="outil-top-right">{outil.version&&<span class="outil-version">{outil.version}</span>}<span class="outil-badge badge-live">{BADGES[outil.statut]}</span></div></div>
+          <h2 class="outil-titre">{outil.titre}</h2>
+          <p class="outil-desc">{outil.description}</p>
+          <div class="outil-tags">{outil.tags.map(t=><span class="outil-tag">{t}</span>)}</div>
+          <span class="outil-cta">Explorer →</span>
+        </a>
       ))}
     </div>
-    <div class="outils-note">
-      <div class="note-dot"></div>
-      <p>Ces outils naissent des articles. Chaque concept exploré devient potentiellement un instrument pratique.</p>
-    </div>
+
+    {bientot.length>0&&<><div class="ornament-sep ornament-sep--mid"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Bientôt</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div><div class="outils-grille outils-grille--dim">{bientot.map((o,i)=><div class="outil-card statut-bientot" style={`animation-delay:${0.3+i*0.08}s`}><div class="outil-top"><div class="outil-dot" style={`background:${o.color}`}></div><span class="outil-badge badge-bientot">{BADGES[o.statut]}</span></div><h2 class="outil-titre">{o.titre}</h2><p class="outil-desc">{o.description}</p><div class="outil-tags">{o.tags.map(t=><span class="outil-tag">{t}</span>)}</div></div>)}</div></>}
+
+    {idees.length>0&&<><div class="ornament-sep ornament-sep--mid"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">En réflexion</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div><div class="outils-grille outils-grille--dim outils-grille--idee">{idees.map((o,i)=><div class="outil-card statut-idee" style={`animation-delay:${0.45+i*0.06}s`}><div class="outil-top"><div class="outil-dot" style={`background:${o.color}`}></div><span class="outil-badge badge-idee">{BADGES[o.statut]}</span></div><h2 class="outil-titre">{o.titre}</h2><p class="outil-desc">{o.description}</p><div class="outil-tags">{o.tags.map(t=><span class="outil-tag">{t}</span>)}</div></div>)}</div></>}
+
+    <div class="outils-note"><div class="note-dot"></div><p>Ces outils naissent des articles. Chaque concept exploré devient potentiellement un instrument pratique.</p></div>
   </div>
   <Footer />
 </Base>
 
 <style>
-  .outils-wrap {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 4rem 1.75rem 5rem;
-  }
-  .outils-header {
-    margin-bottom: 3.5rem;
-    opacity: 0;
-    animation: rise .9s .1s ease forwards;
-  }
-  .surtitre {
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 300;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: .75rem;
-  }
-  .titre {
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 1rem;
-  }
-  .sous {
-    font-family: 'Mulish', sans-serif;
-    font-size: .9rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.7;
-  }
-  .outils-grille {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    opacity: 0;
-    animation: rise .9s .25s ease forwards;
-  }
+  .page-wrap{max-width:var(--max);margin:0 auto;padding:0 1.75rem 5rem}
+  .page-header{padding:4rem 0 2.5rem;position:relative;overflow:visible;opacity:0;animation:rise .9s .05s ease forwards}
+  .page-eyebrow{font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:300;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:1rem;position:relative;z-index:1}
+  .page-titre{font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:.9rem;position:relative;z-index:1}
+  .page-sous{font-family:'Mulish',sans-serif;font-size:.95rem;font-weight:400;color:var(--ink-soft);line-height:1.8;max-width:52ch;margin-bottom:1.5rem;position:relative;z-index:1}
+  .page-stats{display:flex;align-items:baseline;gap:.75rem;position:relative;z-index:1}
+  .stat{display:flex;align-items:baseline;gap:.35rem}
+  .stat-n{font-family:'Libre Baskerville',Georgia,serif;font-size:1.4rem;font-weight:700;color:var(--orange,#e8724a);line-height:1;letter-spacing:-.02em}
+  .stat-label{font-family:'Mulish',sans-serif;font-size:.62rem;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+  .stat-sep{color:var(--rule);font-size:.9rem}
 
-  /* ── Carte base ── */
-  .outil-card {
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    padding: 1.5rem;
-    transition: box-shadow .2s, transform .2s, border-color .2s;
-    background: rgba(26,23,20,.015);
-    text-decoration: none;
-    display: block;
-    color: inherit;
-    position: relative;
-    overflow: hidden;
-  }
+  /* Filigrane instrument */
+  .header-filigrane{position:absolute;top:50%;right:-60px;transform:translateY(-50%);width:320px;height:320px;pointer-events:none;z-index:0}
+  @media(max-width:600px){.header-filigrane{display:none}}
+  .inst-slow{animation:inst-rot 48s linear infinite;transform-origin:210px 210px}
+  .inst-mid{animation:inst-rot 28s linear infinite reverse;transform-origin:210px 210px}
+  .inst-fast{animation:inst-rot 14s linear infinite;transform-origin:210px 210px}
+  @keyframes inst-rot{to{transform:rotate(360deg)}}
+  .aiguille{transform-origin:210px 210px;animation:aig 9s ease-in-out infinite}
+  .aiguille-2{transform-origin:210px 210px;animation:aig 9s ease-in-out infinite;animation-delay:2.5s}
+  @keyframes aig{0%,100%{transform:rotate(0deg)}40%{transform:rotate(20deg)}70%{transform:rotate(-10deg)}}
+  .inst-pulse{animation:ipulse 4s ease-in-out infinite}
+  @keyframes ipulse{0%,100%{opacity:.28}50%{opacity:.65}}
 
-  /* ── Cartes vivantes — tout en cascade depuis --outil-color ── */
-  .outil-card--live {
-    background: color-mix(in srgb, var(--outil-color) 4%, var(--bg));
-  }
-  .outil-card--live::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--outil-color);
-    border-radius: 10px 10px 0 0;
-    opacity: .75;
-    transition: height .2s, opacity .2s;
-  }
-  .outil-card--live:hover::before {
-    height: 4px;
-    opacity: 1;
-  }
-  .outil-card--live:hover {
-    box-shadow: 0 8px 28px color-mix(in srgb, var(--outil-color) 18%, transparent);
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--outil-color) 35%, var(--rule));
-  }
-  /* Dot couleur automatique */
-  .outil-card--live .outil-dot {
-    background: var(--outil-color);
-  }
-  /* Badge couleur automatique */
-  .badge-live {
-    font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 700;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    padding: .25rem .6rem;
-    border-radius: 4px;
-    background: color-mix(in srgb, var(--outil-color) 10%, transparent);
-    color: var(--outil-color);
-    border: 1px solid color-mix(in srgb, var(--outil-color) 30%, transparent);
-  }
+  /* Séparateurs */
+  .ornament-sep{display:flex;align-items:center;gap:1rem;opacity:0;animation:rise .9s .2s ease forwards}
+  .ornament-sep--mid{margin:2.5rem 0 0;animation-delay:.3s}
+  .orn-line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rule),transparent)}
+  .orn-centre{display:flex;align-items:center;gap:.55rem}
+  .orn-diamond{width:5px;height:5px;background:var(--rule);transform:rotate(45deg)}
+  .orn-label{font-family:'Mulish',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-soft);opacity:.45}
 
-  /* ── Cartes passives ── */
-  .statut-bientot:hover {
-    box-shadow: 0 6px 20px rgba(26,23,20,.06);
-    transform: translateY(-1px);
-  }
-  .statut-idee { opacity: .45; }
+  /* Grille */
+  .outils-grille{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.5rem;opacity:0;animation:rise .9s .25s ease forwards}
+  .outils-grille--dim{opacity:0;animation:rise .9s .35s ease forwards}
+  .outils-grille--idee{opacity:0;animation:rise .9s .45s ease forwards}
+  @media(max-width:580px){.outils-grille{grid-template-columns:1fr}}
 
-  /* ── Éléments communs ── */
-  .outil-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  }
-  .outil-top-right {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-  }
-  .outil-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-  .outil-version {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: .62rem;
-    color: var(--ink-soft);
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    padding: .15rem .35rem;
-    opacity: .75;
-    line-height: 1;
-  }
-  .outil-badge {
-    font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 700;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    padding: .25rem .6rem;
-    border-radius: 4px;
-  }
-  .badge-bientot {
-    background: rgba(255,128,0,.08);
-    color: #ff8000;
-    border: 1px solid rgba(255,128,0,.2);
-  }
-  .badge-idee {
-    background: rgba(154,145,137,.08);
-    color: var(--ink-soft);
-    border: 1px solid var(--rule);
-  }
-  .outil-titre {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--ink);
-    margin-bottom: .6rem;
-  }
-  .outil-desc {
-    font-family: 'Mulish', sans-serif;
-    font-size: .85rem;
-    font-weight: 300;
-    color: var(--ink-mid);
-    line-height: 1.7;
-    margin-bottom: 1rem;
-  }
-  .outil-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem;
-  }
-  .outil-tag {
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: .2rem .5rem;
-  }
-  .outils-note {
-    display: flex;
-    align-items: flex-start;
-    gap: .75rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--rule);
-  }
-  .note-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-    margin-top: .35rem;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-  .outils-note p {
-    font-family: 'Mulish', sans-serif;
-    font-size: .82rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.7;
-    font-style: italic;
-  }
+  .outil-card{border:1px solid var(--rule);border-radius:8px;padding:1.35rem 1.35rem 1.1rem;background:rgba(245,240,232,.4);text-decoration:none;display:flex;flex-direction:column;color:inherit;position:relative;overflow:hidden;transition:box-shadow .22s,transform .22s,border-color .22s}
+  .outil-card--live{background:color-mix(in srgb,var(--outil-color) 4%,var(--bg,#f5f0e8))}
+  .outil-card--live::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--outil-color);border-radius:8px 8px 0 0;opacity:.7;transition:height .2s,opacity .2s}
+  .outil-card--live:hover::before{height:3px;opacity:1}
+  .outil-card--live:hover{box-shadow:0 6px 24px color-mix(in srgb,var(--outil-color) 15%,transparent);transform:translateY(-2px);border-color:color-mix(in srgb,var(--outil-color) 30%,var(--rule))}
+  .outil-card--live .outil-dot{background:var(--outil-color)}
+  .statut-bientot{opacity:.7}.statut-idee{opacity:.38}
+  .outil-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+  .outil-top-right{display:flex;align-items:center;gap:.5rem}
+  .outil-dot{width:7px;height:7px;border-radius:50%;background:var(--rule);flex-shrink:0}
+  .outil-version{font-family:'Courier New',monospace;font-size:.58rem;color:var(--ink-soft);border:1px solid var(--rule);border-radius:3px;padding:.12rem .3rem;opacity:.7;line-height:1}
+  .outil-badge{font-family:'Mulish',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:.2rem .5rem;border-radius:3px}
+  .badge-live{background:color-mix(in srgb,var(--outil-color) 10%,transparent);color:var(--outil-color);border:1px solid color-mix(in srgb,var(--outil-color) 28%,transparent)}
+  .badge-bientot{background:rgba(255,128,0,.07);color:#d4700a;border:1px solid rgba(255,128,0,.18)}
+  .badge-idee{background:rgba(154,145,137,.07);color:var(--ink-soft);border:1px solid var(--rule)}
+  .outil-titre{font-family:'Libre Baskerville',Georgia,serif;font-size:.98rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.55rem;letter-spacing:-.01em}
+  .outil-desc{font-family:'Mulish',sans-serif;font-size:.8rem;font-weight:300;color:var(--ink-mid);line-height:1.7;margin-bottom:.85rem;flex:1}
+  .outil-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.7rem}
+  .outil-tag{font-family:'Mulish',sans-serif;font-size:.58rem;font-weight:300;color:var(--ink-soft);border:1px solid var(--rule);border-radius:3px;padding:.15rem .4rem;opacity:.8}
+  .outil-cta{display:inline-flex;align-items:center;font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blizzard,#148EFF);opacity:0;transform:translateX(-3px);transition:opacity .2s,transform .2s;margin-top:auto}
+  .outil-card--live:hover .outil-cta{opacity:1;transform:translateX(0)}
+  .outils-note{display:flex;align-items:flex-start;gap:.75rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--rule)}
+  .note-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:.3rem;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .outils-note p{font-family:'Mulish',sans-serif;font-size:.82rem;font-weight:300;color:var(--ink-soft);line-height:1.7;font-style:italic}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 </style>
