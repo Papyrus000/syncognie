@@ -8,7 +8,14 @@ const articles = defineCollection({
     tags: z.array(z.string()).optional(),
     format: z.string().optional(),
     statut: z.string().optional(),
-    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),  
+    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
+    serie: z.string().optional(),
+    episode: z.number().optional(),
+    note_genese: z.string().optional(),
+    muri_par: z.array(z.object({
+      slug: z.string(),
+      note: z.string().optional(),
+    })).optional(),
   }),
 });
 export const collections = { articles };

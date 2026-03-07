@@ -100,8 +100,8 @@ article { padding-bottom: 4rem; opacity: 0; animation: rise .9s .15s ease forwar
   letter-spacing: .2em; text-transform: uppercase; color: var(--accent); opacity: .8;
 }
 .readtime {
-  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
-  letter-spacing: .1em; color: var(--ink-soft); opacity: .5;
+  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 500;
+  letter-spacing: .1em; color: var(--ink-soft); opacity: .9;
 }
 .meta-sep { color: var(--rule); font-size: .7rem; }
 
@@ -253,6 +253,37 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 }
 .stade-encart-lien:hover { opacity: .7; transform: translateX(2px); }
 
+/* ── CARTOUCHE NOTE GENÈSE ── */
+.note-genese {
+  margin: 0 0 2.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent, #8b5e3c);
+  border-radius: 0 5px 5px 0;
+  background: rgba(139,94,60,.04);
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+}
+.note-genese-glyph {
+  font-size: .85rem;
+  color: var(--accent);
+  opacity: .7;
+  flex-shrink: 0;
+  margin-top: .2rem;
+  user-select: none;
+}
+.note-genese-text {
+  font-family: 'Mulish', sans-serif;
+  font-size: .88rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-mid);
+  opacity: 1;
+  line-height: 1.65;
+  margin: 0;
+}
+
 /* ── FOOTER ── */
 .article-footer {
   border-top: 1px solid var(--rule); padding: 1.75rem 0 3rem;
@@ -314,6 +345,13 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
       </svg>
       <div class="seuil-line"></div>
     </div>
+
+    {article.data.note_genese && (
+      <div class="note-genese">
+        <span class="note-genese-glyph">✦</span>
+        <p class="note-genese-text">{article.data.note_genese}</p>
+      </div>
+    )}
 
     <div class="content">
       <Content components={{ Personnage }} />
