@@ -11,7 +11,10 @@ const articles = defineCollection({
     stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
     serie: z.string().optional(),
     episode: z.number().optional(),
-    note_genese: z.string().optional(),
+    note_genese: z.array(z.object({
+      date: z.string(),
+      texte: z.string(),
+    })).optional(),
     muri_par: z.array(z.object({
       slug: z.string(),
       note: z.string().optional(),

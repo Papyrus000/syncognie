@@ -256,22 +256,60 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 /* ── CARTOUCHE NOTE GENÈSE ── */
 .note-genese {
   margin: 0 0 2.5rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--rule);
+  border: 1px solid rgba(139,94,60,.18);
   border-left: 3px solid var(--accent, #8b5e3c);
-  border-radius: 0 5px 5px 0;
-  background: rgba(139,94,60,.04);
+  border-radius: 0 6px 6px 0;
+  background: rgba(139,94,60,.035);
+  overflow: hidden;
+}
+.note-genese-header {
   display: flex;
-  gap: .75rem;
-  align-items: flex-start;
+  align-items: center;
+  gap: .45rem;
+  padding: .5rem 1.1rem;
+  border-bottom: 1px solid rgba(139,94,60,.1);
+  background: rgba(139,94,60,.04);
 }
 .note-genese-glyph {
-  font-size: .85rem;
+  font-size: .65rem;
   color: var(--accent);
   opacity: .7;
-  flex-shrink: 0;
-  margin-top: .2rem;
   user-select: none;
+  flex-shrink: 0;
+}
+.note-genese-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: .7;
+}
+.note-genese-body {
+  padding: .5rem 0;
+}
+.note-genese-entry {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding: .6rem 1.1rem;
+  border-bottom: 1px solid rgba(139,94,60,.07);
+}
+.note-genese-entry:last-child {
+  border-bottom: none;
+}
+.note-genese-date {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: .6;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: .1rem;
 }
 .note-genese-text {
   font-family: 'Mulish', sans-serif;
@@ -279,7 +317,6 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
   font-weight: 400;
   font-style: italic;
   color: var(--ink-mid);
-  opacity: 1;
   line-height: 1.65;
   margin: 0;
 }
@@ -346,10 +383,20 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
       <div class="seuil-line"></div>
     </div>
 
-    {article.data.note_genese && (
+    {article.data.note_genese && article.data.note_genese.length > 0 && (
       <div class="note-genese">
-        <span class="note-genese-glyph">✦</span>
-        <p class="note-genese-text">{article.data.note_genese}</p>
+        <div class="note-genese-header">
+          <span class="note-genese-glyph">✦</span>
+          <span class="note-genese-label">Note d'atelier</span>
+        </div>
+        <div class="note-genese-body">
+          {article.data.note_genese.map((entry: { date: string; texte: string }) => (
+            <div class="note-genese-entry">
+              <span class="note-genese-date">{entry.date}</span>
+              <p class="note-genese-text">{entry.texte}</p>
+            </div>
+          ))}
+        </div>
       </div>
     )}
 
