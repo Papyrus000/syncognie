@@ -1,0 +1,108 @@
+---
+// Instant.astro
+// Composant pour les scènes de vie — récits intimes, prose narrative
+// Format distinct du dialogue : pas de bulles, pas de noms. Juste la vie observée.
+
+interface Props {
+  heure?: string;       // ex: "21h47"
+  lieu?: string;        // ex: "Chez Élodie"
+  personnage?: string;  // ex: "Élodie"
+}
+
+const { heure, lieu, personnage } = Astro.props;
+---
+
+<div class="instant-wrapper">
+  {(heure || lieu || personnage) && (
+    <div class="instant-meta">
+      {personnage && <span class="instant-personnage">{personnage}</span>}
+      {heure && <span class="instant-heure">{heure}</span>}
+      {lieu && <span class="instant-lieu">{lieu}</span>}
+    </div>
+  )}
+  <div class="instant-prose">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .instant-wrapper {
+    margin: 2rem 0;
+    position: relative;
+  }
+
+  .instant-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(139, 94, 60, 0.2);
+  }
+
+  .instant-personnage {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--couleur-or, #c4993a);
+  }
+
+  .instant-heure {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--couleur-terracotta, #8b5e3c);
+    opacity: 0.9;
+  }
+
+  .instant-lieu {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.7rem;
+    color: var(--couleur-texte, #2c1810);
+    opacity: 0.5;
+    font-weight: 400;
+  }
+
+  .instant-prose {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--couleur-texte, #2c1810);
+  }
+
+  /* La prose des Instants est plus narrative, légèrement plus aérée */
+  .instant-prose :global(p) {
+    margin-bottom: 1.2rem;
+  }
+
+  .instant-prose :global(em) {
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  /* Petite ligne décorative à gauche — marque le récit intime */
+  .instant-prose::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--couleur-or, #c4993a) 15%,
+      var(--couleur-or, #c4993a) 85%,
+      transparent
+    );
+    opacity: 0.35;
+  }
+
+  @media (max-width: 700px) {
+    .instant-prose::before {
+      display: none;
+    }
+  }
+</style>

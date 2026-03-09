@@ -1,0 +1,64 @@
+---
+// NoteReference.astro
+// Encart de référence en bas de dialogue — sobre, ancré dans l'esthétique Syncognie
+---
+
+<aside class="note-reference">
+  <div class="note-reference-inner">
+    <span class="note-reference-label">Référence</span>
+    <div class="note-reference-content">
+      <slot />
+    </div>
+  </div>
+</aside>
+
+<style>
+  .note-reference {
+    margin-top: 3rem;
+    border-top: 1px solid var(--couleur-terracotta, #8b5e3c);
+    padding-top: 1.5rem;
+    opacity: 0.85;
+  }
+
+  .note-reference-inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .note-reference-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--couleur-terracotta, #8b5e3c);
+    padding-top: 0.15rem;
+    white-space: nowrap;
+  }
+
+  .note-reference-content {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--couleur-texte, #2c1810);
+    opacity: 0.8;
+  }
+
+  .note-reference-content :global(strong) {
+    font-weight: 700;
+    color: var(--couleur-terracotta, #8b5e3c);
+  }
+
+  .note-reference-content :global(em) {
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .note-reference-inner {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>
