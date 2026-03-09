@@ -6,6 +6,12 @@ import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
 articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function toSlug(str: string) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+const seriesUniques = [...new Set(articles.filter(a => a.data.serie).map(a => a.data.serie as string))];
+const nbSeries = seriesUniques.length;
 ---
 
 <Base title="Syncognie">
@@ -187,9 +193,43 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
       })}
     </div>
 
-    <!-- Colonne droite : légende maturité cliquable -->
-    <a href="/stades" class="legende-col legende-col--link" data-zone="stades">
-      <div class="legende-card">
+    <!-- Colonne droite : série + stades -->
+    <aside class="legende-col">
+
+      {nbSeries > 0 && seriesUniques.map((serieName) => {
+        const slug = toSlug(serieName);
+        const nbEp = articles.filter(a => a.data.serie === serieName).length;
+        return (
+          <a href={`/series/${slug}`} class="legende-card legende-card--serie">
+            <div class="legende-serie-top">
+              <svg class="legende-serie-svg" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="1" y="1" width="24" height="16" rx="4" stroke="#c4993a" stroke-width="1" fill="rgba(196,153,58,.04)" opacity=".7"/>
+                <circle cx="7"  cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-a"/>
+                <circle cx="13" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-b"/>
+                <circle cx="19" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-c"/>
+                <path d="M7 17 L4 22 L11 17" fill="rgba(196,153,58,.04)" stroke="#c4993a" stroke-width=".8" opacity=".5" stroke-linejoin="round"/>
+                <rect x="13" y="21" width="24" height="16" rx="4" stroke="#8b5e3c" stroke-width="1" fill="rgba(139,94,60,.03)" opacity=".55"/>
+                <circle cx="20" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-d"/>
+                <circle cx="26" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-e"/>
+                <circle cx="32" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-f"/>
+                <path d="M31 21 L34 16 L27 21" fill="rgba(139,94,60,.03)" stroke="#8b5e3c" stroke-width=".8" opacity=".4" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <p class="legende-serie-eyebrow">Série · {nbEp} ép.</p>
+                <p class="legende-titre">{serieName}</p>
+              </div>
+            </div>
+            <div class="legende-serie-voix">
+              <div class="voix-i voix-e">É</div>
+              <div class="voix-i voix-n">N</div>
+              <span class="voix-label">Élodie & Nathalie</span>
+            </div>
+            <span class="legende-cta">Lire la série →</span>
+          </a>
+        );
+      })}
+
+      <a href="/stades" class="legende-card legende-card--link">
         <p class="legende-titre">Stades de maturité</p>
         <ul class="legende-list">
           <li>
@@ -209,8 +249,9 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
           Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.
         </p>
         <span class="legende-cta">En savoir plus →</span>
-      </div>
-    </a>
+      </a>
+
+    </aside>
 
   </div>
 
@@ -860,32 +901,100 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   /* ── LÉGENDE MATURITÉ CLIQUABLE ── */
   .legende-col {
     padding-top: 1.6rem;
-  }
-
-  .legende-col--link {
-    text-decoration: none;
-    display: block;
-  }
-
-  .legende-col--link .legende-card {
-    transition: transform .22s, box-shadow .22s, border-color .22s;
-    cursor: pointer;
-  }
-
-  .legende-col--link:hover .legende-card {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(44, 36, 22, .09);
-    border-color: rgba(46, 125, 78, .3);
+    position: sticky;
+    top: 4.5rem;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
   }
 
   .legende-card {
-    position: sticky;
-    top: 4.5rem;
     padding: 1rem;
     border: 1px solid var(--rule);
     border-radius: 6px;
     background: rgba(245, 240, 232, .6);
     box-shadow: 0 2px 12px rgba(44, 36, 22, .05);
+    text-decoration: none;
+    display: block;
+    transition: border-color .2s, background .2s;
+  }
+
+  /* Carte série */
+  .legende-card--serie {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+  }
+  .legende-card--serie:hover {
+    border-color: rgba(196,153,58,.35);
+    background: rgba(196,153,58,.06);
+  }
+  .legende-serie-top {
+    display: flex;
+    align-items: flex-start;
+    gap: .55rem;
+  }
+  .legende-serie-svg {
+    width: 34px; height: 34px;
+    flex-shrink: 0;
+    margin-top: .1rem;
+  }
+  .legende-serie-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .49rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: #c4993a; opacity: .65;
+    margin-bottom: .18rem;
+    display: block;
+  }
+  .sdot-a { animation: sdot 2.4s ease-in-out infinite; }
+  .sdot-b { animation: sdot 2.4s ease-in-out infinite; animation-delay: .4s; }
+  .sdot-c { animation: sdot 2.4s ease-in-out infinite; animation-delay: .8s; }
+  .sdot-d { animation: sdot 2.8s ease-in-out infinite; animation-delay: .5s; }
+  .sdot-e { animation: sdot 2.8s ease-in-out infinite; animation-delay: .9s; }
+  .sdot-f { animation: sdot 2.8s ease-in-out infinite; animation-delay: 1.3s; }
+  @keyframes sdot {
+    0%, 100% { opacity: .25; transform: translateY(0); }
+    50%       { opacity: .75; transform: translateY(-1.5px); }
+  }
+  .legende-serie-voix {
+    display: flex;
+    align-items: center;
+  }
+  .voix-i {
+    width: 17px; height: 17px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .52rem; font-weight: 700;
+    border: 1.5px solid var(--bg, #f5f0e8);
+    flex-shrink: 0;
+  }
+  .voix-e {
+    background: rgba(196,153,58,.12); color: #c4993a;
+    border-color: rgba(196,153,58,.25); z-index: 2;
+  }
+  .voix-n {
+    background: rgba(139,94,60,.1); color: var(--accent);
+    border-color: rgba(139,94,60,.2);
+    margin-left: -5px; z-index: 1;
+  }
+  .voix-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem; font-weight: 300; font-style: italic;
+    color: var(--ink-soft); opacity: .5;
+    margin-left: .4rem;
+  }
+
+  /* Carte stades cliquable */
+  .legende-card--link {
+    cursor: pointer;
+  }
+  .legende-card--link:hover {
+    border-color: rgba(139,94,60,.25);
+    background: rgba(139,94,60,.04);
   }
 
   .legende-titre {
@@ -952,7 +1061,8 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     transition: opacity .2s, transform .2s;
   }
 
-  .legende-col--link:hover .legende-cta {
+  .legende-card--serie:hover .legende-cta,
+  .legende-card--link:hover .legende-cta {
     opacity: 1;
     transform: translateX(0);
   }
