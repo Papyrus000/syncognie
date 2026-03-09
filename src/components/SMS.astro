@@ -1,0 +1,79 @@
+---
+// SMS.astro
+// Évocation typographique d'un message — pas une vraie bulle, une présence froide sur la page.
+// direction: "recu" (droite, lui) | "envoye" (gauche, elle)
+
+interface Props {
+  direction?: 'recu' | 'envoye';
+}
+
+const { direction = 'recu' } = Astro.props;
+---
+
+<span class={`sms sms--${direction}`}><slot /></span>
+
+<style>
+  .sms {
+    display: block;
+    font-family: 'Courier New', 'Courier', monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    margin: 1.4rem 0;
+    max-width: 60%;
+    padding: 0.55rem 0.9rem;
+    border-radius: 2px;
+    font-style: normal;
+    position: relative;
+  }
+
+  /* Message reçu — lui — à droite, froid */
+  .sms--recu {
+    margin-left: auto;
+    margin-right: 0;
+    color: var(--couleur-texte, #2c1810);
+    background: rgba(139, 94, 60, 0.04);
+    border: 1px solid rgba(139, 94, 60, 0.12);
+    text-align: left;
+  }
+
+  /* Trait discret à droite — sa présence */
+  .sms--recu::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 20%;
+    bottom: 20%;
+    width: 2px;
+    background: rgba(139, 94, 60, 0.2);
+    border-radius: 1px;
+  }
+
+  /* Message envoyé — elle — à gauche, plus doux */
+  .sms--envoye {
+    margin-left: 0;
+    margin-right: auto;
+    color: var(--couleur-texte, #2c1810);
+    background: rgba(20, 142, 255, 0.04);
+    border: 1px solid rgba(20, 142, 255, 0.1);
+    opacity: 0.75;
+  }
+
+  /* Trait discret à gauche — elle qui efface, qui réduit */
+  .sms--envoye::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 20%;
+    bottom: 20%;
+    width: 2px;
+    background: rgba(20, 142, 255, 0.2);
+    border-radius: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .sms {
+      max-width: 80%;
+    }
+  }
+</style>
