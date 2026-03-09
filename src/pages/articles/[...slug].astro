@@ -21,6 +21,16 @@ const date = article.data.date.toLocaleDateString('fr-FR', { month: 'long', year
 const wordCount = article.body.split(/\s+/).length;
 const readTime = Math.max(1, Math.round(wordCount / 200));
 
+// Slug URL pour la page série
+function toSlug(str: string) {
+  return str
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+const serieSlug = article.data.serie ? toSlug(article.data.serie) : null;
+
 const stade = article.data.stade;
 const stadeConfig: Record<string, { emoji: string; label: string; desc: string; color: string }> = {
   graine: { emoji: '🌱', label: 'Graine', desc: 'Idée posée, peu développée',  color: '#2e7d4e' },
@@ -332,6 +342,47 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── BADGE SÉRIE (dans article) ── */
+.badge-serie-inline {
+  display: inline-flex; align-items: center; gap: .32rem;
+  background: rgba(107,127,184,.08);
+  color: #4a5a8a;
+  border: 1px solid rgba(107,127,184,.22);
+  border-radius: 3px;
+  padding: .15rem .42rem .15rem .32rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .52rem; font-weight: 700;
+  letter-spacing: .11em; text-transform: uppercase;
+  text-decoration: none;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.badge-serie-inline:hover {
+  background: rgba(107,127,184,.16);
+  border-color: rgba(107,127,184,.4);
+  color: #3a4a7a;
+}
+.badge-serie-bulles {
+  display: inline-flex; align-items: flex-end;
+  gap: 2px; height: 8px; margin-right: 1px;
+}
+.bulle {
+  display: block; border-radius: 50%;
+  background: #6b7fb8; opacity: .7;
+}
+.bulle-1 {
+  width: 5px; height: 5px;
+  animation: bulle-p 3.2s ease-in-out infinite;
+}
+.bulle-2 {
+  width: 3.5px; height: 3.5px;
+  animation: bulle-p 3.2s ease-in-out infinite;
+  animation-delay: .8s;
+}
+@keyframes bulle-p {
+  0%, 100% { opacity: .45; transform: translateY(0); }
+  50%       { opacity: .9;  transform: translateY(-2px); }
+}
 </style>
 
 <Header />
@@ -362,6 +413,18 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
         </>
       )}
       {article.data.statut === 'en-cours' && <span class="badge-wip-inline">En cours</span>}
+      {serieSlug && article.data.episode && (
+        <>
+          <span class="meta-sep">·</span>
+          <a href={`/series/`} class="badge-serie-inline">
+            <span class="badge-serie-bulles" aria-hidden="true">
+              <span class="bulle bulle-1"></span>
+              <span class="bulle bulle-2"></span>
+            </span>
+            <span>Série · ép. {article.data.episode}</span>
+          </a>
+        </>
+      )}
     </div>
 
     <h1>{article.data.title}</h1>

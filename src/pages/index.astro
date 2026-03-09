@@ -165,6 +165,15 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
               {article.data.stade === 'graine' && <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>}
               {article.data.stade === 'pousse' && <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>}
               {article.data.stade === 'arbre'  && <span class="badge badge-arbre  badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>}
+              {article.data.serie && article.data.episode && (
+                <span class="badge badge-serie" data-tooltip={article.data.serie}>
+                  <span class="badge-serie-bulles" aria-hidden="true">
+                    <span class="bulle bulle-1"></span>
+                    <span class="bulle bulle-2"></span>
+                  </span>
+                  <span class="badge-serie-ep">ép. {article.data.episode}</span>
+                </span>
+              )}
             </div>
             <p class="article-titre">{article.data.title}</p>
             {article.data.description && (
@@ -953,4 +962,87 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+  /* ── BADGE SÉRIE ── */
+  .badge-serie {
+    display: inline-flex;
+    align-items: center;
+    gap: .32rem;
+    background: rgba(107, 127, 184, .08);
+    color: #4a5a8a;
+    border: 1px solid rgba(107, 127, 184, .22);
+    border-radius: 3px;
+    padding: .15rem .42rem .15rem .32rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .52rem;
+    font-weight: 700;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    cursor: default;
+    position: relative;
+    transition: background .2s, border-color .2s;
+  }
+
+  .badge-serie:hover {
+    background: rgba(107, 127, 184, .14);
+    border-color: rgba(107, 127, 184, .38);
+  }
+
+  .badge-serie::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c2416;
+    color: #f5f0e8;
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 400;
+    letter-spacing: .06em;
+    text-transform: none;
+    white-space: nowrap;
+    padding: .3rem .55rem;
+    border-radius: 3px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+  }
+
+  .badge-serie:hover::after { opacity: 1; }
+
+  .badge-serie-bulles {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 8px;
+    margin-right: 1px;
+  }
+
+  .bulle {
+    display: block;
+    border-radius: 50%;
+    background: #6b7fb8;
+    opacity: .7;
+  }
+
+  .bulle-1 {
+    width: 5px;
+    height: 5px;
+    animation: bulle-p 3.2s ease-in-out infinite;
+  }
+
+  .bulle-2 {
+    width: 3.5px;
+    height: 3.5px;
+    animation: bulle-p 3.2s ease-in-out infinite;
+    animation-delay: .8s;
+  }
+
+  @keyframes bulle-p {
+    0%, 100% { opacity: .45; transform: translateY(0); }
+    50%       { opacity: .9;  transform: translateY(-2px); }
+  }
+
+  .badge-serie-ep { line-height: 1; }
 </style>
