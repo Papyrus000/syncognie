@@ -10,6 +10,13 @@ articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const total = articles.length;
 const recits = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit').length;
 const notes  = total - recits;
+
+function toSlug(str: string) {
+  return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+const seriesUniques = [...new Set(articles.filter(a => a.data.serie).map(a => a.data.serie as string))];
+const nbSeries = seriesUniques.length;
+const serieSlugUnique = nbSeries === 1 ? toSlug(seriesUniques[0]) : null;
 ---
 
 <Base title="Articles — Syncognie">
@@ -91,6 +98,61 @@ const notes  = total - recits;
         </span>
       </div>
     </header>
+
+
+    <!-- ✦ ENCART SÉRIE — s'affiche uniquement si une série existe -->
+    {nbSeries > 0 && seriesUniques.map((serieName) => {
+      const slug = toSlug(serieName);
+      const episodesDeLaSerie = articles.filter(a => a.data.serie === serieName);
+      const nbEp = episodesDeLaSerie.length;
+      return (
+        <a href={`/series/${slug}`} class="serie-encart" aria-label={`Série : ${serieName}`}>
+
+          <!-- SVG : deux bulles de dialogue qui se répondent -->
+          <svg class="serie-encart-svg" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Bulle haute gauche -->
+            <rect x="1" y="1" width="34" height="22" rx="5"
+              stroke="#c4993a" stroke-width="1" fill="rgba(196,153,58,.04)" opacity=".7"/>
+            <circle cx="10" cy="12" r="2" fill="#c4993a" opacity=".5" class="dot-a"/>
+            <circle cx="18" cy="12" r="2" fill="#c4993a" opacity=".5" class="dot-b"/>
+            <circle cx="26" cy="12" r="2" fill="#c4993a" opacity=".5" class="dot-c"/>
+            <!-- Queue bulle haute -->
+            <path d="M10 23 L6 30 L16 23" fill="rgba(196,153,58,.04)" stroke="#c4993a" stroke-width="1" opacity=".5" stroke-linejoin="round"/>
+            <!-- Bulle basse droite -->
+            <rect x="19" y="31" width="34" height="22" rx="5"
+              stroke="#8b5e3c" stroke-width="1" fill="rgba(139,94,60,.03)" opacity=".55"/>
+            <circle cx="29" cy="42" r="2" fill="#8b5e3c" opacity=".4" class="dot-d"/>
+            <circle cx="37" cy="42" r="2" fill="#8b5e3c" opacity=".4" class="dot-e"/>
+            <circle cx="45" cy="42" r="2" fill="#8b5e3c" opacity=".4" class="dot-f"/>
+            <!-- Queue bulle basse -->
+            <path d="M44 31 L48 24 L38 31" fill="rgba(139,94,60,.03)" stroke="#8b5e3c" stroke-width="1" opacity=".4" stroke-linejoin="round"/>
+          </svg>
+
+          <div class="serie-encart-body">
+            <div class="serie-encart-top">
+              <span class="serie-encart-eyebrow">Série de dialogues</span>
+              <span class="serie-encart-pip"></span>
+              <span class="serie-encart-count">{nbEp} épisode{nbEp > 1 ? 's' : ''}</span>
+            </div>
+            <p class="serie-encart-titre">{serieName}</p>
+            <p class="serie-encart-desc">
+              Deux femmes en terrasse — Élodie et Nathalie — qui pensent à voix haute.
+              Chaque dialogue traverse un concept par l'expérience, les contradictions,
+              ce qu'on ne s'avoue pas encore.
+            </p>
+            <div class="serie-encart-footer">
+              <div class="serie-voix">
+                <div class="voix-i voix-e">É</div>
+                <div class="voix-i voix-n">N</div>
+                <span class="voix-label">Élodie & Nathalie</span>
+              </div>
+              <span class="serie-encart-cta">Lire la série →</span>
+            </div>
+          </div>
+
+        </a>
+      );
+    })}
 
     <!-- Séparateur ornemental -->
     <div class="ornament-sep">
@@ -264,6 +326,20 @@ const notes  = total - recits;
     color: var(--rule);
     font-size: .9rem;
     line-height: 1;
+  }
+
+  .stat-serie-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .35rem;
+    text-decoration: none;
+    transition: opacity .2s;
+  }
+  .stat-serie-link:hover { opacity: .7; }
+  .stat-serie-link:hover .stat-label { text-decoration: underline; text-underline-offset: 3px; }
+
+  .stat-n-serie {
+    color: #c4993a;
   }
 
   /* ── SÉPARATEUR ── */
@@ -694,5 +770,204 @@ const notes  = total - recits;
 
   .badge-serie-ep {
     line-height: 1;
+  }
+</style>
+
+<style>
+  /* ══════════════════════════════════════
+     ENCART SÉRIE
+  ══════════════════════════════════════ */
+
+  .serie-encart {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin: 1.25rem 0 2rem;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    opacity: 0;
+    animation: rise .8s .18s ease forwards;
+    transition: background .25s;
+    cursor: pointer;
+    /* Bordure subtile */
+    border: 1px solid rgba(196,153,58,.18);
+    background: rgba(196,153,58,.025);
+  }
+
+  /* Barre gauche animée */
+  .serie-encart::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 12%; bottom: 12%;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, transparent, #c4993a 30%, #c4993a 70%, transparent);
+    opacity: .4;
+    transition: opacity .25s, top .25s, bottom .25s;
+  }
+
+  /* Lueur de fond au survol */
+  .serie-encart::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(196,153,58,.06) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity .35s;
+    pointer-events: none;
+  }
+
+  .serie-encart:hover {
+    background: rgba(196,153,58,.045);
+    border-color: rgba(196,153,58,.32);
+  }
+
+  .serie-encart:hover::before {
+    opacity: .7;
+    top: 0; bottom: 0;
+  }
+
+  .serie-encart:hover::after { opacity: 1; }
+
+  /* SVG bulles de dialogue */
+  .serie-encart-svg {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    margin-top: .15rem;
+  }
+
+  /* Points animés dans les bulles SVG */
+  .dot-a { animation: dot-pulse 2.4s ease-in-out infinite; }
+  .dot-b { animation: dot-pulse 2.4s ease-in-out infinite; animation-delay: .4s; }
+  .dot-c { animation: dot-pulse 2.4s ease-in-out infinite; animation-delay: .8s; }
+  .dot-d { animation: dot-pulse 2.8s ease-in-out infinite; animation-delay: .6s; }
+  .dot-e { animation: dot-pulse 2.8s ease-in-out infinite; animation-delay: 1s; }
+  .dot-f { animation: dot-pulse 2.8s ease-in-out infinite; animation-delay: 1.4s; }
+
+  @keyframes dot-pulse {
+    0%, 100% { opacity: .3; transform: translateY(0); }
+    50%       { opacity: .85; transform: translateY(-2px); }
+  }
+
+  /* Corps de l'encart */
+  .serie-encart-body { flex: 1; min-width: 0; }
+
+  .serie-encart-top {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .4rem;
+    flex-wrap: wrap;
+  }
+
+  .serie-encart-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .52rem; font-weight: 700;
+    letter-spacing: .26em; text-transform: uppercase;
+    color: #c4993a; opacity: .65;
+  }
+
+  .serie-encart-pip {
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: rgba(196,153,58,.35);
+    flex-shrink: 0;
+  }
+
+  .serie-encart-count {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem; font-weight: 300;
+    letter-spacing: .1em;
+    color: var(--ink-soft); opacity: .5;
+  }
+
+  .serie-encart-titre {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .98rem; font-weight: 400; font-style: italic;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: .35rem;
+    transition: color .2s;
+  }
+
+  .serie-encart:hover .serie-encart-titre { color: var(--accent); }
+
+  .serie-encart-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .78rem; font-weight: 300;
+    color: var(--ink-soft); line-height: 1.7;
+    max-width: 58ch;
+    margin-bottom: .75rem;
+  }
+
+  .serie-encart-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Initiales personnages superposées */
+  .serie-voix {
+    display: flex;
+    align-items: center;
+  }
+
+  .voix-i {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .62rem; font-weight: 700;
+    border: 1.5px solid var(--bg, #f5f0e8);
+    flex-shrink: 0;
+  }
+
+  .voix-e {
+    background: rgba(196,153,58,.12);
+    color: #c4993a;
+    border-color: rgba(196,153,58,.25);
+    z-index: 2;
+  }
+
+  .voix-n {
+    background: rgba(139,94,60,.1);
+    color: var(--accent);
+    border-color: rgba(139,94,60,.2);
+    margin-left: -7px;
+    z-index: 1;
+  }
+
+  .voix-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem; font-weight: 300; font-style: italic;
+    color: var(--ink-soft); opacity: .5;
+    margin-left: .55rem;
+  }
+
+  .serie-encart-cta {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    margin-left: auto;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity .2s, transform .2s;
+  }
+
+  .serie-encart:hover .serie-encart-cta {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 600px) {
+    .serie-encart { gap: 1rem; }
+    .serie-encart-svg { width: 40px; height: 40px; }
+    .serie-encart-cta { margin-left: 0; }
   }
 </style>
