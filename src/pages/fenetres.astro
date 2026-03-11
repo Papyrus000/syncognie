@@ -7,11 +7,16 @@ import { getCollection } from 'astro:content';
 const toutes = await getCollection('fenetres');
 const vivantes = toutes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
+// Couleurs par personnage
+const COULEURS: Record<string, string> = {
+  'Élodie':   '#0070dd',
+  'Nathalie': '#ff7c0a',
+  'Rayan':    '#8b6fc4',
+  'Isabelle': '#7a9e7e',
+  'Yanis':    '#c4993a',
+};
+
 const fantomes = [
-  { personnage: 'Élodie',   heure: '21h47',       lieu: 'Chez elle',     amorce: 'Elle relit le même message depuis deux heures. Six mots. Elle sait exactement ce qu\'ils signifient.' },
-  { personnage: 'Nathalie', heure: '6h14',         lieu: 'Chez elle',     amorce: 'Elle est debout avant tout le monde. Le café, le ciel qui pâlit. Et des mots qu\'elle aurait préféré ne pas avoir.' },
-  { personnage: 'Rayan',    heure: '2h04',         lieu: 'Sa chambre',    amorce: 'Il parle à une IA à deux heures du matin. Pas parce qu\'il est seul. Parce que certaines choses se disent mieux sans témoin.' },
-  { personnage: 'Isabelle', heure: 'Jeudi soir',   lieu: 'La cuisine',    amorce: 'Elle a tout préparé. Il a dit c\'est sympa.' },
   { personnage: 'Thomas',   heure: 'Samedi matin', lieu: 'Dans la rue',   amorce: 'Il est allé chercher le pain. Il pense à elle pendant tout le trajet.' },
 ];
 ---
@@ -24,120 +29,158 @@ const fantomes = [
     <!-- ✦ EN-TÊTE -->
     <header class="page-header">
 
-      <!-- Filigrane : cadre de fenêtre / regard -->
-      <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- Cadre extérieur -->
-        <rect x="60" y="60" width="300" height="300" rx="4"
-          stroke="#8b5e3c" stroke-width=".7" opacity=".12" class="f-breathe"/>
-        <!-- Croisillon -->
-        <line x1="60" y1="210" x2="360" y2="210" stroke="#8b5e3c" stroke-width=".5" opacity=".1" class="f-breathe"/>
-        <line x1="210" y1="60" x2="210" y2="360" stroke="#8b5e3c" stroke-width=".5" opacity=".1" class="f-breathe"/>
-        <!-- Cadre intérieur -->
-        <rect x="90" y="90" width="240" height="240" rx="3"
-          stroke="#c4993a" stroke-width=".5" opacity=".1" class="f-breathe-slow"/>
-        <!-- Coins marqués -->
-        <path d="M60 90 L60 60 L90 60"   stroke="#c4993a" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M330 60 L360 60 L360 90" stroke="#c4993a" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M360 330 L360 360 L330 360" stroke="#c4993a" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M90 360 L60 360 L60 330" stroke="#c4993a" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
-        <!-- Point focal central -->
-        <circle cx="210" cy="210" r="3"  fill="#8b5e3c" opacity=".2" class="f-pulse"/>
-        <circle cx="210" cy="210" r="8"  fill="none" stroke="#8b5e3c" stroke-width=".6" opacity=".1" class="f-pulse"/>
-        <circle cx="210" cy="210" r="20" fill="none" stroke="#c4993a" stroke-width=".4" opacity=".08" class="f-breathe-slow"/>
-        <!-- Lignes de regard -->
-        <line x1="210" y1="210" x2="90"  y2="90"  stroke="#c4993a" stroke-width=".4" opacity=".08"/>
-        <line x1="210" y1="210" x2="330" y2="90"  stroke="#c4993a" stroke-width=".4" opacity=".08"/>
-        <line x1="210" y1="210" x2="330" y2="330" stroke="#c4993a" stroke-width=".4" opacity=".08"/>
-        <line x1="210" y1="210" x2="90"  y2="330" stroke="#c4993a" stroke-width=".4" opacity=".08"/>
+      <!-- Filigrane : fenêtres en perspective empilées -->
+      <svg class="header-filigrane" viewBox="0 0 480 380" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Fenêtre arrière-plan profond -->
+        <rect x="180" y="40" width="220" height="160" rx="3"
+          stroke="#8b5e3c" stroke-width=".5" opacity=".06" class="f-slow"/>
+        <line x1="180" y1="120" x2="400" y2="120" stroke="#8b5e3c" stroke-width=".4" opacity=".05"/>
+        <line x1="290" y1="40"  x2="290" y2="200" stroke="#8b5e3c" stroke-width=".4" opacity=".05"/>
+
+        <!-- Fenêtre plan intermédiaire -->
+        <rect x="120" y="80" width="200" height="150" rx="3"
+          stroke="#c4993a" stroke-width=".6" opacity=".1" class="f-mid"/>
+        <line x1="120" y1="155" x2="320" y2="155" stroke="#c4993a" stroke-width=".5" opacity=".08"/>
+        <line x1="220" y1="80"  x2="220" y2="230" stroke="#c4993a" stroke-width=".5" opacity=".08"/>
+        <!-- Coins -->
+        <path d="M120 100 L120 80 L140 80"   stroke="#c4993a" stroke-width="1" opacity=".15" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M300 80 L320 80 L320 100"   stroke="#c4993a" stroke-width="1" opacity=".15" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M320 210 L320 230 L300 230" stroke="#c4993a" stroke-width="1" opacity=".15" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M140 230 L120 230 L120 210" stroke="#c4993a" stroke-width="1" opacity=".15" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Fenêtre avant-plan -->
+        <rect x="50" y="130" width="180" height="130" rx="3"
+          stroke="#8b5e3c" stroke-width=".8" opacity=".14" class="f-front"/>
+        <line x1="50"  y1="195" x2="230" y2="195" stroke="#8b5e3c" stroke-width=".6" opacity=".1"/>
+        <line x1="140" y1="130" x2="140" y2="260" stroke="#8b5e3c" stroke-width=".6" opacity=".1"/>
+        <!-- Coins forts -->
+        <path d="M50 150 L50 130 L70 130"   stroke="#8b5e3c" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M210 130 L230 130 L230 150" stroke="#8b5e3c" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M230 240 L230 260 L210 260" stroke="#8b5e3c" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M70 260 L50 260 L50 240"   stroke="#8b5e3c" stroke-width="1.2" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Lignes de perspective reliant les cadres -->
+        <line x1="50"  y1="130" x2="120" y2="80"  stroke="#c4993a" stroke-width=".4" opacity=".07" stroke-dasharray="3 6"/>
+        <line x1="230" y1="130" x2="320" y2="80"  stroke="#c4993a" stroke-width=".4" opacity=".07" stroke-dasharray="3 6"/>
+        <line x1="230" y1="260" x2="320" y2="230" stroke="#c4993a" stroke-width=".4" opacity=".07" stroke-dasharray="3 6"/>
+
+        <!-- Points lumineux aux coins avant -->
+        <circle cx="50"  cy="130" r="2.5" fill="#8b5e3c" opacity=".2" class="f-pulse"/>
+        <circle cx="230" cy="130" r="2"   fill="#c4993a" opacity=".18" class="f-pulse-2"/>
+        <circle cx="230" cy="260" r="2.5" fill="#8b5e3c" opacity=".2" class="f-pulse"/>
+        <circle cx="50"  cy="260" r="2"   fill="#c4993a" opacity=".18" class="f-pulse-2"/>
       </svg>
 
-      <p class="page-eyebrow">Fenêtres</p>
-      <h1 class="page-titre">Des instants ordinaires.<br><em>Ce qui se passe à l'intérieur.</em></h1>
-      <p class="page-sous">Chaque fenêtre ouvre sur un moment précis dans une vie. Aucun concept nommé. Juste ce qui est là — et ce que ça fait.</p>
-
-      <div class="page-stats">
-        <span class="stat">
-          <span class="stat-n">{vivantes.length}</span>
-          <span class="stat-label">ouvert{vivantes.length > 1 ? 'es' : 'e'}</span>
-        </span>
-        <span class="stat-sep">·</span>
-        <span class="stat">
-          <span class="stat-n">{fantomes.length}</span>
-          <span class="stat-label">à venir</span>
-        </span>
+      <div class="header-content">
+        <p class="page-eyebrow">Fenêtres</p>
+        <h1 class="page-titre">Des instants ordinaires.<br><em>Ce qui se passe à l'intérieur.</em></h1>
+        <p class="page-sous">Chaque fenêtre ouvre sur un moment précis dans une vie. Aucun concept nommé. Juste ce qui est là — et ce que ça fait.</p>
+        <div class="page-stats">
+          <span class="stat">
+            <span class="stat-n">{vivantes.length}</span>
+            <span class="stat-label">ouvert{vivantes.length > 1 ? 'es' : 'e'}</span>
+          </span>
+          <span class="stat-sep">·</span>
+          <span class="stat">
+            <span class="stat-n">{fantomes.length}</span>
+            <span class="stat-label">à venir</span>
+          </span>
+        </div>
       </div>
-
     </header>
 
-    <!-- ✦ FENÊTRES VIVANTES -->
+    <!-- ✦ SÉPARATEUR -->
+    <div class="ornament-sep">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">Ouvertes</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- ✦ MOSAÏQUE VIVANTES -->
     {vivantes.length > 0 && (
+      <div class="mosaique">
+        {vivantes.map((f, i) => {
+          const couleur = COULEURS[f.data.personnage] ?? '#8b5e3c';
+          return (
+            <a
+              href={`/fenetres/${f.slug}`}
+              class="fenetre-tuile"
+              style={`--c: ${couleur}; animation-delay: ${0.1 + i * 0.08}s`}
+              data-size={i === 0 ? 'large' : i % 5 === 3 ? 'tall' : 'normal'}
+            >
+              <!-- Lumière de fond -->
+              <div class="tuile-lueur"></div>
+
+              <!-- En-tête -->
+              <div class="tuile-top">
+                <div class="tuile-temps">
+                  <span class="tuile-heure">{f.data.heure}</span>
+                  <span class="tuile-sep">·</span>
+                  <span class="tuile-lieu">{f.data.lieu}</span>
+                </div>
+                <div class="tuile-dot"></div>
+              </div>
+
+              <!-- Personnage -->
+              <h2 class="tuile-personnage">{f.data.personnage}</h2>
+
+              <!-- Amorce -->
+              <p class="tuile-amorce">{f.data.amorce ?? f.data.description}</p>
+
+              <!-- CTA -->
+              <div class="tuile-footer">
+                <span class="tuile-cta">Ouvrir →</span>
+                <div class="tuile-barre"></div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    )}
+
+    <!-- ✦ FANTÔMES -->
+    {fantomes.length > 0 && (
       <>
-        <div class="ornament-sep">
+        <div class="ornament-sep ornament-sep--mid">
           <div class="orn-line"></div>
           <div class="orn-centre">
             <div class="orn-diamond"></div>
-            <span class="orn-label">Ouvertes</span>
+            <span class="orn-label">En préparation</span>
             <div class="orn-diamond"></div>
           </div>
           <div class="orn-line"></div>
         </div>
 
-        <div class="fenetres-grille">
-          {vivantes.map((f, i) => (
-            <a
-              href={`/fenetres/${f.slug}`}
-              class="fenetre-card fenetre-card--vive"
-              style={`animation-delay:${0.15 + i * 0.1}s`}
-            >
-              <div class="fenetre-card-top">
-                <div class="fenetre-card-temps">
-                  <span class="fenetre-heure">{f.data.heure}</span>
-                  <span class="fenetre-sep">·</span>
-                  <span class="fenetre-lieu">{f.data.lieu}</span>
+        <div class="fantomes-grille">
+          {fantomes.map((f, i) => {
+            const couleur = COULEURS[f.personnage] ?? '#9a9189';
+            return (
+              <div
+                class="fenetre-fantome"
+                style={`--c: ${couleur}; animation-delay: ${0.35 + i * 0.07}s`}
+              >
+                <div class="tuile-top">
+                  <div class="tuile-temps">
+                    <span class="tuile-heure">{f.heure}</span>
+                    <span class="tuile-sep">·</span>
+                    <span class="tuile-lieu">{f.lieu}</span>
+                  </div>
+                  <span class="fantome-badge">Bientôt</span>
                 </div>
-                <span class="fenetre-badge">Lire</span>
+                <h2 class="tuile-personnage">{f.personnage}</h2>
+                <p class="tuile-amorce">{f.amorce}</p>
               </div>
-              <h2 class="fenetre-personnage">{f.data.personnage}</h2>
-              <p class="fenetre-amorce">{f.data.amorce ?? f.data.description}</p>
-              <span class="fenetre-cta">Ouvrir la fenêtre →</span>
-            </a>
-          ))}
+            );
+          })}
         </div>
       </>
     )}
 
-    <!-- ✦ FENÊTRES FANTÔMES -->
-    <div class="ornament-sep ornament-sep--mid">
-      <div class="orn-line"></div>
-      <div class="orn-centre">
-        <div class="orn-diamond"></div>
-        <span class="orn-label">En préparation</span>
-        <div class="orn-diamond"></div>
-      </div>
-      <div class="orn-line"></div>
-    </div>
-
-    <div class="fenetres-grille fenetres-grille--fantome">
-      {fantomes.map((f, i) => (
-        <div
-          class="fenetre-card fenetre-card--fantome"
-          style={`animation-delay:${0.3 + i * 0.07}s`}
-        >
-          <div class="fenetre-card-top">
-            <div class="fenetre-card-temps">
-              <span class="fenetre-heure">{f.heure}</span>
-              <span class="fenetre-sep">·</span>
-              <span class="fenetre-lieu">{f.lieu}</span>
-            </div>
-            <span class="fenetre-badge fenetre-badge--soon">Bientôt</span>
-          </div>
-          <h2 class="fenetre-personnage">{f.personnage}</h2>
-          <p class="fenetre-amorce">{f.amorce}</p>
-        </div>
-      ))}
-    </div>
-
-    <!-- ✦ NOTE DE BAS -->
+    <!-- ✦ NOTE -->
     <div class="fenetres-note">
       <div class="note-dot"></div>
       <p>Les fenêtres naissent des dialogues — chaque personnage rencontré en terrasse continue d'exister la nuit.</p>
@@ -149,6 +192,7 @@ const fantomes = [
 </Base>
 
 <style>
+  /* ── VARIABLES & WRAP ── */
   .page-wrap {
     max-width: var(--max);
     margin: 0 auto;
@@ -164,328 +208,346 @@ const fantomes = [
     animation: rise .9s .05s ease forwards;
   }
 
+  .header-filigrane {
+    position: absolute;
+    top: 50%; right: -40px;
+    transform: translateY(-50%);
+    width: 340px; height: 280px;
+    pointer-events: none; z-index: 0;
+  }
+  @media (max-width: 640px) { .header-filigrane { display: none; } }
+
+  .f-slow  { animation: f-breathe 9s  ease-in-out infinite; }
+  .f-mid   { animation: f-breathe 7s  ease-in-out infinite; animation-delay: 1s; }
+  .f-front { animation: f-breathe 5s  ease-in-out infinite; animation-delay: .5s; }
+  .f-pulse   { animation: f-pulse 3s ease-in-out infinite; }
+  .f-pulse-2 { animation: f-pulse 3s ease-in-out infinite; animation-delay: 1.2s; }
+
+  @keyframes f-breathe {
+    0%,100% { opacity: 1; } 50% { opacity: .4; }
+  }
+  @keyframes f-pulse {
+    0%,100% { opacity: .2; transform: scale(1); }
+    50%      { opacity: .6; transform: scale(1.5); }
+  }
+
+  .header-content { position: relative; z-index: 1; }
+
   .page-eyebrow {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 300;
-    letter-spacing: .32em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: .7;
+    font-size: .6rem; font-weight: 300;
+    letter-spacing: .32em; text-transform: uppercase;
+    color: var(--accent); opacity: .7;
     margin-bottom: 1rem;
-    position: relative;
-    z-index: 1;
   }
 
   .page-titre {
-    font-family: 'Libre Baskerville', Georgia, serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: clamp(1.7rem, 3.5vw, 2.4rem);
-    font-weight: 400;
-    color: var(--ink);
-    line-height: 1.2;
-    letter-spacing: -.01em;
+    font-weight: 400; color: var(--ink);
+    line-height: 1.2; letter-spacing: -.01em;
     margin-bottom: .9rem;
-    position: relative;
-    z-index: 1;
   }
-
-  .page-titre em {
-    font-style: italic;
-    color: var(--accent);
-  }
+  .page-titre em { font-style: italic; color: var(--accent); }
 
   .page-sous {
     font-family: 'Mulish', sans-serif;
-    font-size: .95rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.8;
-    max-width: 52ch;
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 1;
+    font-size: .95rem; font-weight: 300;
+    color: var(--ink-soft); line-height: 1.8;
+    max-width: 52ch; margin-bottom: 1.5rem;
   }
 
-  .page-stats {
-    display: flex;
-    align-items: baseline;
-    gap: .75rem;
-    position: relative;
-    z-index: 1;
-  }
-
+  .page-stats { display: flex; align-items: baseline; gap: .75rem; }
   .stat { display: flex; align-items: baseline; gap: .35rem; }
-
   .stat-n {
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-    letter-spacing: -.02em;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--accent); line-height: 1;
   }
-
   .stat-label {
     font-family: 'Mulish', sans-serif;
-    font-size: .62rem;
-    font-weight: 300;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size: .62rem; font-weight: 300;
+    letter-spacing: .12em; text-transform: uppercase;
     color: var(--ink-soft);
   }
-
   .stat-sep { color: var(--rule); font-size: .9rem; }
-
-  /* ── FILIGRANE ── */
-  .header-filigrane {
-    position: absolute;
-    top: 50%;
-    right: -60px;
-    transform: translateY(-50%);
-    width: 300px;
-    height: 300px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  @media (max-width: 600px) { .header-filigrane { display: none; } }
-
-  .f-breathe      { animation: f-breathe 6s ease-in-out infinite; }
-  .f-breathe-slow { animation: f-breathe 10s ease-in-out infinite; }
-  .f-pulse        { animation: f-pulse 3s ease-in-out infinite; }
-
-  @keyframes f-breathe {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: .5; }
-  }
-  @keyframes f-pulse {
-    0%, 100% { opacity: .2; transform: scale(1); }
-    50%       { opacity: .5; transform: scale(1.3); }
-  }
 
   /* ── SÉPARATEURS ── */
   .ornament-sep {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    opacity: 0;
-    animation: rise .9s .2s ease forwards;
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0; animation: rise .9s .2s ease forwards;
   }
-  .ornament-sep--mid {
-    margin: 2.5rem 0 0;
-    animation-delay: .35s;
-  }
+  .ornament-sep--mid { margin: 2.5rem 0 0; animation-delay: .35s; }
   .orn-line {
-    flex: 1;
-    height: 1px;
+    flex: 1; height: 1px;
     background: linear-gradient(to right, transparent, var(--rule), transparent);
   }
   .orn-centre { display: flex; align-items: center; gap: .55rem; }
-  .orn-diamond {
-    width: 5px; height: 5px;
-    background: var(--rule);
-    transform: rotate(45deg);
-  }
+  .orn-diamond { width: 5px; height: 5px; background: var(--rule); transform: rotate(45deg); }
   .orn-label {
     font-family: 'Mulish', sans-serif;
-    font-size: .58rem;
-    font-weight: 700;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    opacity: .45;
+    font-size: .58rem; font-weight: 700;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: var(--ink-soft); opacity: .45;
   }
 
-  /* ── GRILLE ── */
-  .fenetres-grille {
+  /* ── MOSAÏQUE ── */
+  .mosaique {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.1rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    gap: 1rem;
     margin-top: 1.5rem;
     opacity: 0;
     animation: rise .9s .25s ease forwards;
   }
 
-  .fenetres-grille--fantome {
-    animation-delay: .4s;
+  @media (max-width: 860px) { .mosaique { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .mosaique { grid-template-columns: 1fr; } }
+
+  /* Première tuile : large sur toute la largeur */
+  .fenetre-tuile[data-size="large"] {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
   }
 
-  @media (max-width: 580px) {
-    .fenetres-grille { grid-template-columns: 1fr; }
+  .fenetre-tuile[data-size="large"] .tuile-personnage {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
   }
 
-  /* ── CARTE FENÊTRE ── */
-  .fenetre-card {
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    padding: 1.35rem 1.35rem 1.1rem;
-    background: rgba(245, 240, 232, .4);
+  .fenetre-tuile[data-size="large"] .tuile-amorce {
+    font-size: .95rem;
+    line-height: 1.75;
+  }
+
+  @media (max-width: 640px) {
+    .fenetre-tuile[data-size="large"] {
+      grid-column: auto;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── TUILE ── */
+  .fenetre-tuile {
+    position: relative;
     display: flex;
     flex-direction: column;
-    position: relative;
+    padding: 1.5rem 1.5rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    text-decoration: none;
+    color: inherit;
     overflow: hidden;
-    transition: box-shadow .22s, transform .22s, border-color .22s;
+    background: var(--bg, #f5f0e8);
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    cursor: pointer;
   }
 
-  /* Barre supérieure terracotta */
-  .fenetre-card--vive::before {
+  /* Barre couleur personnage en haut */
+  .fenetre-tuile::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--c);
+    border-radius: 10px 10px 0 0;
+    opacity: .7;
+    transition: height .25s ease, opacity .25s ease;
+  }
+
+  /* Bordure gauche subtile couleur */
+  .fenetre-tuile::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--c), transparent);
+    opacity: .15;
+    transition: opacity .25s ease;
+  }
+
+  .fenetre-tuile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--c) 15%, transparent);
+    border-color: color-mix(in srgb, var(--c) 35%, var(--rule));
+  }
+
+  .fenetre-tuile:hover::before { height: 4px; opacity: 1; }
+  .fenetre-tuile:hover::after  { opacity: .3; }
+
+  .fenetre-tuile:hover .tuile-lueur { opacity: 1; }
+  .fenetre-tuile:hover .tuile-cta   { opacity: 1; transform: translateX(0); }
+  .fenetre-tuile:hover .tuile-barre { transform: scaleX(1); }
+
+  /* ── LUEUR DE FOND ── */
+  .tuile-lueur {
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--c) 12%, transparent), transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease;
+  }
+
+  /* ── CONTENU TUILE ── */
+  .tuile-top {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: .85rem;
+  }
+
+  .tuile-temps { display: flex; align-items: center; gap: .4rem; }
+
+  .tuile-heure {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--c);
+    transition: color .2s;
+  }
+
+  .tuile-sep { font-size: .65rem; color: var(--rule); }
+
+  .tuile-lieu {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem; font-weight: 300;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .tuile-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--c);
+    opacity: .45;
+    flex-shrink: 0;
+    transition: opacity .2s, transform .2s;
+  }
+  .fenetre-tuile:hover .tuile-dot { opacity: .9; transform: scale(1.3); }
+
+  .tuile-personnage {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--ink); line-height: 1.2;
+    margin-bottom: .55rem; letter-spacing: -.01em;
+    transition: color .2s;
+  }
+  .fenetre-tuile:hover .tuile-personnage { color: color-mix(in srgb, var(--c) 30%, var(--ink)); }
+
+  .tuile-amorce {
+    font-family: 'Mulish', sans-serif;
+    font-size: .82rem; font-weight: 300;
+    color: var(--ink-mid); line-height: 1.7;
+    font-style: italic; flex: 1;
+    margin-bottom: 1rem;
+  }
+
+  .tuile-footer {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .tuile-cta {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--c);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity .2s, transform .2s;
+  }
+
+  .tuile-barre {
+    height: 1.5px;
+    width: 32px;
+    background: var(--c);
+    opacity: .4;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform .3s ease;
+  }
+
+  /* ── FANTÔMES ── */
+  .fantomes-grille {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: rise .9s .4s ease forwards;
+  }
+  @media (max-width: 860px) { .fantomes-grille { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .fantomes-grille { grid-template-columns: 1fr; } }
+
+  .fenetre-fantome {
+    position: relative;
+    display: flex; flex-direction: column;
+    padding: 1.5rem 1.5rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    opacity: 0;
+    animation: rise .9s ease forwards;
+    filter: grayscale(.4);
+  }
+
+  .fenetre-fantome::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 2px;
-    background: var(--accent);
-    border-radius: 8px 8px 0 0;
-    opacity: .6;
-    transition: height .2s, opacity .2s;
+    background: var(--c);
+    border-radius: 10px 10px 0 0;
+    opacity: .25;
   }
 
-  .fenetre-card--vive {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    background: color-mix(in srgb, var(--accent) 3%, var(--bg, #f5f0e8));
+  /* Flou sur l'amorce des fantômes */
+  .fenetre-fantome .tuile-amorce {
+    filter: blur(3px);
+    user-select: none;
+    opacity: .5;
+    transition: filter .3s ease, opacity .3s ease;
+  }
+  .fenetre-fantome:hover .tuile-amorce {
+    filter: blur(0);
+    opacity: .8;
   }
 
-  .fenetre-card--vive:hover {
-    box-shadow: 0 6px 24px color-mix(in srgb, var(--accent) 12%, transparent);
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--accent) 28%, var(--rule));
-  }
-
-  .fenetre-card--vive:hover::before {
-    height: 3px;
-    opacity: 1;
-  }
-
-  .fenetre-card--vive:hover .fenetre-cta {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  /* Fantôme */
-  .fenetre-card--fantome {
-    opacity: .35;
-    filter: grayscale(.3);
-    cursor: default;
-  }
-
-  /* Contenu */
-  .fenetre-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: .9rem;
-  }
-
-  .fenetre-card-temps {
-    display: flex;
-    align-items: center;
-    gap: .4rem;
-  }
-
-  .fenetre-heure {
+  .fantome-badge {
     font-family: 'Mulish', sans-serif;
-    font-size: .62rem;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .fenetre-sep {
-    font-size: .7rem;
-    color: var(--rule);
-  }
-
-  .fenetre-lieu {
-    font-family: 'Mulish', sans-serif;
-    font-size: .62rem;
-    font-weight: 300;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-  }
-
-  .fenetre-badge {
-    font-family: 'Mulish', sans-serif;
-    font-size: .52rem;
-    font-weight: 700;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    padding: .18rem .48rem;
+    font-size: .5rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase;
+    padding: .16rem .42rem;
     border-radius: 3px;
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    color: var(--accent);
-    border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-  }
-
-  .fenetre-badge--soon {
-    background: rgba(154, 145, 137, .07);
+    background: rgba(154,145,137,.07);
     color: var(--ink-soft);
-    border-color: var(--rule);
+    border: 1px solid var(--rule);
   }
 
-  .fenetre-personnage {
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.2;
-    margin-bottom: .55rem;
-    letter-spacing: -.01em;
-  }
-
-  .fenetre-amorce {
-    font-family: 'Mulish', sans-serif;
-    font-size: .82rem;
-    font-weight: 300;
-    color: var(--ink-mid);
-    line-height: 1.7;
-    font-style: italic;
-    flex: 1;
-    margin-bottom: .85rem;
-  }
-
-  .fenetre-cta {
-    display: inline-flex;
-    align-items: center;
-    font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0;
-    transform: translateX(-3px);
-    transition: opacity .2s, transform .2s;
-    margin-top: auto;
-  }
+  .fenetre-fantome .tuile-personnage { opacity: .5; }
+  .fenetre-fantome .tuile-heure { color: var(--ink-soft); }
 
   /* ── NOTE ── */
   .fenetres-note {
-    display: flex;
-    align-items: flex-start;
-    gap: .75rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
+    display: flex; align-items: flex-start; gap: .75rem;
+    margin-top: 3rem; padding-top: 2rem;
     border-top: 1px solid var(--rule);
   }
-
   .note-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0;
     margin-top: .3rem;
     animation: pulse 2s ease-in-out infinite;
   }
-
   .fenetres-note p {
     font-family: 'Mulish', sans-serif;
-    font-size: .82rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.7;
+    font-size: .82rem; font-weight: 300;
+    color: var(--ink-soft); line-height: 1.7;
     font-style: italic;
   }
 
@@ -494,9 +556,7 @@ const fantomes = [
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
   @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: .3; }
+    0%,100% { opacity: 1; } 50% { opacity: .3; }
   }
 </style>
