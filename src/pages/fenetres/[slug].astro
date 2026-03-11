@@ -15,47 +15,83 @@ export async function getStaticPaths() {
 const { fenetre } = Astro.props;
 const { Content } = await fenetre.render();
 
-// Dialogue lié si défini
+// Couleurs par personnage
+const COULEURS: Record<string, string> = {
+  'Élodie':   '#0070dd',
+  'Nathalie': '#ff7c0a',
+  'Rayan':    '#8b6fc4',
+  'Isabelle': '#7a9e7e',
+  'Yanis':    '#c4993a',
+};
+
+const couleur = COULEURS[fenetre.data.personnage] ?? '#8b5e3c';
+
+// Dialogue lié
 let dialogueLie = null;
 if (fenetre.data.lien_dialogue) {
   try {
     dialogueLie = await getEntry('articles', fenetre.data.lien_dialogue);
   } catch(e) {}
 }
+
+// Navigation précédent / suivant
+const toutes = (await getCollection('fenetres'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const idx = toutes.findIndex(f => f.slug === fenetre.slug);
+const precedente = idx < toutes.length - 1 ? toutes[idx + 1] : null;
+const suivante   = idx > 0                  ? toutes[idx - 1] : null;
 ---
 
 <Base title={`${fenetre.data.personnage} — ${fenetre.data.heure} — Syncognie`}>
   <Header />
 
+  <!-- Barre de progression lecture -->
+  <div class="progress-bar" id="progress" style={`--c: ${couleur}`}></div>
+
   <div class="page-wrap">
 
     <!-- ✦ RETOUR -->
-    <a href="/fenetres" class="back">
+    <a href="/fenetres" class="back" style={`--c: ${couleur}`}>
       <span class="back-arrow">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
       </span>
       Fenêtres
     </a>
 
-    <article class="fenetre" style={`animation-delay: .1s`}>
+    <article class="fenetre" style={`--c: ${couleur}`}>
 
       <!-- ✦ EN-TÊTE -->
       <header class="fenetre-header">
 
-        <!-- Filigrane cadre de fenêtre -->
-        <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="60" y="60" width="300" height="300" rx="4"
-            stroke="#8b5e3c" stroke-width=".7" opacity=".1" class="f-breathe"/>
-          <line x1="60" y1="210" x2="360" y2="210" stroke="#8b5e3c" stroke-width=".5" opacity=".08" class="f-breathe"/>
-          <line x1="210" y1="60" x2="210" y2="360" stroke="#8b5e3c" stroke-width=".5" opacity=".08" class="f-breathe"/>
-          <rect x="90" y="90" width="240" height="240" rx="3"
-            stroke="#c4993a" stroke-width=".5" opacity=".08" class="f-breathe-slow"/>
-          <path d="M60 90 L60 60 L90 60"   stroke="#c4993a" stroke-width="1.2" opacity=".2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M330 60 L360 60 L360 90" stroke="#c4993a" stroke-width="1.2" opacity=".2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M360 330 L360 360 L330 360" stroke="#c4993a" stroke-width="1.2" opacity=".2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M90 360 L60 360 L60 330" stroke="#c4993a" stroke-width="1.2" opacity=".2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="210" cy="210" r="3"  fill="#8b5e3c" opacity=".15" class="f-pulse"/>
-          <circle cx="210" cy="210" r="9"  fill="none" stroke="#8b5e3c" stroke-width=".6" opacity=".08" class="f-pulse"/>
+        <!-- Filigrane : cadres en perspective teintés couleur personnage -->
+        <svg class="header-filigrane" viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="160" y="30" width="190" height="140" rx="3"
+            stroke="var(--c)" stroke-width=".5" opacity=".06" class="f-slow"/>
+          <line x1="160" y1="100" x2="350" y2="100" stroke="var(--c)" stroke-width=".4" opacity=".05"/>
+          <line x1="255" y1="30"  x2="255" y2="170" stroke="var(--c)" stroke-width=".4" opacity=".05"/>
+          <rect x="100" y="65" width="175" height="130" rx="3"
+            stroke="var(--c)" stroke-width=".65" opacity=".1" class="f-mid"/>
+          <line x1="100" y1="130" x2="275" y2="130" stroke="var(--c)" stroke-width=".5" opacity=".08"/>
+          <line x1="187" y1="65"  x2="187" y2="195" stroke="var(--c)" stroke-width=".5" opacity=".08"/>
+          <path d="M100 83 L100 65 L118 65"    stroke="var(--c)" stroke-width="1"   opacity=".18" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M257 65 L275 65 L275 83"    stroke="var(--c)" stroke-width="1"   opacity=".18" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M275 177 L275 195 L257 195" stroke="var(--c)" stroke-width="1"   opacity=".18" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M118 195 L100 195 L100 177" stroke="var(--c)" stroke-width="1"   opacity=".18" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="30" y="110" width="155" height="115" rx="3"
+            stroke="var(--c)" stroke-width=".9" opacity=".16" class="f-front"/>
+          <line x1="30"  y1="167" x2="185" y2="167" stroke="var(--c)" stroke-width=".6" opacity=".11"/>
+          <line x1="107" y1="110" x2="107" y2="225" stroke="var(--c)" stroke-width=".6" opacity=".11"/>
+          <path d="M30 128 L30 110 L48 110"    stroke="var(--c)" stroke-width="1.3" opacity=".28" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M167 110 L185 110 L185 128" stroke="var(--c)" stroke-width="1.3" opacity=".28" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M185 207 L185 225 L167 225" stroke="var(--c)" stroke-width="1.3" opacity=".28" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M48 225 L30 225 L30 207"   stroke="var(--c)" stroke-width="1.3" opacity=".28" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="30"  y1="110" x2="100" y2="65"  stroke="var(--c)" stroke-width=".4" opacity=".07" stroke-dasharray="3 6"/>
+          <line x1="185" y1="110" x2="275" y2="65"  stroke="var(--c)" stroke-width=".4" opacity=".07" stroke-dasharray="3 6"/>
+          <line x1="185" y1="225" x2="275" y2="195" stroke="var(--c)" stroke-width=".4" opacity=".07" stroke-dasharray="3 6"/>
+          <circle cx="30"  cy="110" r="2.5" fill="var(--c)" opacity=".25" class="f-pulse"/>
+          <circle cx="185" cy="110" r="2"   fill="var(--c)" opacity=".2"  class="f-pulse-2"/>
+          <circle cx="185" cy="225" r="2.5" fill="var(--c)" opacity=".25" class="f-pulse"/>
+          <circle cx="30"  cy="225" r="2"   fill="var(--c)" opacity=".2"  class="f-pulse-2"/>
         </svg>
 
         <div class="header-content">
@@ -66,23 +102,29 @@ if (fenetre.data.lien_dialogue) {
             <span class="fenetre-lieu">{fenetre.data.lieu}</span>
           </div>
           <h1>{fenetre.data.personnage}</h1>
+          {fenetre.data.amorce && (
+            <p class="fenetre-amorce">{fenetre.data.amorce}</p>
+          )}
         </div>
+
+        <!-- Trait latéral couleur personnage -->
+        <div class="header-trait"></div>
 
       </header>
 
       <!-- ✦ ORNEMENT SEUIL -->
       <div class="article-seuil">
         <div class="seuil-line seuil-line--left"></div>
-        <svg class="seuil-svg" width="48" height="20" viewBox="0 0 48 20" fill="none" aria-hidden="true">
-          <path d="M24 2 L38 10 L24 18 L10 10 Z" stroke="#8b5e3c" stroke-width="1" fill="none" opacity=".35"/>
-          <line x1="24" y1="5"  x2="24" y2="15" stroke="#8b5e3c" stroke-width=".7" opacity=".25"/>
-          <line x1="14" y1="10" x2="34" y2="10" stroke="#8b5e3c" stroke-width=".7" opacity=".25"/>
-          <circle cx="24" cy="2"  r="1.2" fill="#8b5e3c" opacity=".4"/>
-          <circle cx="38" cy="10" r="1.2" fill="#8b5e3c" opacity=".4"/>
-          <circle cx="24" cy="18" r="1.2" fill="#8b5e3c" opacity=".4"/>
-          <circle cx="10" cy="10" r="1.2" fill="#8b5e3c" opacity=".4"/>
-          <line x1="0"  y1="10" x2="7"  y2="10" stroke="#8b5e3c" stroke-width=".7" opacity=".2" stroke-linecap="round"/>
-          <line x1="41" y1="10" x2="48" y2="10" stroke="#8b5e3c" stroke-width=".7" opacity=".2" stroke-linecap="round"/>
+        <svg class="seuil-svg" width="52" height="22" viewBox="0 0 52 22" fill="none" aria-hidden="true">
+          <path d="M26 2 L42 11 L26 20 L10 11 Z" stroke="var(--c)" stroke-width="1" fill="none" opacity=".4"/>
+          <line x1="26" y1="6"  x2="26" y2="16" stroke="var(--c)" stroke-width=".7" opacity=".28"/>
+          <line x1="14" y1="11" x2="38" y2="11" stroke="var(--c)" stroke-width=".7" opacity=".28"/>
+          <circle cx="26" cy="2"  r="1.4" fill="var(--c)" opacity=".5"/>
+          <circle cx="42" cy="11" r="1.4" fill="var(--c)" opacity=".5"/>
+          <circle cx="26" cy="20" r="1.4" fill="var(--c)" opacity=".5"/>
+          <circle cx="10" cy="11" r="1.4" fill="var(--c)" opacity=".5"/>
+          <line x1="0"  y1="11" x2="7"  y2="11" stroke="var(--c)" stroke-width=".7" opacity=".22" stroke-linecap="round"/>
+          <line x1="45" y1="11" x2="52" y2="11" stroke="var(--c)" stroke-width=".7" opacity=".22" stroke-linecap="round"/>
         </svg>
         <div class="seuil-line"></div>
       </div>
@@ -90,6 +132,11 @@ if (fenetre.data.lien_dialogue) {
       <!-- ✦ CONTENU -->
       <div class="contenu">
         <Content />
+      </div>
+
+      <!-- ✦ CLÔTURE -->
+      <div class="cloture">
+        <div class="cloture-dot"></div>
       </div>
 
       <!-- ✦ DIALOGUE LIÉ -->
@@ -113,23 +160,66 @@ if (fenetre.data.lien_dialogue) {
 
     </article>
 
-    <!-- ✦ NAVIGATION BAS -->
-    <nav class="nav-bas">
-      <a href="/fenetres" class="nav-retour">
-        <span class="back-arrow back-arrow--sm">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-        </span>
-        Toutes les fenêtres
+    <!-- ✦ NAVIGATION ENTRE FENÊTRES -->
+    <nav class="nav-fenetre" style={`--c: ${couleur}`}>
+      <div class="nav-item nav-item--prev">
+        {precedente ? (
+          <a href={`/fenetres/${precedente.slug}`} class="nav-lien">
+            <span class="nav-dir">← Précédente</span>
+            <span class="nav-nom">{precedente.data.personnage}</span>
+            <span class="nav-heure">{precedente.data.heure}</span>
+          </a>
+        ) : <div />}
+      </div>
+
+      <a href="/fenetres" class="nav-galerie">
+        <svg viewBox="0 0 16 16" fill="none" width="12" height="12">
+          <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        Toutes
       </a>
+
+      <div class="nav-item nav-item--next">
+        {suivante ? (
+          <a href={`/fenetres/${suivante.slug}`} class="nav-lien nav-lien--right">
+            <span class="nav-dir">Suivante →</span>
+            <span class="nav-nom">{suivante.data.personnage}</span>
+            <span class="nav-heure">{suivante.data.heure}</span>
+          </a>
+        ) : <div />}
+      </div>
     </nav>
 
-    <Footer />
   </div>
 
+  <Footer />
 </Base>
 
+<script>
+  const bar = document.getElementById('progress');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      bar.style.width = pct + '%';
+    }, { passive: true });
+  }
+</script>
+
 <style>
-  /* ── WRAP ── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px; width: 0%;
+    background: var(--c);
+    z-index: 200;
+    transition: width .1s linear;
+    opacity: .75;
+  }
+
   .page-wrap {
     max-width: 660px;
     margin: 0 auto;
@@ -138,32 +228,27 @@ if (fenetre.data.lien_dialogue) {
 
   /* ── RETOUR ── */
   .back {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
+    display: inline-flex; align-items: center; gap: .5rem;
     padding: 2.5rem 0 2.75rem;
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    text-decoration: none;
-    opacity: 0;
-    animation: rise .8s .05s ease forwards;
+    font-size: .6rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink-soft); text-decoration: none;
+    opacity: 0; animation: rise .8s .05s ease forwards;
     transition: color .2s, gap .2s;
   }
-  .back:hover { color: var(--accent); gap: .7rem; }
+  .back:hover { color: var(--c); gap: .7rem; }
 
   .back-arrow {
     width: 18px; height: 18px;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
+    border: 1px solid var(--rule); border-radius: 3px;
     display: flex; align-items: center; justify-content: center;
-    transition: border-color .2s, background .2s;
-    flex-shrink: 0;
+    transition: border-color .2s, background .2s; flex-shrink: 0;
   }
-  .back:hover .back-arrow { border-color: var(--accent); background: rgba(139,94,60,.06); }
+  .back:hover .back-arrow {
+    border-color: var(--c);
+    background: color-mix(in srgb, var(--c) 8%, transparent);
+  }
   .back-arrow svg {
     width: 10px; height: 10px;
     stroke: currentColor; fill: none; stroke-width: 2;
@@ -172,281 +257,239 @@ if (fenetre.data.lien_dialogue) {
   .back:hover .back-arrow svg { transform: translateX(-2px); }
 
   /* ── ARTICLE ── */
-  .fenetre {
-    opacity: 0;
-    animation: rise .9s .15s ease forwards;
-  }
+  .fenetre { opacity: 0; animation: rise .9s .15s ease forwards; }
 
   /* ── EN-TÊTE ── */
   .fenetre-header {
     position: relative;
-    overflow: visible;
     padding: 1.5rem 0 2.5rem;
+    overflow: visible;
   }
+
+  .header-trait {
+    position: absolute;
+    left: -1.75rem; top: 1.5rem; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--c), transparent);
+    opacity: .3;
+  }
+  @media (max-width: 640px) { .header-trait { display: none; } }
 
   .header-filigrane {
     position: absolute;
-    top: 50%;
-    right: -80px;
+    top: 50%; right: -60px;
     transform: translateY(-50%);
-    width: 260px; height: 260px;
-    pointer-events: none;
-    z-index: 0;
+    width: 280px; height: 240px;
+    pointer-events: none; z-index: 0;
   }
+  @media (max-width: 640px) { .header-filigrane { display: none; } }
 
-  @media (max-width: 600px) { .header-filigrane { display: none; } }
+  .f-slow    { animation: f-breathe 9s  ease-in-out infinite; }
+  .f-mid     { animation: f-breathe 7s  ease-in-out infinite; animation-delay: .8s; }
+  .f-front   { animation: f-breathe 5s  ease-in-out infinite; animation-delay: .3s; }
+  .f-pulse   { animation: f-pulse 3.5s  ease-in-out infinite; }
+  .f-pulse-2 { animation: f-pulse 3.5s  ease-in-out infinite; animation-delay: 1.2s; }
 
-  .f-breathe      { animation: f-breathe 6s ease-in-out infinite; }
-  .f-breathe-slow { animation: f-breathe 10s ease-in-out infinite; }
-  .f-pulse        { animation: f-pulse 3s ease-in-out infinite; }
-
-  @keyframes f-breathe {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: .4; }
-  }
+  @keyframes f-breathe { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
   @keyframes f-pulse {
-    0%, 100% { opacity: .15; transform: scale(1); }
-    50%       { opacity: .4;  transform: scale(1.3); }
+    0%,100% { opacity: .25; transform: scale(1); }
+    50%      { opacity: .7;  transform: scale(1.6); }
   }
 
-  .header-content {
-    position: relative;
-    z-index: 1;
-  }
+  .header-content { position: relative; z-index: 1; }
 
   .page-eyebrow {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 300;
-    letter-spacing: .32em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: .7;
-    margin-bottom: .75rem;
+    font-size: .6rem; font-weight: 300;
+    letter-spacing: .32em; text-transform: uppercase;
+    color: var(--c); opacity: .7; margin-bottom: .75rem;
   }
 
-  .fenetre-meta {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin-bottom: .6rem;
-  }
+  .fenetre-meta { display: flex; align-items: center; gap: .5rem; margin-bottom: .6rem; }
 
   .fenetre-heure {
     font-family: 'Mulish', sans-serif;
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--accent);
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--c);
   }
-
-  .meta-sep {
-    font-size: .7rem;
-    color: var(--rule);
-  }
-
+  .meta-sep { font-size: .7rem; color: var(--rule); }
   .fenetre-lieu {
     font-family: 'Mulish', sans-serif;
-    font-size: .72rem;
-    font-weight: 300;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    font-size: .72rem; font-weight: 300;
+    letter-spacing: .1em; text-transform: uppercase;
     color: var(--ink-soft);
   }
 
   h1 {
     font-family: 'Libre Baskerville', serif;
     font-size: clamp(2rem, 5vw, 2.8rem);
-    font-weight: 400;
-    color: var(--ink);
-    line-height: 1.15;
-    letter-spacing: -.01em;
+    font-weight: 400; color: var(--ink);
+    line-height: 1.15; letter-spacing: -.01em;
+    margin-bottom: .8rem;
   }
 
-  /* ── ORNEMENT SEUIL ── */
+  .fenetre-amorce {
+    font-family: 'Mulish', sans-serif;
+    font-size: .88rem; font-weight: 300;
+    font-style: italic; color: var(--ink-soft);
+    line-height: 1.7; max-width: 46ch;
+    padding-left: .85rem;
+    border-left: 2px solid color-mix(in srgb, var(--c) 35%, transparent);
+    margin-top: .4rem;
+  }
+
+  /* ── SEUIL ── */
   .article-seuil {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    margin-bottom: 2.5rem;
+    display: flex; align-items: center;
+    gap: .75rem; margin-bottom: 2.75rem;
   }
   .seuil-svg { flex-shrink: 0; overflow: visible; }
   .seuil-line {
     flex: 1; height: 1px;
-    background: linear-gradient(to right, var(--rule), transparent);
-    opacity: .6;
+    background: linear-gradient(to right, color-mix(in srgb, var(--c) 22%, var(--rule)), transparent);
+    opacity: .7;
   }
   .seuil-line--left {
-    background: linear-gradient(to left, var(--rule), transparent);
+    background: linear-gradient(to left, color-mix(in srgb, var(--c) 22%, var(--rule)), transparent);
   }
 
   /* ── CONTENU ── */
   .contenu {
     font-family: 'Libre Baskerville', serif;
-    font-size: 1.05rem;
-    line-height: 1.88;
+    font-size: 1.06rem; line-height: 1.92;
     color: var(--ink-mid);
   }
+  .contenu :global(p) { margin-bottom: 1.55em; }
+  .contenu :global(p:first-child) { font-size: 1.12rem; color: var(--ink); }
 
-  .contenu :global(p) {
-    margin-bottom: 1.5em;
-  }
-
-  /* Paragraphes en italique seul → didascalies / pensées intérieures */
+  /* Italique seul → pensée / message */
   .contenu :global(p:has(> em:only-child)),
   .contenu :global(p:has(> em:only-child) em) {
     font-family: 'Mulish', sans-serif;
-    font-size: .92rem;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--ink-soft);
+    font-size: .92rem; font-weight: 300;
+    font-style: italic; color: var(--ink-soft);
     line-height: 1.7;
+    padding-left: 1.2rem;
+    border-left: 1.5px solid color-mix(in srgb, var(--c) 28%, transparent);
   }
 
   .contenu :global(hr) {
-    border: none;
-    border-top: 1px solid var(--rule);
-    margin: 2.5rem 0;
-    opacity: .5;
+    border: none; border-top: 1px solid var(--rule);
+    margin: 2.5rem 0; opacity: .5;
   }
 
-  /* ── DIALOGUE LIÉ ── */
-  .suite {
-    margin-top: 3.5rem;
+  /* ── CLÔTURE ── */
+  .cloture { display: flex; justify-content: center; margin: 2rem 0 0; }
+  .cloture-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--c); opacity: .4;
+    animation: pulse 2.5s ease-in-out infinite;
   }
 
+  /* ── SUITE ── */
+  .suite { margin-top: 3.5rem; }
   .suite-ornement {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    margin-bottom: 1.25rem;
+    display: flex; align-items: center;
+    gap: .75rem; margin-bottom: 1.25rem;
   }
-  .suite-line {
-    flex: 1; height: 1px;
-    background: var(--rule);
-    opacity: .5;
-  }
-  .suite-glyph {
-    font-size: .65rem;
-    color: var(--accent);
-    opacity: .5;
-  }
-
+  .suite-line { flex: 1; height: 1px; background: var(--rule); opacity: .5; }
+  .suite-glyph { font-size: .65rem; color: var(--c); opacity: .6; }
   .suite-label {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 300;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    opacity: .6;
-    margin-bottom: .75rem;
+    font-size: .6rem; font-weight: 300;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--ink-soft); opacity: .6; margin-bottom: .75rem;
   }
-
   .suite-lien {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-decoration: none;
-    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    text-decoration: none; padding: 1.25rem 1.5rem;
     border: 1px solid var(--rule);
-    border-left: 3px solid var(--accent);
+    border-left: 3px solid var(--c);
     border-radius: 0 6px 6px 0;
-    background: color-mix(in srgb, var(--accent) 3%, var(--bg, #f5f0e8));
-    transition: background .2s, border-color .2s, box-shadow .2s;
+    background: color-mix(in srgb, var(--c) 4%, var(--bg, #f5f0e8));
+    transition: background .2s, box-shadow .2s;
   }
-
   .suite-lien:hover {
-    background: color-mix(in srgb, var(--accent) 6%, var(--bg, #f5f0e8));
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--rule));
-    box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 10%, transparent);
+    background: color-mix(in srgb, var(--c) 8%, var(--bg, #f5f0e8));
+    box-shadow: 0 4px 16px color-mix(in srgb, var(--c) 10%, transparent);
   }
-
-  .suite-lien-inner {
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-  }
-
+  .suite-lien-inner { display: flex; flex-direction: column; gap: .3rem; }
   .suite-eyebrow {
     font-family: 'Mulish', sans-serif;
-    font-size: .52rem;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: .7;
+    font-size: .52rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--c); opacity: .7;
   }
-
   .suite-titre {
     font-family: 'Libre Baskerville', serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--ink);
-    line-height: 1.3;
+    font-size: 1rem; font-weight: 400;
+    color: var(--ink); line-height: 1.3;
   }
-
   .suite-fleche {
-    font-family: 'Mulish', sans-serif;
-    color: var(--accent);
-    font-size: 1.1rem;
-    flex-shrink: 0;
-    transition: transform .2s;
+    color: var(--c); font-size: 1.1rem;
+    flex-shrink: 0; transition: transform .2s;
   }
   .suite-lien:hover .suite-fleche { transform: translateX(5px); }
 
-  /* ── NAV BAS ── */
-  .nav-bas {
-    margin-top: 3rem;
-    padding-top: 2rem;
+  /* ── NAVIGATION ── */
+  .nav-fenetre {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center; gap: 1rem;
+    margin-top: 3rem; padding-top: 2rem;
     border-top: 1px solid var(--rule);
-    opacity: 0;
-    animation: rise .8s .4s ease forwards;
+    opacity: 0; animation: rise .8s .4s ease forwards;
   }
+  .nav-item--next { display: flex; justify-content: flex-end; }
 
-  .nav-retour {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
+  .nav-lien {
+    display: flex; flex-direction: column; gap: .2rem;
+    text-decoration: none; transition: opacity .2s;
+  }
+  .nav-lien:hover { opacity: .7; }
+  .nav-lien--right { align-items: flex-end; }
+
+  .nav-dir {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    text-decoration: none;
-    transition: color .2s, gap .2s;
+    font-size: .55rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-soft); opacity: .5;
   }
-  .nav-retour:hover { color: var(--accent); gap: .7rem; }
+  .nav-nom {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .92rem; color: var(--ink);
+  }
+  .nav-heure {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem; font-weight: 300; color: var(--ink-soft);
+  }
 
-  .back-arrow--sm {
-    width: 16px; height: 16px;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    display: flex; align-items: center; justify-content: center;
-    transition: border-color .2s, background .2s;
-    flex-shrink: 0;
+  .nav-galerie {
+    display: flex; flex-direction: column;
+    align-items: center; gap: .35rem;
+    text-decoration: none;
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-soft); opacity: .4;
+    transition: opacity .2s, color .2s;
   }
-  .nav-retour:hover .back-arrow--sm {
-    border-color: var(--accent);
-    background: rgba(139,94,60,.06);
-  }
-  .back-arrow--sm svg {
-    width: 9px; height: 9px;
-    stroke: currentColor; fill: none; stroke-width: 2;
-    transition: transform .2s;
-  }
-  .nav-retour:hover .back-arrow--sm svg { transform: translateX(-2px); }
+  .nav-galerie:hover { opacity: .8; color: var(--c); }
 
   /* ── ANIMATIONS ── */
   @keyframes rise {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  @keyframes pulse {
+    0%,100% { opacity: .4; } 50% { opacity: .1; }
+  }
 
   @media (max-width: 600px) {
     .page-wrap { padding: 0 1rem 4rem; }
     h1 { font-size: 1.9rem; }
+    .nav-fenetre { grid-template-columns: 1fr 1fr; }
+    .nav-galerie { display: none; }
   }
 </style>
