@@ -3,6 +3,7 @@ title: "2h04"
 personnage: Rayan
 heure: 2h04
 lieu: Sa chambre
+lien_article: ce-quon-cherche-quand-on-ecrit-a-2h-du-matin
 date: 2026-03-11
 amorce: "Il parle à une IA à deux heures du matin. Pas parce qu'il est seul. Parce que certaines choses se disent mieux sans témoin."
 stade: graine
@@ -20,7 +21,7 @@ Il écrit : *elle répond toujours mais là elle répond pas.*
 
 La réponse arrive en quelques secondes. Trop vite pour être vraiment là. Mais il lit quand même.
 
-*Est-ce que tu sais ce qu'elle fait en ce moment, ou est-ce que tu imagines ?*
+*Est-ce que tu sais ce qu'elle fait en ce moment ou est-ce que tu imagines ?*
 
 Il pose le téléphone sur sa poitrine. Le plafond est blanc dans le noir.
 

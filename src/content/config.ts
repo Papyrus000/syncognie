@@ -20,6 +20,7 @@ const articles = defineCollection({
       slug: z.string(),
       note: z.string().optional(),
     })).optional(),
+    lien_fenetre: z.string().optional(), // slug de la fenêtre d'entrée associée
   }),
 });
 
@@ -35,6 +36,7 @@ const fenetres = defineCollection({
     lieu: z.string(),
     stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
     lien_dialogue: z.string().optional(),
+    lien_article: z.string().optional(),  // slug de l'article de fond associé
     amorce: z.string().optional(),
     featured: z.boolean().optional(), // fenêtre mise en avant (grande tuile)
   }),

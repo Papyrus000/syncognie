@@ -3,6 +3,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 import Reactions from '../../components/Reactions.astro';
 import Personnage from '../../components/Personnage.astro';
 import NoteReference from '../../components/NoteReference.astro';
@@ -51,6 +52,15 @@ const ornColor = article.data.format
   ? (formatColor[article.data.format] ?? formatColor.default)
   : formatColor.default;
 
+// Fenêtre liée
+import { getEntry } from 'astro:content';
+let fenetreLiee = null;
+if (article.data.lien_fenetre) {
+  try {
+    fenetreLiee = await getEntry('fenetres', article.data.lien_fenetre);
+  } catch(e) {}
+}
+
 // Navigation précédent / suivant
 const tous = (await getCollection('articles'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -64,6 +74,48 @@ const suivant   = idx > 0               ? tous[idx - 1] : null;
 <div class="progress-bar" id="progress" aria-hidden="true"></div>
 
 <style is:global>
+/* ── FENÊTRE LIÉE ── */
+.fenetre-liee {
+  margin-bottom: 2rem;
+}
+.fenetre-liee-lien {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  text-decoration: none; padding: 1.1rem 1.4rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid #8b6fc4;
+  border-radius: 0 6px 6px 0;
+  background: color-mix(in srgb, #8b6fc4 4%, var(--bg, #f5f0e8));
+  transition: background .2s, box-shadow .2s;
+}
+.fenetre-liee-lien:hover {
+  background: color-mix(in srgb, #8b6fc4 8%, var(--bg, #f5f0e8));
+  box-shadow: 0 4px 16px color-mix(in srgb, #8b6fc4 10%, transparent);
+}
+.fenetre-liee-inner { display: flex; flex-direction: column; gap: .25rem; }
+.fenetre-liee-eyebrow {
+  font-family: 'Mulish', sans-serif;
+  font-size: .52rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: #8b6fc4; opacity: .7;
+}
+.fenetre-liee-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .98rem; font-weight: 400;
+  color: var(--ink); line-height: 1.3;
+}
+.fenetre-liee-amorce {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft); line-height: 1.6;
+  max-width: 52ch;
+}
+.fenetre-liee-fleche {
+  color: #8b6fc4; font-size: 1rem;
+  flex-shrink: 0; margin-left: 1rem;
+  transition: transform .2s;
+}
+.fenetre-liee-lien:hover .fenetre-liee-fleche { transform: translate(3px, -3px); }
+
 /* ── BARRE PROGRESSION ── */
 .progress-bar {
   position: fixed;
@@ -509,6 +561,22 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
       </svg>
       <div class="seuil-line"></div>
     </div>
+
+    <!-- ✦ FENÊTRE LIÉE — point d'entrée narratif -->
+    {fenetreLiee && (
+      <aside class="fenetre-liee">
+        <a href={`/fenetres/${fenetreLiee.slug}`} class="fenetre-liee-lien">
+          <div class="fenetre-liee-inner">
+            <span class="fenetre-liee-eyebrow">Fenêtre · {fenetreLiee.data.heure}</span>
+            <span class="fenetre-liee-titre">{fenetreLiee.data.personnage}</span>
+            {fenetreLiee.data.amorce && (
+              <span class="fenetre-liee-amorce">{fenetreLiee.data.amorce}</span>
+            )}
+          </div>
+          <span class="fenetre-liee-fleche">↗</span>
+        </a>
+      </aside>
+    )}
 
     {article.data.note_genese && article.data.note_genese.length > 0 && (
       <div class="note-genese">

@@ -180,6 +180,7 @@ const nbSeries = seriesUniques.length;
                 {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
               </span>
               {estRecit && <span class="badge badge-recit">◈ Récit</span>}
+              {article.data.format === 'analyse' && <span class="badge badge-analyse">◈ Analyse</span>}
               {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
               {article.data.stade === 'graine' && <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>}
               {article.data.stade === 'pousse' && <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>}
@@ -863,6 +864,12 @@ const nbSeries = seriesUniques.length;
     background: rgba(196, 153, 58, .1);
     color: var(--gold, #c4993a);
     border: 1px solid rgba(196, 153, 58, .25);
+  }
+
+  .badge-analyse {
+    background: rgba(107, 127, 184, .1);
+    color: #6b7fb8;
+    border: 1px solid rgba(107, 127, 184, .25);
   }
 
   .badge-wip {

@@ -34,6 +34,14 @@ if (fenetre.data.lien_dialogue) {
   } catch(e) {}
 }
 
+// Article de fond lié
+let articleLie = null;
+if (fenetre.data.lien_article) {
+  try {
+    articleLie = await getEntry('articles', fenetre.data.lien_article);
+  } catch(e) {}
+}
+
 // Navigation précédent / suivant
 const toutes = (await getCollection('fenetres'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -152,6 +160,25 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
             <div class="suite-lien-inner">
               <span class="suite-eyebrow">Dialogue</span>
               <span class="suite-titre">{dialogueLie.data.title}</span>
+            </div>
+            <span class="suite-fleche">→</span>
+          </a>
+        </aside>
+      )}
+
+      <!-- ✦ ARTICLE DE FOND LIÉ -->
+      {articleLie && (
+        <aside class="suite">
+          <div class="suite-ornement">
+            <div class="suite-line"></div>
+            <span class="suite-glyph">◈</span>
+            <div class="suite-line"></div>
+          </div>
+          <p class="suite-label">Ce moment a un dessous</p>
+          <a href={`/articles/${articleLie.slug}`} class="suite-lien suite-lien--analyse">
+            <div class="suite-lien-inner">
+              <span class="suite-eyebrow suite-eyebrow--analyse">Analyse</span>
+              <span class="suite-titre">{articleLie.data.title}</span>
             </div>
             <span class="suite-fleche">→</span>
           </a>
@@ -432,6 +459,16 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
     flex-shrink: 0; transition: transform .2s;
   }
   .suite-lien:hover .suite-fleche { transform: translateX(5px); }
+
+  .suite-lien--analyse {
+    border-left-color: #6b7fb8;
+    background: color-mix(in srgb, #6b7fb8 4%, var(--bg, #f5f0e8));
+  }
+  .suite-lien--analyse:hover {
+    background: color-mix(in srgb, #6b7fb8 8%, var(--bg, #f5f0e8));
+    box-shadow: 0 4px 16px color-mix(in srgb, #6b7fb8 10%, transparent);
+  }
+  .suite-eyebrow--analyse { color: #6b7fb8; }
 
   /* ── NAVIGATION ── */
   .nav-fenetre {
