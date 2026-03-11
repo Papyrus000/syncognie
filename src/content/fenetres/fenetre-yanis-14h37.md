@@ -9,6 +9,7 @@ tags:
 format: fenetre
 personnage: Yanis
 featured: true
+lien_article: ce-quon-attend-sans-savoir-quoi
 heure: "14h37"
 lieu: "Salle de pause"
 stade: graine
