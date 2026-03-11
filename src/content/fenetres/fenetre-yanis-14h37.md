@@ -8,6 +8,7 @@ tags:
   - attente
 format: fenetre
 personnage: Yanis
+featured: true
 heure: "14h37"
 lieu: "Salle de pause"
 stade: graine

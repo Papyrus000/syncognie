@@ -5,7 +5,11 @@ import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 const toutes = await getCollection('fenetres');
-const vivantes = toutes.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const vivantes = toutes.sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return b.data.date.getTime() - a.data.date.getTime();
+});
 
 // Couleurs par personnage
 const COULEURS: Record<string, string> = {

@@ -34,8 +34,9 @@ const fenetres = defineCollection({
     heure: z.string(),
     lieu: z.string(),
     stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
-    lien_dialogue: z.string().optional(), // slug du dialogue lié
-    amorce: z.string().optional(),        // 1-2 lignes pour la galerie
+    lien_dialogue: z.string().optional(),
+    amorce: z.string().optional(),
+    featured: z.boolean().optional(), // fenêtre mise en avant (grande tuile)
   }),
 });
 
