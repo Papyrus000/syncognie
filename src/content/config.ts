@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+
 const articles = defineCollection({
   type: 'content',
   schema: z.object({
@@ -21,4 +22,21 @@ const articles = defineCollection({
     })).optional(),
   }),
 });
-export const collections = { articles };
+
+const fenetres = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    date: z.date(),
+    tags: z.array(z.string()).optional(),
+    personnage: z.string(),
+    heure: z.string(),
+    lieu: z.string(),
+    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
+    lien_dialogue: z.string().optional(), // slug du dialogue lié
+    amorce: z.string().optional(),        // 1-2 lignes pour la galerie
+  }),
+});
+
+export const collections = { articles, fenetres };

@@ -140,6 +140,19 @@ const nbSeries = seriesUniques.length;
 
   </section>
 
+  <!-- ✦ BANDE FENÊTRES -->
+  <a href="/fenetres" class="fenetre-bande" data-zone="fenetres">
+    <div class="fenetre-bande-inner">
+      <div class="fenetre-bande-left">
+        <p class="fenetre-bande-label">Fenêtres</p>
+        <p class="fenetre-bande-amorce">
+          <em>Pas de notification depuis ce matin. Il vérifie quand même.</em>
+        </p>
+      </div>
+      <span class="fenetre-bande-cta">Des instants ordinaires →</span>
+    </div>
+  </a>
+
   <div class="ornament-sep">
     <div class="orn-line"></div>
     <div class="orn-centre">
@@ -291,6 +304,11 @@ const nbSeries = seriesUniques.length;
       nodes: [2],                        // 1 point — importance min
       color: '#2e7d4e',                  // vert
       glow: '#2e7d4e'
+    },
+    fenetres: {
+      nodes: [0, 2, 4],                  // 3 points — fenêtres/instants
+      color: '#8b7355',                  // brun chaud
+      glow: '#8b7355'
     }
   };
 
@@ -1152,6 +1170,71 @@ const nbSeries = seriesUniques.length;
   @keyframes bulle-p {
     0%, 100% { opacity: .45; transform: translateY(0); }
     50%       { opacity: .9;  transform: translateY(-2px); }
+  }
+
+  /* ── BANDE FENÊTRES ── */
+  .fenetre-bande {
+    display: block;
+    text-decoration: none;
+    max-width: var(--max);
+    margin: 2rem auto 0;
+    padding: 0 1.5rem;
+    animation: rise .6s .35s ease both;
+  }
+  .fenetre-bande-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.1rem 1.5rem;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    background: transparent;
+    transition: background .2s, border-color .2s;
+  }
+  .fenetre-bande:hover .fenetre-bande-inner {
+    background: rgba(139,94,60,.04);
+    border-color: rgba(139,94,60,.3);
+    border-left-color: var(--accent);
+  }
+  .fenetre-bande-left {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .fenetre-bande-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .fenetre-bande-amorce {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .88rem;
+    font-style: italic;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+  .fenetre-bande-cta {
+    font-family: 'Mulish', sans-serif;
+    font-size: .68rem;
+    font-weight: 400;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity .2s, transform .2s;
+  }
+  .fenetre-bande:hover .fenetre-bande-cta {
+    opacity: 1;
+    transform: translateX(0);
   }
 
   .badge-serie-ep { line-height: 1; }
