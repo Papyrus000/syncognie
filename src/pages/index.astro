@@ -107,7 +107,7 @@ const nbSeries = seriesUniques.length;
     </div>
 
     <div class="hero-portals">
-      <a class="portal portal-articles" href="/articles" data-zone="articles">
+      <a class="portal portal-articles" href="/articles" data-zone="articles"><div class="portal-lueur" aria-hidden="true"></div>
         <div class="portal-header">
           <div class="portal-dot"></div>
           <span class="portal-label">Articles</span>
@@ -122,7 +122,7 @@ const nbSeries = seriesUniques.length;
         <span class="portal-cta">Explorer →</span>
       </a>
 
-      <a class="portal portal-outils" href="/outils" data-zone="outils">
+      <a class="portal portal-outils" href="/outils" data-zone="outils"><div class="portal-lueur" aria-hidden="true"></div>
         <div class="portal-header">
           <div class="portal-dot"></div>
           <span class="portal-label">Outils</span>
@@ -213,18 +213,18 @@ const nbSeries = seriesUniques.length;
         const slug = toSlug(serieName);
         const nbEp = articles.filter(a => a.data.serie === serieName).length;
         return (
-          <a href={`/series/${slug}`} class="legende-card legende-card--serie">
+          <a href={`/series/${slug}`} class="legende-card legende-card--serie" data-zone="serie">
             <div class="legende-serie-top">
               <svg class="legende-serie-svg" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <rect x="1" y="1" width="24" height="16" rx="4" stroke="#c4993a" stroke-width="1" fill="rgba(196,153,58,.04)" opacity=".7"/>
-                <circle cx="7"  cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-a"/>
-                <circle cx="13" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-b"/>
-                <circle cx="19" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-c"/>
+                <circle cx="7"  cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-a sdot-bounce"/>
+                <circle cx="13" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-b sdot-bounce"/>
+                <circle cx="19" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-c sdot-bounce"/>
                 <path d="M7 17 L4 22 L11 17" fill="rgba(196,153,58,.04)" stroke="#c4993a" stroke-width=".8" opacity=".5" stroke-linejoin="round"/>
                 <rect x="13" y="21" width="24" height="16" rx="4" stroke="#8b5e3c" stroke-width="1" fill="rgba(139,94,60,.03)" opacity=".55"/>
-                <circle cx="20" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-d"/>
-                <circle cx="26" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-e"/>
-                <circle cx="32" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-f"/>
+                <circle cx="20" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-d sdot-bounce"/>
+                <circle cx="26" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-e sdot-bounce"/>
+                <circle cx="32" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-f sdot-bounce"/>
                 <path d="M31 21 L34 16 L27 21" fill="rgba(139,94,60,.03)" stroke="#8b5e3c" stroke-width=".8" opacity=".4" stroke-linejoin="round"/>
               </svg>
               <div>
@@ -242,18 +242,18 @@ const nbSeries = seriesUniques.length;
         );
       })}
 
-      <a href="/stades" class="legende-card legende-card--link">
+      <a href="/stades" class="legende-card legende-card--link legende-card--jardin" data-zone="stades">
         <p class="legende-titre">Stades de maturité</p>
         <ul class="legende-list">
-          <li>
+          <li class="stade-item stade-item--1">
             <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>
             <span class="legende-desc">Idée posée, peu développée</span>
           </li>
-          <li>
+          <li class="stade-item stade-item--2">
             <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>
             <span class="legende-desc">En cours d'exploration</span>
           </li>
-          <li>
+          <li class="stade-item stade-item--3">
             <span class="badge badge-arbre badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>
             <span class="legende-desc">Consolidé, dense</span>
           </li>
@@ -585,13 +585,41 @@ const nbSeries = seriesUniques.length;
   .portal-articles::before { background: #6b7fb8; }
   .portal-outils::before   { background: var(--orange, #e8724a); }
 
+  /* ── EFFET PORTAILS : lueur douce ── */
   .portal:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(44, 36, 22, .09);
+    box-shadow: 0 6px 20px rgba(44, 36, 22, .1);
   }
 
-  .portal-articles:hover { border-color: rgba(107, 127, 184, .3); }
-  .portal-outils:hover   { border-color: rgba(232, 114, 74, .3); }
+  .portal-articles:hover {
+    border-color: rgba(107, 127, 184, .35);
+    background: rgba(107,127,184,.03);
+  }
+  .portal-outils:hover {
+    border-color: rgba(232, 114, 74, .35);
+    background: rgba(232,114,74,.025);
+  }
+
+  /* Barre supérieure qui s'intensifie */
+  .portal-articles:hover::before { height: 3px; background: linear-gradient(to right, #6b7fb8, rgba(107,127,184,.4)); }
+  .portal-outils:hover::before   { height: 3px; background: linear-gradient(to right, #e8724a, rgba(232,114,74,.4)); }
+
+  /* Lueur radiale douce depuis la gauche */
+  .portal::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: -40px;
+    transform: translateY(-50%);
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease, left .45s ease;
+  }
+  .portal-articles::after { background: radial-gradient(circle, rgba(107,127,184,.1) 0%, transparent 70%); }
+  .portal-outils::after   { background: radial-gradient(circle, rgba(232,114,74,.09) 0%, transparent 70%); }
+  .portal:hover::after    { opacity: 1; left: 0px; }
+
 
   .portal-header {
     display: flex;
@@ -1085,6 +1113,85 @@ const nbSeries = seriesUniques.length;
     transform: translateX(0);
   }
 
+  /* ── EFFET SÉRIE : bulles en cascade + ondes ── */
+  .sdot-bounce { transition: transform .15s ease, opacity .15s ease; }
+
+  /* Cascade au hover de la carte série */
+  .legende-card--serie:hover .sdot-a { animation: sdot-pop .5s .00s ease both; }
+  .legende-card--serie:hover .sdot-b { animation: sdot-pop .5s .08s ease both; }
+  .legende-card--serie:hover .sdot-c { animation: sdot-pop .5s .16s ease both; }
+  .legende-card--serie:hover .sdot-d { animation: sdot-pop .5s .10s ease both; }
+  .legende-card--serie:hover .sdot-e { animation: sdot-pop .5s .18s ease both; }
+  .legende-card--serie:hover .sdot-f { animation: sdot-pop .5s .26s ease both; }
+
+  @keyframes sdot-pop {
+    0%   { transform: scale(1)   translateY(0);   opacity: .5; }
+    35%  { transform: scale(2.2) translateY(-2px); opacity: 1; }
+    65%  { transform: scale(.85) translateY(1px);  opacity: .8; }
+    100% { transform: scale(1)   translateY(0);   opacity: .5; }
+  }
+
+  /* Onde sur la carte série */
+  .legende-card--serie {
+    position: relative;
+    overflow: hidden;
+  }
+  .legende-card--serie::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,153,58,.12) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width .5s ease, height .5s ease, opacity .5s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .legende-card--serie:hover::after {
+    width: 220px; height: 220px;
+    opacity: 1;
+  }
+
+  /* ── EFFET JARDIN : croissance séquentielle ── */
+  .legende-card--jardin { overflow: hidden; }
+
+  .stade-item { transition: transform .2s ease, opacity .2s ease; }
+
+  /* Repos : légèrement comprimé */
+  .stade-item--1 { transform: translateY(2px); opacity: .7; }
+  .stade-item--2 { transform: translateY(2px); opacity: .7; }
+  .stade-item--3 { transform: translateY(2px); opacity: .7; }
+
+  /* Hover : croissance en séquence bas→haut, comme une plante */
+  .legende-card--jardin:hover .stade-item--1 {
+    animation: stade-grow .45s .00s ease forwards;
+  }
+  .legende-card--jardin:hover .stade-item--2 {
+    animation: stade-grow .45s .12s ease forwards;
+  }
+  .legende-card--jardin:hover .stade-item--3 {
+    animation: stade-grow .45s .24s ease forwards;
+  }
+
+  @keyframes stade-grow {
+    from { transform: translateY(4px) scale(.96); opacity: .5; }
+    60%  { transform: translateY(-1px) scale(1.02); opacity: 1; }
+    to   { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  /* Icônes emoji qui rebondissent dans le badge */
+  .legende-card--jardin:hover .stade-item--1 .badge-stade-icon { animation: emoji-bounce .4s .05s ease both; }
+  .legende-card--jardin:hover .stade-item--2 .badge-stade-icon { animation: emoji-bounce .4s .18s ease both; }
+  .legende-card--jardin:hover .stade-item--3 .badge-stade-icon { animation: emoji-bounce .4s .32s ease both; }
+
+  @keyframes emoji-bounce {
+    0%   { transform: scale(1)   rotate(0deg); }
+    40%  { transform: scale(1.5) rotate(-8deg); }
+    70%  { transform: scale(.9)  rotate(4deg); }
+    100% { transform: scale(1)   rotate(0deg); }
+  }
+
   /* ── ANIMATION ── */
   @keyframes rise {
     from { opacity: 0; transform: translateY(10px); }
@@ -1190,11 +1297,54 @@ const nbSeries = seriesUniques.length;
     border: 1px solid var(--rule);
     border-left: 3px solid var(--accent);
     background: transparent;
-    transition: background .2s, border-color .2s;
+    position: relative;
+    overflow: hidden;
+    transition: background .3s, border-color .3s;
   }
+
+  /* Lueur nocturne qui filtre */
+  .fenetre-bande-inner::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: -20px;
+    transform: translateY(-50%);
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+      rgba(196, 153, 58, .10) 0%,
+      rgba(139, 94, 60, .04) 40%,
+      transparent 70%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s ease, left .45s ease;
+  }
+
+  .fenetre-bande:hover .fenetre-bande-inner::before {
+    opacity: 1;
+    left: 10px;
+  }
+
+  /* Reflet sur la bordure gauche */
+  .fenetre-bande-inner::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom,
+      transparent,
+      rgba(196,153,58,.5) 40%,
+      rgba(196,153,58,.5) 60%,
+      transparent
+    );
+    opacity: 0;
+    transition: opacity .35s ease;
+  }
+  .fenetre-bande:hover .fenetre-bande-inner::after { opacity: 1; }
+
   .fenetre-bande:hover .fenetre-bande-inner {
-    background: rgba(139,94,60,.04);
-    border-color: rgba(139,94,60,.3);
+    background: rgba(196, 153, 58, .04);
+    border-color: rgba(196, 153, 58, .25);
     border-left-color: var(--accent);
   }
   .fenetre-bande-left {
@@ -1235,6 +1385,7 @@ const nbSeries = seriesUniques.length;
   .fenetre-bande:hover .fenetre-bande-cta {
     opacity: 1;
     transform: translateX(0);
+    color: var(--blizzard, #148EFF);
   }
 
   .badge-serie-ep { line-height: 1; }
