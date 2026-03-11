@@ -9,32 +9,19 @@ import Footer from '../components/Footer.astro';
   <div class="page-wrap">
     <header class="page-header">
 
-      <!-- ✦ FILIGRANE À PROPOS : double hélice entrelacée — syn + cognie -->
       <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- Axe vertical central -->
         <line x1="210" y1="30" x2="210" y2="390" stroke="#8b5e3c" stroke-width=".5" opacity=".1"/>
-
-        <!-- Hélice A — courbe gauche-droite -->
         <path d="M210 50 C160 80, 260 120, 210 150 C160 180, 260 220, 210 250 C160 280, 260 320, 210 350"
               stroke="#c4993a" stroke-width="1.2" stroke-linecap="round" opacity=".25" class="helix-a"/>
-        <!-- Hélice B — courbe droite-gauche (entrelacée) -->
         <path d="M210 50 C260 80, 160 120, 210 150 C260 180, 160 220, 210 250 C260 280, 160 320, 210 350"
               stroke="#8b5e3c" stroke-width="1.2" stroke-linecap="round" opacity=".2" class="helix-b"/>
-
-        <!-- Barreaux de liaison -->
         <line x1="160" y1="100" x2="260" y2="100" stroke="#c4993a" stroke-width=".6" opacity=".15"/>
         <line x1="160" y1="200" x2="260" y2="200" stroke="#c4993a" stroke-width=".6" opacity=".15"/>
         <line x1="160" y1="300" x2="260" y2="300" stroke="#c4993a" stroke-width=".6" opacity=".15"/>
-        <line x1="185" y1="150" x2="235" y2="150" stroke="#8b5e3c" stroke-width=".5" opacity=".12"/>
-        <line x1="185" y1="250" x2="235" y2="250" stroke="#8b5e3c" stroke-width=".5" opacity=".12"/>
-
-        <!-- Nœuds d'intersection — points de rencontre syn/cognie -->
         <circle cx="210" cy="150" r="4.5" fill="#c4993a" opacity=".3" class="noeud-pulse"/>
         <circle cx="210" cy="250" r="4.5" fill="#8b5e3c" opacity=".25" class="noeud-pulse-2"/>
         <circle cx="210" cy="50"  r="3"   fill="#c4993a" opacity=".2"  class="noeud-pulse"/>
         <circle cx="210" cy="350" r="3"   fill="#8b5e3c" opacity=".2"  class="noeud-pulse-2"/>
-
-        <!-- Halo cercle englobant — discret -->
         <circle cx="210" cy="200" r="175" stroke="#8b5e3c" stroke-width=".4" stroke-dasharray="3 12" opacity=".08" class="helix-halo"/>
         <circle cx="210" cy="200" r="130" stroke="#c4993a" stroke-width=".3" stroke-dasharray="2 14" opacity=".07" class="helix-halo-2"/>
       </svg>
@@ -44,13 +31,15 @@ import Footer from '../components/Footer.astro';
       <p class="page-sous">Un espace vivant, imparfait et curieux — entre carnet de bord et laboratoire cognitif.</p>
     </header>
 
+    <!-- ── L'ORIGINE ── -->
     <div class="ornament-sep"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">L'origine</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div>
 
     <section class="section-deux-col">
       <div class="col-texte">
-        <p class="texte-chapeau">Syncognie est un carnet de bord, pas un manuel.</p>
-        <p class="texte-corps">Un espace où un curieux cherche à comprendre les mécanismes qui gouvernent nos comportements, notre énergie, notre façon d'apprendre et de décider.</p>
-        <p class="texte-corps">Le nom est une invention : <em>syn</em> pour la synergie, <em>cognie</em> pour la cognition. La conviction que les grandes idées se rejoignent — que l'homéostasie du cerveau, celle du métabolisme et celle des systèmes sociaux parlent le même langage.</p>
+        <p class="texte-chapeau">Un curieux qui essaie de comprendre le monde qui l'entoure.</p>
+        <p class="texte-corps">Les comportements, les situations, ce qui se passe vraiment sous la surface. Pourquoi on fait ce qu'on fait. Pourquoi on continue ce qui ne satisfait plus. Pourquoi certaines choses tiennent et d'autres s'effondrent.</p>
+        <p class="texte-corps">Avec pour compagnons tous ceux qui ont pensé avant — philosophes, neuroscientifiques, romanciers, théoriciens des systèmes. Pas pour trouver des réponses définitives. Pour affiner les questions.</p>
+        <p class="texte-corps">Le nom est une invention : <em>syn</em> pour la synergie, <em>cognie</em> pour la cognition. La conviction que les grandes idées se rejoignent — que ce qui vaut pour un cerveau vaut souvent pour un système social, et que les penseurs d'horizons différents parlent parfois le même langage sans le savoir.</p>
       </div>
       <div class="col-encart">
         <div class="encart-etymologie">
@@ -64,6 +53,40 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
+    <!-- ── COMMENT ÇA FONCTIONNE ── -->
+    <div class="ornament-sep ornament-sep--mid"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Comment ça fonctionne</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div>
+
+    <section class="section-niveaux">
+      <p class="niveaux-intro">Syncognie est organisé en trois niveaux — trois façons d'entrer dans une même idée, selon où on en est.</p>
+      <div class="niveaux-grille">
+        <div class="niveau-carte niveau-carte--1">
+          <div class="niveau-num">1</div>
+          <div class="niveau-corps">
+            <p class="niveau-label">Les Fenêtres</p>
+            <p class="niveau-texte">Des scènes courtes. Un personnage, une heure, 200 mots. Rayan à 2h du matin. Nathalie à 6h14. On entre par la reconnaissance — pas besoin de connaître Berridge pour se reconnaître dans un geste.</p>
+            <a href="/fenetres" class="niveau-lien">Voir les fenêtres →</a>
+          </div>
+        </div>
+        <div class="niveau-carte niveau-carte--2">
+          <div class="niveau-num">2</div>
+          <div class="niveau-corps">
+            <p class="niveau-label">Les Dialogues</p>
+            <p class="niveau-texte">Élodie apporte un livre. Nathalie apporte sa vie. Quelque chose émerge entre les deux. C'est là que les auteurs arrivent — pas comme références à citer, mais comme outils qui tombent au bon moment.</p>
+            <a href="/articles" class="niveau-lien">Lire les dialogues →</a>
+          </div>
+        </div>
+        <div class="niveau-carte niveau-carte--3">
+          <div class="niveau-num">3</div>
+          <div class="niveau-corps">
+            <p class="niveau-label">Les Analyses</p>
+            <p class="niveau-texte">Pour ceux qui veulent aller plus loin. Les mécanismes expliqués, les auteurs présentés, les liens entre les idées tracés rigoureusement. Chaque analyse est liée à une fenêtre — elle a un point de départ narratif, pas abstrait.</p>
+            <a href="/articles" class="niveau-lien">Lire les analyses →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── LA MÉTHODE ── -->
     <div class="ornament-sep ornament-sep--mid"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">La méthode</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div>
 
     <section class="section-blocs">
@@ -91,12 +114,14 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
+    <!-- ── EXPLORER ── -->
     <div class="ornament-sep ornament-sep--mid"><div class="orn-line"></div><div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Explorer</span><div class="orn-diamond"></div></div><div class="orn-line"></div></div>
 
     <section class="section-portails">
-      <a href="/articles" class="portail portail--articles"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Articles</p><p class="portail-desc">Notes, analyses et récits autour du cerveau, des habitudes et de l'énergie.</p></div><span class="portail-cta">Lire →</span></a>
-      <a href="/outils"   class="portail portail--outils"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Outils</p><p class="portail-desc">Des instruments pratiques nés des articles — boussoles, trackers, récits.</p></div><span class="portail-cta">Explorer →</span></a>
-      <a href="/stades"   class="portail portail--stades"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Le Jardin</p><p class="portail-desc">Comprendre la démarche du jardin numérique et les stades de maturité.</p></div><span class="portail-cta">Découvrir →</span></a>
+      <a href="/fenetres" class="portail portail--fenetres"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Fenêtres</p><p class="portail-desc">Des instants ordinaires. L'entrée la plus directe dans le corpus.</p></div><span class="portail-cta">Entrer →</span></a>
+      <a href="/articles" class="portail portail--articles"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Articles</p><p class="portail-desc">Dialogues, récits et analyses — la pensée en construction.</p></div><span class="portail-cta">Lire →</span></a>
+      <a href="/outils"   class="portail portail--outils"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Outils</p><p class="portail-desc">Des instruments pratiques nés des articles.</p></div><span class="portail-cta">Explorer →</span></a>
+      <a href="/carte"    class="portail portail--carte"><div class="portail-dot"></div><div class="portail-corps"><p class="portail-label">Carte</p><p class="portail-desc">La topographie des idées — naviguer par concept.</p></div><span class="portail-cta">Naviguer →</span></a>
     </section>
 
     <div class="note-vivante"><div class="note-dot"></div><p>Cette page continue de s'écrire — comme le reste.</p></div>
@@ -160,21 +185,50 @@ import Footer from '../components/Footer.astro';
   .bloc-lien:hover{opacity:.7;transform:translateX(2px)}
 
   /* Portails */
-  .section-portails{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding-top:2rem;opacity:0;animation:rise .9s .45s ease forwards}
-  @media(max-width:580px){.section-portails{grid-template-columns:1fr}}
+  .section-portails{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding-top:2rem;opacity:0;animation:rise .9s .45s ease forwards}
+  @media(max-width:760px){.section-portails{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.section-portails{grid-template-columns:1fr}}
   .portail{display:flex;flex-direction:column;gap:.6rem;padding:1.1rem;border:1px solid var(--rule);border-radius:6px;background:rgba(245,240,232,.5);text-decoration:none;color:inherit;position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s,border-color .22s}
   .portail::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:6px 6px 0 0}
   .portail--articles::before{background:#6b7fb8}
   .portail--outils::before{background:var(--orange,#e8724a)}
   .portail--stades::before{background:#2e7d4e}
+  .portail--fenetres::before{background:#8b6fc4}
+  .portail--carte::before{background:#c4993a}
   .portail:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(44,36,22,.08)}
   .portail--articles:hover{border-color:rgba(107,127,184,.28)}
   .portail--outils:hover{border-color:rgba(232,114,74,.28)}
   .portail--stades:hover{border-color:rgba(46,125,78,.28)}
+  .portail--fenetres:hover{border-color:rgba(139,111,196,.28)}
+  .portail--carte:hover{border-color:rgba(196,153,58,.28)}
   .portail-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
   .portail--articles .portail-dot{background:#6b7fb8}
   .portail--outils   .portail-dot{background:var(--orange,#e8724a)}
   .portail--stades   .portail-dot{background:#2e7d4e}
+  .portail--fenetres .portail-dot{background:#8b6fc4}
+  .portail--carte    .portail-dot{background:#c4993a}
+
+  /* ── SECTION NIVEAUX ── */
+  .section-niveaux{padding-top:2rem;opacity:0;animation:rise .9s .3s ease forwards}
+  .niveaux-intro{font-family:'Mulish',sans-serif;font-size:.9rem;font-weight:400;color:var(--ink-soft);line-height:1.8;max-width:58ch;margin-bottom:1.75rem}
+  .niveaux-grille{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  @media(max-width:680px){.niveaux-grille{grid-template-columns:1fr}}
+  .niveau-carte{padding:1.4rem;border:1px solid var(--rule);border-radius:6px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+  .niveau-carte:hover{transform:translateY(-2px);box-shadow:0 5px 16px rgba(44,36,22,.07)}
+  .niveau-carte--1{border-top:3px solid #8b6fc4}
+  .niveau-carte--2{border-top:3px solid #c4993a}
+  .niveau-carte--3{border-top:3px solid #6b7fb8}
+  .niveau-num{font-family:'Libre Baskerville',Georgia,serif;font-size:2rem;font-weight:700;line-height:1;margin-bottom:.75rem;opacity:.12;color:var(--ink)}
+  .niveau-carte--1 .niveau-num{color:#8b6fc4;opacity:.25}
+  .niveau-carte--2 .niveau-num{color:#c4993a;opacity:.25}
+  .niveau-carte--3 .niveau-num{color:#6b7fb8;opacity:.25}
+  .niveau-label{font-family:'Mulish',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.65rem}
+  .niveau-carte--1 .niveau-label{color:#8b6fc4}
+  .niveau-carte--2 .niveau-label{color:#c4993a}
+  .niveau-carte--3 .niveau-label{color:#6b7fb8}
+  .niveau-texte{font-family:'Mulish',sans-serif;font-size:.82rem;font-weight:300;color:var(--ink-soft);line-height:1.75;margin-bottom:.9rem}
+  .niveau-lien{display:inline-flex;align-items:center;font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blizzard,#148EFF);text-decoration:none;transition:opacity .2s,transform .2s}
+  .niveau-lien:hover{opacity:.7;transform:translateX(2px)}
   .portail-label{font-family:'Mulish',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mid)}
   .portail-desc{font-family:'Mulish',sans-serif;font-size:.75rem;font-weight:300;color:var(--ink-soft);line-height:1.6;flex:1}
   .portail-cta{font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blizzard,#148EFF);opacity:0;transform:translateX(-3px);transition:opacity .2s,transform .2s}
