@@ -2,18 +2,29 @@
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="topbar">
+<header class="topbar" id="site-header">
   <a href="/" class="topbar-logo" aria-label="Syncognie — accueil">
-<div class="logo-icon">
-  <div class="logo-dot"></div>
-</div>
+    <div class="logo-icon">
+      <div class="logo-dot"></div>
+    </div>
     <span class="topbar-name">syncognie</span>
   </a>
 
-  <nav class="topbar-nav">
+  <nav class="topbar-nav" aria-label="Navigation principale">
+    <a href="/articles" class={`topbar-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'active' : ''}`}>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Articles
+    </a>
     <a href="/fenetres" class={`topbar-link ${currentPath.startsWith('/fenetres') ? 'active' : ''}`}>
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <line x1="3" y1="9" x2="21" y2="9"/>
+        <line x1="9" y1="21" x2="9" y2="9"/>
       </svg>
       Fenêtres
     </a>
@@ -24,7 +35,7 @@ const currentPath = Astro.url.pathname;
       </svg>
       Carte
     </a>
-    <a href="/outils" class={`topbar-link ${currentPath === '/outils' ? 'active' : ''}`}>
+    <a href="/outils" class={`topbar-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
       </svg>
@@ -45,112 +56,212 @@ const currentPath = Astro.url.pathname;
       Contact
     </a>
   </nav>
+
+  <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span class="ham-bar"></span>
+    <span class="ham-bar"></span>
+    <span class="ham-bar"></span>
+  </button>
 </header>
+
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <nav class="mobile-nav" aria-label="Navigation mobile">
+    <a href="/articles" class={`mobile-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      Articles
+    </a>
+    <a href="/fenetres" class={`mobile-link ${currentPath.startsWith('/fenetres') ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <line x1="3" y1="9" x2="21" y2="9"/>
+        <line x1="9" y1="21" x2="9" y2="9"/>
+      </svg>
+      Fenêtres
+    </a>
+    <a href="/carte" class={`mobile-link ${currentPath === '/carte' ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
+        <line x1="12" y1="7" x2="7" y2="17"/><line x1="12" y1="7" x2="17" y2="17"/>
+      </svg>
+      Carte
+    </a>
+    <a href="/outils" class={`mobile-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+      Outils
+    </a>
+    <a href="/apropos" class={`mobile-link ${currentPath === '/apropos' ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      À propos
+    </a>
+    <a href="/contact" class={`mobile-link ${currentPath === '/contact' ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/>
+        <polyline points="22,6 12,12 2,6"/>
+      </svg>
+      Contact
+    </a>
+  </nav>
+</div>
+
+<div class="mobile-overlay" id="mobile-overlay"></div>
 
 <style>
   .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    width: 100%;
-    background: #1a1714;
-    border-bottom: 1px solid rgba(245, 240, 232, 0.06);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1.75rem;
-    height: 52px;
+    position: sticky; top: 0; z-index: 100;
+    width: 100%; background: #1a1714;
+    border-bottom: 1px solid rgba(245,240,232,.06);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.75rem; height: 52px;
   }
-
   .topbar-logo {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    text-decoration: none;
+    display: flex; align-items: center; gap: .6rem;
+    text-decoration: none; flex-shrink: 0;
   }
-
-.logo-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(245, 240, 232, .15);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.logo-icon::after {
-  content: '';
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 50%;
-  border: 1.5px solid transparent;
-  border-top-color: #c4993a;
-  border-left-color: rgba(196, 153, 58, .3);
-  animation: logo-spin 4s linear infinite;
-}
-
-.logo-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(245, 240, 232, .5);
-  animation: logo-orbit 3.5s ease-in-out infinite;
-}
-
-@keyframes logo-spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes logo-orbit {
-  0%, 100% { transform: translateY(-5px) translateX(1px); opacity: .45; }
-  50%       { transform: translateY(5px) translateX(-1px); opacity: .9; }
-}
-
+  .logo-icon {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1.5px solid rgba(245,240,232,.15);
+    position: relative; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-icon::after {
+    content: ''; position: absolute; inset: -1.5px; border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-top-color: #c4993a; border-left-color: rgba(196,153,58,.3);
+    animation: logo-spin 4s linear infinite;
+  }
+  .logo-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(245,240,232,.5);
+    animation: logo-orbit 3.5s ease-in-out infinite;
+  }
+  @keyframes logo-spin  { to { transform: rotate(360deg); } }
+  @keyframes logo-orbit {
+    0%,100% { transform: translateY(-5px) translateX(1px);  opacity: .45; }
+    50%      { transform: translateY(5px)  translateX(-1px); opacity: .9; }
+  }
   .topbar-name {
-    font-family: 'Mulish', sans-serif;
-    font-size: .72rem;
-    font-weight: 300;
-    letter-spacing: .28em;
-    color: #f5f0e8;
-    opacity: .85;
-    transition: opacity .2s;
+    font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300;
+    letter-spacing: .28em; color: #f5f0e8; opacity: .85; transition: opacity .2s;
   }
-
   .topbar-logo:hover .topbar-name { opacity: 1; }
 
-  .topbar-nav {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
+  /* NAV DESKTOP */
+  .topbar-nav { display: flex; align-items: center; gap: 1.5rem; }
   .topbar-link {
-    display: flex;
-    align-items: center;
-    gap: .4rem;
-    font-family: 'Mulish', sans-serif;
-    font-size: .68rem;
-    font-weight: 300;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    color: rgba(245, 240, 232, .75);
-    text-decoration: none;
-    transition: color .2s;
+    display: flex; align-items: center; gap: .4rem;
+    font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 300;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(245,240,232,.65); text-decoration: none;
+    transition: color .2s; white-space: nowrap;
   }
+  .topbar-link:hover, .topbar-link.active { color: #1eff00; }
+  .topbar-link svg { opacity: .6; flex-shrink: 0; transition: opacity .2s; }
+  .topbar-link:hover svg, .topbar-link.active svg { opacity: 1; }
 
-.topbar-link:hover,
-.topbar-link.active { color: #1eff00; }
-
-  .topbar-link svg { opacity: .7; transition: opacity .2s; }
-  .topbar-link:hover svg,
-  .topbar-link.active svg { opacity: 1; }
-
-  @media (max-width: 600px) {
-    .topbar-name { display: none; }
-    .topbar-nav { gap: 1rem; }
-    .topbar-link span { display: none; }
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; justify-content: center;
+    align-items: center; gap: 5px;
+    width: 36px; height: 36px; background: transparent;
+    border: 1px solid rgba(245,240,232,.12); border-radius: 4px;
+    cursor: pointer; padding: 0; flex-shrink: 0;
+    transition: border-color .2s;
   }
+  .hamburger:hover { border-color: rgba(196,153,58,.4); }
+  .ham-bar {
+    display: block; width: 18px; height: 1.5px;
+    background: rgba(245,240,232,.75); border-radius: 2px;
+    transition: transform .25s ease, opacity .2s ease, width .25s ease;
+    transform-origin: center;
+  }
+  .hamburger.is-open .ham-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.is-open .ham-bar:nth-child(2) { opacity: 0; width: 0; }
+  .hamburger.is-open .ham-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* MENU MOBILE */
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 52px; right: 0;
+    width: min(280px, 85vw); height: calc(100dvh - 52px);
+    background: #1a1714;
+    border-left: 1px solid rgba(245,240,232,.07);
+    z-index: 99; padding: 1rem 0;
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    overflow-y: auto;
+  }
+  .mobile-menu.is-open { transform: translateX(0); }
+  .mobile-nav { display: flex; flex-direction: column; }
+  .mobile-link {
+    display: flex; align-items: center; gap: .85rem;
+    padding: 1rem 1.75rem;
+    font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: rgba(245,240,232,.55); text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color .2s, background .2s, border-color .2s;
+  }
+  .mobile-link:hover, .mobile-link.active {
+    color: #1eff00; background: rgba(30,255,0,.04); border-left-color: #1eff00;
+  }
+  .mobile-link svg { opacity: .55; flex-shrink: 0; transition: opacity .2s; }
+  .mobile-link:hover svg, .mobile-link.active svg { opacity: 1; }
+
+  /* OVERLAY */
+  .mobile-overlay {
+    display: none; position: fixed; inset: 0; top: 52px;
+    background: rgba(0,0,0,.55); z-index: 98;
+    opacity: 0; transition: opacity .3s ease; cursor: pointer;
+  }
+  .mobile-overlay.is-open { opacity: 1; }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .topbar-nav     { display: none; }
+    .hamburger      { display: flex; }
+    .mobile-menu    { display: block; }
+    .mobile-overlay { display: block; }
+  }
+  @media (max-width: 400px) { .topbar { padding: 0 1rem; } }
 </style>
+
+<script>
+(function () {
+  const btn     = document.getElementById('hamburger');
+  const menu    = document.getElementById('mobile-menu');
+  const overlay = document.getElementById('mobile-overlay');
+  if (!btn || !menu || !overlay) return;
+
+  function open() {
+    btn.classList.add('is-open');
+    menu.classList.add('is-open');
+    overlay.classList.add('is-open');
+    btn.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    btn.classList.remove('is-open');
+    menu.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => btn.classList.contains('is-open') ? close() : open());
+  overlay.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  menu.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', close));
+})();
+</script>
