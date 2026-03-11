@@ -50,6 +50,13 @@ const formatColor: Record<string, string> = {
 const ornColor = article.data.format
   ? (formatColor[article.data.format] ?? formatColor.default)
   : formatColor.default;
+
+// Navigation précédent / suivant
+const tous = (await getCollection('articles'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const idx = tous.findIndex(a => a.slug === article.slug);
+const precedent = idx < tous.length - 1 ? tous[idx + 1] : null;
+const suivant   = idx > 0               ? tous[idx - 1] : null;
 ---
 
 <Base title={`${article.data.title} — Syncognie`}>
@@ -341,6 +348,60 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
   letter-spacing: .1em; color: var(--ink-soft); opacity: .4;
 }
 
+
+/* ── NAVIGATION ENTRE ARTICLES ── */
+.nav-article {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+.nav-item--next { display: flex; justify-content: flex-end; }
+
+.nav-lien {
+  display: flex; flex-direction: column; gap: .25rem;
+  text-decoration: none; max-width: 22ch;
+  transition: opacity .2s;
+}
+.nav-lien:hover { opacity: .7; }
+.nav-lien--right { align-items: flex-end; }
+
+.nav-dir {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-soft); opacity: .5;
+}
+.nav-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .9rem; color: var(--ink);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.nav-tous {
+  display: flex; flex-direction: column;
+  align-items: center; gap: .35rem;
+  text-decoration: none;
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-soft); opacity: .4;
+  transition: opacity .2s, color .2s;
+}
+.nav-tous:hover { opacity: .8; color: var(--accent); }
+
+@media (max-width: 520px) {
+  .nav-article { grid-template-columns: 1fr 1fr; }
+  .nav-tous { display: none; }
+}
+
 @keyframes rise {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -391,11 +452,11 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 <Header />
 
 <div class="wrap">
-  <a class="back" href="/">
+  <a class="back" href="/articles">
     <span class="back-arrow">
       <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     </span>
-    Syncognie
+    Articles
   </a>
 
 <article class={article.data.format === 'dialogue' ? 'dialogue' : article.data.format === 'récit' ? 'recit' : ''}>
@@ -514,6 +575,37 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
     )}
 
   </article>
+
+  <!-- ✦ NAVIGATION ENTRE ARTICLES -->
+  <nav class="nav-article">
+    <div class="nav-item nav-item--prev">
+      {precedent ? (
+        <a href={`/articles/${precedent.slug}`} class="nav-lien">
+          <span class="nav-dir">← Précédent</span>
+          <span class="nav-titre">{precedent.data.title}</span>
+        </a>
+      ) : <div />}
+    </div>
+
+    <a href="/articles" class="nav-tous">
+      <svg viewBox="0 0 16 16" fill="none" width="12" height="12">
+        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      Tous
+    </a>
+
+    <div class="nav-item nav-item--next">
+      {suivant ? (
+        <a href={`/articles/${suivant.slug}`} class="nav-lien nav-lien--right">
+          <span class="nav-dir">Suivant →</span>
+          <span class="nav-titre">{suivant.data.title}</span>
+        </a>
+      ) : <div />}
+    </div>
+  </nav>
 
   <Footer />
   <div class="article-footer">Syncognie — jardin numérique</div>

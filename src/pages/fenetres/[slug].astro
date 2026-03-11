@@ -212,12 +212,13 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
 <style>
   .progress-bar {
     position: fixed;
-    top: 0; left: 0;
-    height: 2px; width: 0%;
+    top: 52px; left: 0;
+    height: 3px; width: 0%;
     background: var(--c);
-    z-index: 200;
-    transition: width .1s linear;
-    opacity: .75;
+    box-shadow: 0 0 6px color-mix(in srgb, var(--c) 50%, transparent);
+    z-index: 99;
+    transition: width .08s linear;
+    opacity: 1;
   }
 
   .page-wrap {
