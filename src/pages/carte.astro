@@ -5,186 +5,196 @@ import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
-articles.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const fenetres = await getCollection('fenetres');
 
-const concepts = [
-  { id: 'recompense', label: 'Système de récompense', description: 'Comment le cerveau oriente nos comportements vers la survie.', tags: ['dopamine', 'cerveau', 'neurosciences'], color: '#ff8000', statut: 'actif' },
-  { id: 'homeostasie', label: 'Homéostasie', description: "L'équilibre comme principe universel — du cerveau au métabolisme.", tags: ['homéostasie', 'bien-être'], color: '#2ecc71', statut: 'actif' },
-  { id: 'comportement', label: 'Comportement & Biais', description: 'Les mécanismes invisibles qui pilotent nos décisions.', tags: ['comportement', 'addiction'], color: '#8b5e3c', statut: 'en-cours' },
-  { id: 'plasticite', label: 'Neuroplasticité', description: 'La capacité du cerveau à se reconfigurer — apprentissage, habitudes, récupération.', tags: ['neuroplasticité', 'apprentissage'], color: '#457b9d', statut: 'a-venir' },
-  { id: 'metabolisme', label: 'Métabolisme & Énergie', description: 'Cétose, jeûne, énergie cellulaire — le carburant qui change tout.', tags: ['cétose', 'jeûne', 'métabolisme'], color: '#9b5de5', statut: 'a-venir' },
-];
+articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+fenetres.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const recits = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit');
+// ── Palette sémantique par famille de mots-clés ──
+const PALETTE: Record<string, string> = {
+  // Neurosciences / dopamine
+  'dopamine':       '#e07a5f',
+  'wanting':        '#e07a5f',
+  'neurosciences':  '#e07a5f',
+  'cerveau':        '#e07a5f',
+  // Attachement / relations
+  'attachement':    '#b07aad',
+  'solitude':       '#b07aad',
+  'désir':          '#b07aad',
+  // Systèmes / boucles
+  'boucles':        '#6b7fb8',
+  'Meadows':        '#6b7fb8',
+  'systèmes':       '#6b7fb8',
+  // IA / cognition
+  'IA':             '#4a9ebb',
+  'cognition':      '#4a9ebb',
+  // Comportement
+  'comportement':   '#8b5e3c',
+  'addiction':      '#8b5e3c',
+  'habitudes':      '#8b5e3c',
+  // Bien-être / équilibre
+  'bien-être':      '#5a9e7a',
+  'homéostasie':    '#5a9e7a',
+  'métabolisme':    '#5a9e7a',
+  // Épistémologie
+  'Berridge':       '#c4993a',
+  'Lembke':         '#c4993a',
+  'Korzybski':      '#c4993a',
+  'attente':        '#c4993a',
+};
 
-const laboratoire = [
-  { id: 'conscience', label: 'Conscience & Émergence', etat: 'actif', branches: ['Qualia et expérience subjective', "Théorie de l'information intégrée (IIT)", 'Conscience comme propriété émergente', 'IA et conscience — frontière floue'] },
-  { id: 'chronobio', label: 'Chronobiologie & Rythmes', etat: 'germination', branches: ['Horloge circadienne et dopamine', 'Lumière bleue et désynchronisation', 'Jeûne intermittent et rythmes ultradian'] },
-  { id: 'stress', label: 'Stress & Allostasie', etat: 'actif', branches: ["Charge allostatique — quand l'adaptation épuise", 'Cortisol, mémoire, hippocampe', 'Résilience — le rebond neurobiologique', 'Burnout comme effondrement allostasique'] },
-  { id: 'epigenetique', label: 'Épigénétique & Environnement', etat: 'germination', branches: ['Méthylation et expression génique', 'Transmission intergénérationnelle du stress', 'Alimentation comme signal épigénétique'] },
-  { id: 'cognition', label: 'Cognition incarnée', etat: 'germination', branches: ['Le corps comme organe cognitif', 'Microbiote et axe intestin-cerveau', 'Mouvement, posture et pensée'] },
-  { id: 'identite', label: 'Plasticité identitaire', etat: 'pause', branches: ['Le soi comme construction dynamique', 'Habitudes et identité narrative', 'Crises comme catalyseurs de reconfiguration'] },
-];
+const DEFAULT_COLOR = '#8b7355';
 
-const conceptsActifs = concepts.filter(c => c.statut === 'actif' || c.statut === 'en-cours').length;
-const conceptsAvenir = concepts.filter(c => c.statut === 'a-venir').length;
-const noeudsActifs   = laboratoire.filter(n => n.etat === 'actif').length;
-const totalBranches  = laboratoire.reduce((acc, n) => acc + n.branches.length, 0);
+function tagColor(tag: string): string {
+  return PALETTE[tag] ?? DEFAULT_COLOR;
+}
+
+// ── Construire la map des tags ──
+type TagEntry = {
+  color: string;
+  analyses: typeof articles;
+  recits:   typeof articles;
+  autres:   typeof articles;
+  fenetres: typeof fenetres;
+  total:    number;
+};
+
+const tagMap = new Map<string, TagEntry>();
+
+for (const a of articles) {
+  for (const tag of (a.data.tags ?? [])) {
+    if (!tagMap.has(tag)) tagMap.set(tag, { color: tagColor(tag), analyses: [], recits: [], autres: [], fenetres: [], total: 0 });
+    const e = tagMap.get(tag)!;
+    if (a.data.format === 'analyse')                                      e.analyses.push(a);
+    else if (a.data.format === 'dialogue' || a.data.format === 'recit')   e.recits.push(a);
+    else                                                                   e.autres.push(a);
+    e.total++;
+  }
+}
+for (const f of fenetres) {
+  for (const tag of (f.data.tags ?? [])) {
+    if (!tagMap.has(tag)) tagMap.set(tag, { color: tagColor(tag), analyses: [], recits: [], autres: [], fenetres: [], total: 0 });
+    const e = tagMap.get(tag)!;
+    e.fenetres.push(f);
+    e.total++;
+  }
+}
+
+const tags = [...tagMap.entries()]
+  .map(([tag, data]) => ({ tag, ...data }))
+  .filter(t => t.total > 0)
+  .sort((a, b) => b.total - a.total);
+
+// ── Stats globales ──
+const nbTags     = tags.length;
+const nbAnalyses = articles.filter(a => a.data.format === 'analyse').length;
+const nbRecits   = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit').length;
+const nbFenetres = fenetres.length;
+const maxTotal   = Math.max(...tags.map(t => t.total), 1);
 ---
 
 <Base title="Carte des idées — Syncognie">
   <Header />
   <div class="page-wrap">
 
+    <!-- ── EN-TÊTE ── -->
     <header class="page-header">
-
-      <!-- ✦ FILIGRANE CARTE : réseau de nœuds reliés — topographie des idées -->
       <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- Arêtes du graphe — connexions entre concepts -->
         <line x1="210" y1="90"  x2="320" y2="170" stroke="#8b5e3c" stroke-width=".7" opacity=".15" class="edge"/>
         <line x1="210" y1="90"  x2="100" y2="170" stroke="#8b5e3c" stroke-width=".7" opacity=".15" class="edge"/>
         <line x1="320" y1="170" x2="340" y2="290" stroke="#c4993a" stroke-width=".6" opacity=".13" class="edge"/>
         <line x1="100" y1="170" x2="80"  y2="290" stroke="#c4993a" stroke-width=".6" opacity=".13" class="edge"/>
         <line x1="340" y1="290" x2="210" y2="350" stroke="#8b5e3c" stroke-width=".7" opacity=".15" class="edge"/>
         <line x1="80"  y1="290" x2="210" y2="350" stroke="#8b5e3c" stroke-width=".7" opacity=".15" class="edge"/>
-        <!-- Connexions transversales -->
         <line x1="210" y1="90"  x2="210" y2="210" stroke="#c4993a" stroke-width=".5" opacity=".12" stroke-dasharray="3 7" class="edge"/>
-        <line x1="100" y1="170" x2="340" y2="290" stroke="#8b5e3c" stroke-width=".4" opacity=".1"  stroke-dasharray="2 8" class="edge"/>
-        <line x1="320" y1="170" x2="80"  y2="290" stroke="#8b5e3c" stroke-width=".4" opacity=".1"  stroke-dasharray="2 8" class="edge"/>
-        <line x1="210" y1="210" x2="340" y2="290" stroke="#c4993a" stroke-width=".4" opacity=".1"  stroke-dasharray="3 7" class="edge"/>
-        <line x1="210" y1="210" x2="80"  y2="290" stroke="#c4993a" stroke-width=".4" opacity=".1"  stroke-dasharray="3 7" class="edge"/>
-        <line x1="210" y1="210" x2="210" y2="350" stroke="#8b5e3c" stroke-width=".4" opacity=".1"  stroke-dasharray="2 8" class="edge"/>
-
-        <!-- Nœuds principaux -->
         <circle cx="210" cy="90"  r="7"   fill="#c4993a" opacity=".28" class="node-pulse-a"/>
         <circle cx="320" cy="170" r="5.5" fill="#8b5e3c" opacity=".22" class="node-pulse-b"/>
         <circle cx="100" cy="170" r="5.5" fill="#8b5e3c" opacity=".22" class="node-pulse-c"/>
-        <circle cx="340" cy="290" r="5"   fill="#c4993a" opacity=".2"  class="node-pulse-b"/>
-        <circle cx="80"  cy="290" r="5"   fill="#c4993a" opacity=".2"  class="node-pulse-c"/>
-        <circle cx="210" cy="350" r="6"   fill="#8b5e3c" opacity=".25" class="node-pulse-a"/>
-
-        <!-- Nœud central — point de convergence -->
         <circle cx="210" cy="210" r="10"  fill="#c4993a" opacity=".18" class="node-center"/>
         <circle cx="210" cy="210" r="5"   fill="#c4993a" opacity=".32" class="node-center"/>
         <circle cx="210" cy="210" r="2.5" fill="#f5f0e8" opacity=".7"/>
-        <circle cx="210" cy="210" r="20"  fill="none" stroke="#c4993a" stroke-width=".6" opacity=".1" class="node-halo"/>
-
-        <!-- Halos sur nœuds secondaires -->
-        <circle cx="210" cy="90"  r="13" fill="none" stroke="#c4993a" stroke-width=".5" opacity=".1" class="node-pulse-a"/>
-        <circle cx="210" cy="350" r="11" fill="none" stroke="#8b5e3c" stroke-width=".5" opacity=".1" class="node-pulse-b"/>
       </svg>
-
       <p class="page-eyebrow">Navigation conceptuelle</p>
       <h1 class="page-titre">Carte des idées</h1>
-      <p class="page-sous">Un fil conducteur entre les concepts — pas une table des matières, mais une topographie vivante.</p>
+      <p class="page-sous">Une topographie vivante du corpus — chaque concept grandit avec ce qui lui est lié.</p>
       <div class="page-stats">
-        <span class="stat"><span class="stat-n">{conceptsActifs}</span><span class="stat-label">concepts actifs</span></span>
+        <span class="stat"><span class="stat-n">{nbTags}</span><span class="stat-label">concepts</span></span>
         <span class="stat-sep">·</span>
-        <span class="stat"><span class="stat-n">{conceptsAvenir}</span><span class="stat-label">à venir</span></span>
+        <span class="stat"><span class="stat-n">{nbAnalyses}</span><span class="stat-label">analyses</span></span>
         <span class="stat-sep">·</span>
-        <span class="stat"><span class="stat-n">{noeudsActifs}</span><span class="stat-label">nœuds actifs</span></span>
+        <span class="stat"><span class="stat-n">{nbRecits}</span><span class="stat-label">récits</span></span>
         <span class="stat-sep">·</span>
-        <span class="stat"><span class="stat-n">{totalBranches}</span><span class="stat-label">pistes ouvertes</span></span>
+        <span class="stat"><span class="stat-n">{nbFenetres}</span><span class="stat-label">fenêtres</span></span>
       </div>
     </header>
 
-    <!-- Séparateur chemin -->
-    <div class="ornament-sep">
-      <div class="orn-line"></div>
-      <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Le Chemin</span><div class="orn-diamond"></div></div>
-      <div class="orn-line"></div>
+    <!-- ── LÉGENDE ── -->
+    <div class="legende-types">
+      <span class="legende-item"><span class="legende-glyph" style="color:#6b7fb8">◈</span> Analyse</span>
+      <span class="legende-item"><span class="legende-glyph" style="color:#c4993a">✦</span> Récit · Dialogue</span>
+      <span class="legende-item"><span class="legende-glyph" style="color:#8b7355">□</span> Fenêtre</span>
     </div>
-    <p class="section-desc">Les concepts explorés, en exploration, et programmés — du plus construit au plus ouvert.</p>
 
-    <!-- Jalons -->
-    <div class="chemin-body">
-      {concepts.map((concept, i) => {
-        const linked = articles.filter(a =>
-          a.data.tags?.some((t: string) => concept.tags.includes(t)) &&
-          a.data.format !== 'dialogue' && a.data.format !== 'recit'
-        );
-        const recitsLies = recits.filter(a =>
-          a.data.tags?.some((t: string) => concept.tags.includes(t))
-        );
-        const estGrise = concept.statut === 'a-venir';
+    <!-- ── GRILLE DES TAGS ── -->
+    <div class="tags-grille">
+      {tags.map((t) => {
+        const pct = Math.round((t.total / maxTotal) * 100);
         return (
-          <div class={`jalon ${estGrise ? 'jalon-avenir' : ''}`}>
-            <div class="jalon-line">
-              <div class="jalon-dot" style={`background:${estGrise ? 'var(--rule)' : concept.color}`}>
-                {concept.statut === 'en-cours' && <div class="jalon-pulse"></div>}
-              </div>
-              {i < concepts.length - 1 && <div class="jalon-trait"></div>}
+          <div class="tag-carte" style={`--tc: ${t.color}`}>
+
+            <!-- Barre de vie -->
+            <div class="tag-barre-wrap">
+              <div class="tag-barre" style={`width: ${pct}%`}></div>
             </div>
-            <div class="jalon-content">
-              <div class="jalon-header-row">
-                <p class="jalon-label" style={`color:${estGrise ? 'var(--ink-soft)' : concept.color}`}>{concept.label}</p>
-                {concept.statut === 'en-cours' && <span class="jalon-badge badge-encours">En exploration</span>}
-                {concept.statut === 'a-venir'  && <span class="jalon-badge badge-avenir">À venir</span>}
-              </div>
-              <p class="jalon-desc">{concept.description}</p>
-              {!estGrise && (
-                <div class="jalon-liens">
-                  {linked.length > 0 ? (
-                    <ul class="jalon-articles">
-                      {linked.map(a => (
-                        <li><a href={`/articles/${a.slug}`} class="jalon-link"><span class="jalon-arrow">→</span>{a.data.title}</a></li>
-                      ))}
-                    </ul>
-                  ) : <p class="jalon-empty">Articles à venir</p>}
-                  {recitsLies.length > 0 && (
-                    <ul class="jalon-recits">
-                      {recitsLies.map(r => (
-                        <li><a href={`/articles/${r.slug}`} class="jalon-recit-link"><span class="recit-icon">◈</span><span class="recit-label">Récit ·</span> {r.data.title}</a></li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              )}
+
+            <!-- En-tête tag -->
+            <div class="tag-header">
+              <span class="tag-nom">{t.tag}</span>
+              <span class="tag-total">{t.total}</span>
+            </div>
+
+            <!-- Pastilles de richesse -->
+            <div class="tag-pastilles">
+              {Array.from({ length: t.total }).map((_, i) => (
+                <span class="tag-pastille" style={`animation-delay: ${i * 0.08}s`}></span>
+              ))}
+            </div>
+
+            <!-- Contenus — révélation au hover -->
+            <div class="tag-contenus">
+
+              {t.analyses.map(a => (
+                <a href={`/articles/${a.slug}`} class="tag-lien tag-lien--analyse">
+                  <span class="tag-lien-glyph">◈</span>
+                  <span class="tag-lien-titre">{a.data.title}</span>
+                </a>
+              ))}
+
+              {t.recits.map(r => (
+                <a href={`/articles/${r.slug}`} class="tag-lien tag-lien--recit">
+                  <span class="tag-lien-glyph">✦</span>
+                  <span class="tag-lien-titre">{r.data.title}</span>
+                </a>
+              ))}
+
+              {t.autres.map(a => (
+                <a href={`/articles/${a.slug}`} class="tag-lien tag-lien--autre">
+                  <span class="tag-lien-glyph">→</span>
+                  <span class="tag-lien-titre">{a.data.title}</span>
+                </a>
+              ))}
+
+              {t.fenetres.map(f => (
+                <a href={`/fenetres/${f.slug}`} class="tag-lien tag-lien--fenetre">
+                  <span class="tag-lien-glyph">□</span>
+                  <span class="tag-lien-titre">{f.data.personnage} · {f.data.heure}</span>
+                </a>
+              ))}
+
             </div>
           </div>
         );
       })}
-    </div>
-
-    <!-- Séparateur laboratoire -->
-    <div class="ornament-sep ornament-sep--labo">
-      <div class="orn-line"></div>
-      <div class="orn-centre orn-centre--labo">
-        <div class="orn-diamond"></div>
-        <div class="orn-labo-inner">
-          <span class="orn-label">Laboratoire de pensée</span>
-          <span class="orn-sublabel">En réflexion — peut évoluer, bifurquer, disparaître</span>
-        </div>
-        <div class="orn-diamond"></div>
-      </div>
-      <div class="orn-line"></div>
-    </div>
-
-    <!-- Nœuds laboratoire -->
-    <div class="labo-body">
-      {laboratoire.map((noeud) => (
-        <div class={`noeud noeud-${noeud.etat}`}>
-          <div class="noeud-gauche">
-            <div class="noeud-cercle"><div class="noeud-inner"></div></div>
-            <div class="noeud-fil"></div>
-          </div>
-          <div class="noeud-droite">
-            <div class="noeud-header">
-              <span class="noeud-titre">{noeud.label}</span>
-              <span class={`noeud-etat etat-${noeud.etat}`}>
-                {noeud.etat === 'actif'      && 'En réflexion active'}
-                {noeud.etat === 'germination' && 'Germination'}
-                {noeud.etat === 'pause'       && 'En suspens'}
-              </span>
-            </div>
-            <ul class="noeud-branches">
-              {noeud.branches.map(b => (
-                <li class="branche"><span class="branche-tiret">—</span><span class="branche-texte">{b}</span></li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
     </div>
 
   </div>
@@ -192,101 +202,276 @@ const totalBranches  = laboratoire.reduce((acc, n) => acc + n.branches.length, 0
 </Base>
 
 <style>
-  .page-wrap{max-width:var(--max);margin:0 auto;padding:0 1.75rem 6rem}
-  .page-header{padding:4rem 0 2.5rem;position:relative;overflow:visible;opacity:0;animation:rise .9s .05s ease forwards}
-  .page-eyebrow{font-family:'Mulish',sans-serif;font-size:.6rem;font-weight:300;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);opacity:.7;margin-bottom:1rem;position:relative;z-index:1}
-  .page-titre{font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-.02em;margin-bottom:.9rem;position:relative;z-index:1}
-  .page-sous{font-family:'Mulish',sans-serif;font-size:.95rem;font-weight:400;color:var(--ink-soft);line-height:1.8;max-width:52ch;margin-bottom:1.5rem;position:relative;z-index:1}
-  .page-stats{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;position:relative;z-index:1}
-  .stat{display:flex;align-items:baseline;gap:.35rem}
-  .stat-n{font-family:'Libre Baskerville',Georgia,serif;font-size:1.4rem;font-weight:700;color:var(--accent);line-height:1;letter-spacing:-.02em}
-  .stat-label{font-family:'Mulish',sans-serif;font-size:.62rem;font-weight:300;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
-  .stat-sep{color:var(--rule);font-size:.9rem}
+  /* ── BASE ── */
+  .page-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.75rem 6rem;
+  }
 
-  /* ── FILIGRANE RÉSEAU ── */
-  .header-filigrane{position:absolute;top:50%;right:-60px;transform:translateY(-50%);width:300px;height:300px;pointer-events:none;z-index:0}
-  @media(max-width:600px){.header-filigrane{display:none}}
-  .edge{animation:edge-fade 7s ease-in-out infinite}
-  .edge:nth-child(2){animation-delay:.8s}
-  .edge:nth-child(3){animation-delay:1.6s}
-  .edge:nth-child(4){animation-delay:2.4s}
-  .edge:nth-child(5){animation-delay:3.2s}
-  @keyframes edge-fade{0%,100%{opacity:.13}50%{opacity:.28}}
-  .node-pulse-a{animation:np 5s ease-in-out infinite}
-  .node-pulse-b{animation:np 5s ease-in-out infinite;animation-delay:1.5s}
-  .node-pulse-c{animation:np 5s ease-in-out infinite;animation-delay:3s}
-  @keyframes np{0%,100%{opacity:.2}50%{opacity:.48}}
-  .node-center{animation:nc 4s ease-in-out infinite}
-  @keyframes nc{0%,100%{opacity:.18}50%{opacity:.38}}
-  .node-halo{animation:nh 4s ease-in-out infinite}
-  @keyframes nh{0%,100%{opacity:.1;r:20}50%{opacity:.22;r:28}}
+  /* ── EN-TÊTE ── */
+  .page-header {
+    padding: 4rem 0 2.5rem;
+    position: relative; overflow: visible;
+    opacity: 0; animation: rise .9s .05s ease forwards;
+  }
+  .header-filigrane {
+    position: absolute; top: 50%; right: -60px;
+    transform: translateY(-50%);
+    width: 300px; height: 300px;
+    pointer-events: none; z-index: 0;
+  }
+  @media (max-width: 600px) { .header-filigrane { display: none; } }
 
-  /* Séparateurs */
-  .ornament-sep{display:flex;align-items:center;gap:1rem;opacity:0;animation:rise .9s .2s ease forwards}
-  .ornament-sep--labo{margin:4rem 0 0;animation-delay:.4s}
-  .orn-line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rule),transparent)}
-  .orn-centre{display:flex;align-items:center;gap:.55rem}
-  .orn-centre--labo{gap:.55rem}
-  .orn-labo-inner{display:flex;flex-direction:column;align-items:center;gap:.2rem}
-  .orn-diamond{width:5px;height:5px;background:var(--rule);transform:rotate(45deg);flex-shrink:0}
-  .orn-label{font-family:'Mulish',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-soft);opacity:.45;white-space:nowrap}
-  .orn-sublabel{font-family:'Mulish',sans-serif;font-size:.52rem;font-weight:300;font-style:italic;color:var(--ink-soft);opacity:.35;white-space:nowrap}
+  .edge { animation: edge-fade 7s ease-in-out infinite; }
+  .edge:nth-child(2) { animation-delay: .8s; }
+  .edge:nth-child(3) { animation-delay: 1.6s; }
+  @keyframes edge-fade { 0%,100%{opacity:.13} 50%{opacity:.28} }
+  .node-pulse-a { animation: np 5s ease-in-out infinite; }
+  .node-pulse-b { animation: np 5s ease-in-out infinite; animation-delay: 1.5s; }
+  .node-pulse-c { animation: np 5s ease-in-out infinite; animation-delay: 3s; }
+  @keyframes np { 0%,100%{opacity:.2} 50%{opacity:.48} }
+  .node-center { animation: nc 4s ease-in-out infinite; }
+  @keyframes nc { 0%,100%{opacity:.18} 50%{opacity:.38} }
 
-  .section-desc{font-family:'Mulish',sans-serif;font-size:.85rem;font-weight:400;color:var(--ink-soft);opacity:.7;margin:1rem 0 2.5rem;animation:rise .9s .25s ease forwards}
+  .page-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem; font-weight: 300;
+    letter-spacing: .32em; text-transform: uppercase;
+    color: var(--accent); opacity: .7;
+    margin-bottom: 1rem; position: relative; z-index: 1;
+  }
+  .page-titre {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
+    color: var(--ink); line-height: 1.15; letter-spacing: -.02em;
+    margin-bottom: .9rem; position: relative; z-index: 1;
+  }
+  .page-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .95rem; font-weight: 400;
+    color: var(--ink-soft); line-height: 1.8;
+    max-width: 52ch; margin-bottom: 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .page-stats {
+    display: flex; align-items: baseline;
+    gap: .75rem; flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .stat { display: flex; align-items: baseline; gap: .35rem; }
+  .stat-n {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--accent); line-height: 1; letter-spacing: -.02em;
+  }
+  .stat-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem; font-weight: 300;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .stat-sep { color: var(--rule); font-size: .9rem; }
 
-  /* Jalons */
-  .chemin-body{opacity:0;animation:rise .9s .3s ease forwards}
-  .jalon{display:flex;gap:1.5rem}
-  .jalon-line{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:20px}
-  .jalon-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:.3rem;position:relative;box-shadow:0 0 0 3px var(--bg,#f5f0e8)}
-  .jalon-trait{width:1px;flex:1;min-height:2.5rem;background:var(--rule);margin:.4rem 0}
-  .jalon-content{padding-bottom:2.5rem;flex:1}
-  .jalon-header-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;flex-wrap:wrap}
-  .jalon-label{font-family:'Mulish',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
-  .jalon-badge{font-family:'Mulish',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.18rem .45rem;border-radius:3px}
-  .badge-encours{background:rgba(139,94,60,.07);color:var(--accent);border:1px solid rgba(139,94,60,.2)}
-  .badge-avenir{background:rgba(154,145,137,.07);color:var(--ink-soft);border:1px solid var(--rule)}
-  .jalon-desc{font-family:'Mulish',sans-serif;font-size:.9rem;font-weight:400;color:var(--ink-mid);line-height:1.7;margin-bottom:.9rem}
-  .jalon-liens{display:flex;flex-direction:column;gap:.5rem}
-  .jalon-articles{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem}
-  .jalon-link{display:flex;align-items:baseline;gap:.5rem;font-family:'Mulish',sans-serif;font-size:.85rem;font-weight:300;color:var(--ink-mid);text-decoration:none;transition:color .2s}
-  .jalon-link:hover{color:var(--accent)}
-  .jalon-arrow{font-size:.7rem;color:var(--accent);opacity:.5;transition:opacity .2s,transform .2s;display:inline-block}
-  .jalon-link:hover .jalon-arrow{opacity:1;transform:translateX(3px)}
-  .jalon-empty{font-family:'Mulish',sans-serif;font-size:.8rem;font-weight:300;color:var(--ink-soft);font-style:italic;opacity:.55}
-  .jalon-recits{list-style:none;padding:0;display:flex;flex-direction:column;gap:.35rem;margin-top:.2rem}
-  .jalon-recit-link{display:flex;align-items:baseline;gap:.45rem;font-family:'Mulish',sans-serif;font-size:.8rem;font-weight:300;color:var(--ink-soft);text-decoration:none;transition:color .2s}
-  .jalon-recit-link:hover{color:#c4993a}
-  .recit-icon{font-size:.68rem;color:#c4993a;opacity:.6;transition:opacity .2s}
-  .jalon-recit-link:hover .recit-icon{opacity:1}
-  .recit-label{font-weight:600;color:#c4993a;opacity:.65}
-  .jalon-avenir{opacity:.38}
-  .jalon-pulse{position:absolute;width:20px;height:20px;border-radius:50%;background:currentColor;opacity:.2;animation:ripple 2s ease-out infinite;top:50%;left:50%;transform:translate(-50%,-50%)}
-  @keyframes ripple{0%{transform:translate(-50%,-50%) scale(.5);opacity:.3}100%{transform:translate(-50%,-50%) scale(2.5);opacity:0}}
+  /* ── LÉGENDE ── */
+  .legende-types {
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    opacity: 0; animation: rise .8s .2s ease forwards;
+  }
+  .legende-item {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem; font-weight: 300;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-soft); opacity: .6;
+    display: flex; align-items: center; gap: .35rem;
+  }
+  .legende-glyph { font-size: .75rem; opacity: .9; }
 
-  /* Laboratoire */
-  .labo-body{display:flex;flex-direction:column;padding-top:2rem;opacity:0;animation:rise .9s .5s ease forwards}
-  .noeud{display:flex;gap:1.25rem}
-  .noeud-gauche{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:20px}
-  .noeud-cercle{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--rule);display:flex;align-items:center;justify-content:center;margin-top:.25rem;flex-shrink:0;background:var(--bg,#f5f0e8);transition:border-color .3s}
-  .noeud-actif .noeud-cercle{border-color:#a89080}
-  .noeud-inner{width:5px;height:5px;border-radius:50%;background:var(--rule);transition:background .3s}
-  .noeud-actif .noeud-inner{background:#9e7d65}
-  .noeud-fil{width:1px;flex:1;min-height:2rem;background:var(--rule);opacity:.4;margin:.35rem 0}
-  .noeud-droite{padding-bottom:2rem;flex:1}
-  .noeud-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;flex-wrap:wrap}
-  .noeud-titre{font-family:'Mulish',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);opacity:.55}
-  .noeud-actif .noeud-titre{opacity:.8}
-  .noeud-etat{font-family:'Mulish',sans-serif;font-size:.55rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.18rem .45rem;border-radius:3px}
-  .etat-actif{background:rgba(139,94,60,.06);color:var(--accent);border:1px solid rgba(139,94,60,.15);opacity:.75}
-  .etat-germination{background:rgba(154,145,137,.06);color:var(--ink-soft);border:1px solid var(--rule);opacity:.6}
-  .etat-pause{background:transparent;color:var(--ink-soft);border:1px dashed var(--rule);opacity:.4}
-  .noeud-branches{list-style:none;padding:0;display:flex;flex-direction:column;gap:.3rem}
-  .branche{display:flex;align-items:baseline;gap:.6rem}
-  .branche-tiret{font-size:.65rem;color:var(--ink-soft);opacity:.28;flex-shrink:0;font-family:'Mulish',sans-serif}
-  .branche-texte{font-family:'Mulish',sans-serif;font-size:.8rem;font-weight:300;color:var(--ink-soft);opacity:.5;line-height:1.6}
-  .noeud-actif .branche-texte{opacity:.7}
-  .noeud-pause{opacity:.32}
+  /* ── GRILLE ── */
+  .tags-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
 
-  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  /* ── CARTE TAG ── */
+  .tag-carte {
+    position: relative;
+    background: color-mix(in srgb, var(--tc) 4%, var(--bg, #f5f0e8));
+    border: 1px solid color-mix(in srgb, var(--tc) 18%, transparent);
+    border-radius: 8px;
+    padding: 1.25rem 1.4rem 1rem;
+    overflow: hidden;
+    transition: background .25s, box-shadow .25s, transform .2s;
+    opacity: 0;
+    animation: rise .7s ease forwards;
+  }
+
+  /* Stagger d'apparition via JS (fallback : tous visibles après 1s) */
+  .tag-carte:nth-child(1)  { animation-delay: .1s; }
+  .tag-carte:nth-child(2)  { animation-delay: .15s; }
+  .tag-carte:nth-child(3)  { animation-delay: .2s; }
+  .tag-carte:nth-child(4)  { animation-delay: .25s; }
+  .tag-carte:nth-child(5)  { animation-delay: .3s; }
+  .tag-carte:nth-child(6)  { animation-delay: .35s; }
+  .tag-carte:nth-child(7)  { animation-delay: .4s; }
+  .tag-carte:nth-child(8)  { animation-delay: .45s; }
+  .tag-carte:nth-child(9)  { animation-delay: .5s; }
+  .tag-carte:nth-child(10) { animation-delay: .55s; }
+  .tag-carte:nth-child(n+11) { animation-delay: .6s; }
+
+  .tag-carte:hover {
+    background: color-mix(in srgb, var(--tc) 8%, var(--bg, #f5f0e8));
+    box-shadow:
+      0 8px 32px color-mix(in srgb, var(--tc) 14%, transparent),
+      0 2px 8px color-mix(in srgb, var(--tc) 8%, transparent);
+    transform: translateY(-2px);
+  }
+
+  /* Lueur de fond au hover */
+  .tag-carte::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(
+      ellipse 80% 60% at 20% 0%,
+      color-mix(in srgb, var(--tc) 12%, transparent),
+      transparent 70%
+    );
+    opacity: 0; transition: opacity .3s;
+    pointer-events: none;
+  }
+  .tag-carte:hover::before { opacity: 1; }
+
+  /* ── BARRE DE VIE ── */
+  .tag-barre-wrap {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: color-mix(in srgb, var(--tc) 12%, transparent);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+  }
+  .tag-barre {
+    height: 100%;
+    background: var(--tc);
+    opacity: .7;
+    border-radius: 2px;
+    transition: width .6s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── EN-TÊTE TAG ── */
+  .tag-header {
+    display: flex; align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: .6rem; margin-top: .2rem;
+  }
+  .tag-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: .72rem; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    color: var(--tc);
+  }
+  .tag-total {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--tc); opacity: .35;
+    line-height: 1;
+  }
+
+  /* ── PASTILLES ── */
+  .tag-pastilles {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    margin-bottom: .9rem;
+  }
+  .tag-pastille {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--tc); opacity: .25;
+    animation: pastille-in .4s ease both;
+  }
+  @keyframes pastille-in {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: .25; }
+  }
+  .tag-carte:hover .tag-pastille { opacity: .55; }
+
+  /* ── CONTENUS ── */
+  .tag-contenus {
+    display: flex; flex-direction: column; gap: .3rem;
+    max-height: 0; overflow: hidden;
+    transition: max-height .35s cubic-bezier(.4,0,.2,1), opacity .3s;
+    opacity: 0;
+  }
+  .tag-carte:hover .tag-contenus {
+    max-height: 400px;
+    opacity: 1;
+  }
+
+  .tag-lien {
+    display: flex; align-items: baseline; gap: .45rem;
+    text-decoration: none;
+    font-family: 'Mulish', sans-serif;
+    font-size: .8rem; font-weight: 300;
+    color: var(--ink-soft); line-height: 1.5;
+    padding: .15rem 0;
+    border-bottom: 1px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .tag-lien:hover {
+    color: var(--tc);
+    border-bottom-color: color-mix(in srgb, var(--tc) 25%, transparent);
+  }
+  .tag-lien-glyph {
+    font-size: .65rem; flex-shrink: 0; opacity: .5;
+    transition: opacity .15s;
+  }
+  .tag-lien:hover .tag-lien-glyph { opacity: 1; }
+  .tag-lien-titre { line-height: 1.4; }
+
+  .tag-lien--analyse .tag-lien-glyph  { color: #6b7fb8; }
+  .tag-lien--recit   .tag-lien-glyph  { color: #c4993a; }
+  .tag-lien--fenetre .tag-lien-glyph  { color: #8b7355; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .tags-grille { grid-template-columns: 1fr; }
+    .page-wrap { padding: 0 1rem 4rem; }
+  }
+
+  /* ── SUPPORT TACTILE (mobile / tablette) ── */
+  @media (hover: none) {
+    /* Contenus toujours visibles */
+    .tag-contenus {
+      max-height: none;
+      opacity: 1;
+    }
+    /* Lueur permanente légère */
+    .tag-carte::before { opacity: .5; }
+    /* Pas d'élévation au tap */
+    .tag-carte:hover { transform: none; }
+    /* Cartes expandables au tap via classe .ouvert */
+    .tag-carte.ouvert .tag-contenus {
+      max-height: none;
+      opacity: 1;
+    }
+  }
 </style>
+
+<script>
+  // Sur écrans tactiles — tap pour ouvrir/fermer chaque carte
+  const isTactile = window.matchMedia('(hover: none)').matches;
+  if (isTactile) {
+    document.querySelectorAll('.tag-carte').forEach(carte => {
+      carte.addEventListener('click', (e) => {
+        // Ne pas intercepter les clics sur les liens
+        if ((e.target as HTMLElement).closest('a')) return;
+        carte.classList.toggle('ouvert');
+      });
+      // Indicateur visuel : curseur pointer
+      (carte as HTMLElement).style.cursor = 'pointer';
+    });
+  }
+</script>
