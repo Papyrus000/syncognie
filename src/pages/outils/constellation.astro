@@ -1,0 +1,1280 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<Base title="Constellation — Navigateur de pensée · Syncognie">
+  <Header />
+
+  <div class="cst-wrap">
+
+    <nav class="cst-breadcrumb">
+      <a href="/outils" class="cst-back">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tous les outils
+      </a>
+      <span class="cst-bread-sep">·</span>
+      <span class="cst-bread-current">Constellation</span>
+    </nav>
+
+    <div class="cst-header">
+      <p class="cst-surtitre">Outil · Connaissance</p>
+      <h1 class="cst-titre">Constellation</h1>
+      <p class="cst-sous">Un réseau de penseurs et de concepts — leurs projecteurs sur la réalité, leurs tensions, leurs filiations. Naviguer plutôt que mémoriser.</p>
+      <div class="cst-meta">
+        <span class="cst-version">v0.3 — Corpus élargi</span>
+        <span class="cst-meta-sep">·</span>
+        <span class="cst-count" id="cst-count">28 auteurs</span>
+      </div>
+    </div>
+
+    <div class="cst-legende">
+      <span class="cst-leg-item"><span class="cst-leg-dot" style="background:#c85a2a"></span>Neurologique</span>
+      <span class="cst-leg-item"><span class="cst-leg-dot" style="background:#4a7fc1"></span>Représentationnel</span>
+      <span class="cst-leg-item"><span class="cst-leg-dot" style="background:#4a9e6e"></span>Social</span>
+      <span class="cst-leg-item"><span class="cst-leg-dot" style="background:#8a6bbf"></span>Existentiel</span>
+      <span class="cst-leg-item"><span class="cst-leg-dot" style="background:#c4993a"></span>Systèmes</span>
+      <span class="cst-leg-item"><span class="cst-leg-dot" style="background:#3a8c7e"></span>Développement</span>
+    </div>
+
+    <div class="cst-interface">
+
+      <div class="cst-toolbar">
+        <div class="cst-search-wrap">
+          <svg class="cst-search-icon" width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 10.5L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="text" id="cst-search" placeholder="Chercher un auteur, un concept…" autocomplete="off">
+        </div>
+        <div class="cst-filters">
+          <button class="cst-filter active" data-niveau="tous">Tous</button>
+          <button class="cst-filter" data-niveau="neurologique">Neuro</button>
+          <button class="cst-filter" data-niveau="représentationnel">Représentation</button>
+          <button class="cst-filter" data-niveau="social">Social</button>
+          <button class="cst-filter" data-niveau="existentiel">Existentiel</button>
+          <button class="cst-filter" data-niveau="systèmes">Systèmes</button>
+          <button class="cst-filter" data-niveau="développement">Développement</button>
+        </div>
+      </div>
+
+      <div class="cst-body">
+
+        <aside class="cst-sidebar">
+          <div id="cst-list"></div>
+        </aside>
+
+        <section class="cst-detail" id="cst-detail">
+          <div class="cst-welcome" id="cst-welcome">
+            <svg class="cst-welcome-svg" viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="5" fill="#c4993a" opacity=".7"/>
+              <circle cx="20" cy="28" r="3.5" fill="#c85a2a" opacity=".5"/>
+              <circle cx="76" cy="22" r="2.5" fill="#4a7fc1" opacity=".5"/>
+              <circle cx="80" cy="64" r="3.5" fill="#4a9e6e" opacity=".5"/>
+              <circle cx="18" cy="70" r="2.5" fill="#8a6bbf" opacity=".5"/>
+              <circle cx="72" cy="80" r="2" fill="#3a8c7e" opacity=".5"/>
+              <circle cx="50" cy="10" r="2" fill="#c4993a" opacity=".3"/>
+              <line x1="50" y1="50" x2="20" y2="28" stroke="#c85a2a" stroke-width="1" opacity=".25"/>
+              <line x1="50" y1="50" x2="76" y2="22" stroke="#4a7fc1" stroke-width="1" opacity=".25"/>
+              <line x1="50" y1="50" x2="80" y2="64" stroke="#4a9e6e" stroke-width="1" opacity=".25"/>
+              <line x1="50" y1="50" x2="18" y2="70" stroke="#8a6bbf" stroke-width="1" opacity=".25"/>
+              <line x1="50" y1="50" x2="72" y2="80" stroke="#3a8c7e" stroke-width="1" opacity=".25"/>
+            </svg>
+            <p class="cst-welcome-title">Sélectionne un auteur<br>pour explorer sa pensée</p>
+            <p class="cst-welcome-sub">Concept central · Projecteur sur la réalité · Limites · Connexions</p>
+            <div class="cst-welcome-stats">
+              <div class="cst-stat"><span class="cst-stat-n" id="ws-auteurs">28</span><span class="cst-stat-label">Auteurs</span></div>
+              <div class="cst-stat"><span class="cst-stat-n" id="ws-concepts">28</span><span class="cst-stat-label">Concepts</span></div>
+              <div class="cst-stat"><span class="cst-stat-n" id="ws-connexions">0</span><span class="cst-stat-label">Connexions</span></div>
+            </div>
+          </div>
+          <div class="cst-author-detail hidden" id="cst-author-detail"></div>
+        </section>
+
+      </div>
+    </div>
+
+    <div class="cst-note">
+      <div class="note-dot"></div>
+      <p>Constellation grandit avec Syncognie — chaque épisode apporte ses auteurs, chaque concept lu devient une entrée potentielle.</p>
+    </div>
+
+  </div>
+  <Footer />
+</Base>
+
+<style is:global>
+
+  .cst-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 2.5rem 1.75rem 5rem;
+  }
+
+  /* ── BREADCRUMB ── */
+  .cst-breadcrumb {
+    display: flex; align-items: center; gap: .6rem;
+    margin-bottom: 2rem;
+    opacity: 0; animation: rise .7s .02s ease forwards;
+  }
+  .cst-back {
+    display: inline-flex; align-items: center; gap: .45rem;
+    font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 600;
+    color: var(--accent); text-decoration: none; letter-spacing: .03em;
+    transition: gap .2s;
+  }
+  .cst-back:hover { gap: .7rem; }
+  .cst-back svg { transition: transform .2s; }
+  .cst-back:hover svg { transform: translateX(-2px); }
+  .cst-bread-sep { color: var(--rule); }
+  .cst-bread-current {
+    font-family: 'Mulish', sans-serif; font-size: .82rem;
+    font-weight: 300; color: var(--ink-soft);
+  }
+
+  /* ── HEADER ── */
+  .cst-header { margin-bottom: 1.25rem; opacity: 0; animation: rise .9s .06s ease forwards; }
+  .cst-surtitre {
+    font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 600;
+    letter-spacing: .28em; text-transform: uppercase; color: var(--accent); margin-bottom: .65rem;
+  }
+  .cst-titre {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
+    color: var(--ink); line-height: 1.15; letter-spacing: -.02em; margin-bottom: .75rem;
+  }
+  .cst-sous {
+    font-family: 'Mulish', sans-serif; font-size: .97rem; font-weight: 400;
+    color: #5a5248; line-height: 1.8; max-width: 58ch; margin-bottom: .9rem;
+  }
+  .cst-meta { display: flex; align-items: center; gap: .65rem; flex-wrap: wrap; }
+  .cst-version {
+    font-family: 'Courier New', monospace; font-size: .7rem; color: #6a6058;
+    border: 1px solid var(--rule); border-radius: 3px; padding: .2rem .5rem; letter-spacing: .04em;
+  }
+  .cst-meta-sep { color: var(--rule); }
+  .cst-count { font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 400; color: var(--ink-soft); }
+
+  /* ── LÉGENDE ── */
+  .cst-legende {
+    display: flex; gap: 1.1rem; flex-wrap: wrap; margin-bottom: 1.25rem;
+    opacity: 0; animation: rise .8s .12s ease forwards;
+  }
+  .cst-leg-item {
+    display: flex; align-items: center; gap: .38rem;
+    font-family: 'Mulish', sans-serif; font-size: .74rem; font-weight: 600;
+    color: #5a5248; letter-spacing: .02em;
+  }
+  .cst-leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── INTERFACE ── */
+  .cst-interface {
+    border: 1px solid var(--rule); border-radius: 10px; overflow: hidden;
+    background: rgba(245,240,232,.5);
+    opacity: 0; animation: rise .9s .18s ease forwards;
+    box-shadow: 0 2px 20px rgba(26,23,20,.06);
+    display: flex; flex-direction: column; min-height: 680px;
+  }
+
+  /* ── TOOLBAR ── */
+  .cst-toolbar {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .85rem 1.1rem; border-bottom: 1px solid var(--rule);
+    background: rgba(245,240,232,.85); flex-wrap: wrap;
+  }
+  .cst-search-wrap { position: relative; flex: 1; min-width: 175px; max-width: 290px; }
+  .cst-search-icon {
+    position: absolute; left: .72rem; top: 50%; transform: translateY(-50%);
+    color: var(--ink-soft); pointer-events: none; opacity: .5;
+  }
+  .cst-search-wrap input {
+    width: 100%; background: rgba(245,240,232,.9); border: 1px solid var(--rule);
+    border-radius: 6px; padding: .52rem .85rem .52rem 2.15rem;
+    color: #3a3330; font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400;
+    outline: none; transition: border-color .2s, box-shadow .2s;
+  }
+  .cst-search-wrap input::placeholder { color: var(--ink-soft); opacity: .55; }
+  .cst-search-wrap input:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(196,153,58,.1);
+  }
+  .cst-filters { display: flex; gap: .28rem; flex-wrap: wrap; }
+  .cst-filter {
+    padding: .34rem .78rem; border-radius: 16px; border: 1px solid var(--rule);
+    background: transparent; color: #6a6058;
+    font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    cursor: pointer; transition: all .18s; white-space: nowrap;
+  }
+  .cst-filter:hover { border-color: var(--accent); color: var(--accent); }
+  .cst-filter.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .cst-filter[data-niveau="neurologique"].active      { background:#c85a2a; border-color:#c85a2a; }
+  .cst-filter[data-niveau="représentationnel"].active { background:#4a7fc1; border-color:#4a7fc1; }
+  .cst-filter[data-niveau="social"].active            { background:#4a9e6e; border-color:#4a9e6e; }
+  .cst-filter[data-niveau="existentiel"].active       { background:#8a6bbf; border-color:#8a6bbf; }
+  .cst-filter[data-niveau="systèmes"].active          { background:#c4993a; border-color:#c4993a; }
+  .cst-filter[data-niveau="développement"].active     { background:#3a8c7e; border-color:#3a8c7e; }
+
+  /* ── BODY ── */
+  .cst-body { display: grid; grid-template-columns: 185px 1fr; flex: 1; min-height: 600px; }
+
+  /* ── SIDEBAR ── */
+  .cst-sidebar {
+    border-right: 1px solid var(--rule); overflow-y: auto;
+    padding: .45rem .4rem; background: rgba(245,240,232,.3);
+  }
+  .cst-sidebar::-webkit-scrollbar { width: 3px; }
+  .cst-sidebar::-webkit-scrollbar-thumb { background: rgba(139,94,60,.18); border-radius: 2px; }
+
+  .cst-niveau-label {
+    font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase; color: #7a7068;
+    padding: .6rem .5rem .22rem;
+    display: flex; align-items: center; gap: .45rem;
+  }
+  .cst-niveau-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .cst-author-item {
+    display: flex; align-items: center; gap: .5rem;
+    padding: .5rem .55rem; border-radius: 6px; cursor: pointer;
+    transition: background .15s, border-color .15s;
+    border: 1px solid transparent; margin-bottom: .06rem;
+  }
+  .cst-author-item:hover  { background: rgba(196,153,58,.07); border-color: rgba(196,153,58,.2); }
+  .cst-author-item.active { background: rgba(196,153,58,.12); border-color: rgba(196,153,58,.28); }
+
+  .cst-adot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .cst-adot-neurologique      { background: #c85a2a; }
+  .cst-adot-representationnel { background: #4a7fc1; }
+  .cst-adot-social            { background: #4a9e6e; }
+  .cst-adot-existentiel       { background: #8a6bbf; }
+  .cst-adot-systemes          { background: #c4993a; }
+  .cst-adot-developpement     { background: #3a8c7e; }
+
+  .cst-aname { flex: 1; line-height: 1.25; min-width: 0; overflow: hidden; }
+  .cst-aname-prenom {
+    font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 300;
+    color: #8a8078; display: block; line-height: 1.15;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cst-aname-nom {
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: .84rem; font-weight: 700;
+    color: #3a3330; display: block; line-height: 1.2;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  /* ── DÉTAIL ── */
+  .cst-detail { overflow-y: auto; padding: 2rem 2.5rem 2.5rem; position: relative; }
+  .cst-detail::-webkit-scrollbar { width: 3px; }
+  .cst-detail::-webkit-scrollbar-thumb { background: rgba(139,94,60,.16); border-radius: 2px; }
+
+  /* Bouton fermer fiche */
+  .cst-close-btn {
+    position: absolute; top: 1.25rem; right: 1.5rem;
+    display: flex; align-items: center; gap: .35rem;
+    font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 600;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: #8a8078; background: rgba(245,240,232,.8);
+    border: 1px solid var(--rule); border-radius: 4px;
+    padding: .32rem .7rem; cursor: pointer;
+    transition: all .18s; opacity: .75;
+  }
+  .cst-close-btn:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  .cst-close-btn svg { flex-shrink: 0; }
+
+  /* ── WELCOME ── */
+  .cst-welcome {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 480px; text-align: center; gap: 1.25rem;
+  }
+  .cst-welcome-svg { width: 76px; height: 76px; opacity: .6; }
+  .cst-welcome-title {
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.15rem; font-weight: 700;
+    color: #3a3330; line-height: 1.55;
+  }
+  .cst-welcome-sub {
+    font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400;
+    color: var(--ink-soft); max-width: 36ch; line-height: 1.7;
+  }
+  .cst-welcome-stats { display: flex; gap: 2.5rem; margin-top: .5rem; }
+  .cst-stat { text-align: center; }
+  .cst-stat-n {
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: 2rem; font-weight: 700;
+    color: var(--accent); display: block; line-height: 1;
+  }
+  .cst-stat-label {
+    font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase; color: #8a8078;
+    margin-top: .3rem; display: block;
+  }
+
+  /* ── FICHE AUTEUR ── */
+  .cst-author-detail { max-width: 760px; animation: rise .28s ease; }
+  .cst-author-detail.hidden { display: none; }
+  .cst-welcome.hidden { display: none; }
+
+  .cst-dheader { padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); margin-bottom: 1.75rem; }
+  .cst-dniveau {
+    font-family: 'Mulish', sans-serif; font-size: .67rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase;
+    display: flex; align-items: center; gap: .42rem; margin-bottom: .6rem;
+  }
+  .cst-dniveau-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+  .cst-dname-wrap { margin-bottom: .3rem; }
+  .cst-dprenom {
+    font-family: 'Mulish', sans-serif; font-size: 1rem; font-weight: 300;
+    color: #8a8078; display: block; line-height: 1.2; letter-spacing: .02em;
+  }
+  .cst-dnom {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: clamp(1.65rem, 3vw, 2.3rem); font-weight: 700;
+    color: #2a2420; line-height: 1.1; letter-spacing: -.025em; display: block;
+  }
+  .cst-ddates {
+    font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 400;
+    color: #8a8078; font-style: italic; margin-bottom: .8rem; margin-top: .35rem;
+  }
+  .cst-dtagline {
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.05rem;
+    font-style: italic; color: #5a5248; line-height: 1.7;
+  }
+
+  .cst-quote {
+    border-left: 2px solid var(--accent); padding: .95rem 1.4rem;
+    margin: 1.1rem 0 1.75rem;
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: .97rem;
+    font-style: italic; color: #5a5248; line-height: 1.78;
+    background: rgba(245,240,232,.6); border-radius: 0 6px 6px 0;
+  }
+
+  /* Sections */
+  .cst-section { margin-bottom: 1.85rem; }
+  .cst-section-title {
+    font-family: 'Mulish', sans-serif; font-size: .67rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase; color: #7a7068;
+    margin-bottom: .9rem; display: flex; align-items: center; gap: .65rem;
+  }
+  .cst-section-title::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  /* Concept card */
+  .cst-concept {
+    border: 1px solid var(--rule); border-radius: 8px; padding: 1.45rem;
+    background: rgba(245,240,232,.55); margin-bottom: .85rem;
+    position: relative; overflow: hidden;
+  }
+  .cst-concept::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--accent); opacity: .45;
+  }
+  .cst-concept-name {
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.02rem;
+    font-weight: 700; color: #9a7030; margin-bottom: .62rem;
+  }
+  .cst-concept-def {
+    font-family: 'Mulish', sans-serif; font-size: .92rem; font-weight: 400;
+    color: #3a3330; line-height: 1.82; margin-bottom: .95rem;
+  }
+  .cst-projecteur {
+    border-radius: 0 6px 6px 0; padding: .82rem 1.1rem; margin-bottom: .5rem;
+  }
+  .cst-projecteur-eclaire {
+    background: rgba(196,153,58,.065); border-left: 2px solid rgba(196,153,58,.38);
+  }
+  .cst-projecteur-limites {
+    background: rgba(200,90,42,.048); border-left: 2px solid rgba(200,90,42,.28);
+    margin-top: .5rem;
+  }
+  .cst-projecteur-label {
+    font-family: 'Mulish', sans-serif; font-size: .67rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: .36rem;
+  }
+  .cst-projecteur-eclaire .cst-projecteur-label { color: #8a6820; }
+  .cst-projecteur-limites .cst-projecteur-label { color: #9a3818; }
+  .cst-projecteur-text {
+    font-family: 'Mulish', sans-serif; font-size: .9rem; font-weight: 400;
+    color: #5a5248; line-height: 1.72;
+  }
+  .cst-limite { display: flex; gap: .52rem; align-items: flex-start; margin-bottom: .4rem; }
+  .cst-limite-dash { color: #b04020; font-size: .85rem; margin-top: .1rem; flex-shrink: 0; }
+  .cst-limite-text {
+    font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400;
+    color: #5a5248; line-height: 1.65;
+  }
+
+  /* Situations */
+  .cst-situation {
+    border: 1px solid var(--rule); border-left: 2px solid rgba(196,153,58,.45);
+    border-radius: 0 6px 6px 0; padding: .78rem 1.1rem; margin-bottom: .48rem;
+    background: rgba(245,240,232,.4);
+  }
+  .cst-situation-text {
+    font-family: 'Mulish', sans-serif; font-size: .9rem; font-weight: 400;
+    color: #5a5248; line-height: 1.7; font-style: italic;
+  }
+
+  /* Connexions */
+  .cst-connexions-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .62rem;
+  }
+  .cst-connexion {
+    border: 1px solid var(--rule); border-radius: 8px; padding: .95rem 1rem;
+    cursor: pointer; transition: all .18s; background: rgba(245,240,232,.55);
+  }
+  .cst-connexion:hover {
+    border-color: var(--accent); background: rgba(196,153,58,.06);
+    transform: translateY(-2px); box-shadow: 0 4px 14px rgba(26,23,20,.06);
+  }
+  .cst-connexion-type {
+    font-family: 'Mulish', sans-serif; font-size: .63rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: .36rem;
+  }
+  .cst-connexion-name {
+    font-family: 'Libre Baskerville', Georgia, serif; font-size: .9rem;
+    font-weight: 700; color: #3a3330; margin-bottom: .36rem;
+  }
+  .cst-connexion-why {
+    font-family: 'Mulish', sans-serif; font-size: .81rem; font-weight: 400;
+    color: #7a7068; line-height: 1.55; font-style: italic;
+  }
+  .ctype-filiation   { color: #9a7030; }
+  .ctype-tension     { color: #c05020; }
+  .ctype-convergence { color: #3a6fa8; }
+  .ctype-application { color: #3a8e58; }
+
+  /* Oeuvres */
+  .cst-oeuvres { display: flex; flex-wrap: wrap; gap: .38rem; }
+  .cst-oeuvre {
+    font-family: 'Mulish', sans-serif; font-size: .81rem; font-weight: 400;
+    font-style: italic; color: #6a6058; border: 1px solid var(--rule);
+    border-radius: 16px; padding: .28rem .72rem; background: rgba(245,240,232,.6);
+  }
+
+  /* Note bas */
+  .cst-note {
+    display: flex; align-items: flex-start; gap: .75rem;
+    margin-top: 2.5rem; padding-top: 1.75rem; border-top: 1px solid var(--rule);
+    opacity: 0; animation: rise .9s .4s ease forwards;
+  }
+  .cst-note .note-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0; margin-top: .3rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .cst-note p {
+    font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400;
+    color: var(--ink-soft); line-height: 1.7; font-style: italic;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    .cst-body { grid-template-columns: 172px 1fr; }
+    .cst-detail { padding: 1.75rem 1.75rem; }
+  }
+  @media (max-width: 640px) {
+    .cst-wrap { padding: 1.75rem 1.1rem 4rem; }
+    .cst-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .cst-sidebar { border-right: none; border-bottom: 1px solid var(--rule); max-height: 200px; }
+    .cst-detail { padding: 1.5rem 1rem; }
+    .cst-toolbar { flex-direction: column; align-items: flex-start; }
+    .cst-search-wrap { max-width: 100%; }
+    .cst-filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: .2rem; width: 100%; }
+    .cst-connexions-grid { grid-template-columns: 1fr; }
+    .cst-legende { gap: .6rem; }
+    .cst-dnom { font-size: 1.55rem; }
+    .cst-close-btn { top: .75rem; right: .75rem; }
+  }
+
+  @keyframes rise { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+</style>
+
+<script>
+const AUTHORS = [
+
+  // ── NEUROLOGIQUE ──
+  {
+    id:"lembke", nom:"Anna Lembke", dates:"1966 —", niveau:"neurologique",
+    tagline:"La douleur comme chemin vers le plaisir — comprendre et soigner la dépendance moderne.",
+    oeuvres:["Dopamine Nation (2021)","Drug Dealer, MD (2016)"],
+    concepts:[{
+      nom:"Balance plaisir/douleur",
+      definition:"Le cerveau maintient l'équilibre entre plaisir et douleur sur une même balance neurologique. Chaque plaisir penche la balance d'un côté ; pour compenser, le cerveau penche du côté opposé — créant la tolérance, le manque, et la souffrance après la récompense.",
+      projecteur:"Tout comportement répété où la recherche de soulagement engendre plus de souffrance : substances, écrans, nourriture, relations toxiques. La dépendance n'est pas une faiblesse morale — c'est une mécanique cérébrale.",
+      limites:["Modèle centré sur la neurochimie, moins sur les dimensions sociales et culturelles","Ne rend pas pleinement compte du rôle du sens dans la résistance à la dépendance","Peut réduire des expériences humaines complexes à des mécanismes biologiques"]
+    }],
+    situations:["Manger un troisième dessert sans avoir faim — et se sentir mal après","Le scroll infini sur les réseaux : plaisir attendu, vide ressenti","La relation toxique qu'on quitte et retrouve en boucle"],
+    connexions:[
+      {id:"berridge",type:"filiation",pourquoi:"Berridge fournit le mécanisme neurologique que Lembke observe cliniquement"},
+      {id:"frankl",type:"tension",pourquoi:"Lembke : la neurologie court-circuite la volonté. Frankl : le sens peut transcender"},
+      {id:"nagoski_emily",type:"convergence",pourquoi:"Toutes deux travaillent sur les systèmes d'activation et d'inhibition du comportement"},
+      {id:"gottman",type:"application",pourquoi:"La dynamique plaisir/douleur éclaire les cycles de conflits dans les couples"}
+    ],
+    citation:"La dépendance est une maladie de l'isolement. La connexion en est le remède."
+  },
+  {
+    id:"berridge", nom:"Kent Berridge", dates:"1957 —", niveau:"neurologique",
+    tagline:"Désirer et jouir sont deux systèmes cérébraux distincts — et cette distinction change tout.",
+    oeuvres:["Pleasure Systems in the Brain (2015)","Wanting and Liking (articles fondateurs)"],
+    concepts:[{
+      nom:"Wanting vs Liking",
+      definition:"Le désir (wanting) est piloté par la dopamine — c'est la motivation, l'impulsion vers. Le plaisir ressenti (liking) est piloté par les opioïdes — c'est la satisfaction réelle. Ces deux systèmes peuvent se dissocier complètement : on peut intensément vouloir quelque chose qu'on n'apprécie plus du tout.",
+      projecteur:"La dépendance, le workaholisme, la compulsion : des états où le wanting s'emballe pendant que le liking s'effondre. Anticiper un plaisir est parfois plus intense que le plaisir lui-même.",
+      limites:["Modèle animal difficile à transposer directement à la complexité humaine","Ne traite pas suffisamment le rôle du contexte social et culturel","La dissociation wanting/liking est un continuum, pas une dichotomie nette"]
+    }],
+    situations:["Attendre un repas avec impatience et être déçu à la première bouchée","Continuer à chercher une validation sans en ressentir de satisfaction","Le désir d'une personne qui fait souffrir — voulu intensément, apprécié à peine"],
+    connexions:[
+      {id:"lembke",type:"filiation",pourquoi:"Lembke s'appuie sur Berridge pour expliquer la mécanique de la dépendance"},
+      {id:"damasio",type:"convergence",pourquoi:"Tous deux ancrent la cognition dans le corps et les émotions"},
+      {id:"frankl",type:"tension",pourquoi:"Berridge : le désir peut tourner à vide. Frankl : le vide peut devenir sens"},
+      {id:"mcgilchrist",type:"application",pourquoi:"L'hémisphère gauche comme wanting, le droit comme liking"},
+      {id:"nagoski_emily",type:"convergence",pourquoi:"Le SIS/SES de Nagoski complète la distinction wanting/liking à l'échelle comportementale"}
+    ],
+    citation:"Les systèmes du désir et du plaisir sont séparables dans le cerveau. C'est là que réside le piège de la dépendance."
+  },
+  {
+    id:"damasio", nom:"Antonio Damasio", dates:"1944 —", niveau:"neurologique",
+    tagline:"Les émotions ne perturbent pas la raison — elles en sont le fondement.",
+    oeuvres:["Descartes' Error (1994)","The Feeling of What Happens (1999)","Self Comes to Mind (2010)"],
+    concepts:[{
+      nom:"Marqueurs somatiques",
+      definition:"Les émotions sont des états corporels qui marquent les options de décision. Sans ces marqueurs, la prise de décision rationnelle s'effondre. Le corps pense avant le cerveau conscient — les intuitions ne sont pas irrationnelles, elles sont de l'intelligence incarnée.",
+      projecteur:"Toute décision difficile où quelque chose dans le corps sait avant que la tête comprenne. Les patients avec lésions du cortex préfrontal ventromédian ont l'intelligence intacte mais la capacité décisionnelle détruite.",
+      limites:["Modèle construit sur des cas cliniques — difficile à généraliser","La relation corps/décision est bidirectionnelle et plus complexe","Sous-estime parfois le rôle des biais culturels"]
+    }],
+    situations:["Choisir entre deux offres d'emploi : les arguments sont égaux, mais le corps dit non","Sentir qu'un élève va mal avant d'avoir verbalisé quoi que ce soit","La nausée devant une décision moralement discutable"],
+    connexions:[
+      {id:"berridge",type:"convergence",pourquoi:"Tous deux ancrent la cognition dans le corps et les émotions"},
+      {id:"mcgilchrist",type:"convergence",pourquoi:"Tous deux contre le dualisme corps/esprit"},
+      {id:"frankl",type:"tension",pourquoi:"Damasio ancre tout dans le corps. Frankl transcende le corps par l'esprit"},
+      {id:"kahneman",type:"convergence",pourquoi:"Tous deux montrent que la décision rationnelle est une construction partielle"}
+    ],
+    citation:"Nous ne sommes pas des machines à penser qui ressentons. Nous sommes des machines à sentir qui pensons."
+  },
+  {
+    id:"nagoski_emily", nom:"Emily Nagoski", dates:"1975 —", niveau:"neurologique",
+    tagline:"Le désir n'est pas un accélérateur — c'est un système à deux pédales, accélérateur et frein.",
+    oeuvres:["Come As You Are (2015)","Burnout (avec Eve Nagoski, 2019)"],
+    concepts:[{
+      nom:"SES / SIS — Accélérateur et frein",
+      definition:"Le système d'excitation sexuelle (SES) répond aux stimuli potentiellement sexuels en activant le désir. Le système d'inhibition sexuelle (SIS) surveille les menaces et bloque le désir. La plupart des difficultés de désir viennent d'un frein trop sensible, pas d'un accélérateur trop faible. Le stress, la honte, et l'anxiété sont des freins majeurs.",
+      projecteur:"Troubles du désir, écart de désir dans les couples, effet du stress chronique sur la vie intime. Tout comportement où l'on vise à activer alors que la vraie question est ce qui bloque.",
+      limites:["Modèle développé principalement dans le contexte de la sexualité féminine","La métaphore accélérateur/frein peut sembler mécanique","Les facteurs culturels et relationnels sont parfois sous-pondérés"]
+    }],
+    situations:["Le désir qui disparaît à l'approche d'une période de stress intense","Un couple où l'un veut souvent, l'autre rarement — tendance à blâmer la libido basse","La différence entre 'je n'en ai pas envie' et 'quelque chose m'en empêche'"],
+    connexions:[
+      {id:"lembke",type:"convergence",pourquoi:"Toutes deux travaillent sur les systèmes d'activation et d'inhibition du comportement"},
+      {id:"berridge",type:"convergence",pourquoi:"Le SES correspond au wanting, le SIS au système de régulation qui freine"},
+      {id:"nagoski_eve",type:"filiation",pourquoi:"Le modèle SES/SIS est étendu au burn-out émotionnel dans leur travail commun"},
+      {id:"gottman",type:"application",pourquoi:"L'écart de désir dans les couples s'analyse mieux avec le modèle frein/accélérateur"}
+    ],
+    citation:"Le problème n'est pas votre désir. Le problème est ce qui l'empêche d'émerger."
+  },
+  {
+    id:"nagoski_eve", nom:"Eve Nagoski", dates:"1975 —", niveau:"neurologique",
+    tagline:"L'épuisement émotionnel n'est pas un manque de volonté — c'est un cycle de stress non complété.",
+    oeuvres:["Burnout (avec Emily Nagoski, 2019)"],
+    concepts:[{
+      nom:"Cycle du stress non complété",
+      definition:"Le stress est une réponse physiologique avec un début, un milieu et une fin. Quand le cycle ne se complète pas — quand on résout le problème mais pas la réponse corporelle au stress — le stress s'accumule dans le corps. Le burn-out est moins la surcharge que l'accumulation de cycles non complétés.",
+      projecteur:"Burn-out, épuisement chronique, irritabilité inexpliquée. Toute situation où ça devrait aller mais le corps ne suit pas. Les rituels de décompression physique ne sont pas du luxe — ce sont des complétions de cycles.",
+      limites:["Modèle centré sur des populations majoritairement féminines","La complétion de cycle peut être difficile dans des contextes rigides","Ne traite pas en profondeur les causes structurelles du stress chronique"]
+    }],
+    situations:["Finir une journée difficile épuisé — le problème est résolu mais le corps ne le sait pas encore","Le directeur d'école qui gère toutes les crises mais ne décharge jamais","La rage ou les larmes qui arrivent une heure après l'événement déclencheur"],
+    connexions:[
+      {id:"nagoski_emily",type:"filiation",pourquoi:"Extension du modèle SES/SIS à l'épuisement émotionnel"},
+      {id:"lembke",type:"convergence",pourquoi:"Toutes deux : le corps porte ce que la volonté ne peut pas résoudre seule"},
+      {id:"damasio",type:"convergence",pourquoi:"Le cycle du stress est une réponse somatique — Damasio dirait que le corps sait avant la tête"},
+      {id:"csikszentmihalyi",type:"tension",pourquoi:"Le flow demande des ressources que le stress non complété érode"}
+    ],
+    citation:"Le burn-out n'est pas un signe de faiblesse. C'est le signe que vous avez essayé d'être forts trop longtemps."
+  },
+
+  // ── REPRÉSENTATIONNEL ──
+  {
+    id:"bruner", nom:"Jerome Bruner", dates:"1915 — 2016", niveau:"représentationnel",
+    tagline:"L'être humain ne vit pas dans la réalité — il vit dans les récits qu'il se raconte sur elle.",
+    oeuvres:["Actual Minds, Possible Worlds (1986)","Acts of Meaning (1990)","The Culture of Education (1996)"],
+    concepts:[{
+      nom:"Pensée narrative",
+      definition:"Il existe deux modes fondamentaux de pensée : le mode logico-scientifique (vérité par cohérence et preuve) et le mode narratif (vérité par vraisemblance et expérience vécue). Le mode narratif n'est pas inférieur — c'est par lui que nous construisons notre identité, notre sens moral, notre compréhension d'autrui.",
+      projecteur:"La façon dont on se raconte sa propre vie, dont on justifie ses choix, dont on comprend les autres. L'éducation qui ignore le narratif brise la transmission du sens.",
+      limites:["La dichotomie narration/logique peut sembler trop tranchée","Moins opérationnel sur les mécanismes cognitifs","Influence culturelle difficile à séparer du substrat universel"]
+    }],
+    situations:["Expliquer un échec scolaire à ses parents : on raconte une histoire, pas des faits","Se souvenir d'une relation sous l'angle du récit construit, pas de ce qui s'est passé","Un enfant qui comprend les règles morales par les histoires avant l'abstraction"],
+    connexions:[
+      {id:"korzybski",type:"filiation",pourquoi:"Bruner radicalise Korzybski : les récits construisent la réalité, pas seulement la représentent"},
+      {id:"frankl",type:"convergence",pourquoi:"Tous deux : l'être humain est un animal à sens, producteur de récits"},
+      {id:"gottman",type:"application",pourquoi:"Les récits qu'on se raconte sur son partenaire prédisent la durée des couples"},
+      {id:"vygotski",type:"convergence",pourquoi:"Tous deux : le langage et le récit construisent la pensée — pas l'inverse"}
+    ],
+    citation:"La narration est l'instrument premier par lequel nous construisons le sens de notre vie."
+  },
+  {
+    id:"kahneman", nom:"Daniel Kahneman", dates:"1934 — 2024", niveau:"représentationnel",
+    tagline:"Deux systèmes de pensée — et nous croyons fermement au mauvais.",
+    oeuvres:["Thinking, Fast and Slow (2011)","Noise (2021)","Prospect Theory (avec Tversky)"],
+    concepts:[{
+      nom:"Système 1 / Système 2",
+      definition:"Le Système 1 est rapide, automatique, émotionnel, inconscient. Le Système 2 est lent, délibératif, logique, coûteux en énergie. La grande majorité de nos décisions vient du Système 1 — y compris celles qu'on croit avoir soigneusement raisonnées.",
+      projecteur:"Biais cognitifs, prises de décision irrationnelles, jugements automatiques. Partout où l'on croit penser quand on réagit.",
+      limites:["Dichotomie trop simplifiée — la réalité est un continuum","Sous-estime parfois la valeur adaptative du Système 1","Nombreuses réplications difficiles sur certains biais spécifiques"]
+    }],
+    situations:["Juger quelqu'un sur son apparence et construire une justification rationnelle après","Prendre une décision financière à l'instinct et la rationaliser après coup","La première impression d'un élève qui conditionne toute l'évaluation suivante"],
+    connexions:[
+      {id:"korzybski",type:"convergence",pourquoi:"Tous deux : la représentation déforme la réalité — par les biais ou par le langage"},
+      {id:"bronner",type:"filiation",pourquoi:"Bronner s'appuie sur les biais de Kahneman pour expliquer la propagation des croyances"},
+      {id:"mcgilchrist",type:"tension",pourquoi:"Kahneman : deux systèmes hiérarchisés. McGilchrist : deux modes d'être irréductibles"},
+      {id:"damasio",type:"convergence",pourquoi:"Tous deux montrent que la décision rationnelle est une construction partielle"}
+    ],
+    citation:"Nous sommes des créatures de Système 1 qui se prennent pour des créatures de Système 2."
+  },
+  {
+    id:"korzybski", nom:"Alfred Korzybski", dates:"1879 — 1950", niveau:"représentationnel",
+    tagline:"La carte n'est pas le territoire — confondre les deux est la source de presque toutes nos erreurs.",
+    oeuvres:["Science and Sanity (1933)","Manhood of Humanity (1921)"],
+    concepts:[{
+      nom:"La carte et le territoire",
+      definition:"Toute représentation du monde est une abstraction — pas le monde réel. Le langage structure notre perception au point de la déformer. Nous réagissons aux mots comme si c'était la réalité — c'est la source de la plupart des conflits humains.",
+      projecteur:"Conflits nés de mots mal définis, préjugés, idéologies rigides. Tout ce qui confond le nom d'une chose avec la chose elle-même.",
+      limites:["Difficile à opérationnaliser dans la pratique","Peut mener à un relativisme excessif","Moins outillé pour les dimensions émotionnelles de la représentation"]
+    }],
+    situations:["Un conflit de couple où les deux utilisent les mêmes mots avec des sens différents depuis des années","Réagir à un diagnostic médical comme si le mot était la maladie","Juger une culture sur ses mots plutôt que sur ses pratiques"],
+    connexions:[
+      {id:"kahneman",type:"convergence",pourquoi:"Deux chemins vers la même distorsion — biais cognitifs ou structure du langage"},
+      {id:"bruner",type:"filiation",pourquoi:"Bruner radicalise Korzybski : les récits construisent la réalité"},
+      {id:"bateson",type:"filiation",pourquoi:"Bateson formalise les niveaux d'abstraction de Korzybski en niveaux logiques"},
+      {id:"bronner",type:"application",pourquoi:"Les confusions d'abstraction de Korzybski alimentent le marché cognitif de Bronner"}
+    ],
+    citation:"La carte n'est pas le territoire. Le mot n'est pas la chose."
+  },
+  {
+    id:"mcgilchrist", nom:"Iain McGilchrist", dates:"1953 —", niveau:"représentationnel",
+    tagline:"L'hémisphère gauche a pris le contrôle — et nous payons le prix de cette usurpation.",
+    oeuvres:["The Master and His Emissary (2009)","The Matter with Things (2021)"],
+    concepts:[{
+      nom:"Maître et émissaire",
+      definition:"L'hémisphère droit perçoit le monde dans sa globalité et son ambiguïté — il est le Maître. L'hémisphère gauche découpe, catégorise, contrôle — il est l'Émissaire. Dans la modernité, l'Émissaire a usurpé le pouvoir du Maître, appauvrissant notre rapport au monde.",
+      projecteur:"Réductionnisme scientifique, bureaucratie, technocratie, perte du sens du sacré. Difficulté à tolérer l'ambiguïté.",
+      limites:["Généralisation de données neurologiques à des phénomènes culturels","La latéralisation cérébrale est réelle mais moins tranchée que le modèle","Difficile à falsifier empiriquement"]
+    }],
+    situations:["Préférer une procédure administrative à une solution humaine évidente","Ne plus supporter l'ambiguïté — besoin de catégoriser, classer, décider vite","Lire un poème et ne chercher que son sens littéral"],
+    connexions:[
+      {id:"berridge",type:"application",pourquoi:"L'hémisphère gauche comme wanting, le droit comme liking"},
+      {id:"kahneman",type:"tension",pourquoi:"Kahneman : deux systèmes hiérarchisés. McGilchrist : deux modes d'être irréductibles"},
+      {id:"damasio",type:"convergence",pourquoi:"Tous deux contre le dualisme corps/esprit"},
+      {id:"frankl",type:"convergence",pourquoi:"Tous deux diagnostiquent un appauvrissement de sens dans la modernité"}
+    ],
+    citation:"L'hémisphère gauche ne sait pas ce qu'il ne sait pas. C'est là son danger."
+  },
+
+  // ── SOCIAL ──
+  {
+    id:"bronner", nom:"Gérald Bronner", dates:"1974 —", niveau:"social",
+    tagline:"Pourquoi les cerveaux humains sont structurellement attirés par les croyances fausses.",
+    oeuvres:["La démocratie des crédules (2013)","Apocalypse cognitive (2021)","L'empire des croyances (2003)"],
+    concepts:[{
+      nom:"Marché cognitif",
+      definition:"L'espace mental est un marché où les croyances se concurrencent. Nos biais favorisent les informations qui confirment ce qu'on croit et qui sont émotionnellement saillantes. Internet a libéralisé ce marché — les croyances fausses y circulent souvent plus vite que les vraies.",
+      projecteur:"Théories du complot, pseudosciences, infodémie. Mais aussi : la bulle de confirmation dans nos cercles, les croyances sur les élèves qui conditionnent l'enseignement.",
+      limites:["Peut sembler élitiste — qui décide ce qui est vrai ?","Sous-estime parfois la rationalité locale des croyances","La solution (éducation critique) reste peu opérationnelle"]
+    }],
+    situations:["Lire un article qui confirme ce qu'on pense et le partager sans vérifier","Un parent persuadé de l'injustice scolaire — vision partielle renforcée à chaque incident","La salle des profs où une croyance sur un élève devient prophétie auto-réalisatrice"],
+    connexions:[
+      {id:"kahneman",type:"filiation",pourquoi:"Bronner s'appuie sur les biais de Kahneman"},
+      {id:"korzybski",type:"convergence",pourquoi:"Les confusions d'abstraction de Korzybski alimentent le marché de Bronner"},
+      {id:"bruner",type:"application",pourquoi:"Les récits de Bruner sont le vecteur de diffusion des croyances dans le marché"},
+      {id:"rosling",type:"convergence",pourquoi:"Tous deux diagnostiquent un marché cognitif biaisé vers les mauvaises nouvelles"}
+    ],
+    citation:"Notre cerveau n'est pas fait pour chercher la vérité, mais pour éviter l'incertitude."
+  },
+  {
+    id:"gottman", nom:"John Gottman", dates:"1942 —", niveau:"social",
+    tagline:"Prédire la fin d'un couple avec 90% de précision — et comprendre pourquoi.",
+    oeuvres:["Why Marriages Succeed or Fail (1994)","The Seven Principles for Making Marriage Work (1999)"],
+    concepts:[{
+      nom:"Les Quatre Cavaliers",
+      definition:"Quatre patterns détruisent les relations : la critique (attaquer la personne, pas le comportement), le mépris (supériorité et dédain — le plus destructeur), la défensive (contre-attaque ou victimisation), l'évitement (se murer dans le silence). Leur présence prédit la séparation avec une fiabilité remarquable.",
+      projecteur:"Tout conflit dans les relations intimes — couple, famille, équipe. Reconnaître le mépris vs la critique change tout.",
+      limites:["Études principalement sur des couples hétérosexuels occidentaux","Difficile à appliquer dans des cultures avec des normes de conflit différentes","Le ratio positif/négatif (5:1) est parfois mal interprété"]
+    }],
+    situations:["La dispute qui dure depuis des années parce qu'on critique la personne plutôt que l'acte","Le silence qui s'installe — évitement ou épuisement ?","La réunion d'équipe où le ton révèle du mépris déguisé en humour"],
+    connexions:[
+      {id:"bruner",type:"application",pourquoi:"Les récits qu'on se raconte sur son partenaire déterminent les Quatre Cavaliers"},
+      {id:"lembke",type:"convergence",pourquoi:"Les cycles de conflit répétitifs ressemblent aux cycles plaisir/douleur"},
+      {id:"nagoski_emily",type:"application",pourquoi:"L'écart de désir dans les couples s'analyse avec le modèle frein/accélérateur"},
+      {id:"bowlby",type:"convergence",pourquoi:"Les styles d'attachement de Bowlby/Ainsworth déterminent les patterns des Quatre Cavaliers"}
+    ],
+    citation:"Le mépris est le vitriol de l'amour. Une seule goutte suffit."
+  },
+  {
+    id:"rosling", nom:"Hans Rosling", dates:"1948 — 2017", niveau:"social",
+    tagline:"Le monde va mieux que vous ne le pensez — et vos données mentales sont fausses.",
+    oeuvres:["Factfulness (2018)","Gapminder (fondateur)"],
+    concepts:[{
+      nom:"Instincts cognitifs déformants",
+      definition:"Dix instincts déforment notre perception du monde : instinct du gouffre (tout ou rien), instinct de négativité (les mauvaises nouvelles dominent), instinct de la ligne droite (la croissance va continuer). La factualité — remplacer ces instincts par des données — est une compétence.",
+      projecteur:"Journalisme, politique, aide humanitaire. Partout où l'on agit sur des représentations fausses du monde.",
+      limites:["Peut être perçu comme naïvement optimiste","Les données peuvent elles-mêmes être biaisées","Moins outillé sur les inégalités intra-pays"]
+    }],
+    situations:["Croire que le monde va de plus en plus mal malgré l'amélioration des indicateurs de santé","Surestimer la pauvreté dans des pays qu'on ne connaît que par les médias","Prendre des décisions pédagogiques sur des croyances non vérifiées"],
+    connexions:[
+      {id:"bronner",type:"convergence",pourquoi:"Tous deux diagnostiquent un marché cognitif biaisé vers les mauvaises nouvelles"},
+      {id:"kahneman",type:"filiation",pourquoi:"Les instincts de Rosling sont des biais de Kahneman appliqués à la perception mondiale"},
+      {id:"korzybski",type:"convergence",pourquoi:"La carte mentale du monde est radicalement fausse — confusion carte/territoire"}
+    ],
+    citation:"La factualité est de reconnaître que nos intuitions sur le monde sont souvent fausses."
+  },
+
+  // ── EXISTENTIEL ──
+  {
+    id:"csikszentmihalyi", nom:"Mihaly Csikszentmihalyi", dates:"1934 — 2021", niveau:"existentiel",
+    tagline:"Le bonheur n'est pas quelque chose qu'on trouve — c'est quelque chose qui arrive quand on est pleinement présent.",
+    oeuvres:["Flow: The Psychology of Optimal Experience (1990)","Creativity (1996)","Finding Flow (1997)"],
+    concepts:[{
+      nom:"Flow — expérience optimale",
+      definition:"État de concentration totale et de plaisir intrinsèque où le défi d'une activité correspond exactement aux capacités. La conscience de soi disparaît, le temps se dilate, l'activité devient sa propre récompense. Ni trop facile (ennui), ni trop difficile (anxiété).",
+      projecteur:"Créativité, apprentissage, sport, artisanat. En éducation : concevoir des défis au bon niveau pour chaque élève.",
+      limites:["Difficile à provoquer intentionnellement — le flow fuit quand on le cherche","Moins applicable aux tâches répétitives ou sociales complexes","La dimension culturelle du flow est sous-explorée"]
+    }],
+    situations:["Écrire et réaliser deux heures plus tard qu'on n'a pas vu le temps passer","Un enfant qui joue seul avec une concentration absolue","La différence entre une tâche administrative et une préparation de cours qui passionne"],
+    connexions:[
+      {id:"frankl",type:"convergence",pourquoi:"Le flow et le sens sont deux réponses complémentaires au vide existentiel"},
+      {id:"berridge",type:"tension",pourquoi:"Dans le flow, wanting et liking coïncident — état rare que Berridge identifie comme exception"},
+      {id:"lembke",type:"tension",pourquoi:"Le flow est un plaisir sans tolérance — l'opposé de la dépendance"},
+      {id:"vygotski",type:"convergence",pourquoi:"La zone proximale de développement de Vygotski est la condition structurelle du flow"}
+    ],
+    citation:"Le bonheur n'est pas quelque chose qui arrive. Il résulte de nos actions et de notre façon de penser."
+  },
+  {
+    id:"frankl", nom:"Viktor Frankl", dates:"1905 — 1997", niveau:"existentiel",
+    tagline:"L'homme peut tout endurer s'il a un pourquoi.",
+    oeuvres:["Man's Search for Meaning (1946)","The Will to Meaning (1969)","The Doctor and the Soul (1946)"],
+    concepts:[{
+      nom:"Volonté de sens",
+      definition:"La motivation première de l'être humain n'est pas le plaisir (Freud) ni le pouvoir (Adler) mais la recherche de sens. Même dans des conditions extrêmes, l'être humain peut trouver un sens à sa souffrance. Le vide existentiel est la pathologie centrale du XXe siècle.",
+      projecteur:"Dépression existentielle, sentiment de vide, perte de motivation. Toute situation où la question 'pourquoi je fais ça ?' ne trouve pas de réponse.",
+      limites:["Difficile à opérationnaliser scientifiquement","Peut être instrumentalisé pour légitimer la souffrance","Contexte historique (Shoah) peut limiter la portée universelle"]
+    }],
+    situations:["L'enseignant épuisé qui retrouve l'énergie quand il comprend pourquoi il enseigne","Traverser une maladie grave avec sérénité parce qu'on y trouve une signification","Le burn-out : non pas trop de travail, mais travail sans sens"],
+    connexions:[
+      {id:"lembke",type:"tension",pourquoi:"Lembke : la neurologie court-circuite la volonté. Frankl : le sens peut transcender"},
+      {id:"berridge",type:"tension",pourquoi:"Berridge : le désir peut tourner à vide. Frankl : le vide peut devenir sens"},
+      {id:"mcgilchrist",type:"convergence",pourquoi:"Tous deux diagnostiquent un appauvrissement de sens dans la modernité"},
+      {id:"csikszentmihalyi",type:"convergence",pourquoi:"Le flow et le sens sont deux réponses au vide existentiel"}
+    ],
+    citation:"Entre le stimulus et la réponse, il y a un espace. Dans cet espace réside notre liberté."
+  },
+
+  // ── SYSTÈMES ──
+  {
+    id:"bateson", nom:"Gregory Bateson", dates:"1904 — 1980", niveau:"systèmes",
+    tagline:"L'information est une différence qui fait une différence — et les niveaux logiques ne se mélangent pas.",
+    oeuvres:["Steps to an Ecology of Mind (1972)","Mind and Nature (1979)"],
+    concepts:[{
+      nom:"Niveaux logiques & double bind",
+      definition:"Les niveaux logiques appliqués aux systèmes vivants : une déclaration sur une classe n'appartient pas à la même classe que ses membres. Les pathologies relationnelles naissent souvent de confusions de niveaux — le double bind : deux injonctions contradictoires à des niveaux différents dont on ne peut sortir. 'Sois spontané' est un double bind.",
+      projecteur:"Doubles messages dans les familles et les organisations, injonctions paradoxales en management et en éducation. La confusion de niveaux logiques comme source structurelle de souffrance.",
+      limites:["Concept de double bind difficile à opérationnaliser cliniquement","L'écologie de l'esprit reste très abstraite","Moins de recherche empirique que les autres cadres"]
+    }],
+    situations:["L'élève à qui on dit 'sois créatif' dans un cadre qui punit l'erreur","Le manager qui demande l'initiative mais sanctionne les décisions non validées","La relation où 'je t'aime' et les comportements envoient des messages opposés"],
+    connexions:[
+      {id:"korzybski",type:"filiation",pourquoi:"Bateson formalise les niveaux d'abstraction de Korzybski en niveaux logiques"},
+      {id:"meadows",type:"convergence",pourquoi:"Bateson et Meadows convergent sur les boucles et l'écologie des systèmes"},
+      {id:"vonfoerster",type:"convergence",pourquoi:"Bateson et von Foerster fondent ensemble la cybernétique de second ordre"},
+      {id:"gottman",type:"application",pourquoi:"Les Quatre Cavaliers de Gottman sont des doubles binds relationnels au sens de Bateson"}
+    ],
+    citation:"L'information est une différence qui fait une différence."
+  },
+  {
+    id:"forrester", nom:"Jay Forrester", dates:"1918 — 2016", niveau:"systèmes",
+    tagline:"Les systèmes complexes se comportent de façon contre-intuitive — et c'est là leur piège.",
+    oeuvres:["Industrial Dynamics (1961)","Urban Dynamics (1969)","World Dynamics (1971)"],
+    concepts:[{
+      nom:"Dynamique des systèmes",
+      definition:"Les systèmes complexes ont des boucles de rétroaction, des délais et des comportements non linéaires qui rendent leurs réponses contre-intuitives. Ce qui semble être une solution peut renforcer le problème. Les délais entre cause et effet trompent systématiquement nos intuitions.",
+      projecteur:"Gestion des organisations, politiques publiques, épidémiologie. Toute situation où agir vite produit des effets tardifs et inversés.",
+      limites:["Demande une modélisation rigoureuse — difficile à appliquer intuitivement","Risque de simplification excessive","Les paramètres humains résistent à la quantification"]
+    }],
+    situations:["Recruter en masse pour résoudre une pénurie et se retrouver en sureffectif deux ans plus tard","Augmenter la pression sur les élèves en difficulté et creuser l'écart","Le délai entre une décision de management et ses effets réels sur le terrain"],
+    connexions:[
+      {id:"meadows",type:"filiation",pourquoi:"Meadows est l'héritière directe de Forrester"},
+      {id:"senge",type:"filiation",pourquoi:"Senge a rendu la dynamique de Forrester accessible aux managers"},
+      {id:"kahneman",type:"convergence",pourquoi:"Tous deux : nos intuitions sont mauvaises conseillères dans les systèmes complexes"},
+      {id:"bateson",type:"convergence",pourquoi:"Forrester et Bateson convergent sur les boucles récursives comme moteur des systèmes"}
+    ],
+    citation:"Les systèmes complexes sont contre-intuitifs. Les politiques qui semblent bonnes sont souvent les pires."
+  },
+  {
+    id:"meadows", nom:"Donella Meadows", dates:"1941 — 2001", niveau:"systèmes",
+    tagline:"Tout système a des leviers. Mais les plus puissants sont les moins évidents.",
+    oeuvres:["Thinking in Systems (2008)","Les limites de la croissance (1972)","Leverage Points (1999)"],
+    concepts:[{
+      nom:"Pensée systémique & leviers",
+      definition:"Un système est un ensemble d'éléments interconnectés produisant un comportement au fil du temps. Les stocks, les flux et les boucles de rétroaction déterminent ce comportement. Les points de levier — les endroits où une petite intervention produit un grand changement — sont souvent contre-intuitifs : les plus puissants touchent aux paradigmes, pas aux chiffres.",
+      projecteur:"Toute situation où une intervention logique produit l'effet inverse. Politiques publiques, organisations, comportements résistant au changement.",
+      limites:["Risque de voir des systèmes partout et de négliger l'agentivité individuelle","Les boucles de rétroaction sont difficiles à identifier dans les systèmes sociaux","La modélisation peut créer une illusion de maîtrise"]
+    }],
+    situations:["Une réforme scolaire qui aggrave le problème qu'elle visait à résoudre","Un régime alimentaire qui produit l'effet yoyo — la restriction renforce la boucle","Le directeur qui éteint des incendies sans jamais s'attaquer aux causes structurelles"],
+    connexions:[
+      {id:"forrester",type:"filiation",pourquoi:"Meadows est l'élève de Forrester, fondateur de la dynamique des systèmes"},
+      {id:"senge",type:"filiation",pourquoi:"Senge a vulgarisé la pensée systémique de Meadows dans les organisations"},
+      {id:"bateson",type:"convergence",pourquoi:"Bateson et Meadows convergent sur les boucles et l'écologie des systèmes"},
+      {id:"lembke",type:"application",pourquoi:"La dépendance est une boucle renforçante — Meadows en fournit le cadre structurel"}
+    ],
+    citation:"Vous ne pouvez pas naviguer vers un système que vous ne comprenez pas."
+  },
+  {
+    id:"senge", nom:"Peter Senge", dates:"1947 —", niveau:"systèmes",
+    tagline:"Les organisations qui apprennent ne sont pas celles qui accumulent l'information — ce sont celles qui pensent en boucles.",
+    oeuvres:["La Cinquième Discipline (1990)","The Dance of Change (1999)","Schools That Learn (2000)"],
+    concepts:[{
+      nom:"Organisation apprenante",
+      definition:"Une organisation apprenante développe cinq disciplines : maîtrise personnelle, modèles mentaux, vision partagée, apprentissage en équipe, et pensée systémique — la cinquième discipline qui intègre les quatre autres. Les archétypes systémiques sont des patterns récurrents dans les organisations.",
+      projecteur:"Management, éducation institutionnelle. Toute organisation qui résout les mêmes problèmes en boucle sans en comprendre la structure.",
+      limites:["Modèle idéaliste difficile à implémenter dans les organisations hiérarchiques","Le terme est souvent récupéré comme slogan sans substance","Peu opérationnel sur les résistances psychologiques au changement"]
+    }],
+    situations:["Une école qui tient des réunions de concertation mais ne change jamais ses pratiques","Le déplacement de fardeau : résoudre un problème en créant une dépendance à la solution","Une équipe qui répète les mêmes erreurs chaque année sans capitaliser"],
+    connexions:[
+      {id:"meadows",type:"filiation",pourquoi:"Senge vulgarise la pensée systémique de Meadows pour les organisations"},
+      {id:"forrester",type:"filiation",pourquoi:"Senge s'appuie sur la dynamique des systèmes de Forrester"},
+      {id:"bruner",type:"convergence",pourquoi:"Tous deux : les modèles mentaux et les récits sont le vrai levier du changement"},
+      {id:"frankl",type:"convergence",pourquoi:"La vision partagée de Senge rejoint la volonté de sens de Frankl"}
+    ],
+    citation:"Les organisations apprennent quand leurs membres apprennent. Mais l'apprentissage individuel ne garantit pas l'apprentissage organisationnel."
+  },
+  {
+    id:"vonfoerster", nom:"Heinz von Foerster", dates:"1911 — 2002", niveau:"systèmes",
+    tagline:"L'observateur fait partie du système observé — changer l'observateur, c'est changer le système.",
+    oeuvres:["Observing Systems (1981)","Understanding Understanding (2003)","KybernEthik (1993)"],
+    concepts:[{
+      nom:"Cybernétique de second ordre",
+      definition:"La cybernétique classique décrit les boucles de rétroaction d'un système observé de l'extérieur. La cybernétique de second ordre inclut l'observateur dans le système. Il n'y a pas de point de vue neutre : décrire un système, c'est déjà l'influencer. Toute connaissance est une construction de l'observateur.",
+      projecteur:"Thérapie systémique, limites de l'objectivité scientifique. Toute situation où l'observateur fait partie du système qu'il tente de modifier.",
+      limites:["Peut mener à un relativisme radical difficile à tenir en pratique","L'inclusion de l'observateur complique tout diagnostic objectif","Peu de prises pratiques directes"]
+    }],
+    situations:["L'enseignant qui évalue et modifie ainsi le comportement de l'élève","Le consultant qui diagnostique une organisation et la transforme par ce fait même","Observer sa propre anxiété l'amplifie — l'observateur dans le système"],
+    connexions:[
+      {id:"bateson",type:"convergence",pourquoi:"Bateson et von Foerster fondent ensemble la cybernétique de second ordre"},
+      {id:"meadows",type:"convergence",pourquoi:"Tous deux : l'observateur modifie le système — pas de point de vue extérieur neutre"},
+      {id:"korzybski",type:"convergence",pourquoi:"Tous deux : la représentation du monde est une construction de l'observateur"},
+      {id:"kahneman",type:"tension",pourquoi:"Kahneman cherche à corriger les biais. Von Foerster dit qu'on ne peut pas sortir du système"}
+    ],
+    citation:"L'objectivité est l'illusion que les observations peuvent être faites sans observateur."
+  },
+
+  // ── DÉVELOPPEMENT ──
+  {
+    id:"ainsworth", nom:"Mary Ainsworth", dates:"1913 — 1999", niveau:"développement",
+    tagline:"Les bébés ne sont pas tous pareils face à la séparation — et ces différences durent toute la vie.",
+    oeuvres:["Patterns of Attachment (1978)","Infancy in Uganda (1967)"],
+    concepts:[{
+      nom:"Styles d'attachement",
+      definition:"À partir de la Situation Étrange (protocole expérimental), Ainsworth identifie trois styles d'attachement chez l'enfant : sécure (base sûre), anxieux-ambivalent (détresse intense, difficile à consoler), évitant (indifférence apparente qui masque la détresse). Mary Main y ajoutera le style désorganisé. Ces styles se forment dans les deux premières années et influencent les relations toute la vie.",
+      projecteur:"Relations adultes, thérapie, éducation précoce. L'enfant en difficulté scolaire n'a parfois pas d'abord un problème d'apprentissage — mais un problème de base sécurisante.",
+      limites:["La Situation Étrange est un protocole artificiel en laboratoire","Les styles ne sont pas des destins — ils peuvent évoluer","La stabilité des styles à travers le temps est débattue"]
+    }],
+    situations:["L'enfant qui ne pleure jamais quand sa mère part — et que l'on croit bien adapté","La difficulté à demander de l'aide quand on en a besoin — évitement appris","L'élève qui provoque systématiquement — attachement anxieux en quête de réponse"],
+    connexions:[
+      {id:"bowlby",type:"filiation",pourquoi:"Ainsworth opérationnalise empiriquement la théorie de Bowlby"},
+      {id:"main",type:"filiation",pourquoi:"Main étend la classification d'Ainsworth avec le style désorganisé"},
+      {id:"winnicott",type:"convergence",pourquoi:"Winnicott et Ainsworth convergent sur le rôle du miroir maternel dans la construction du self"},
+      {id:"gottman",type:"application",pourquoi:"Les styles d'attachement d'Ainsworth prédisent les patterns des Quatre Cavaliers chez l'adulte"}
+    ],
+    citation:"La sécurité n'est pas l'absence de risque. C'est la confiance qu'on peut revenir."
+  },
+  {
+    id:"bandura", nom:"Albert Bandura", dates:"1925 — 2021", niveau:"développement",
+    tagline:"Les croyances qu'on a sur soi-même déterminent ce qu'on ose tenter — et donc ce qu'on peut apprendre.",
+    oeuvres:["Social Learning Theory (1977)","Self-Efficacy: The Exercise of Control (1997)","Social Foundations of Thought and Action (1986)"],
+    concepts:[{
+      nom:"Auto-efficacité",
+      definition:"Le sentiment d'auto-efficacité est la croyance d'un individu en sa capacité à accomplir des tâches spécifiques. Ce n'est pas la confiance en soi générale — c'est la conviction qu'on peut faire face à ce défi précis. Cette croyance prédit les comportements mieux que les compétences réelles : un élève qui se croit incapable n'essaie pas, et donc n't apprend pas.",
+      projecteur:"Pédagogie, thérapie comportementale, management. Les effets Pygmalion et Golem sont des auto-efficacités induites par le regard d'autrui.",
+      limites:["Peut réduire les obstacles structurels à des problèmes de croyance individuelle","La mesure de l'auto-efficacité est spécifique à chaque domaine — difficile à généraliser","Ne traite pas suffisamment les déterminants sociaux et économiques"]
+    }],
+    situations:["L'élève qui dit 'je suis nul en maths' avant même d'avoir essayé","Le professeur qui croit peu en un élève et voit cette prédiction se réaliser","Apprendre à nager à 40 ans — l'auto-efficacité comme premier levier"],
+    connexions:[
+      {id:"vygotski",type:"convergence",pourquoi:"Tous deux : l'apprentissage est social et la croyance en soi se construit dans la relation"},
+      {id:"seligman",type:"convergence",pourquoi:"Bandura et Seligman convergent : auto-efficacité et résignation apprise sont les deux faces d'une même pièce"},
+      {id:"beck",type:"convergence",pourquoi:"Beck traite les distorsions cognitives qui détruisent l'auto-efficacité — niveaux différents du même problème"},
+      {id:"piaget",type:"tension",pourquoi:"Piaget : le développement précède l'apprentissage. Bandura : la croyance précède et conditionne le développement"}
+    ],
+    citation:"Les gens qui ont le sens de leur efficacité abordent les tâches difficiles comme des défis à relever, non comme des dangers à éviter."
+  },
+  {
+    id:"beck", nom:"Aaron Beck", dates:"1921 — 2021", niveau:"développement",
+    tagline:"La dépression n'est pas d'abord un sentiment — c'est une façon de penser.",
+    oeuvres:["Cognitive Therapy and the Emotional Disorders (1976)","Cognitive Therapy of Depression (1979)","Prisoners of Hate (1999)"],
+    concepts:[{
+      nom:"Triade cognitive & distorsions",
+      definition:"La dépression se structure autour d'une triade négative : vision négative de soi ('je suis nul'), du monde ('tout va mal') et de l'avenir ('ça ne changera jamais'). Ces pensées automatiques négatives s'appuient sur des distorsions cognitives — surgénéralisation, tout-ou-rien, catastrophisme, lecture de pensée. La TCC vise à identifier et modifier ces schémas.",
+      projecteur:"Dépression, anxiété, troubles du comportement. En éducation : les pensées automatiques qui bloquent l'apprentissage et l'estime de soi.",
+      limites:["Efficace sur les symptômes mais moins sur les causes profondes","Peut négliger les dimensions relationnelles et sociales de la souffrance","La restructuration cognitive peut sembler mécaniste"]
+    }],
+    situations:["L'élève qui pense 'j'ai toujours raté, je raterai encore' avant chaque évaluation","Interpréter le silence d'un collègue comme un signe de mépris — lecture de pensée","La spirale 'j'ai échoué donc je suis un échec' — surgénéralisation"],
+    connexions:[
+      {id:"seligman",type:"convergence",pourquoi:"Beck et Seligman fondent ensemble l'approche cognitive-comportementale de la dépression"},
+      {id:"bandura",type:"convergence",pourquoi:"Les distorsions cognitives de Beck détruisent l'auto-efficacité de Bandura"},
+      {id:"kahneman",type:"convergence",pourquoi:"Les distorsions cognitives de Beck sont des biais de Système 1 que Kahneman formalise autrement"},
+      {id:"bowlby",type:"convergence",pourquoi:"Les schémas négatifs de Beck se forment souvent dans les patterns d'attachement précoce"}
+    ],
+    citation:"Vous ne pouvez pas toujours changer votre situation, mais vous pouvez changer votre façon de la voir."
+  },
+  {
+    id:"bowlby", nom:"John Bowlby", dates:"1907 — 1990", niveau:"développement",
+    tagline:"L'attachement n'est pas un luxe affectif — c'est le système biologique de survie le plus fondamental.",
+    oeuvres:["Attachment (1969)","Separation (1973)","Loss (1980)"],
+    concepts:[{
+      nom:"Théorie de l'attachement",
+      definition:"L'attachement est un système comportemental inné qui assure la proximité avec un adulte protecteur (figure d'attachement) en cas de menace. Les modèles internes opérants — représentations de soi et des autres formées dans la petite enfance — servent de gabarits pour toutes les relations futures. La qualité du lien précoce conditionne la capacité à réguler ses émotions.",
+      projecteur:"Développement de l'enfant, thérapie, éducation précoce. L'enfant qui ne peut pas apprendre est parfois l'enfant dont le système d'attachement est activé en permanence — impossible d'explorer quand on n'est pas en sécurité.",
+      limites:["Sous-estime parfois les variations culturelles dans les pratiques d'attachement","La continuité des modèles internes est discutée — la plasticité est plus grande qu'il ne pensait","Difficile de séparer biologique et culturel"]
+    }],
+    situations:["L'enfant qui ne peut pas se concentrer en classe — son cerveau cherche la sécurité, pas l'apprentissage","La relation thérapeutique comme espace de re-attachement sécurisant","L'adulte qui fuit l'intimité — modèles internes évitants hérités de la petite enfance"],
+    connexions:[
+      {id:"ainsworth",type:"filiation",pourquoi:"Ainsworth a opérationnalisé et vérifié empiriquement la théorie de Bowlby"},
+      {id:"main",type:"filiation",pourquoi:"Main a étendu l'attachement à l'adulte avec l'Adult Attachment Interview"},
+      {id:"winnicott",type:"convergence",pourquoi:"Winnicott et Bowlby travaillent sur la même réalité — le lien précoce — avec des angles différents"},
+      {id:"bronfenbrenner",type:"convergence",pourquoi:"Bronfenbrenner situe l'attachement de Bowlby dans un système écologique plus large"}
+    ],
+    citation:"Il n'y a pas de telle chose qu'un bébé seul. Un bébé, c'est toujours un bébé et quelqu'un."
+  },
+  {
+    id:"bronfenbrenner", nom:"Urie Bronfenbrenner", dates:"1917 — 2005", niveau:"développement",
+    tagline:"Un enfant ne se développe pas dans un vide — il se développe dans des systèmes emboîtés qui se influencent mutuellement.",
+    oeuvres:["The Ecology of Human Development (1979)","Making Human Beings Human (2005)"],
+    concepts:[{
+      nom:"Modèle écologique du développement",
+      definition:"Le développement de l'enfant se déroule dans des systèmes concentriques interdépendants : le microsystème (famille, classe), le mésosystème (relations entre microsystèmes), l'exosystème (environnements qui influencent sans contact direct), le macrosystème (culture, idéologie), le chronosystème (dimension temporelle). Changer n'importe quel système modifie l'enfant.",
+      projecteur:"Éducation, politique familiale, protection de l'enfance. Comprendre un élève en difficulté sans regarder ses systèmes est chercher dans la mauvaise pièce.",
+      limites:["Le modèle est descriptif mais peu opérationnel sur les interventions","La complexité des interactions rend les prédictions difficiles","Les systèmes peuvent se contre-influencer de manière imprévisible"]
+    }],
+    situations:["Un enfant dont les performances chutent quand ses parents se séparent — mésosystème perturbé","La classe où personne ne progresse — chercher dans le macrosystème institutionnel","Le directeur qui comprend qu'un problème d'élève est souvent un problème de système famille-école"],
+    connexions:[
+      {id:"bowlby",type:"convergence",pourquoi:"Bronfenbrenner situe l'attachement de Bowlby dans un système écologique plus large"},
+      {id:"vygotski",type:"convergence",pourquoi:"Tous deux : le développement est intrinsèquement social et contextuel"},
+      {id:"senge",type:"convergence",pourquoi:"Bronfenbrenner et Senge partagent la vision systémique — l'un pour l'enfant, l'autre pour l'organisation"},
+      {id:"meadows",type:"convergence",pourquoi:"Le modèle écologique de Bronfenbrenner est une pensée systémique appliquée au développement humain"}
+    ],
+    citation:"Toute personne a besoin d'au moins une personne qui soit follement amoureuse d'elle."
+  },
+  {
+    id:"main", nom:"Mary Main", dates:"1943 —", niveau:"développement",
+    tagline:"L'attachement désorganisé naît quand la source de sécurité est aussi la source de la peur.",
+    oeuvres:["Adult Attachment Interview (1984)","Predicting Hazardous Environments (1999)"],
+    concepts:[{
+      nom:"Attachement désorganisé & transmission intergénérationnelle",
+      definition:"Main identifie un quatrième style d'attachement — désorganisé/désorienté — chez les enfants dont la figure d'attachement est source de peur. Sans stratégie cohérente, l'enfant se retrouve dans une impasse neurologique. Main développe aussi l'Adult Attachment Interview : la façon dont un adulte raconte son enfance prédit le style d'attachement de son propre enfant.",
+      projecteur:"Maltraitance, trauma développemental, transmission intergénérationnelle. L'enfant perturbateur en classe dont personne ne comprend le comportement chaotique.",
+      limites:["Construit principalement sur des populations cliniques","La transmission intergénérationnelle n'est pas une fatalité — elle peut être interrompue","L'interview d'attachement adulte est difficile à administrer sans formation spécialisée"]
+    }],
+    situations:["L'enfant qui se fige quand son parent arrive le chercher — impasse neurologique","Le comportement incohérent d'un élève : tour à tour proche et agressif avec l'enseignant","L'adulte qui reproduit avec ses enfants ce qu'il a lui-même subi, sans le vouloir"],
+    connexions:[
+      {id:"ainsworth",type:"filiation",pourquoi:"Main étend la classification d'Ainsworth avec le style désorganisé"},
+      {id:"bowlby",type:"filiation",pourquoi:"Main enrichit la théorie de Bowlby avec la dimension adulte et intergénérationnelle"},
+      {id:"beck",type:"convergence",pourquoi:"Les schémas négatifs de Beck prennent souvent racine dans l'attachement désorganisé de Main"},
+      {id:"winnicott",type:"convergence",pourquoi:"Winnicott et Main convergent sur les effets du miroir défaillant ou effrayant"}
+    ],
+    citation:"Ce n'est pas ce qui s'est passé qui compte le plus — c'est la façon dont vous pouvez en parler de façon cohérente."
+  },
+  {
+    id:"piaget", nom:"Jean Piaget", dates:"1896 — 1980", niveau:"développement",
+    tagline:"L'enfant n'est pas un adulte en miniature — il pense selon une logique radicalement différente selon son stade.",
+    oeuvres:["La naissance de l'intelligence (1936)","Le jugement moral chez l'enfant (1932)","La psychologie de l'enfant (1966)"],
+    concepts:[{
+      nom:"Stades du développement cognitif",
+      definition:"Le développement cognitif suit quatre stades universels et séquentiels : sensorimoteur (0-2 ans), préopératoire (2-7 ans), opérations concrètes (7-11 ans), opérations formelles (11+ ans). Chaque stade a sa logique propre — enseigner à un enfant préopératoire comme à un adolescent est structurellement impossible. L'apprentissage se fait par assimilation et accommodation.",
+      projecteur:"Pédagogie, conception de curriculum, évaluation. Comprendre à quel stade se trouve un élève évite d'enseigner ce qui ne peut pas encore être assimilé.",
+      limites:["Les stades sont plus fluides et culturellement influencés que Piaget ne le pensait","Sous-estime le rôle du social et du langage — point de friction avec Vygotski","Les âges sont indicatifs, pas prescriptifs"]
+    }],
+    situations:["L'enfant de 5 ans qui ne comprend pas la conservation du volume — stade préopératoire","L'élève de CM2 qui bloque sur les fractions — encore en opérations concrètes, pas encore formelles","Demander à un enfant de 7 ans de se mettre à la place d'autrui dans l'abstrait — trop tôt"],
+    connexions:[
+      {id:"vygotski",type:"tension",pourquoi:"Piaget : le développement précède l'apprentissage. Vygotski : l'apprentissage social précède et crée le développement"},
+      {id:"bandura",type:"tension",pourquoi:"Bandura : la croyance et l'imitation jouent un rôle que Piaget néglige"},
+      {id:"bruner",type:"convergence",pourquoi:"Bruner s'appuie sur Piaget pour construire une pédagogie par le récit et l'action"},
+      {id:"csikszentmihalyi",type:"application",pourquoi:"Le flow suppose une activité au bon niveau de défi — ce que les stades de Piaget permettent de calibrer"}
+    ],
+    citation:"L'intelligence est ce qu'on utilise quand on ne sait pas quoi faire."
+  },
+  {
+    id:"seligman", nom:"Martin Seligman", dates:"1942 —", niveau:"développement",
+    tagline:"La résignation s'apprend — et ce qui s'apprend peut se désapprendre.",
+    oeuvres:["Learned Helplessness (1975)","Authentic Happiness (2002)","Flourish (2011)"],
+    concepts:[{
+      nom:"Résignation apprise & PERMA",
+      definition:"La résignation apprise naît d'expériences répétées où les actions n'ont aucun effet — l'animal ou l'humain cesse d'essayer, même quand la situation change. Le modèle PERMA (Positive emotions, Engagement, Relationships, Meaning, Achievement) décrit les conditions du bien-être durable. La psychologie positive ne nie pas la souffrance — elle s'y ajoute comme autre direction possible.",
+      projecteur:"Dépression, décrochage scolaire, burn-out. L'élève qui 'ne fait plus rien' n'est pas paresseux — il a peut-être appris que ses efforts ne servent à rien.",
+      limites:["La psychologie positive a parfois été réduite à une injonction au bonheur","Moins outillé sur les causes sociales et structurelles de la souffrance","La résignation apprise peut être confondue avec de la dépression endogène"]
+    }],
+    situations:["L'élève qui ne lève plus la main après des années de réponses ignorées ou moquées","Le salarié qui ne propose plus d'idées après que toutes aient été rejetées","Sortir d'un épuisement professionnel en reconstruisant d'abord le sens — PERMA"],
+    connexions:[
+      {id:"beck",type:"convergence",pourquoi:"Beck et Seligman fondent ensemble les bases cognitivo-comportementales — la résignation est une triade de Beck"},
+      {id:"bandura",type:"convergence",pourquoi:"Résignation apprise et auto-efficacité sont les deux faces d'une même pièce"},
+      {id:"frankl",type:"convergence",pourquoi:"PERMA (sens, engagement) rejoint la volonté de sens de Frankl par un autre chemin"},
+      {id:"csikszentmihalyi",type:"convergence",pourquoi:"Le flow de Csikszentmihalyi correspond à l'engagement et à l'achievement du modèle PERMA"}
+    ],
+    citation:"La dépression n'est pas simplement la tristesse. C'est la conviction que rien de ce qu'on fait ne change quoi que ce soit."
+  },
+  {
+    id:"vygotski", nom:"Lev Vygotski", dates:"1896 — 1934", niveau:"développement",
+    tagline:"On n'apprend jamais seul — le développement se produit toujours d'abord entre personnes, ensuite à l'intérieur.",
+    oeuvres:["Pensée et Langage (1934)","Mind in Society (1978)","The Development of Higher Psychological Processes"],
+    concepts:[{
+      nom:"Zone proximale de développement",
+      definition:"La ZPD est l'espace entre ce qu'un enfant peut faire seul et ce qu'il peut faire avec l'aide d'un adulte ou d'un pair plus compétent. C'est là que l'apprentissage réel se produit. Trop facile : ennui. Trop difficile : désengagement. Dans la ZPD, avec l'étayage juste, le développement se construit — l'externe devient interne.",
+      projecteur:"Pédagogie, conception d'activités, travail coopératif. La question n'est pas 'qu'est-ce que cet élève sait ?' mais 'à quelle distance de son plafond est-il ?'",
+      limites:["La ZPD est difficile à mesurer avec précision en pratique","Le concept d'étayage a été parfois banalisé jusqu'à la caricature","Sous-estime parfois la diversité des trajectoires individuelles"]
+    }],
+    situations:["L'élève qui ne peut pas faire seul mais réussit quand le professeur pose les bonnes questions","Le travail en binôme où l'un tire l'autre vers le haut — sans lui faire le travail","La différence entre aider un enfant et l'étayer — l'étayage vise à disparaître"],
+    connexions:[
+      {id:"piaget",type:"tension",pourquoi:"Piaget : le développement précède l'apprentissage. Vygotski : l'apprentissage social précède et crée le développement"},
+      {id:"bruner",type:"convergence",pourquoi:"Bruner s'appuie sur Vygotski pour théoriser l'étayage et le curriculum en spirale"},
+      {id:"csikszentmihalyi",type:"convergence",pourquoi:"La ZPD de Vygotski est la condition structurelle du flow — défi légèrement supérieur aux capacités"},
+      {id:"bandura",type:"convergence",pourquoi:"Tous deux : l'apprentissage est social et la croyance en soi se construit dans la relation"}
+    ],
+    citation:"Ce que l'enfant peut faire avec l'aide aujourd'hui, il pourra le faire seul demain."
+  },
+  {
+    id:"winnicott", nom:"Donald Winnicott", dates:"1896 — 1971", niveau:"développement",
+    tagline:"L'espace de jeu n'est pas un luxe — c'est le lieu où se construit le self.",
+    oeuvres:["Playing and Reality (1971)","The Maturational Processes and the Facilitating Environment (1965)","Through Paediatrics to Psycho-Analysis (1958)"],
+    concepts:[{
+      nom:"Espace transitionnel & mère suffisamment bonne",
+      definition:"L'espace transitionnel est l'espace psychologique entre la réalité intérieure et la réalité extérieure — où le jeu, la créativité et la culture se déploient. La mère 'suffisamment bonne' (good enough mother) n'est pas parfaite — elle échoue graduellement de façon tolérable, permettant à l'enfant de construire sa propre capacité à se réguler. L'échec parfaitement dosé est constitutif du développement.",
+      projecteur:"Développement précoce, thérapie, créativité. L'enfant qui ne peut pas jouer seul n'a peut-être pas accès à son espace transitionnel — signal clinique.",
+      limites:["Le terme 'mère suffisamment bonne' peut sembler culpabilisant","Difficile à opérationnaliser dans la pratique thérapeutique","Fortement centré sur la dyade mère-enfant — néglige les autres figures"]
+    }],
+    situations:["L'enfant qui a besoin de son doudou pour dormir — objet transitionnel permettant la séparation","La classe où l'on joue comme espace de pensée, pas comme récompense","L'adulte créatif qui a gardé accès à son espace transitionnel — la vie comme jeu sérieux"],
+    connexions:[
+      {id:"bowlby",type:"convergence",pourquoi:"Winnicott et Bowlby travaillent sur la même réalité — le lien précoce — avec des angles différents"},
+      {id:"ainsworth",type:"convergence",pourquoi:"La mère suffisamment bonne de Winnicott correspond à la figure d'attachement sécurisante d'Ainsworth"},
+      {id:"csikszentmihalyi",type:"convergence",pourquoi:"L'espace transitionnel de Winnicott est l'ancêtre du flow — le lieu où l'activité devient sa propre récompense"},
+      {id:"main",type:"convergence",pourquoi:"Winnicott et Main convergent sur les effets du miroir défaillant ou effrayant sur le self"}
+    ],
+    citation:"Il n'y a pas de créativité sans jeu. Et il n'y a pas de jeu sans espace."
+  }
+];
+
+// ─── CONSTANTES ───
+const NIVEAU_LABELS = {
+  neurologique:"Neurologique","représentationnel":"Représentationnel",
+  social:"Social",existentiel:"Existentiel","systèmes":"Systèmes","développement":"Développement"
+};
+const NIVEAU_ORDER = ["neurologique","représentationnel","social","existentiel","systèmes","développement"];
+const NIVEAU_COLORS = {
+  neurologique:"#c85a2a","représentationnel":"#4a7fc1",social:"#4a9e6e",
+  existentiel:"#8a6bbf","systèmes":"#c4993a","développement":"#3a8c7e"
+};
+const TYPE_LABELS = {
+  filiation:"Filiation ↓",tension:"Tension ⚡",convergence:"Convergence ≈",application:"Application →"
+};
+
+// ─── ÉTAT ───
+let currentId = null;
+let currentFilter = "tous";
+let searchQuery = "";
+
+function splitName(fullName) {
+  const parts = fullName.trim().split(' ');
+  if (parts.length === 1) return { prenom:'', nom:fullName };
+  const particles = ['von','de','van','le','la'];
+  let split = parts.length - 1;
+  for (let i = 0; i < parts.length - 1; i++) {
+    if (particles.includes(parts[i].toLowerCase())) { split = i; break; }
+  }
+  return { prenom: parts.slice(0, split).join(' '), nom: parts.slice(split).join(' ') };
+}
+
+function dotClass(niveau) {
+  const map = { neurologique:"neurologique","représentationnel":"representationnel",
+    social:"social",existentiel:"existentiel","systèmes":"systemes","développement":"developpement" };
+  return `cst-adot cst-adot-${map[niveau]||"developpement"}`;
+}
+
+function sortedAuthors(list) {
+  return [...list].sort((a,b) => {
+    const na = splitName(a.nom).nom.toUpperCase();
+    const nb = splitName(b.nom).nom.toUpperCase();
+    return na.localeCompare(nb,'fr');
+  });
+}
+
+function goHome() {
+  currentId = null;
+  renderSidebar();
+  renderDetail();
+}
+
+function renderSidebar() {
+  const list = document.getElementById('cst-list');
+  if (!list) return;
+
+  const filtered = AUTHORS.filter(a => {
+    const matchFilter = currentFilter === "tous" || a.niveau === currentFilter;
+    const q = searchQuery.toLowerCase();
+    const matchSearch = !q || a.nom.toLowerCase().includes(q) ||
+      a.concepts.some(c => c.nom.toLowerCase().includes(q) || c.definition.toLowerCase().includes(q));
+    return matchFilter && matchSearch;
+  });
+
+  if (!filtered.length) {
+    list.innerHTML = '<div style="padding:1.5rem .75rem;font-family:Mulish,sans-serif;font-size:.88rem;color:#8a8078;font-style:italic;">Aucun résultat</div>';
+    return;
+  }
+
+  let html = '';
+  if (currentFilter === "tous") {
+    NIVEAU_ORDER.forEach(niveau => {
+      const group = sortedAuthors(filtered.filter(a => a.niveau === niveau));
+      if (!group.length) return;
+      html += `<div class="cst-niveau-label">${NIVEAU_LABELS[niveau]}</div>`;
+      group.forEach(a => { html += authorItemHTML(a); });
+    });
+  } else {
+    sortedAuthors(filtered).forEach(a => { html += authorItemHTML(a); });
+  }
+
+  list.innerHTML = html;
+  list.querySelectorAll('.cst-author-item').forEach(el => {
+    el.addEventListener('click', () => selectAuthor(el.dataset.id));
+  });
+}
+
+function authorItemHTML(a) {
+  const { prenom, nom } = splitName(a.nom);
+  const active = currentId === a.id ? ' active' : '';
+  return `<div class="cst-author-item${active}" data-id="${a.id}">
+    <div class="${dotClass(a.niveau)}"></div>
+    <div class="cst-aname">
+      ${prenom ? `<span class="cst-aname-prenom">${prenom}</span>` : ''}
+      <span class="cst-aname-nom">${nom}</span>
+    </div>
+  </div>`;
+}
+
+function selectAuthor(id) {
+  currentId = id;
+  renderSidebar();
+  renderDetail();
+}
+
+function renderDetail() {
+  const welcome = document.getElementById('cst-welcome');
+  const detail = document.getElementById('cst-author-detail');
+  if (!welcome || !detail) return;
+
+  if (!currentId) {
+    welcome.classList.remove('hidden');
+    detail.classList.add('hidden');
+    return;
+  }
+
+  const a = AUTHORS.find(x => x.id === currentId);
+  if (!a) return;
+
+  welcome.classList.add('hidden');
+  detail.classList.remove('hidden');
+
+  const color = NIVEAU_COLORS[a.niveau] || "#c4993a";
+  const { prenom, nom } = splitName(a.nom);
+
+  detail.innerHTML = `
+    <button class="cst-close-btn" id="cst-close">
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 1l9 9M10 1l-9 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Vue d'ensemble
+    </button>
+
+    <div class="cst-dheader">
+      <div class="cst-dniveau" style="color:${color}">
+        <span class="cst-dniveau-dot" style="background:${color}"></span>
+        ${NIVEAU_LABELS[a.niveau]||a.niveau}
+      </div>
+      <div class="cst-dname-wrap">
+        ${prenom ? `<span class="cst-dprenom">${prenom}</span>` : ''}
+        <span class="cst-dnom">${nom}</span>
+      </div>
+      <div class="cst-ddates">${a.dates}</div>
+      <div class="cst-dtagline">${a.tagline}</div>
+    </div>
+
+    ${a.citation ? `<blockquote class="cst-quote">${a.citation}</blockquote>` : ''}
+
+    <div class="cst-section">
+      <div class="cst-section-title">Concept central</div>
+      ${a.concepts.map(c => `
+        <div class="cst-concept">
+          <div class="cst-concept-name">${c.nom}</div>
+          <div class="cst-concept-def">${c.definition}</div>
+          <div class="cst-projecteur cst-projecteur-eclaire">
+            <div class="cst-projecteur-label">⟡ Ce que ça éclaire</div>
+            <div class="cst-projecteur-text">${c.projecteur}</div>
+          </div>
+          <div class="cst-projecteur cst-projecteur-limites">
+            <div class="cst-projecteur-label">⊘ Limites du modèle</div>
+            ${c.limites.map(l=>`<div class="cst-limite"><span class="cst-limite-dash">—</span><span class="cst-limite-text">${l}</span></div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div class="cst-section">
+      <div class="cst-section-title">Situations éclairées</div>
+      ${a.situations.map(s=>`<div class="cst-situation"><div class="cst-situation-text">${s}</div></div>`).join('')}
+    </div>
+
+    <div class="cst-section">
+      <div class="cst-section-title">Connexions & tensions</div>
+      <div class="cst-connexions-grid">
+        ${a.connexions.map(c=>{
+          const other = AUTHORS.find(x=>x.id===c.id);
+          if(!other) return '';
+          return `<div class="cst-connexion" data-target="${c.id}">
+            <div class="cst-connexion-type ctype-${c.type}">${TYPE_LABELS[c.type]||c.type}</div>
+            <div class="cst-connexion-name">${other.nom}</div>
+            <div class="cst-connexion-why">${c.pourquoi}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="cst-section">
+      <div class="cst-section-title">Œuvres clés</div>
+      <div class="cst-oeuvres">${a.oeuvres.map(o=>`<span class="cst-oeuvre">${o}</span>`).join('')}</div>
+    </div>
+  `;
+
+  document.getElementById('cst-close')?.addEventListener('click', goHome);
+  detail.querySelectorAll('.cst-connexion[data-target]').forEach(el => {
+    el.addEventListener('click', () => selectAuthor(el.dataset.target));
+  });
+  detail.scrollTop = 0;
+}
+
+function updateStats() {
+  const nbConcepts = AUTHORS.reduce((n,a)=>n+a.concepts.length,0);
+  const nbConnexions = AUTHORS.reduce((n,a)=>n+a.connexions.length,0);
+  const el = document.getElementById('cst-count');
+  if (el) el.textContent = `${AUTHORS.length} auteurs · ${nbConnexions} connexions`;
+  const wa = document.getElementById('ws-auteurs');
+  const wc = document.getElementById('ws-concepts');
+  const wx = document.getElementById('ws-connexions');
+  if (wa) wa.textContent = AUTHORS.length;
+  if (wc) wc.textContent = nbConcepts;
+  if (wx) wx.textContent = nbConnexions;
+}
+
+// Filtres : changent la liste mais ne ferment PAS la fiche
+document.querySelectorAll('.cst-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cst-filter').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.niveau;
+    renderSidebar();
+    // Ne touche pas currentId — la fiche reste ouverte
+  });
+});
+
+// Recherche
+const searchInput = document.getElementById('cst-search');
+if (searchInput) searchInput.addEventListener('input', e => { searchQuery = e.target.value; renderSidebar(); });
+
+updateStats();
+renderSidebar();
+renderDetail();
+</script>
