@@ -1,0 +1,233 @@
+/* ═══════════════════════════════════════════════════════════
+   SYNCOGNIE — STYLES PARTAGÉS DES ARTICLES
+   src/styles/articles.css
+   Importé dans Base.astro — toute modification ici
+   se réplique sur l'ensemble du site.
+═══════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════
+   LENTILLES
+═══════════════════════════════════════ */
+
+.lentilles-wrap {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--rule, rgba(139,94,60,.18));
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink, #2c2520) 2%, var(--bg, #f5f0e8));
+}
+
+.lentille {
+  padding: 1.6rem 1.8rem;
+}
+
+.lentille:not(:last-child) {
+  border-bottom: 1px solid var(--rule, rgba(139,94,60,.12));
+}
+
+.lentille-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.lentille-num {
+  font-family: 'Mulish', sans-serif;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  color: var(--accent, #8b5e3c);
+  opacity: .45;
+  padding-top: .15rem;
+  flex-shrink: 0;
+}
+
+.lentille-titre-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.lentille-auteur {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink, #2c2520);
+  line-height: 1.2;
+}
+
+.lentille-axe {
+  font-family: 'Mulish', sans-serif;
+  font-size: .72rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-soft, #7a6a5a);
+  letter-spacing: .02em;
+}
+
+.lentille-body p {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--ink-mid, #4a3f35);
+  margin: 0 0 .75rem;
+}
+
+.lentille-body p:last-child {
+  margin-bottom: 0;
+}
+
+.lentille-body strong {
+  font-weight: 600;
+  color: var(--ink, #2c2520);
+}
+
+.lentille-body em {
+  font-style: italic;
+}
+
+.lentille-ref {
+  font-family: 'Mulish', sans-serif !important;
+  font-size: .78rem !important;
+  font-weight: 400 !important;
+  color: var(--ink-soft, #7a6a5a) !important;
+  opacity: .75;
+  margin-top: .5rem !important;
+}
+
+.lentille-sep {
+  text-align: center;
+  font-size: .65rem;
+  color: var(--rule, rgba(139,94,60,.3));
+  padding: .1rem 0;
+  letter-spacing: .1em;
+  background: color-mix(in srgb, var(--ink, #2c2520) 3%, var(--bg, #f5f0e8));
+}
+
+
+/* ═══════════════════════════════════════
+   ENCARTS — ÉLÉMENTS COMMUNS
+═══════════════════════════════════════ */
+
+.encart-eyebrow {
+  font-family: 'Mulish', sans-serif;
+  font-size: .52rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: .7;
+}
+
+.encart-texte {
+  font-family: 'Mulish', sans-serif;
+  font-size: .88rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ink-mid);
+  margin: 0;
+}
+
+.encart-texte strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.encart-lien {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: gap .2s, opacity .2s;
+  width: fit-content;
+  margin-top: .1rem;
+}
+
+.encart-lien--gold     { color: #a07828; }
+.encart-lien--terracotta { color: #8b5e3c; }
+.encart-lien--violet   { color: #8b6fc4; }
+
+.encart-lien:hover {
+  gap: .8rem;
+  opacity: .8;
+}
+
+.encart-fleche {
+  font-size: .9rem;
+  transition: transform .2s;
+}
+
+.encart-lien:hover .encart-fleche {
+  transform: translateX(3px);
+}
+
+
+/* ═══════════════════════════════════════
+   ENCART FENÊTRES
+═══════════════════════════════════════ */
+
+.encart-fenetres {
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #8b6fc4 30%, transparent);
+  background: color-mix(in srgb, #8b6fc4 5%, #f5f0e8);
+  overflow: hidden;
+}
+
+.encart-fenetres-inner {
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+
+/* ═══════════════════════════════════════
+   ENCART LIEN ARTICLE
+═══════════════════════════════════════ */
+
+.encart-lien-article {
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #8b5e3c 25%, transparent);
+  background: color-mix(in srgb, #8b5e3c 5%, #f5f0e8);
+  overflow: hidden;
+}
+
+.encart-lien-article-inner {
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+
+/* ═══════════════════════════════════════
+   ENCART CONSTELLATION
+═══════════════════════════════════════ */
+
+.encart-constellation {
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #c4993a 30%, transparent);
+  background: color-mix(in srgb, #c4993a 5%, #f5f0e8);
+  overflow: hidden;
+}
+
+.encart-constellation-inner {
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
