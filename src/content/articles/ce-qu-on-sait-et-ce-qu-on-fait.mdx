@@ -212,22 +212,54 @@ Pas empêcher le mécanisme. Réduire le rayon d'action de ses conséquences.
 
 ---
 
-<div class="encart-constellation">
-  <div class="encart-constellation-inner">
-    <span class="encart-eyebrow">Constellation</span>
-    <p class="encart-texte">Cette note est la troisième d'une série. Elle retourne contre les deux premières leur propre logique — ce qu'elles avaient promis, elle le conteste. La première lit une scène de canapé à travers Gottman, Bowlby et Perel. La seconde suit deux escaliers montés en silence dans la même réunion.</p>
-    <a href="/ce-qui-se-forme-entre-vous" class="encart-lien encart-lien--gold">
+<div class="encart-lien-article">
+  <div class="encart-lien-article-inner">
+    <span class="encart-eyebrow">À lire aussi</span>
+    <p class="encart-texte">Cette note est la troisième d'une série. Elle retourne contre les deux premières leur propre logique — ce qu'elles avaient promis, elle le conteste.</p>
+    <a href="/articles/gottman-couple-attachement-desir" class="encart-lien encart-lien--terracotta">
       <span>Ce qui se forme entre vous</span>
       <span class="encart-fleche">→</span>
     </a>
-    <a href="/deux-escaliers-inference-argyris" class="encart-lien encart-lien--gold">
+    <a href="/articles/deux-escaliers-inference-argyris" class="encart-lien encart-lien--terracotta">
       <span>Deux escaliers dans la même pièce</span>
       <span class="encart-fleche">→</span>
     </a>
   </div>
 </div>
 
+---
+
+<div class="encart-constellation">
+  <div class="encart-constellation-inner">
+    <span class="encart-eyebrow">Constellation</span>
+    <p class="encart-texte">Watzlawick, Frankl, Gollwitzer font partie de la <strong>Constellation</strong> — une carte des penseurs et des œuvres qui traversent ce site.</p>
+    <a href="/outils/constellation" class="encart-lien encart-lien--gold">
+      <span>Ouvrir la Constellation</span>
+      <span class="encart-fleche">→</span>
+    </a>
+  </div>
+</div>
+
 <style>{`
+
+/* ═══════════════════════════════════════
+   ENCART LIEN ARTICLE
+═══════════════════════════════════════ */
+
+.encart-lien-article {
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, #8b5e3c 25%, transparent);
+  background: color-mix(in srgb, #8b5e3c 5%, #f5f0e8);
+  overflow: hidden;
+}
+
+.encart-lien-article-inner {
+  padding: 1.6rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
 
 /* ═══════════════════════════════════════
    ENCART CONSTELLATION
@@ -293,6 +325,7 @@ Pas empêcher le mécanisme. Réduire le rayon d'action de ses conséquences.
 }
 
 .encart-lien--gold { color: #a07828; }
+.encart-lien--terracotta { color: #8b5e3c; }
 
 .encart-lien:hover { gap: .8rem; opacity: .8; }
 
