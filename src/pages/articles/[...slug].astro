@@ -365,7 +365,7 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 .nav-article {
   display: grid; grid-template-columns: 1fr auto 1fr;
   align-items: center; gap: 1rem;
-  margin-top: 1.25rem; padding-top: 1.5rem;
+  margin-top: 1.25rem; padding-top: 1.5rem; padding-bottom: 3rem;
   border-top: 1px solid var(--rule);
 }
 .nav-item--next { display: flex; justify-content: flex-end; }
@@ -623,55 +623,55 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 
 </article>
 
-<!-- Navigation -->
-<nav class="nav-article">
-  <div class="nav-item nav-item--prev">
-    {precedent ? (
-      <a href={`/articles/${precedent.slug}`} class="nav-lien">
-        {navMode === 'serie' && serieStyle && (
-          <span class="nav-serie-label" style={`color:${serieStyle.color}`}>← Épisode précédent</span>
-        )}
-        {navMode === 'global' && <span class="nav-dir">← Précédent</span>}
-        <span class="nav-titre">{precedent.data.title}</span>
-      </a>
-    ) : <div />}
-  </div>
+  <!-- Navigation -->
+  <nav class="nav-article">
+    <div class="nav-item nav-item--prev">
+      {precedent ? (
+        <a href={`/articles/${precedent.slug}`} class="nav-lien">
+          {navMode === 'serie' && serieStyle && (
+            <span class="nav-serie-label" style={`color:${serieStyle.color}`}>← Épisode précédent</span>
+          )}
+          {navMode === 'global' && <span class="nav-dir">← Précédent</span>}
+          <span class="nav-titre">{precedent.data.title}</span>
+        </a>
+      ) : <div />}
+    </div>
 
-  {/* Centre : lien série si applicable, sinon tous les articles */}
-  {navMode === 'serie' && serieSlug && serieStyle ? (
-    <a href={`/series/${serieSlug}`} class="nav-serie-link">
-      <svg viewBox="0 0 16 16" fill="none" width="13" height="13">
-        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-      </svg>
-      {serieStyle.label}
-    </a>
-  ) : (
-    <a href="/articles" class="nav-tous">
-      <svg viewBox="0 0 16 16" fill="none" width="12" height="12">
-        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
-      </svg>
-      Tous
-    </a>
-  )}
-
-  <div class="nav-item nav-item--next">
-    {suivant ? (
-      <a href={`/articles/${suivant.slug}`} class="nav-lien nav-lien--right">
-        {navMode === 'serie' && serieStyle && (
-          <span class="nav-serie-label" style={`color:${serieStyle.color}`}>Épisode suivant →</span>
-        )}
-        {navMode === 'global' && <span class="nav-dir">Suivant →</span>}
-        <span class="nav-titre">{suivant.data.title}</span>
+    {/* Centre : lien série si applicable, sinon tous les articles */}
+    {navMode === 'serie' && serieSlug && serieStyle ? (
+      <a href={`/series/${serieSlug}`} class="nav-serie-link">
+        <svg viewBox="0 0 16 16" fill="none" width="13" height="13">
+          <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        {serieStyle.label}
       </a>
-    ) : <div />}
-  </div>
-</nav>
+    ) : (
+      <a href="/articles" class="nav-tous">
+        <svg viewBox="0 0 16 16" fill="none" width="12" height="12">
+          <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+          <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        </svg>
+        Tous
+      </a>
+    )}
+
+    <div class="nav-item nav-item--next">
+      {suivant ? (
+        <a href={`/articles/${suivant.slug}`} class="nav-lien nav-lien--right">
+          {navMode === 'serie' && serieStyle && (
+            <span class="nav-serie-label" style={`color:${serieStyle.color}`}>Épisode suivant →</span>
+          )}
+          {navMode === 'global' && <span class="nav-dir">Suivant →</span>}
+          <span class="nav-titre">{suivant.data.title}</span>
+        </a>
+      ) : <div />}
+    </div>
+  </nav>
 
 </div>
 
