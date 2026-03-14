@@ -99,48 +99,6 @@ function engagementLabel(rank: number) {
 
 <div class="series-wrap">
 
-  <!-- PRISMES -->
-  {(() => {
-    const eng = maxEngagement(serieNotes);
-    return (
-      <div class="serie-band serie-band--notes">
-        <div class="serie-head">
-          <div class="serie-head-left">
-            <span class="serie-pill serie-pill--notes">Prismes</span>
-            <span class="serie-titre">Notes d'un modèle en construction</span>
-          </div>
-          <div class="serie-head-right">
-            {eng > 0 && (
-              <span class="eng-wrap">
-                <span class="eng-niveau">Niveau&nbsp;:</span>
-                <span class="eng-indicator">
-                  <span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span>
-                </span>
-              </span>
-            )}
-            <a class="serie-cta" href="/series/notes-d-un-modele-en-construction">Voir la série →</a>
-          </div>
-        </div>
-        <div class="serie-body">
-          {serieNotes.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`}>
-              <span class="cap-num cap-num--notes">{String(a.data.episode ?? 0).padStart(2, '0')}</span>
-              <span class="cap-titre">{a.data.title}</span>
-              <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
-            </a>
-          ))}
-          <div class="capsule capsule--ghost">
-            <span class="cap-num cap-num--notes">{String(serieNotes.length + 1).padStart(2, '0')}</span>
-            <span class="cap-titre">Prochaine note</span>
-            <span class="cap-stade">— à venir</span>
-          </div>
-        </div>
-      </div>
-    );
-  })()}
-
   <!-- RÉCIT -->
   {(() => {
     const eng = maxEngagement(serieDialogues);
@@ -224,6 +182,50 @@ function engagementLabel(rank: number) {
       </div>
     );
   })()}
+
+  <!-- PRISMES -->
+  {(() => {
+    const eng = maxEngagement(serieNotes);
+    return (
+      <div class="serie-band serie-band--notes">
+        <div class="serie-head">
+          <div class="serie-head-left">
+            <span class="serie-pill serie-pill--notes">Prismes</span>
+            <span class="serie-titre">Notes d'un modèle en construction</span>
+          </div>
+          <div class="serie-head-right">
+            {eng > 0 && (
+              <span class="eng-wrap">
+                <span class="eng-niveau">Niveau&nbsp;:</span>
+                <span class="eng-indicator">
+                  <span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span>
+                  <span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span>
+                  <span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span>
+                </span>
+              </span>
+            )}
+            <a class="serie-cta" href="/series/notes-d-un-modele-en-construction">Voir la série →</a>
+          </div>
+        </div>
+        <div class="serie-body">
+          {serieNotes.map((a) => (
+            <a class="capsule" href={`/articles/${a.slug}`}>
+              <span class="cap-num cap-num--notes">{String(a.data.episode ?? 0).padStart(2, '0')}</span>
+              <span class="cap-titre">{a.data.title}</span>
+              <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
+            </a>
+          ))}
+          <div class="capsule capsule--ghost">
+            <span class="cap-num cap-num--notes">{String(serieNotes.length + 1).padStart(2, '0')}</span>
+            <span class="cap-titre">Prochaine note</span>
+            <span class="cap-stade">— à venir</span>
+          </div>
+        </div>
+      </div>
+    );
+  })()}
+
+
 
 </div>
 
