@@ -68,7 +68,7 @@ function engagementLabel(rank: number) {
 
   <div class="hero-graphe">
     <canvas id="emergence-canvas" width="240" height="320"
-      aria-label="Graphe d'émergence — quatre domaines conceptuels qui se rencontrent et font naître une propriété nouvelle"></canvas>
+      aria-label="Graphe d'émergence — des concepts qui se rencontrent, se frottent et font naître une propriété nouvelle"></canvas>
   </div>
 
   <!--
@@ -382,6 +382,7 @@ function engagementLabel(rank: number) {
   grid-template-columns: 1fr 240px;
   grid-template-rows: auto;
   align-items: start;
+  gap: 0;
 }
 @media (max-width: 580px) {
   .hero { grid-template-columns: 1fr; }
@@ -398,8 +399,8 @@ function engagementLabel(rank: number) {
 .hero-note { display: flex; align-items: flex-start; gap: .55rem; padding: .65rem .9rem; background: var(--gold-bg); border-left: 2px solid var(--gold-dim); border-radius: 0 3px 3px 0; max-width: 40ch; }
 .hero-note-g { color: var(--gold); font-size: .72rem; flex-shrink: 0; margin-top: .06rem; opacity: .55; }
 .hero-note-t { font-family: 'Mulish', sans-serif; font-size: .78rem; font-style: italic; color: var(--ink-soft); line-height: 1.6; }
-.hero-graphe { grid-column: 2; grid-row: 1; padding-top: 2.6rem; display: flex; align-items: flex-start; justify-content: center; }
-.hero-graphe canvas { display: block; }
+.hero-graphe { grid-column: 2; grid-row: 1; padding-top: 2.6rem; display: flex; align-items: flex-start; justify-content: flex-start; }
+.hero-graphe canvas { display: block; width: 240px; height: 320px; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 72%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 30%, black 72%, transparent 100%); }
 
 /* BANDE RÉFLEXION — styles conservés pour réactivation future */
 .bande-reflexion { grid-column: 1; grid-row: 2; margin: 0 1.75rem 2.2rem; text-decoration: none; display: flex; align-items: stretch; border: 1px solid rgba(232,184,50,.28); border-left: 3px solid var(--gold); border-radius: 4px; background: linear-gradient(105deg, var(--gold-bg) 0%, rgba(245,240,232,0) 65%); position: relative; overflow: hidden; transition: border-color .22s, box-shadow .22s; }
@@ -666,81 +667,193 @@ function engagementLabel(rank: number) {
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const W = 240, H = 320;
-  const FIELDS = [
-    { label:'Neurologie',     x:98,  y:88,  r:88,  rgb:[196,153,58], concepts:['Balance plaisir/douleur','Wanting vs Liking','Marqueurs somatiques'] },
-    { label:'Sens',           x:172, y:138, r:78,  rgb:[122,82,176], concepts:['Volonté de sens','Pensée narrative','Instincts cognitifs'] },
-    { label:'Représentation', x:75,  y:192, r:82,  rgb:[58,88,152],  concepts:['Système 1 / 2','Carte & territoire','Échelle d\'inférence'] },
-    { label:'Systèmes',       x:168, y:242, r:76,  rgb:[46,122,82],  concepts:['Quatre Cavaliers','Niveaux de changement','Flow'] },
+
+  const DOMAINS = {
+    neuro:  [215,85,30],
+    repres: [35,135,225],
+    exist:  [145,65,215],
+    social: [12,160,100],
+    sys:    [200,128,8],
+  };
+
+  const NODES = [
+    {id:'plaisir',   label:'Balance plaisir / douleur', dom:'neuro',  bx:58,  by:58 },
+    {id:'marqueurs', label:'Marqueurs somatiques',      dom:'neuro',  bx:108, by:35 },
+    {id:'hemisph',   label:'Hémisphères',               dom:'neuro',  bx:38,  by:112},
+    {id:'sys12',     label:'Système 1 / 2',             dom:'neuro',  bx:92,  by:92 },
+    {id:'carte',     label:'Carte & territoire',        dom:'repres', bx:172, by:48 },
+    {id:'narratif',  label:'Pensée narrative',          dom:'repres', bx:208, by:95 },
+    {id:'disso',     label:'Dissonance cognitive',      dom:'repres', bx:158, by:105},
+    {id:'sens',      label:'Volonté de sens',           dom:'exist',  bx:62,  by:195},
+    {id:'flow',      label:'Flow',                      dom:'exist',  bx:125, by:220},
+    {id:'resign',    label:'Résignation apprise',       dom:'exist',  bx:35,  by:248},
+    {id:'cavaliers', label:'Quatre Cavaliers',          dom:'social', bx:188, by:178},
+    {id:'desir',     label:'Désir & altérité',          dom:'social', bx:220, by:228},
+    {id:'attach',    label:'Attachement sécure',        dom:'social', bx:192, by:275},
+    {id:'double',    label:'Double contrainte',         dom:'sys',    bx:105, by:282},
+    {id:'modele',    label:'Modèle I / II',             dom:'sys',    bx:158, by:258},
+    {id:'intentions',label:"Intentions d'impl.",        dom:'sys',    bx:125, by:162},
+    {id:'levier',    label:'Points de levier',          dom:'sys',    bx:75,  by:148},
+    {id:'cinquieme', label:'Cinquième discipline',      dom:'sys',    bx:228, by:148},
   ];
-  const EC = { x:122, y:172 };
-  let t=0, mx=-999, my=-999, hoverF=-1;
-  canvas.addEventListener('mousemove', e => {
-    const rect=canvas.getBoundingClientRect();
-    mx=(e.clientX-rect.left)*(W/rect.width); my=(e.clientY-rect.top)*(H/rect.height);
-    hoverF=-1;
-    if(Math.sqrt((mx-EC.x)**2+(my-EC.y)**2)<30){ hoverF=99; return; }
-    FIELDS.forEach((f,i)=>{ if(Math.sqrt((mx-f.x)**2+(my-f.y)**2)<f.r*0.75) hoverF=i; });
+
+  const LINKS = [
+    {a:'plaisir',   b:'sens',       t:'t'},{a:'plaisir',   b:'sys12',     t:'c'},
+    {a:'hemisph',   b:'sys12',      t:'t'},{a:'hemisph',   b:'carte',     t:'c'},
+    {a:'hemisph',   b:'sens',       t:'c'},{a:'hemisph',   b:'flow',      t:'c'},
+    {a:'hemisph',   b:'narratif',   t:'c'},{a:'marqueurs', b:'sys12',     t:'c'},
+    {a:'marqueurs', b:'disso',      t:'c'},{a:'sys12',     b:'carte',     t:'c'},
+    {a:'sys12',     b:'disso',      t:'c'},{a:'sys12',     b:'intentions',t:'c'},
+    {a:'carte',     b:'disso',      t:'c'},{a:'carte',     b:'modele',    t:'t'},
+    {a:'narratif',  b:'sens',       t:'c'},{a:'narratif',  b:'carte',     t:'c'},
+    {a:'narratif',  b:'disso',      t:'c'},{a:'narratif',  b:'attach',    t:'c'},
+    {a:'disso',     b:'modele',     t:'t'},{a:'disso',     b:'sens',      t:'t'},
+    {a:'sens',      b:'flow',       t:'c'},{a:'sens',      b:'double',    t:'t'},
+    {a:'flow',      b:'attach',     t:'c'},{a:'flow',      b:'intentions',t:'c'},
+    {a:'cavaliers', b:'desir',      t:'t'},{a:'cavaliers', b:'attach',    t:'c'},
+    {a:'cavaliers', b:'double',     t:'c'},{a:'desir',     b:'attach',    t:'t'},
+    {a:'double',    b:'modele',     t:'c'},{a:'modele',    b:'cinquieme', t:'c'},
+    {a:'levier',    b:'cinquieme',  t:'c'},{a:'resign',    b:'sens',      t:'c'},
+    {a:'resign',    b:'flow',       t:'c'},{a:'intentions',b:'levier',    t:'c'},
+  ];
+
+  const nodeMap = {};
+  const connCount = {};
+  NODES.forEach(n => {
+    nodeMap[n.id] = n;
+    connCount[n.id] = 0;
+    n.angle = Math.random()*Math.PI*2;
+    n.orbitR = 4 + Math.random()*6;
+    n.speed = (0.0003+Math.random()*0.0002)*(Math.random()<0.5?1:-1);
+    n.x = n.bx; n.y = n.by;
+    n.labelAlpha = 0;
   });
-  canvas.addEventListener('mouseleave',()=>{ mx=-999; my=-999; hoverF=-1; });
-  function rga(rgb,a){ return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`; }
-  function draw(){
-    ctx.clearRect(0,0,W,H); t+=0.009;
-    [[0,1],[0,2],[1,3],[2,3]].forEach(([a,b])=>{
-      const fa=FIELDS[a],fb=FIELDS[b];
-      const imx=(fa.x+fb.x)/2,imy=(fa.y+fb.y)/2;
-      const dist=Math.sqrt((fa.x-fb.x)**2+(fa.y-fb.y)**2);
-      const overlap=(fa.r+fb.r-dist)/2; if(overlap<12) return;
-      const rad=Math.min(overlap*0.75,44);
-      const rm=(fa.rgb[0]+fb.rgb[0])/2,gm=(fa.rgb[1]+fb.rgb[1])/2,bm=(fa.rgb[2]+fb.rgb[2])/2;
-      const alpha=(hoverF===a||hoverF===b)?0.18:0.08;
-      const grd=ctx.createRadialGradient(imx,imy,0,imx,imy,rad);
-      grd.addColorStop(0,`rgba(${rm},${gm},${bm},${alpha*1.7})`); grd.addColorStop(1,`rgba(${rm},${gm},${bm},0)`);
-      ctx.beginPath();ctx.arc(imx,imy,rad,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
-    });
-    FIELDS.forEach((f,i)=>{
-      const active=hoverF===i,dimmed=hoverF!==-1&&hoverF!==99&&hoverF!==i;
-      const r=f.r*(1+Math.sin(t*0.55+i*1.4)*0.022);
-      const peakA=active?0.36:(dimmed?0.04:0.14); const edgeA=active?0.26:(dimmed?0.02:0.09);
-      const grd=ctx.createRadialGradient(f.x,f.y,0,f.x,f.y,r);
-      grd.addColorStop(0,rga(f.rgb,peakA)); grd.addColorStop(0.5,rga(f.rgb,peakA*0.68));
-      grd.addColorStop(0.82,rga(f.rgb,peakA*0.2)); grd.addColorStop(1,rga(f.rgb,0));
-      ctx.beginPath();ctx.arc(f.x,f.y,r,0,Math.PI*2);ctx.fillStyle=grd;ctx.fill();
-      ctx.beginPath();ctx.arc(f.x,f.y,r*0.88,0,Math.PI*2);
-      ctx.strokeStyle=rga(f.rgb,edgeA);ctx.lineWidth=active?1.6:0.7;ctx.stroke();
-      if(!dimmed){
-        const angles=[Math.PI*1.22,Math.PI*0.18,Math.PI*0.78,Math.PI*1.72];
-        ctx.font=`${active?'600 ':''}8px -apple-system,Arial,sans-serif`;
-        ctx.fillStyle=rga(f.rgb,active?0.82:0.32);ctx.textAlign='center';
-        ctx.fillText(f.label.toUpperCase(),f.x+Math.cos(angles[i])*r*0.68,f.y+Math.sin(angles[i])*r*0.68);
-      }
-      if(active){ f.concepts.forEach((c,ci)=>{
-        const a2=(Math.PI*2*ci/f.concepts.length)+t*0.12+Math.PI*0.3;
-        ctx.font='6.5px -apple-system,Arial,sans-serif'; ctx.fillStyle=rga(f.rgb,0.62); ctx.textAlign='center';
-        ctx.fillText(c,f.x+Math.cos(a2)*r*0.42,f.y+Math.sin(a2)*r*0.42);
-      }); }
-    });
-    const isCH=hoverF===99,pulse=Math.sin(t*1.0)*0.5+0.5;
-    const coreR=13+pulse*3.5+(isCH?5:0),coreA=isCH?0.82:(0.42+pulse*0.15);
-    [coreR+26,coreR+14].forEach((hr,hi)=>{
-      const ha=(isCH?0.14:0.055)*(1-hi*0.38)*(0.55+pulse*0.45);
-      const gh=ctx.createRadialGradient(EC.x,EC.y,coreR*0.5,EC.x,EC.y,hr);
-      gh.addColorStop(0,`rgba(248,244,238,${ha})`);gh.addColorStop(1,`rgba(248,244,238,0)`);
-      ctx.beginPath();ctx.arc(EC.x,EC.y,hr,0,Math.PI*2);ctx.fillStyle=gh;ctx.fill();
-    });
-    const gc=ctx.createRadialGradient(EC.x,EC.y,0,EC.x,EC.y,coreR);
-    gc.addColorStop(0,`rgba(255,252,248,${coreA})`); gc.addColorStop(0.35,`rgba(240,236,228,${coreA*0.88})`);
-    gc.addColorStop(0.75,`rgba(220,215,205,${coreA*0.45})`); gc.addColorStop(1,`rgba(200,195,185,0)`);
-    ctx.beginPath();ctx.arc(EC.x,EC.y,coreR,0,Math.PI*2);ctx.fillStyle=gc;ctx.fill();
-    ctx.beginPath();ctx.arc(EC.x,EC.y,coreR,0,Math.PI*2);
-    ctx.strokeStyle=`rgba(210,205,192,${isCH?0.7:0.25+pulse*0.12})`;ctx.lineWidth=isCH?1.4:0.8;ctx.stroke();
-    for(let i=0;i<5;i++){
-      const angle=t*0.35+(i/5)*Math.PI*2,orbit=coreR+8+Math.sin(t*0.9+i)*3.5;
-      ctx.beginPath();ctx.arc(EC.x+Math.cos(angle)*orbit,EC.y+Math.sin(angle)*orbit,1.2,0,Math.PI*2);
-      ctx.fillStyle=`rgba(230,225,215,${0.10+Math.sin(t*1.8+i)*0.07+(isCH?0.2:0)})`;ctx.fill();
+  LINKS.forEach(l => { connCount[l.a]++; connCount[l.b]++; });
+  const maxConn = Math.max(...Object.values(connCount));
+  NODES.forEach(n => {
+    const ratio = connCount[n.id]/maxConn;
+    n.radius = 2 + ratio*3;
+    n.brightness = 0.22 + ratio*0.68;
+    n.nebulaR = 28 + ratio*52;
+    n.nebulaA = 0.025 + ratio*0.048;
+  });
+
+  const emergences = [];
+  let t = 0;
+  let hoveredId = null;
+
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(W/rect.width);
+    const my = (e.clientY-rect.top)*(H/rect.height);
+    hoveredId = null;
+    for(const n of NODES){
+      if(Math.hypot(mx-n.x,my-n.y) < n.radius+10){ hoveredId=n.id; break; }
     }
-    ctx.font=`${isCH?'600 ':''}${isCH?8.5:7.5}px -apple-system,Arial,sans-serif`;
-    ctx.fillStyle=`rgba(130,120,105,${isCH?0.85:0.32+pulse*0.1})`;
-    ctx.textAlign='center';ctx.fillText('émergence',EC.x,EC.y+coreR+11);
+  });
+  canvas.addEventListener('mouseleave', () => { hoveredId = null; });
+
+  function dc(dom,a,sMul){
+    const c=DOMAINS[dom],s=sMul!==undefined?sMul:1;
+    return `rgba(${Math.round(128+(c[0]-128)*s)},${Math.round(128+(c[1]-128)*s)},${Math.round(128+(c[2]-128)*s)},${a})`;
+  }
+  function mc(d1,d2,a){
+    const c1=DOMAINS[d1],c2=DOMAINS[d2];
+    return `rgba(${Math.round((c1[0]+c2[0])/2)},${Math.round((c1[1]+c2[1])/2)},${Math.round((c1[2]+c2[2])/2)},${a})`;
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    t++;
+
+    NODES.forEach(n => {
+      n.angle += n.speed;
+      n.x = n.bx+Math.cos(n.angle)*n.orbitR;
+      n.y = n.by+Math.sin(n.angle)*n.orbitR;
+    });
+
+    NODES.forEach(n => {
+      const pulse=Math.sin(t*0.014+n.bx*0.03)*0.5+0.5;
+      const r=n.nebulaR*(1+pulse*0.1);
+      const a=n.nebulaA*(0.85+pulse*0.15);
+      const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r);
+      grd.addColorStop(0,  dc(n.dom,a*2.2,0.7));
+      grd.addColorStop(0.3,dc(n.dom,a*1.0,0.55));
+      grd.addColorStop(0.65,dc(n.dom,a*0.35,0.4));
+      grd.addColorStop(1,  dc(n.dom,0,0.3));
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+    });
+
+    LINKS.forEach(l => {
+      const a=nodeMap[l.a],b=nodeMap[l.b];
+      const dist=Math.hypot(b.x-a.x,b.y-a.y);
+      if(dist>110) return;
+      const prox=1-dist/110;
+      const isHov=hoveredId===l.a||hoveredId===l.b;
+      const alpha=isHov?prox*0.65:prox*(l.t==='t'?0.32:0.18);
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+      ctx.lineWidth=l.t==='t'?0.9:0.6;
+      ctx.strokeStyle=mc(a.dom,b.dom,alpha);
+      ctx.setLineDash(l.t==='t'?[2,4]:[]);
+      ctx.stroke();ctx.setLineDash([]);
+      if(dist<58&&Math.random()<0.0005){
+        emergences.push({x:(a.x+b.x)/2,y:(a.y+b.y)/2,life:1,type:l.t,d1:a.dom,d2:b.dom});
+      }
+    });
+
+    for(let i=emergences.length-1;i>=0;i--){
+      const e=emergences[i];
+      e.life-=0.014;
+      if(e.life<=0){emergences.splice(i,1);continue;}
+      const p=Math.sin(e.life*Math.PI);
+      const r=(e.type==='t'?14:9)*p;
+      const grd=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,r);
+      grd.addColorStop(0,`rgba(255,252,215,${0.95*p})`);
+      grd.addColorStop(0.3,`rgba(255,215,55,${0.6*p})`);
+      grd.addColorStop(1,`rgba(255,165,15,0)`);
+      ctx.beginPath();ctx.arc(e.x,e.y,r,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+      ctx.beginPath();ctx.arc(e.x,e.y,1.8*p,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,240,${p})`;ctx.fill();
+    }
+
+    NODES.forEach(n => {
+      const pulse=Math.sin(t*0.015+n.bx*0.04)*0.5+0.5;
+      const isHov=hoveredId===n.id;
+      const r=n.radius*(isHov?1.5:1)+pulse*0.5;
+      const bright=isHov?Math.min(n.brightness*1.5,1):n.brightness;
+      const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*2.8);
+      grd.addColorStop(0,dc(n.dom,bright*0.7,n.brightness));
+      grd.addColorStop(0.5,dc(n.dom,bright*0.18,n.brightness));
+      grd.addColorStop(1,dc(n.dom,0,n.brightness));
+      ctx.beginPath();ctx.arc(n.x,n.y,r*2.8,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+      ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+      ctx.fillStyle=dc(n.dom,bright,1);ctx.fill();
+      ctx.beginPath();ctx.arc(n.x,n.y,r*0.38,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${0.45+n.brightness*0.35})`;ctx.fill();
+
+      const target=isHov?1:0;
+      n.labelAlpha+=(target-n.labelAlpha)*0.08;
+      if(n.labelAlpha>0.015){
+        const c=DOMAINS[n.dom];
+        ctx.save();
+        ctx.globalAlpha=n.labelAlpha;
+        ctx.font='400 8px -apple-system,Arial,sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='bottom';
+        const lx=n.x,ly=n.y-r-5;
+        const tw=ctx.measureText(n.label).width;
+        ctx.fillStyle='rgba(245,240,232,0.88)';
+        ctx.beginPath();
+        ctx.roundRect(lx-tw/2-5,ly-13,tw+10,15,2);
+        ctx.fill();
+        ctx.fillStyle=`rgba(${c[0]},${c[1]},${c[2]},0.92)`;
+        ctx.fillText(n.label,lx,ly);
+        ctx.restore();
+      }
+    });
+
     requestAnimationFrame(draw);
   }
   draw();
