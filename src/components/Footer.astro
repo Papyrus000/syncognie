@@ -1,22 +1,88 @@
 ---
 const version = 'v0.2.2';
+const currentPath = Astro.url.pathname;
 ---
-<footer class="site-footer">
-  © 2026 Syncognie · <span class="version">{version}</span>
+
+<footer class="site-footer" role="contentinfo">
+
+  <nav class="footer-nav" aria-label="Navigation secondaire">
+    <a href="/articles" class={`footer-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'footer-link--active' : ''}`}>Articles</a>
+    <span class="footer-sep" aria-hidden="true">·</span>
+    <a href="/carte"    class={`footer-link ${currentPath === '/carte'    ? 'footer-link--active' : ''}`}>Carte</a>
+    <span class="footer-sep" aria-hidden="true">·</span>
+    <a href="/apropos"  class={`footer-link ${currentPath === '/apropos'  ? 'footer-link--active' : ''}`}>À propos</a>
+    <span class="footer-sep" aria-hidden="true">·</span>
+    <a href="/contact"  class={`footer-link ${currentPath === '/contact'  ? 'footer-link--active' : ''}`}>Contact</a>
+  </nav>
+
+  <div class="footer-copy">
+    © {new Date().getFullYear()} Syncognie
+    <span class="footer-version" aria-label={`Version ${version}`}>{version}</span>
+  </div>
+
 </footer>
 
 <style>
   .site-footer {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 2rem 1.75rem 3rem;
+    padding: 1.75rem 1.75rem 2.25rem;
     border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* Navigation */
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .footer-link {
     font-family: 'Mulish', sans-serif;
-    font-size: .78rem;
+    font-size: .72rem;
     font-weight: 300;
     letter-spacing: .1em;
     color: var(--ink-soft);
-    text-align: center;
+    text-decoration: none;
+    transition: color .18s;
   }
-  .version { opacity: .45; }
+  .footer-link:hover       { color: var(--terra); }
+  .footer-link--active     { color: var(--ink-mid); }
+  .footer-sep {
+    font-size: .72rem;
+    color: var(--ink-soft);
+    opacity: .4;
+    user-select: none;
+  }
+
+  /* Copyright + version */
+  .footer-copy {
+    font-family: 'Mulish', sans-serif;
+    font-size: .72rem;
+    font-weight: 300;
+    letter-spacing: .1em;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    white-space: nowrap;
+  }
+  .footer-version {
+    opacity: .4;
+    font-size: .68rem;
+  }
+
+  /* Mobile : empiler, centrer */
+  @media (max-width: 480px) {
+    .site-footer {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 2rem;
+    }
+  }
 </style>
