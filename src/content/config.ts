@@ -12,6 +12,8 @@ const articles = defineCollection({
     stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
     serie: z.string().optional(),
     episode: z.number().optional(),
+    rubrique: z.enum(['prisme', 'recit', 'mecanique']).optional(),
+    engagement: z.enum(['pause', 'lecture', 'immersion']).optional(),
     note_genese: z.array(z.object({
       date: z.string(),
       texte: z.string(),

@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+
 import { getCollection, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -51,7 +50,7 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
 ---
 
 <Base title={`${fenetre.data.personnage} — ${fenetre.data.heure} — Syncognie`}>
-  <Header />
+
 
   <!-- Barre de progression lecture -->
   <div class="progress-bar" id="progress" style={`--c: ${couleur}`}></div>
@@ -222,7 +221,6 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
 
   </div>
 
-  <Footer />
 </Base>
 
 <script>

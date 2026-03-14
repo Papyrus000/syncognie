@@ -1,6 +1,4 @@
 ---
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
 import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 import { getEntry } from 'astro:content';
@@ -23,7 +21,10 @@ const { Content } = await article.render();
 
 const date = article.data.date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 const wordCount = article.body.split(/\s+/).length;
-const readTime = Math.max(1, Math.round(wordCount / 200));
+
+// Vitesse ajustée : 150 mots/min pour Prismes (dense), 200 pour les autres
+const wpm = article.data.serie === "Notes d'un modèle en construction" ? 150 : 200;
+const readTime = Math.max(1, Math.round(wordCount / wpm));
 
 // Slug URL pour la page série
 function toSlug(str: string) {
@@ -35,11 +36,19 @@ function toSlug(str: string) {
 }
 const serieSlug = article.data.serie ? toSlug(article.data.serie) : null;
 
+// Couleur accordée à la série — couleurs vives cohérentes avec l'accueil
+const serieCouleur: Record<string, { color: string; bg: string; border: string; label: string }> = {
+  "notes-d-un-modele-en-construction":      { color: '#e8b832', bg: 'rgba(232,184,50,.09)',  border: 'rgba(232,184,50,.30)', label: 'Prismes'   },
+  "les-rencontres-de-nathalie-et-elodie":   { color: '#3a9fd8', bg: 'rgba(58,159,216,.08)',  border: 'rgba(58,159,216,.25)', label: 'Récit'     },
+  "mecanique":                               { color: '#7c5cbf', bg: 'rgba(124,92,191,.08)',  border: 'rgba(124,92,191,.28)', label: 'Mécanique' },
+};
+const serieStyle = serieSlug ? (serieCouleur[serieSlug] ?? null) : null;
+
 const stade = article.data.stade;
 const stadeConfig: Record<string, { emoji: string; label: string; desc: string; color: string }> = {
   graine: { emoji: '🌱', label: 'Graine', desc: 'Idée posée, peu développée',  color: '#2e7d4e' },
   pousse: { emoji: '🌿', label: 'Pousse', desc: "En cours d'exploration",       color: '#38783c' },
-  arbre:  { emoji: '🌳', label: 'Arbre',  desc: 'Consolidé, dense',              color: '#224422' },
+  arbre:  { emoji: '🌳', label: 'Arbre',  desc: 'Consolidé, dense',             color: '#224422' },
 };
 const stadeInfo = stade ? stadeConfig[stade] : null;
 
@@ -53,7 +62,6 @@ const ornColor = article.data.format
   : formatColor.default;
 
 // Fenêtre liée
-import { getEntry } from 'astro:content';
 let fenetreLiee = null;
 if (article.data.lien_fenetre) {
   try {
@@ -61,12 +69,36 @@ if (article.data.lien_fenetre) {
   } catch(e) {}
 }
 
-// Navigation précédent / suivant
-const tous = (await getCollection('articles'))
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const idx = tous.findIndex(a => a.slug === article.slug);
-const precedent = idx < tous.length - 1 ? tous[idx + 1] : null;
-const suivant   = idx > 0               ? tous[idx - 1] : null;
+// Tous les articles de la série (pour mini-encart + navigation contextuelle)
+const tousArticles = await getCollection('articles');
+
+const episodesSerie = article.data.serie
+  ? tousArticles
+      .filter(a => a.data.serie === article.data.serie)
+      .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0))
+  : [];
+
+const idxSerie = episodesSerie.findIndex(a => a.slug === article.slug);
+
+// Navigation contextuelle : dans la série si applicable, sinon globale par date
+let precedent = null;
+let suivant   = null;
+let navMode: 'serie' | 'global' = 'global';
+
+if (article.data.serie && episodesSerie.length > 1) {
+  navMode   = 'serie';
+  precedent = idxSerie > 0                         ? episodesSerie[idxSerie - 1] : null;
+  suivant   = idxSerie < episodesSerie.length - 1  ? episodesSerie[idxSerie + 1] : null;
+} else {
+  const tousParDate = [...tousArticles].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const idx = tousParDate.findIndex(a => a.slug === article.slug);
+  precedent = idx < tousParDate.length - 1 ? tousParDate[idx + 1] : null;
+  suivant   = idx > 0                      ? tousParDate[idx - 1]  : null;
+}
+
+// Indicateur engagement
+const engagementRank: Record<string, number> = { pause: 1, lecture: 2, immersion: 3 };
+const eng = engagementRank[article.data.engagement ?? ''] ?? 0;
 ---
 
 <Base title={`${article.data.title} — Syncognie`}>
@@ -75,14 +107,11 @@ const suivant   = idx > 0               ? tous[idx - 1] : null;
 
 <style is:global>
 /* ── FENÊTRE LIÉE ── */
-.fenetre-liee {
-  margin-bottom: 2rem;
-}
+.fenetre-liee { margin-bottom: 2rem; }
 .fenetre-liee-lien {
   display: flex; align-items: flex-start; justify-content: space-between;
   text-decoration: none; padding: 1.1rem 1.4rem;
-  border: 1px solid var(--rule);
-  border-left: 3px solid #8b6fc4;
+  border: 1px solid var(--rule); border-left: 3px solid #8b6fc4;
   border-radius: 0 6px 6px 0;
   background: color-mix(in srgb, #8b6fc4 4%, var(--bg, #f5f0e8));
   transition: background .2s, box-shadow .2s;
@@ -92,72 +121,53 @@ const suivant   = idx > 0               ? tous[idx - 1] : null;
   box-shadow: 0 4px 16px color-mix(in srgb, #8b6fc4 10%, transparent);
 }
 .fenetre-liee-inner { display: flex; flex-direction: column; gap: .25rem; }
-.fenetre-liee-eyebrow {
-  font-family: 'Mulish', sans-serif;
-  font-size: .52rem; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: #8b6fc4; opacity: .7;
-}
-.fenetre-liee-titre {
-  font-family: 'Libre Baskerville', serif;
-  font-size: .98rem; font-weight: 400;
-  color: var(--ink); line-height: 1.3;
-}
-.fenetre-liee-amorce {
-  font-family: 'Mulish', sans-serif;
-  font-size: .78rem; font-weight: 300; font-style: italic;
-  color: var(--ink-soft); line-height: 1.6;
-  max-width: 52ch;
-}
-.fenetre-liee-fleche {
-  color: #8b6fc4; font-size: 1rem;
-  flex-shrink: 0; margin-left: 1rem;
-  transition: transform .2s;
-}
+.fenetre-liee-eyebrow { font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #8b6fc4; opacity: .7; }
+.fenetre-liee-titre { font-family: 'Libre Baskerville', serif; font-size: .98rem; font-weight: 400; color: var(--ink); line-height: 1.3; }
+.fenetre-liee-amorce { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; font-style: italic; color: var(--ink-soft); line-height: 1.6; max-width: 52ch; }
+.fenetre-liee-fleche { color: #8b6fc4; font-size: 1rem; flex-shrink: 0; margin-left: 1rem; transition: transform .2s; }
 .fenetre-liee-lien:hover .fenetre-liee-fleche { transform: translate(3px, -3px); }
 
 /* ── BARRE PROGRESSION ── */
 .progress-bar {
-  position: fixed;
-  top: 52px; left: 0;
+  position: fixed; top: 52px; left: 0;
   height: 3px; width: 0%;
   background: var(--pop-orange, #ff8000);
-  box-shadow: 0 0 6px rgba(255, 128, 0, 0.5);
-  z-index: 99;
-  transition: width .08s linear;
-  opacity: 1;
+  box-shadow: 0 0 6px rgba(255,128,0,.5);
+  z-index: 99; transition: width .08s linear;
 }
 
 /* ── WRAP ── */
-.wrap {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 1.75rem;
-}
+.wrap { max-width: 680px; margin: 0 auto; padding: 0 1.75rem; }
 
-/* ── RETOUR ── */
-.back {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  padding: 2.5rem 0 2.75rem;
-  font-family: 'Mulish', sans-serif;
-  font-size: .6rem; font-weight: 700;
-  letter-spacing: .2em; text-transform: uppercase;
-  color: var(--ink-soft); text-decoration: none;
+/* ── FIL D'ARIANE ── */
+.breadcrumb {
+  display: flex; align-items: center; gap: .55rem;
+  padding: 3.5rem 0 2rem;
   opacity: 0; animation: rise .8s .05s ease forwards;
-  transition: color .2s, gap .2s;
 }
-.back:hover { color: var(--accent); gap: .7rem; }
-.back-arrow {
-  width: 18px; height: 18px;
-  border: 1px solid var(--rule); border-radius: 3px;
-  display: flex; align-items: center; justify-content: center;
-  transition: border-color .2s, background .2s; flex-shrink: 0;
+.breadcrumb-link {
+  font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--ink-soft); text-decoration: none; opacity: .6;
+  border-bottom: 1px dotted transparent;
+  padding-bottom: 1px;
+  transition: color .2s, opacity .2s, border-color .2s;
 }
-.back:hover .back-arrow { border-color: var(--accent); background: rgba(139,94,60,.06); }
-.back-arrow svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; transition: transform .2s; }
-.back:hover .back-arrow svg { transform: translateX(-2px); }
+.breadcrumb-link:hover {
+  color: var(--accent); opacity: 1;
+  border-bottom-color: var(--accent);
+}
+.breadcrumb-sep {
+  font-size: .65rem; color: var(--rule);
+  opacity: .55; user-select: none; flex-shrink: 0;
+}
+.breadcrumb-current {
+  font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--ink); opacity: .75;
+  white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; max-width: 28ch;
+}
 
 /* ── ARTICLE ── */
 article { padding-bottom: 1rem; opacity: 0; animation: rise .9s .15s ease forwards; }
@@ -167,14 +177,8 @@ article { padding-bottom: 1rem; opacity: 0; animation: rise .9s .15s ease forwar
   display: flex; align-items: center; gap: .75rem;
   flex-wrap: wrap; margin-bottom: 1.1rem;
 }
-.date {
-  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
-  letter-spacing: .2em; text-transform: uppercase; color: var(--accent); opacity: .8;
-}
-.readtime {
-  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 500;
-  letter-spacing: .1em; color: var(--ink-soft); opacity: .9;
-}
+.date { font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); opacity: .8; }
+.readtime { font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 500; letter-spacing: .1em; color: var(--ink-soft); opacity: .9; }
 .meta-sep { color: var(--rule); font-size: .7rem; }
 
 .badge-stade-inline {
@@ -193,17 +197,19 @@ article { padding-bottom: 1rem; opacity: 0; animation: rise .9s .15s ease forwar
   border: 1px solid rgba(139,94,60,.2);
 }
 
+/* Indicateur engagement dans meta — violet fixe comme l'accueil */
+.eng-meta { display: inline-flex; align-items: center; gap: .28rem; }
+.eng-meta-indicator { display: inline-flex; align-items: flex-end; gap: 3px; }
+.eng-meta-bar { display: inline-block; width: 3px; border-radius: 2px 2px 1px 1px; background: var(--rule); }
+.eng-meta-b1 { height: 5px; } .eng-meta-b2 { height: 8px; } .eng-meta-b3 { height: 12px; }
+.eng-meta-bar.on { background: #7c5cbf; }
+.eng-meta-label { font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 300; letter-spacing: .04em; color: var(--ink-soft); opacity: .5; }
+
 /* ── TITRE ── */
-h1 {
-  font-size: clamp(1.6rem, 3vw, 2rem); font-weight: 700;
-  line-height: 1.25; color: var(--ink);
-  margin-bottom: 1.5rem; letter-spacing: -.015em;
-}
+h1 { font-size: clamp(1.6rem, 3vw, 2rem); font-weight: 700; line-height: 1.25; color: var(--ink); margin-bottom: 1.5rem; letter-spacing: -.015em; }
 
 /* ── ORNEMENT SEUIL ── */
-.article-seuil {
-  display: flex; align-items: center; gap: .75rem; margin-bottom: 2.5rem;
-}
+.article-seuil { display: flex; align-items: center; gap: .75rem; margin-bottom: 2.5rem; }
 .seuil-svg { flex-shrink: 0; overflow: visible; }
 .seuil-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--rule), transparent); opacity: .6; }
 .seuil-line--left { background: linear-gradient(to left, var(--rule), transparent); }
@@ -217,54 +223,21 @@ h1 {
 .content em { font-style: italic; }
 .content ul, .content ol { padding-left: 1.5rem; margin-bottom: 1.5rem; }
 .content li { margin-bottom: .4rem; }
-.content img {
-  display: block; max-width: 100% !important; height: auto !important;
-  border-radius: 6px; margin: 2rem auto;
-  box-shadow: 0 6px 24px rgba(0,0,0,.1);
-}
+.content img { display: block; max-width: 100% !important; height: auto !important; border-radius: 6px; margin: 2rem auto; box-shadow: 0 6px 24px rgba(0,0,0,.1); }
+.content blockquote { border-left: 3px solid var(--rule); padding: .6rem 1.25rem; margin: 1.75rem 0; color: var(--ink-soft); font-style: italic; }
+.content code { font-size: .88em; background: rgba(139,94,60,.07); padding: .15em .4em; border-radius: 3px; }
+.content pre { background: rgba(26,23,20,.04); padding: 1.25rem 1.5rem; border-radius: 6px; overflow-x: auto; margin-bottom: 1.5rem; }
+.content pre code { background: none; padding: 0; }
 article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 
 /* ── BOUTON PARTAGE ── */
-.partage-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: .75rem;
-  padding: 1.25rem 0;
-  border-top: 1px solid var(--rule);
-  margin-top: 1rem;
-}
-
-.partage-label {
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 300;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-soft); opacity: .45;
-}
-
-.btn-copier {
-  display: inline-flex; align-items: center; gap: .5rem;
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--ink-soft);
-  background: transparent;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  padding: .55rem 1rem;
-  cursor: pointer;
-  transition: border-color .2s, color .2s, background .2s;
-}
+.partage-wrap { display: flex; align-items: center; justify-content: flex-end; gap: .75rem; padding: 1.25rem 0; border-top: 1px solid var(--rule); margin-top: 1rem; }
+.partage-label { font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); opacity: .45; }
+.btn-copier { display: inline-flex; align-items: center; gap: .5rem; font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); background: transparent; border: 1px solid var(--rule); border-radius: 4px; padding: .55rem 1rem; cursor: pointer; transition: border-color .2s, color .2s, background .2s; }
 .btn-copier svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; flex-shrink: 0; transition: transform .2s; }
 .btn-copier:hover { border-color: var(--accent); color: var(--accent); background: rgba(139,94,60,.04); }
 .btn-copier:hover svg { transform: scale(1.15); }
-
-/* État copié */
-.btn-copier.copie {
-  border-color: #2e7d4e;
-  color: #2e7d4e;
-  background: rgba(46,125,78,.05);
-}
+.btn-copier.copie { border-color: #2e7d4e; color: #2e7d4e; background: rgba(46,125,78,.05); }
 .btn-copier.copie svg { display: none; }
 .btn-copier .label-copie { display: none; }
 .btn-copier.copie .label-copie { display: inline; }
@@ -272,389 +245,410 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
 .btn-copier.copie .label-default { display: none; }
 
 /* ── CODEX ── */
-.codex {
-  margin: 1.5rem 0;
-  padding: 1.25rem 1.5rem;
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--gold, #c4993a);
-  border-radius: 0 6px 6px 0;
-  background: rgba(196,153,58,.03);
-}
-.codex-header {
-  display: flex; align-items: center; gap: .5rem;
-  margin-bottom: 1rem; padding-bottom: .6rem;
-  border-bottom: 1px solid var(--rule);
-}
+.codex { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border: 1px solid var(--rule); border-left: 3px solid var(--gold, #c4993a); border-radius: 0 6px 6px 0; background: rgba(196,153,58,.03); }
+.codex-header { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; padding-bottom: .6rem; border-bottom: 1px solid var(--rule); }
 .codex-icon { color: var(--gold,#c4993a); opacity: .55; font-size: .75rem; }
-.codex-label {
-  font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700;
-  letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); opacity: .6;
-}
+.codex-label { font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); opacity: .6; }
 .codex-tags { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; }
-.codex-tag {
-  font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 400;
-  color: var(--ink-mid); padding: .3rem .75rem; border-radius: 4px;
-  border: 1px solid var(--rule); background: rgba(245,240,232,.7);
-  transition: border-color .2s, color .2s, transform .15s;
-}
+.codex-tag { font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 400; color: var(--ink-mid); padding: .3rem .75rem; border-radius: 4px; border: 1px solid var(--rule); background: rgba(245,240,232,.7); transition: border-color .2s, color .2s, transform .15s; }
 .codex-tag:hover { border-color: var(--gold,#c4993a); color: var(--gold,#c4993a); transform: translateY(-1px); }
 
 /* ── ENCART STADE ── */
-.stade-encart {
-  margin: 1.5rem 0 3rem; padding: 1rem 1.25rem;
-  border: 1px solid var(--rule); border-radius: 6px;
-  background: rgba(245,240,232,.5);
-  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
-}
+.stade-encart { margin: 1.5rem 0 2rem; padding: 1rem 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: rgba(245,240,232,.5); display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .stade-encart-left { display: flex; align-items: center; gap: .6rem; flex: 1; }
 .stade-emoji-lg { font-size: 1.2rem; line-height: 1; }
-.stade-encart-label {
-  font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700;
-  letter-spacing: .18em; text-transform: uppercase; margin-bottom: .2rem;
-}
-.stade-encart-desc {
-  font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 300;
-  font-style: italic; color: var(--ink-soft); opacity: .8;
-}
-.stade-encart-lien {
-  font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--blizzard,#148EFF); text-decoration: none; white-space: nowrap;
-  display: inline-flex; align-items: center;
-  transition: opacity .2s, transform .2s;
-}
+.stade-encart-label { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: .2rem; }
+.stade-encart-desc { font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 300; font-style: italic; color: var(--ink-soft); opacity: .8; }
+.stade-encart-lien { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blizzard,#148EFF); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; transition: opacity .2s, transform .2s; }
 .stade-encart-lien:hover { opacity: .7; transform: translateX(2px); }
 
-/* ── CARTOUCHE NOTE GENÈSE ── */
-.note-genese {
-  margin: 0 0 2.5rem;
-  border: 1px solid rgba(139,94,60,.18);
-  border-left: 3px solid var(--accent, #8b5e3c);
-  border-radius: 0 6px 6px 0;
-  background: rgba(139,94,60,.035);
-  overflow: hidden;
+/* ── NOTE GENÈSE ── */
+.note-genese { margin: 0 0 2.5rem; border: 1px solid rgba(139,94,60,.18); border-left: 3px solid var(--accent, #8b5e3c); border-radius: 0 6px 6px 0; background: rgba(139,94,60,.035); overflow: hidden; }
+.note-genese-header { display: flex; align-items: center; gap: .45rem; padding: .5rem 1.1rem; border-bottom: 1px solid rgba(139,94,60,.1); background: rgba(139,94,60,.04); }
+.note-genese-glyph { font-size: .65rem; color: var(--accent); opacity: .7; user-select: none; flex-shrink: 0; }
+.note-genese-label { font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--accent); opacity: .7; }
+.note-genese-body { padding: .5rem 0; }
+.note-genese-entry { display: flex; gap: 1rem; align-items: baseline; padding: .6rem 1.1rem; border-bottom: 1px solid rgba(139,94,60,.07); }
+.note-genese-entry:last-child { border-bottom: none; }
+.note-genese-date { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); opacity: .6; white-space: nowrap; flex-shrink: 0; padding-top: .1rem; }
+.note-genese-text { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400; font-style: italic; color: var(--ink-mid); line-height: 1.65; margin: 0; }
+
+/* ── MINI-ENCART SÉRIE ── */
+.serie-encart {
+  margin: 2rem 0 0;
+  padding: 1.1rem 1.4rem;
+  border: 1px solid var(--se-border, rgba(196,153,58,.25));
+  border-top: 2.5px solid var(--se-color, #c4993a);
+  border-radius: 0 0 6px 6px;
+  background: var(--se-bg, rgba(196,153,58,.04));
+  display: flex; align-items: center; justify-content: space-between; gap: 1.25rem;
+  flex-wrap: wrap;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: background .22s, border-color .22s, transform .22s, box-shadow .22s;
 }
-.note-genese-header {
-  display: flex;
-  align-items: center;
-  gap: .45rem;
-  padding: .5rem 1.1rem;
-  border-bottom: 1px solid rgba(139,94,60,.1);
-  background: rgba(139,94,60,.04);
+/* Halo de couleur au hover */
+.serie-encart::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 0% 0%, color-mix(in srgb, var(--se-color, #c4993a) 10%, transparent), transparent 70%);
+  opacity: 0; transition: opacity .3s; pointer-events: none;
 }
-.note-genese-glyph {
-  font-size: .65rem;
-  color: var(--accent);
-  opacity: .7;
-  user-select: none;
-  flex-shrink: 0;
+.serie-encart:hover {
+  background: color-mix(in srgb, var(--se-color, #c4993a) 7%, var(--parch, #f5f0e8));
+  border-color: var(--se-color, #c4993a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px color-mix(in srgb, var(--se-color, #c4993a) 14%, transparent);
 }
-.note-genese-label {
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem;
-  font-weight: 700;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  opacity: .7;
+.serie-encart:hover::after { opacity: 1; }
+
+.serie-encart-left { display: flex; flex-direction: column; gap: .3rem; position: relative; z-index: 1; flex: 1; min-width: 0; }
+.serie-encart-eyebrow {
+  font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--se-color, #c4993a); opacity: .8;
 }
-.note-genese-body {
-  padding: .5rem 0;
+.serie-encart-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .92rem; font-weight: 400; font-style: italic;
+  color: var(--ink); line-height: 1.3;
+  transition: color .2s;
 }
-.note-genese-entry {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-  padding: .6rem 1.1rem;
-  border-bottom: 1px solid rgba(139,94,60,.07);
+.serie-encart:hover .serie-encart-titre { color: var(--se-color, #c4993a); }
+
+.serie-encart-progress {
+  display: flex; align-items: center; gap: .5rem; margin-top: .15rem;
 }
-.note-genese-entry:last-child {
-  border-bottom: none;
+.serie-encart-dots { display: flex; align-items: center; gap: 5px; }
+.serie-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--rule); flex-shrink: 0;
+  transition: background .2s, transform .2s;
 }
-.note-genese-date {
-  font-family: 'Mulish', sans-serif;
-  font-size: .58rem;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--accent);
-  opacity: .6;
-  white-space: nowrap;
-  flex-shrink: 0;
-  padding-top: .1rem;
+.serie-dot--active {
+  background: var(--se-color, #c4993a);
+  transform: scale(1.2);
 }
-.note-genese-text {
-  font-family: 'Mulish', sans-serif;
-  font-size: .88rem;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink-mid);
-  line-height: 1.65;
-  margin: 0;
+.serie-dot--done { background: var(--se-color, #c4993a); opacity: .35; }
+.serie-encart-pos {
+  font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300;
+  color: var(--ink-soft); opacity: .5;
 }
 
-/* ── FOOTER ── */
-.article-footer {
-  border-top: 1px solid var(--rule); padding: 1.75rem 0 3rem;
-  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
-  letter-spacing: .1em; color: var(--ink-soft); opacity: .4;
+/* CTA — caché par défaut, glisse au hover */
+.serie-encart-cta {
+  font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--blizzard, #148EFF);
+  white-space: nowrap; flex-shrink: 0;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateX(-6px);
+  transition: opacity .22s, transform .22s;
+}
+.serie-encart:hover .serie-encart-cta {
+  opacity: 1; transform: translateX(0);
 }
 
+/* Mobile : CTA toujours visible, pas de hover transform */
+@media (hover: none) {
+  .serie-encart-cta { opacity: .75; transform: translateX(0); }
+  .serie-encart:hover { transform: none; box-shadow: none; }
+  .serie-encart:hover::after { opacity: 0; }
+}
+@media (max-width: 480px) {
+  .serie-encart { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .serie-encart-cta { opacity: .75; transform: translateX(0); align-self: flex-end; }
+}
 
 /* ── NAVIGATION ENTRE ARTICLES ── */
 .nav-article {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 1.25rem;
-  padding-top: 1.5rem;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 1rem;
+  margin-top: 1.25rem; padding-top: 1.5rem;
   border-top: 1px solid var(--rule);
 }
 .nav-item--next { display: flex; justify-content: flex-end; }
-
-.nav-lien {
-  display: flex; flex-direction: column; gap: .25rem;
-  text-decoration: none; max-width: 22ch;
-  transition: opacity .2s;
-}
+.nav-lien { display: flex; flex-direction: column; gap: .25rem; text-decoration: none; max-width: 22ch; transition: opacity .2s; }
 .nav-lien:hover { opacity: .7; }
 .nav-lien--right { align-items: flex-end; }
-
-.nav-dir {
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--ink-soft); opacity: .5;
-}
-.nav-titre {
-  font-family: 'Libre Baskerville', serif;
-  font-size: .9rem; color: var(--ink);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.nav-tous {
-  display: flex; flex-direction: column;
-  align-items: center; gap: .35rem;
-  text-decoration: none;
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem; font-weight: 700;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--ink-soft); opacity: .4;
-  transition: opacity .2s, color .2s;
-}
+.nav-dir { font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); opacity: .5; }
+.nav-serie-label { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--nav-serie-color, var(--accent)); opacity: .6; margin-bottom: .1rem; }
+.nav-titre { font-family: 'Libre Baskerville', serif; font-size: .9rem; color: var(--ink); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.nav-tous { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-decoration: none; font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); opacity: .4; transition: opacity .2s, color .2s; }
 .nav-tous:hover { opacity: .8; color: var(--accent); }
+.nav-serie-link { display: flex; flex-direction: column; align-items: center; gap: .35rem; text-decoration: none; font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); opacity: .45; transition: opacity .2s, color .2s; }
+.nav-serie-link:hover { opacity: .85; color: var(--accent); }
+.nav-serie-link svg { opacity: .6; }
 
 @media (max-width: 520px) {
   .nav-article { grid-template-columns: 1fr 1fr; }
-  .nav-tous { display: none; }
+  .nav-tous, .nav-serie-link { display: none; }
 }
 
-@keyframes rise {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ── BOUTON REMONTER FLOTTANT ── */
+.btn-top-float {
+  position: fixed;
+  bottom: 1.75rem; right: 1.75rem;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: rgba(245,240,232,.92);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; text-decoration: none;
+  box-shadow: 0 2px 12px rgba(44,36,22,.10);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .25s, transform .25s, border-color .2s, background .2s, box-shadow .2s;
+  z-index: 80;
+  pointer-events: none;
 }
+.btn-top-float.visible {
+  opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+.btn-top-float svg { width: 14px; height: 14px; stroke: var(--ink-soft); fill: none; stroke-width: 2.2; transition: stroke .2s, transform .2s; }
+.btn-top-float:hover { border-color: var(--accent); background: rgba(139,94,60,.07); box-shadow: 0 4px 18px rgba(139,94,60,.14); }
+.btn-top-float:hover svg { stroke: var(--accent); transform: translateY(-2px); }
+@media (max-width: 520px) { .btn-top-float { bottom: 1.2rem; right: 1.2rem; } }
 
-/* ── BADGE SÉRIE (dans article) ── */
+/* ── BADGE SÉRIE (meta) ── */
 .badge-serie-inline {
   display: inline-flex; align-items: center; gap: .32rem;
-  background: rgba(107,127,184,.08);
-  color: #4a5a8a;
-  border: 1px solid rgba(107,127,184,.22);
-  border-radius: 3px;
-  padding: .15rem .42rem .15rem .32rem;
-  font-family: 'Mulish', sans-serif;
-  font-size: .52rem; font-weight: 700;
+  border-radius: 3px; padding: .15rem .42rem .15rem .32rem;
+  font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 700;
   letter-spacing: .11em; text-transform: uppercase;
   text-decoration: none;
-  transition: background .2s, border-color .2s, color .2s;
+  transition: opacity .2s;
 }
-.badge-serie-inline:hover {
-  background: rgba(107,127,184,.16);
-  border-color: rgba(107,127,184,.4);
-  color: #3a4a7a;
-}
-.badge-serie-bulles {
-  display: inline-flex; align-items: flex-end;
-  gap: 2px; height: 8px; margin-right: 1px;
-}
-.bulle {
-  display: block; border-radius: 50%;
-  background: #6b7fb8; opacity: .7;
-}
-.bulle-1 {
-  width: 5px; height: 5px;
-  animation: bulle-p 3.2s ease-in-out infinite;
-}
-.bulle-2 {
-  width: 3.5px; height: 3.5px;
-  animation: bulle-p 3.2s ease-in-out infinite;
-  animation-delay: .8s;
-}
-@keyframes bulle-p {
-  0%, 100% { opacity: .45; transform: translateY(0); }
-  50%       { opacity: .9;  transform: translateY(-2px); }
-}
+.badge-serie-inline:hover { opacity: .75; }
+.badge-serie-bulles { display: inline-flex; align-items: flex-end; gap: 2px; height: 8px; margin-right: 1px; }
+.bulle { display: block; border-radius: 50%; opacity: .7; }
+.bulle-1 { width: 5px; height: 5px; animation: bulle-p 3.2s ease-in-out infinite; }
+.bulle-2 { width: 3.5px; height: 3.5px; animation: bulle-p 3.2s ease-in-out infinite .8s; }
+@keyframes bulle-p { 0%,100%{opacity:.45;transform:translateY(0)} 50%{opacity:.9;transform:translateY(-2px)} }
+
+@keyframes rise { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 </style>
 
-<Header />
-
 <div class="wrap">
-  <a class="back" href="/articles">
-    <span class="back-arrow">
-      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-    </span>
-    Articles
-  </a>
+
+  <!-- ── FIL D'ARIANE ── -->
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a href="/articles" class="breadcrumb-link">Articles</a>
+    {serieSlug && article.data.serie && (
+      <>
+        <span class="breadcrumb-sep" aria-hidden="true">›</span>
+        <a href={`/series/${serieSlug}`} class="breadcrumb-link">{serieStyle?.label ?? article.data.serie}</a>
+      </>
+    )}
+    {article.data.episode && (
+      <>
+        <span class="breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="breadcrumb-current">Ép. {article.data.episode}</span>
+      </>
+    )}
+    {!article.data.episode && (
+      <>
+        <span class="breadcrumb-sep" aria-hidden="true">›</span>
+        <span class="breadcrumb-current">{article.data.title}</span>
+      </>
+    )}
+  </nav>
 
 <article class={article.data.format === 'dialogue' ? 'dialogue' : article.data.format === 'récit' ? 'recit' : ''}>
 
-    <div class="article-meta-top">
-      <span class="date">{date}</span>
-      <span class="meta-sep">·</span>
-      <span class="readtime">{readTime} min</span>
-      {stadeInfo && (
-        <>
-          <span class="meta-sep">·</span>
-          <a href="/stades" class="badge-stade-inline"
-            style={`background:color-mix(in srgb,${stadeInfo.color} 8%,transparent);color:${stadeInfo.color};border:1px solid color-mix(in srgb,${stadeInfo.color} 22%,transparent)`}
-            title={stadeInfo.desc}
-          >
-            <span>{stadeInfo.emoji}</span><span>{stadeInfo.label}</span>
-          </a>
-        </>
-      )}
-      {article.data.statut === 'en-cours' && <span class="badge-wip-inline">En cours</span>}
-      {serieSlug && article.data.episode && (
-        <>
-          <span class="meta-sep">·</span>
-          <a href={`/series/${serieSlug}`} class="badge-serie-inline">
-            <span class="badge-serie-bulles" aria-hidden="true">
-              <span class="bulle bulle-1"></span>
-              <span class="bulle bulle-2"></span>
-            </span>
-            <span>ép. {article.data.episode}</span>
-          </a>
-        </>
-      )}
-    </div>
+  <div class="article-meta-top">
+    <span class="date">{date}</span>
+    <span class="meta-sep">·</span>
+    <span class="readtime">{readTime} min</span>
 
-    <h1>{article.data.title}</h1>
-
-    <!-- Ornement seuil -->
-    <div class="article-seuil">
-      <div class="seuil-line seuil-line--left"></div>
-      <svg class="seuil-svg" width="48" height="20" viewBox="0 0 48 20" fill="none" aria-hidden="true">
-        <path d="M24 2 L38 10 L24 18 L10 10 Z" stroke={ornColor} stroke-width="1" fill="none" opacity=".35"/>
-        <line x1="24" y1="5"  x2="24" y2="15" stroke={ornColor} stroke-width=".7" opacity=".25"/>
-        <line x1="14" y1="10" x2="34" y2="10" stroke={ornColor} stroke-width=".7" opacity=".25"/>
-        <circle cx="24" cy="2"  r="1.2" fill={ornColor} opacity=".4"/>
-        <circle cx="38" cy="10" r="1.2" fill={ornColor} opacity=".4"/>
-        <circle cx="24" cy="18" r="1.2" fill={ornColor} opacity=".4"/>
-        <circle cx="10" cy="10" r="1.2" fill={ornColor} opacity=".4"/>
-        <line x1="0"  y1="10" x2="7"  y2="10" stroke={ornColor} stroke-width=".7" opacity=".2" stroke-linecap="round"/>
-        <line x1="41" y1="10" x2="48" y2="10" stroke={ornColor} stroke-width=".7" opacity=".2" stroke-linecap="round"/>
-      </svg>
-      <div class="seuil-line"></div>
-    </div>
-
-    <!-- ✦ FENÊTRE LIÉE — point d'entrée narratif -->
-    {fenetreLiee && (
-      <aside class="fenetre-liee">
-        <a href={`/fenetres/${fenetreLiee.slug}`} class="fenetre-liee-lien">
-          <div class="fenetre-liee-inner">
-            <span class="fenetre-liee-eyebrow">Fenêtre · {fenetreLiee.data.heure}</span>
-            <span class="fenetre-liee-titre">{fenetreLiee.data.personnage}</span>
-            {fenetreLiee.data.amorce && (
-              <span class="fenetre-liee-amorce">{fenetreLiee.data.amorce}</span>
-            )}
-          </div>
-          <span class="fenetre-liee-fleche">↗</span>
-        </a>
-      </aside>
-    )}
-
-    {article.data.note_genese && article.data.note_genese.length > 0 && (
-      <div class="note-genese">
-        <div class="note-genese-header">
-          <span class="note-genese-glyph">✦</span>
-          <span class="note-genese-label">Note d'atelier</span>
-        </div>
-        <div class="note-genese-body">
-          {article.data.note_genese.map((entry: { date: string; texte: string }) => (
-            <div class="note-genese-entry">
-              <span class="note-genese-date">{entry.date}</span>
-              <p class="note-genese-text">{entry.texte}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-
-    <div class="content">
-<Content components={{ Personnage, NoteReference, Instant, SMS }} />
-
-    </div>
-
-    <Reactions slug={article.slug} />
-
-    <!-- ✦ BOUTON PARTAGE — après réactions, avant Codex -->
-    <div class="partage-wrap">
-      <span class="partage-label">Partager</span>
-      <button class="btn-copier" id="btn-copier" type="button" aria-label="Copier le lien de cet article">
-        <svg viewBox="0 0 24 24">
-          <rect x="9" y="9" width="13" height="13" rx="2"/>
-          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-        <span class="label-default">Copier le lien</span>
-        <span class="label-copie">✓ Lien copié</span>
-      </button>
-    </div>
-
-    <!-- Codex -->
-    {article.data.tags && article.data.tags.length > 0 && (
-      <div class="codex">
-        <div class="codex-header">
-          <span class="codex-icon">◈</span>
-          <span class="codex-label">Codex</span>
-        </div>
-        <ul class="codex-tags">
-          {article.data.tags.map((tag: string) => <li class="codex-tag">{tag}</li>)}
-        </ul>
-      </div>
-    )}
-
-    <!-- Stade -->
     {stadeInfo && (
-      <div class="stade-encart">
-        <div class="stade-encart-left">
-          <span class="stade-emoji-lg">{stadeInfo.emoji}</span>
-          <div>
-            <p class="stade-encart-label" style={`color:${stadeInfo.color}`}>{stadeInfo.label}</p>
-            <p class="stade-encart-desc">{stadeInfo.desc}</p>
-          </div>
-        </div>
-        <a href="/stades" class="stade-encart-lien">Le jardin →</a>
-      </div>
+      <>
+        <span class="meta-sep">·</span>
+        <a href="/stades" class="badge-stade-inline"
+          style={`background:color-mix(in srgb,${stadeInfo.color} 8%,transparent);color:${stadeInfo.color};border:1px solid color-mix(in srgb,${stadeInfo.color} 22%,transparent)`}
+          title={stadeInfo.desc}
+        >
+          <span>{stadeInfo.emoji}</span><span>{stadeInfo.label}</span>
+        </a>
+      </>
     )}
 
-  </article>
+    {article.data.statut === 'en-cours' && <span class="badge-wip-inline">En cours</span>}
 
-  <!-- ✦ NAVIGATION ENTRE ARTICLES -->
-  <nav class="nav-article">
-    <div class="nav-item nav-item--prev">
-      {precedent ? (
-        <a href={`/articles/${precedent.slug}`} class="nav-lien">
-          <span class="nav-dir">← Précédent</span>
-          <span class="nav-titre">{precedent.data.title}</span>
+    {/* Indicateur engagement */}
+    {eng > 0 && (
+      <>
+        <span class="meta-sep">·</span>
+        <span class="eng-meta" title={`Niveau de lecture : ${article.data.engagement}`}>
+          <span class="eng-meta-indicator">
+            <span class={`eng-meta-bar eng-meta-b1${eng >= 1 ? ' on' : ''}`}></span>
+            <span class={`eng-meta-bar eng-meta-b2${eng >= 2 ? ' on' : ''}`}></span>
+            <span class={`eng-meta-bar eng-meta-b3${eng >= 3 ? ' on' : ''}`}></span>
+          </span>
+          <span class="eng-meta-label">{article.data.engagement}</span>
+        </span>
+      </>
+    )}
+
+    {serieSlug && article.data.episode && serieStyle && (
+      <>
+        <span class="meta-sep">·</span>
+        <a href={`/series/${serieSlug}`} class="badge-serie-inline"
+          style={`background:${serieStyle.bg};color:${serieStyle.color};border:1px solid ${serieStyle.border}`}
+        >
+          <span class="badge-serie-bulles" aria-hidden="true">
+            <span class="bulle bulle-1" style={`background:${serieStyle.color}`}></span>
+            <span class="bulle bulle-2" style={`background:${serieStyle.color}`}></span>
+          </span>
+          <span>ép. {article.data.episode}</span>
         </a>
-      ) : <div />}
-    </div>
+      </>
+    )}
+  </div>
 
+  <h1>{article.data.title}</h1>
+
+  <!-- Ornement seuil -->
+  <div class="article-seuil">
+    <div class="seuil-line seuil-line--left"></div>
+    <svg class="seuil-svg" width="48" height="20" viewBox="0 0 48 20" fill="none" aria-hidden="true">
+      <path d="M24 2 L38 10 L24 18 L10 10 Z" stroke={ornColor} stroke-width="1" fill="none" opacity=".35"/>
+      <line x1="24" y1="5"  x2="24" y2="15" stroke={ornColor} stroke-width=".7" opacity=".25"/>
+      <line x1="14" y1="10" x2="34" y2="10" stroke={ornColor} stroke-width=".7" opacity=".25"/>
+      <circle cx="24" cy="2"  r="1.2" fill={ornColor} opacity=".4"/>
+      <circle cx="38" cy="10" r="1.2" fill={ornColor} opacity=".4"/>
+      <circle cx="24" cy="18" r="1.2" fill={ornColor} opacity=".4"/>
+      <circle cx="10" cy="10" r="1.2" fill={ornColor} opacity=".4"/>
+      <line x1="0"  y1="10" x2="7"  y2="10" stroke={ornColor} stroke-width=".7" opacity=".2" stroke-linecap="round"/>
+      <line x1="41" y1="10" x2="48" y2="10" stroke={ornColor} stroke-width=".7" opacity=".2" stroke-linecap="round"/>
+    </svg>
+    <div class="seuil-line"></div>
+  </div>
+
+  <!-- Fenêtre liée -->
+  {fenetreLiee && (
+    <aside class="fenetre-liee">
+      <a href={`/fenetres/${fenetreLiee.slug}`} class="fenetre-liee-lien">
+        <div class="fenetre-liee-inner">
+          <span class="fenetre-liee-eyebrow">Fenêtre · {fenetreLiee.data.heure}</span>
+          <span class="fenetre-liee-titre">{fenetreLiee.data.personnage}</span>
+          {fenetreLiee.data.amorce && <span class="fenetre-liee-amorce">{fenetreLiee.data.amorce}</span>}
+        </div>
+        <span class="fenetre-liee-fleche">↗</span>
+      </a>
+    </aside>
+  )}
+
+  {article.data.note_genese && article.data.note_genese.length > 0 && (
+    <div class="note-genese">
+      <div class="note-genese-header">
+        <span class="note-genese-glyph">✦</span>
+        <span class="note-genese-label">Note d'atelier</span>
+      </div>
+      <div class="note-genese-body">
+        {article.data.note_genese.map((entry: { date: string; texte: string }) => (
+          <div class="note-genese-entry">
+            <span class="note-genese-date">{entry.date}</span>
+            <p class="note-genese-text">{entry.texte}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <div class="content">
+    <Content components={{ Personnage, NoteReference, Instant, SMS }} />
+  </div>
+
+  <Reactions slug={article.slug} />
+
+  <!-- Partage -->
+  <div class="partage-wrap">
+    <span class="partage-label">Partager</span>
+    <button class="btn-copier" id="btn-copier" type="button" aria-label="Copier le lien de cet article">
+      <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span class="label-default">Copier le lien</span>
+      <span class="label-copie">✓ Lien copié</span>
+    </button>
+  </div>
+
+  <!-- Codex -->
+  {article.data.tags && article.data.tags.length > 0 && (
+    <div class="codex">
+      <div class="codex-header">
+        <span class="codex-icon">◈</span>
+        <span class="codex-label">Codex</span>
+      </div>
+      <ul class="codex-tags">
+        {article.data.tags.map((tag: string) => <li class="codex-tag">{tag}</li>)}
+      </ul>
+    </div>
+  )}
+
+  <!-- Stade -->
+  {stadeInfo && (
+    <div class="stade-encart">
+      <div class="stade-encart-left">
+        <span class="stade-emoji-lg">{stadeInfo.emoji}</span>
+        <div>
+          <p class="stade-encart-label" style={`color:${stadeInfo.color}`}>{stadeInfo.label}</p>
+          <p class="stade-encart-desc">{stadeInfo.desc}</p>
+        </div>
+      </div>
+      <a href="/stades" class="stade-encart-lien">Le jardin →</a>
+    </div>
+  )}
+
+  <!-- Mini-encart série -->
+  {article.data.serie && serieSlug && episodesSerie.length > 1 && serieStyle && (
+    <a href={`/series/${serieSlug}`} class="serie-encart"
+      style={`--se-color:${serieStyle.color};--se-bg:${serieStyle.bg};--se-border:${serieStyle.border}`}
+    >
+      <div class="serie-encart-left">
+        <span class="serie-encart-eyebrow">{serieStyle.label} · Épisode {article.data.episode} / {episodesSerie.length}</span>
+        <span class="serie-encart-titre">{article.data.serie}</span>
+        <div class="serie-encart-progress">
+          <div class="serie-encart-dots">
+            {episodesSerie.map((ep, i) => (
+              <span class={`serie-dot${ep.slug === article.slug ? ' serie-dot--active' : i < idxSerie ? ' serie-dot--done' : ''}`}></span>
+            ))}
+          </div>
+          <span class="serie-encart-pos">{idxSerie + 1} sur {episodesSerie.length}</span>
+        </div>
+      </div>
+      <span class="serie-encart-cta">Voir tous les épisodes →</span>
+    </a>
+  )}
+
+</article>
+
+<!-- Navigation -->
+<nav class="nav-article">
+  <div class="nav-item nav-item--prev">
+    {precedent ? (
+      <a href={`/articles/${precedent.slug}`} class="nav-lien">
+        {navMode === 'serie' && serieStyle && (
+          <span class="nav-serie-label" style={`color:${serieStyle.color}`}>← Épisode précédent</span>
+        )}
+        {navMode === 'global' && <span class="nav-dir">← Précédent</span>}
+        <span class="nav-titre">{precedent.data.title}</span>
+      </a>
+    ) : <div />}
+  </div>
+
+  {/* Centre : lien série si applicable, sinon tous les articles */}
+  {navMode === 'serie' && serieSlug && serieStyle ? (
+    <a href={`/series/${serieSlug}`} class="nav-serie-link">
+      <svg viewBox="0 0 16 16" fill="none" width="13" height="13">
+        <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+        <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      {serieStyle.label}
+    </a>
+  ) : (
     <a href="/articles" class="nav-tous">
       <svg viewBox="0 0 16 16" fill="none" width="12" height="12">
         <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
@@ -664,20 +658,27 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
       </svg>
       Tous
     </a>
+  )}
 
-    <div class="nav-item nav-item--next">
-      {suivant ? (
-        <a href={`/articles/${suivant.slug}`} class="nav-lien nav-lien--right">
-          <span class="nav-dir">Suivant →</span>
-          <span class="nav-titre">{suivant.data.title}</span>
-        </a>
-      ) : <div />}
-    </div>
-  </nav>
+  <div class="nav-item nav-item--next">
+    {suivant ? (
+      <a href={`/articles/${suivant.slug}`} class="nav-lien nav-lien--right">
+        {navMode === 'serie' && serieStyle && (
+          <span class="nav-serie-label" style={`color:${serieStyle.color}`}>Épisode suivant →</span>
+        )}
+        {navMode === 'global' && <span class="nav-dir">Suivant →</span>}
+        <span class="nav-titre">{suivant.data.title}</span>
+      </a>
+    ) : <div />}
+  </div>
+</nav>
 
-  <Footer />
-  <div class="article-footer">Syncognie — jardin numérique</div>
 </div>
+
+<!-- Bouton remonter flottant -->
+<button class="btn-top-float" id="btn-top" aria-label="Remonter en haut de page">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <script>
   // Barre de progression
@@ -699,7 +700,6 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
         btn.classList.add('copie');
         setTimeout(() => btn.classList.remove('copie'), 2200);
       } catch {
-        // Fallback : sélection manuelle
         const input = document.createElement('input');
         input.value = window.location.href;
         document.body.appendChild(input);
@@ -709,6 +709,18 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
         btn.classList.add('copie');
         setTimeout(() => btn.classList.remove('copie'), 2200);
       }
+    });
+  }
+
+  // Bouton remonter flottant — apparaît après 400px de scroll
+  const btnTop = document.getElementById('btn-top');
+  if (btnTop) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) btnTop.classList.add('visible');
+      else btnTop.classList.remove('visible');
+    }, { passive: true });
+    btnTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 </script>

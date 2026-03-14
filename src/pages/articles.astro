@@ -1,7 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
@@ -20,7 +18,6 @@ const serieSlugUnique = nbSeries === 1 ? toSlug(seriesUniques[0]) : null;
 ---
 
 <Base title="Articles — Syncognie">
-  <Header />
 
   <div class="page-wrap">
 
@@ -225,7 +222,6 @@ const serieSlugUnique = nbSeries === 1 ? toSlug(seriesUniques[0]) : null;
 
   </div>
 
-  <Footer />
 </Base>
 
 <style>

@@ -1,74 +1,99 @@
 ---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
 export interface Props {
   title?: string;
+  description?: string;
 }
-const { title = 'Syncognie' } = Astro.props;
+const { title = 'Syncognie', description = 'Jardin numérique en croissance — Synergie · Cognition · Dialogue' } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description}>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Mulish:wght@300;400&display=swap" rel="stylesheet">
 <style is:global>
   @import '/src/styles/articles.css';
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:       #f5f0e8;
-      --ink:      #1a1714;
-      --ink-mid:  #5a534c;
-      --ink-soft: #9a9189;
-      --accent:   #8b5e3c;
-      --rule:     #ddd6c8;
---max:      780px;
-      --pop-orange: #ff8000;
-      --pop-green:  #2ecc71;
-    }
-    body {
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse at 20% 50%, rgba(180,140,90,.06) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      font-family: 'Libre Baskerville', Georgia, serif;
-      color: var(--ink);
-      min-height: 100vh;
-    }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 1.5rem auto;
-      border-radius: 8px;
-    }
-    blockquote {
-      border-left: 3px solid var(--pop-orange);
-      padding-left: 1.5rem;
-      margin: 2rem 0;
-      font-style: italic;
-      color: var(--pop-orange);
-      opacity: 0.9;
-    }
 
-    /* Narratif dialogue */
-    article.dialogue .content p:has(> em:only-child),
-    article.dialogue .content p:has(> em:only-child) em {
-      font-family: 'Mulish', sans-serif !important;
-      font-size: 1rem !important;
-      font-weight: 400 !important;
-      font-style: italic;
-      color: #8a7e75 !important;
-      text-align: left;
-    }
-  </style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #f5f0e8;
+    --ink:       #1a1714;
+    --ink-mid:   #5a534c;
+    --ink-soft:  #9a9189;
+    --rule:      #ddd6c8;
+    --max:       780px;
+
+    /* Palette mise à jour */
+    --gold:      #e8b832;
+    --gold-dim:  rgba(232,184,50,.32);
+    --gold-bg:   rgba(232,184,50,.07);
+    --gold-text: #7a5a08;
+    --accent:    #8b5e3c;
+    --accent-h:  #a06a40;
+    --link:      #3a9fd8;
+
+    --pop-orange: #ff8000;
+    --pop-green:  #2ecc71;
+
+    --engagement: #7c5cbf;    
+  }
+
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(180,140,90,.06) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  img {
+    max-width: 100%; height: auto; display: block;
+    margin: 1.5rem auto; border-radius: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--pop-orange);
+    padding-left: 1.5rem; margin: 2rem 0;
+    font-style: italic; color: var(--pop-orange); opacity: 0.9;
+  }
+
+  /* Narratif dialogue */
+  article.dialogue .content p:has(> em:only-child),
+  article.dialogue .content p:has(> em:only-child) em {
+    font-family: 'Mulish', sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    font-style: italic;
+    color: #8a7e75 !important;
+    text-align: left;
+  }
+
+</style>
 </head>
 <body>
-  <slot />
+
+<Header />
+
+  <main>
+    <slot />
+  </main>
+
+<Footer />
+
 </body>
 </html>

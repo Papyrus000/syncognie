@@ -2,12 +2,12 @@
 export default new Map([
 ["src/content/articles/ce-qu-on-sait-et-ce-qu-on-fait.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fce-qu-on-sait-et-ce-qu-on-fait.mdx&astroContentModuleFlag=true")],
 ["src/content/articles/ce-quon-attend-sans-savoir-quoi.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fce-quon-attend-sans-savoir-quoi.mdx&astroContentModuleFlag=true")],
-["src/content/articles/deux-escaliers-inference-argyris.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fdeux-escaliers-inference-argyris.mdx&astroContentModuleFlag=true")],
 ["src/content/articles/dialogue-01-est-ce-quon-choisit.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fdialogue-01-est-ce-quon-choisit.mdx&astroContentModuleFlag=true")],
 ["src/content/articles/dialogue-02.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fdialogue-02.mdx&astroContentModuleFlag=true")],
 ["src/content/articles/gottman-couple-attachement-desir.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fgottman-couple-attachement-desir.mdx&astroContentModuleFlag=true")],
-["src/content/articles/rayan-ce-quon-cherche.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Frayan-ce-quon-cherche.mdx&astroContentModuleFlag=true")],
-["src/content/articles/pourquoi-c-est-ainsi.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fpourquoi-c-est-ainsi.mdx&astroContentModuleFlag=true")],
+["src/content/articles/deux-escaliers-inference-argyris.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fdeux-escaliers-inference-argyris.mdx&astroContentModuleFlag=true")],
 ["src/content/articles/recit-elodie-21h47.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Frecit-elodie-21h47.mdx&astroContentModuleFlag=true")],
+["src/content/articles/pourquoi-c-est-ainsi.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Fpourquoi-c-est-ainsi.mdx&astroContentModuleFlag=true")],
+["src/content/articles/rayan-ce-quon-cherche.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Frayan-ce-quon-cherche.mdx&astroContentModuleFlag=true")],
 ["src/content/articles/recit-nathalie-6h14.mdx", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Farticles%2Frecit-nathalie-6h14.mdx&astroContentModuleFlag=true")]]);
 		

@@ -1,7 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 
 const outils = [
   { id: 'barometre',    titre: 'Baromètre de charge',           description: 'Une photo de ce que tu portes — physique, mental, émotionnel. Sans jugement, sans culpabilité.',                                                             tags: ['fatigue', 'charge mentale', 'bienveillance'],     statut: 'en-cours', color: '#3ab87a', lien: '/outils/barometre',     version: 'v1',     usage: 'immediat',   public: 'tous' },
@@ -30,7 +28,7 @@ const idees   = outilsTries.filter(o => o.statut==='idee');
 ---
 
 <Base title="Outils — Syncognie">
-  <Header />
+
   <div class="page-wrap">
     <header class="page-header">
       <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" aria-hidden="true">
@@ -133,7 +131,7 @@ const idees   = outilsTries.filter(o => o.statut==='idee');
 
     <div class="outils-note"><div class="note-dot"></div><p>Ces outils naissent des articles. Chaque concept exploré devient potentiellement un instrument pratique.</p></div>
   </div>
-  <Footer />
+
 </Base>
 
 <style is:global>

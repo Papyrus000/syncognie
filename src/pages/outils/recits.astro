@@ -1,7 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
@@ -35,7 +34,7 @@ function getCouleur(nom: string) {
 ---
 
 <Base title="Récits conceptuels — Syncognie">
-  <Header />
+
 
   <div class="recits-wrap">
 
@@ -135,7 +134,7 @@ function getCouleur(nom: string) {
 
   </div>
 
-  <Footer />
+
 </Base>
 
 <style>

@@ -1,0 +1,219 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allArticles = await getCollection('articles');
+
+const episodes = allArticles
+  .filter(a => a.data.serie === "Notes d'un modèle en construction")
+  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
+
+const totalEpisodes = episodes.length;
+const nbConsolidés  = episodes.filter(e => e.data.stade === 'arbre').length;
+
+const stadeConfig: Record<string, { emoji: string; label: string; color: string }> = {
+  graine: { emoji: '🌱', label: 'Graine', color: '#2e7d4e' },
+  pousse: { emoji: '🌿', label: 'Pousse', color: '#38783c' },
+  arbre:  { emoji: '🌳', label: 'Arbre',  color: '#224422' },
+};
+
+const engagementRank: Record<string, number> = { pause: 1, lecture: 2, immersion: 3 };
+function maxEngagement(arts: typeof allArticles) {
+  let max = 0;
+  for (const a of arts) {
+    const r = engagementRank[a.data.engagement ?? ''] ?? 0;
+    if (r > max) max = r;
+  }
+  return max;
+}
+const eng = maxEngagement(episodes);
+
+const tousTags = episodes.flatMap(e => e.data.tags ?? []);
+const auteursConnus = ['Gottman','Argyris','Watzlawick','Kahneman','Damasio','Frankl','Lembke','Rosling','Bronner','Csikszentmihalyi'];
+const auteursPrésents = auteursConnus.filter(a => tousTags.some(t => t.toLowerCase().includes(a.toLowerCase())));
+const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteursConnus.slice(0, 4);
+---
+
+<Base title="Prismes — Notes d'un modèle en construction · Syncognie">
+<div class="page-wrap">
+
+  <header class="page-header" style="position:relative; overflow:visible;">
+
+    <svg class="header-filigrane" viewBox="0 0 420 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M40 80 Q140 72 210 76 Q300 80 380 74"       stroke="#e8b832" stroke-width="1.2" stroke-linecap="round" opacity=".22" class="strate-1"/>
+      <path d="M40 118 Q120 112 210 116 Q310 120 380 113"   stroke="#c4993a" stroke-width=".8"  stroke-linecap="round" opacity=".15" class="strate-2"/>
+      <path d="M40 156 Q150 150 210 154 Q290 158 380 152"   stroke="#e8b832" stroke-width="1.4" stroke-linecap="round" opacity=".28" class="strate-3"/>
+      <path d="M40 194 Q130 188 210 192 Q300 196 380 190"   stroke="#c4993a" stroke-width=".9"  stroke-linecap="round" opacity=".16" class="strate-2"/>
+      <path d="M40 232 Q160 226 210 230 Q295 234 380 228"   stroke="#e8b832" stroke-width="1"   stroke-linecap="round" opacity=".18" class="strate-1"/>
+      <path d="M40 268 Q140 263 210 266 Q305 270 380 264"   stroke="#c4993a" stroke-width=".7"  stroke-linecap="round" opacity=".12" class="strate-2"/>
+      <circle cx="105" cy="76"  r="3.5" fill="#e8b832" opacity=".45" class="nd"/>
+      <circle cx="210" cy="116" r="4"   fill="#c4993a" opacity=".38" class="nd2"/>
+      <circle cx="310" cy="154" r="3.5" fill="#e8b832" opacity=".42" class="nd"/>
+      <circle cx="155" cy="192" r="3"   fill="#c4993a" opacity=".32" class="nd2"/>
+      <circle cx="270" cy="230" r="4"   fill="#e8b832" opacity=".38" class="nd"/>
+      <circle cx="95"  cy="266" r="3"   fill="#c4993a" opacity=".28" class="nd2"/>
+      <circle cx="210" cy="116" r="13" fill="none" stroke="#e8b832" stroke-width=".8" opacity=".12" class="nd2"/>
+      <circle cx="310" cy="154" r="12" fill="none" stroke="#e8b832" stroke-width=".8" opacity=".10" class="nd"/>
+      <line x1="105" y1="76"  x2="95"  y2="116" stroke="#e8b832" stroke-width=".6" opacity=".14" stroke-dasharray="2 5"/>
+      <line x1="210" y1="116" x2="215" y2="154" stroke="#c4993a" stroke-width=".6" opacity=".12" stroke-dasharray="2 5"/>
+      <line x1="310" y1="154" x2="305" y2="192" stroke="#e8b832" stroke-width=".6" opacity=".12" stroke-dasharray="2 5"/>
+      <line x1="270" y1="192" x2="270" y2="230" stroke="#c4993a" stroke-width=".6" opacity=".10" stroke-dasharray="2 5"/>
+      <line x1="28" y1="60" x2="28" y2="280" stroke="#e8b832" stroke-width="1.4" opacity=".18" stroke-linecap="round"/>
+      <circle cx="28" cy="60"  r="2.5" fill="#e8b832" opacity=".28"/>
+      <circle cx="28" cy="280" r="2.5" fill="#e8b832" opacity=".20"/>
+    </svg>
+
+    <a class="back" href="/articles">
+      <span class="back-arrow"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>
+      Articles
+    </a>
+
+    <p class="page-eyebrow">Série · Prismes</p>
+    <h1 class="page-titre">Notes d'un modèle<br><em>en construction</em></h1>
+    <p class="page-sous">
+      {auteursAffichés.join(' · ')} — des lectures qui s'enchaînent et se répondent
+      pour construire, note après note, une façon de lire le comportement humain.
+    </p>
+
+    <div class="page-stats">
+      <span class="stat"><span class="stat-n">{totalEpisodes}</span><span class="stat-label">note{totalEpisodes > 1 ? 's' : ''}</span></span>
+      <span class="stat-sep">·</span>
+      <span class="stat"><span class="stat-n">{auteursAffichés.length}</span><span class="stat-label">auteur{auteursAffichés.length > 1 ? 's' : ''}</span></span>
+      {nbConsolidés > 0 && <><span class="stat-sep">·</span><span class="stat"><span class="stat-n">{nbConsolidés}</span><span class="stat-label">consolidé{nbConsolidés > 1 ? 's' : ''}</span></span></>}
+      {eng > 0 && <><span class="stat-sep">·</span><span class="eng-wrap"><span class="eng-niveau">Niveau&nbsp;:</span><span class="eng-indicator"><span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span><span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span><span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span></span></span></>}
+    </div>
+  </header>
+
+  <div class="ornament-sep">
+    <div class="orn-line"></div>
+    <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Les notes</span><div class="orn-diamond"></div></div>
+    <div class="orn-line"></div>
+  </div>
+
+  <div class="episodes-list">
+    {episodes.map((ep, i) => {
+      const stadeInfo = ep.data.stade ? stadeConfig[ep.data.stade] : null;
+      const date = ep.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const readTime = Math.max(1, Math.round(ep.body.split(/\s+/).length / 200));
+      const estDernier = i === episodes.length - 1;
+      return (
+        <div class="episode-row">
+          <div class="episode-fil-wrap">
+            <div class="episode-numero">{ep.data.episode ?? i + 1}</div>
+            {!estDernier && <div class="episode-trait"></div>}
+          </div>
+          <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
+            <div class="episode-card-meta">
+              <span class="episode-date">{date}</span>
+              {stadeInfo && <span class="badge badge-stade" style={`background:color-mix(in srgb,${stadeInfo.color} 8%,transparent);color:${stadeInfo.color};border:1px solid color-mix(in srgb,${stadeInfo.color} 22%,transparent)`}><span>{stadeInfo.emoji}</span><span>{stadeInfo.label}</span></span>}
+              <span class="episode-readtime">{readTime} min</span>
+            </div>
+            <p class="episode-titre">{ep.data.title}</p>
+            {ep.data.description && <p class="episode-desc">{ep.data.description}</p>}
+            {ep.data.tags && ep.data.tags.length > 0 && <div class="episode-tags">{ep.data.tags.slice(0, 4).map((tag: string) => <span class="episode-tag">{tag}</span>)}</div>}
+            <span class="episode-lire">Lire la note →</span>
+          </a>
+        </div>
+      );
+    })}
+    <div class="episode-row">
+      <div class="episode-fil-wrap"><div class="episode-numero episode-numero--ghost">{totalEpisodes + 1}</div></div>
+      <div class="episode-card episode-card--ghost">
+        <p class="episode-titre episode-titre--ghost">Prochaine note</p>
+        <p class="episode-desc">En cours de lecture — à venir.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="invitation-encart">
+    <span class="invitation-glyph">◈</span>
+    <p class="invitation-texte">Prismes n'est pas un résumé. C'est un prisme — chaque note fait pivoter la lumière d'un livre pour révéler ce qu'on n'avait pas vu d'abord.</p>
+  </div>
+
+</div>
+</Base>
+
+<style>
+  :root {
+    --gold: #e8b832; --gold-dim: rgba(232,184,50,.32); --gold-bg: rgba(232,184,50,.07); --gold-text: #7a5a08;
+    --terra: #8b5e3c; --blue-link: #3a9fd8; --parch: #f5f0e8;
+    --ink: #1a1714; --ink-soft: #9a9189; --ink-mid: #7a7068; --rule: #ddd6c8; --max: 740px;
+  }
+  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; }
+
+  .header-filigrane { position: absolute; right: -1rem; top: 1.5rem; width: 340px; height: auto; pointer-events: none; }
+  @media (max-width: 600px) { .header-filigrane { width: 180px; top: 2rem; right: -.5rem; opacity: .5; } }
+
+  .strate-1 { animation: strate 9s  ease-in-out infinite; }
+  .strate-2 { animation: strate 12s ease-in-out infinite reverse; }
+  .strate-3 { animation: strate 15s ease-in-out infinite; }
+  @keyframes strate { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
+  .nd  { animation: ndp 3s   ease-in-out infinite; }
+  .nd2 { animation: ndp 3.8s ease-in-out infinite .7s; }
+  @keyframes ndp { 0%,100%{opacity:.22} 50%{opacity:.55} }
+
+  .back { display: inline-flex; align-items: center; gap: .5rem; padding: 2.5rem 0 2rem; font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; opacity: 0; animation: rise .8s .05s ease forwards; transition: color .2s, gap .2s; }
+  .back:hover { color: var(--gold-text); gap: .7rem; }
+  .back-arrow { width: 18px; height: 18px; border: 1px solid var(--rule); border-radius: 3px; display: flex; align-items: center; justify-content: center; }
+  .back-arrow svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+  .page-header { padding: 0 0 2.5rem; opacity: 0; animation: rise .9s .05s ease forwards; }
+  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--gold-text); opacity: .85; margin-bottom: 1rem; }
+  .page-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700; color: var(--ink); line-height: 1.2; letter-spacing: -.02em; margin-bottom: .9rem; }
+  .page-titre em { font-style: italic; font-weight: 400; color: var(--gold); }
+  .page-sous { font-family: 'Mulish', sans-serif; font-size: .875rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin-bottom: 1.75rem; }
+
+  .page-stats { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; opacity: 0; animation: rise .9s .15s ease forwards; }
+  .stat { display: flex; align-items: baseline; gap: .35rem; }
+  .stat-n { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--gold); line-height: 1; letter-spacing: -.02em; }
+  .stat-label { font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+  .stat-sep { color: var(--rule); font-size: .9rem; }
+
+  .eng-wrap { display: inline-flex; align-items: center; gap: .32rem; }
+  .eng-niveau { font-family: 'Mulish', sans-serif; font-size: .60rem; font-weight: 300; color: var(--ink-soft); opacity: .55; white-space: nowrap; }
+  .eng-indicator { display: inline-flex; align-items: flex-end; gap: 4px; }
+  .eng-bar { display: inline-block; width: 4px; border-radius: 2px 2px 1px 1px; background: var(--rule); }
+  .eng-b1 { height: 6px; } .eng-b2 { height: 10px; } .eng-b3 { height: 14px; }
+  .eng-bar.on { background: var(--gold); }
+
+  .ornament-sep { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 .5rem; opacity: 0; animation: rise .9s .25s ease forwards; }
+  .orn-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
+  .orn-centre { display: flex; align-items: center; gap: .55rem; }
+  .orn-diamond { width: 5px; height: 5px; background: var(--gold); opacity: .62; transform: rotate(45deg); }
+  .orn-label { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--gold-text); opacity: .7; }
+
+  .episodes-list { display: flex; flex-direction: column; padding-top: 1.5rem; }
+  .episode-row { display: flex; gap: 1.75rem; align-items: flex-start; }
+  .episode-fil-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; padding-top: .2rem; }
+  .episode-numero { width: 28px; height: 28px; border: 1px solid rgba(232,184,50,.45); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: .72rem; font-weight: 700; color: var(--gold); background: rgba(232,184,50,.07); flex-shrink: 0; }
+  .episode-numero--ghost { border-color: rgba(232,184,50,.18); color: rgba(232,184,50,.4); background: transparent; }
+  .episode-trait { width: 1px; flex: 1; min-height: 3rem; background: linear-gradient(to bottom, rgba(232,184,50,.3), transparent); margin: .4rem 0; }
+
+  .episode-card { flex: 1; display: flex; flex-direction: column; gap: .5rem; text-decoration: none; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: rgba(245,240,232,.4); opacity: 0; animation: rise .7s ease forwards; transition: border-color .2s, background .2s, transform .2s, box-shadow .2s; position: relative; }
+  .episode-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--gold); border-radius: 2px 0 0 2px; transform: scaleY(0); transform-origin: top; transition: transform .28s ease; opacity: .8; }
+  .episode-card:hover { border-color: rgba(232,184,50,.38); background: rgba(232,184,50,.04); transform: translateX(3px); box-shadow: 0 2px 18px rgba(232,184,50,.08); }
+  .episode-card:hover::before { transform: scaleY(1); }
+  .episode-card--ghost { opacity: .3 !important; animation: none; border-style: dashed; border-color: rgba(232,184,50,.2); background: transparent; cursor: default; pointer-events: none; }
+
+  .episode-card-meta { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+  .episode-date { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); opacity: .55; }
+  .episode-readtime { font-family: 'Mulish', sans-serif; font-size: .58rem; color: var(--ink-soft); opacity: .45; }
+  .badge { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: .12rem .38rem; border-radius: 3px; display: inline-flex; align-items: center; gap: .25rem; }
+
+  .episode-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1rem; font-weight: 400; font-style: italic; color: var(--ink); line-height: 1.4; transition: color .2s; }
+  .episode-titre--ghost { font-style: normal; color: var(--ink-soft); }
+  .episode-card:hover .episode-titre { color: var(--gold-text); }
+  .episode-desc { font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 300; color: var(--ink-soft); line-height: 1.65; max-width: 60ch; }
+  .episode-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .1rem; }
+  .episode-tag { font-family: 'Mulish', sans-serif; font-size: .58rem; color: var(--ink-soft); opacity: .55; padding: .1rem .45rem; border: 1px solid var(--rule); border-radius: 3px; transition: opacity .2s, border-color .2s; }
+  .episode-card:hover .episode-tag { opacity: .75; border-color: rgba(232,184,50,.3); }
+  .episode-lire { font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--blue-link); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; margin-top: .2rem; display: inline-block; }
+  .episode-card:hover .episode-lire { opacity: 1; transform: translateX(0); }
+
+  .invitation-encart { display: flex; align-items: flex-start; gap: .75rem; margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--gold-dim); border-left: 3px solid var(--gold-dim); border-radius: 0 4px 4px 0; background: var(--gold-bg); opacity: 0; animation: rise .9s .6s ease forwards; }
+  .invitation-glyph { color: var(--gold); opacity: .7; font-size: .8rem; flex-shrink: 0; margin-top: .1rem; }
+  .invitation-texte { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
+  @media (max-width: 600px) { .episode-row { gap: 1rem; } .page-wrap { padding: 0 1rem 4rem; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>

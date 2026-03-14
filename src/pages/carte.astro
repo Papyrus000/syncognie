@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+
 import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
@@ -94,7 +93,7 @@ const maxTotal   = Math.max(...tags.map(t => t.total), 1);
 ---
 
 <Base title="Carte des idées — Syncognie">
-  <Header />
+
   <div class="page-wrap">
 
     <!-- ── EN-TÊTE ── -->
@@ -198,7 +197,7 @@ const maxTotal   = Math.max(...tags.map(t => t.total), 1);
     </div>
 
   </div>
-  <Footer />
+
 </Base>
 
 <style>
