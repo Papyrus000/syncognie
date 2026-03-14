@@ -31,7 +31,7 @@ const eng = maxEngagement(episodes);
 const tousTags = episodes.flatMap(e => e.data.tags ?? []);
 const auteursConnus = ['Gottman','Argyris','Watzlawick','Kahneman','Damasio','Frankl','Lembke','Rosling','Bronner','Csikszentmihalyi'];
 const auteursPrésents = auteursConnus.filter(a => tousTags.some(t => t.toLowerCase().includes(a.toLowerCase())));
-const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteursConnus.slice(0, 4);
+const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteursConnus.slice(0, 6);
 ---
 
 <Base title="Prismes — Notes d'un modèle en construction · Syncognie">
@@ -39,70 +39,63 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
 
   <header class="page-header">
 
-    <!-- ══ Filigrane Prismes : strates géologiques + cristaux prismatiques ══ -->
+    <!-- ══ Filigrane Prismes : cristal prismatique + strates géologiques ══ -->
     <svg class="header-filigrane" viewBox="0 0 440 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 
-      <!-- Strates géologiques ondulées — terre, sédiments, profondeur -->
-      <path d="M30 70  Q110 63  210 68  Q320 73  410 66"  stroke="#987048" stroke-width="1.4" stroke-linecap="round" opacity=".22" class="strate-1"/>
-      <path d="M30 108 Q100 102 210 107 Q330 112 410 104" stroke="#7a5830" stroke-width=".9"  stroke-linecap="round" opacity=".16" class="strate-2"/>
-      <path d="M30 148 Q130 142 210 147 Q305 152 410 145" stroke="#987048" stroke-width="1.6" stroke-linecap="round" opacity=".28" class="strate-3"/>
-      <path d="M30 186 Q115 180 210 185 Q310 190 410 183" stroke="#7a5830" stroke-width="1"   stroke-linecap="round" opacity=".18" class="strate-2"/>
-      <path d="M30 224 Q140 218 210 223 Q300 228 410 221" stroke="#987048" stroke-width="1.2" stroke-linecap="round" opacity=".20" class="strate-1"/>
-      <path d="M30 260 Q120 255 210 259 Q315 264 410 257" stroke="#7a5830" stroke-width=".8"  stroke-linecap="round" opacity=".13" class="strate-2"/>
+      <!-- Strates géologiques — profondeur, sédimentation -->
+      <path d="M30 72  Q110 65  210 70  Q320 75  410 68"  stroke="#987048" stroke-width="1.4" stroke-linecap="round" opacity=".20" class="strate-1"/>
+      <path d="M30 112 Q100 106 210 111 Q330 116 410 108" stroke="#7a5830" stroke-width=".9"  stroke-linecap="round" opacity=".14" class="strate-2"/>
+      <path d="M30 152 Q130 146 210 151 Q305 156 410 149" stroke="#987048" stroke-width="1.6" stroke-linecap="round" opacity=".26" class="strate-3"/>
+      <path d="M30 190 Q115 184 210 189 Q310 194 410 187" stroke="#7a5830" stroke-width="1"   stroke-linecap="round" opacity=".16" class="strate-2"/>
+      <path d="M30 228 Q140 222 210 227 Q300 232 410 225" stroke="#987048" stroke-width="1.2" stroke-linecap="round" opacity=".18" class="strate-1"/>
+      <path d="M30 264 Q120 259 210 263 Q315 268 410 261" stroke="#7a5830" stroke-width=".8"  stroke-linecap="round" opacity=".11" class="strate-2"/>
 
-      <!-- Remplissage entre strates — couches sédimentaires -->
-      <path d="M30 70 Q110 63 210 68 Q320 73 410 66 L410 108 Q330 112 210 107 Q100 102 30 108 Z"
-            fill="#987048" opacity=".028" class="strate-fill"/>
-      <path d="M30 148 Q130 142 210 147 Q305 152 410 145 L410 186 Q310 190 210 185 Q115 180 30 186 Z"
-            fill="#7a5830" opacity=".035" class="strate-fill"/>
-      <path d="M30 224 Q140 218 210 223 Q300 228 410 221 L410 260 Q315 264 210 259 Q120 255 30 260 Z"
-            fill="#987048" opacity=".025" class="strate-fill"/>
+      <!-- Remplissages inter-strates -->
+      <path d="M30 72 Q110 65 210 70 Q320 75 410 68 L410 112 Q330 116 210 111 Q100 106 30 112 Z"
+            fill="#987048" opacity=".026" class="strate-fill"/>
+      <path d="M30 152 Q130 146 210 151 Q305 156 410 149 L410 190 Q310 194 210 189 Q115 184 30 190 Z"
+            fill="#7a5830" opacity=".032" class="strate-fill"/>
+      <path d="M30 228 Q140 222 210 227 Q300 232 410 225 L410 264 Q315 268 210 263 Q120 259 30 264 Z"
+            fill="#987048" opacity=".022" class="strate-fill"/>
 
-      <!-- Nœuds de strates — points de convergence -->
-      <circle cx="112" cy="68"  r="4"   fill="#987048" opacity=".42" class="nd"/>
-      <circle cx="210" cy="107" r="4.5" fill="#7a5830" opacity=".36" class="nd2"/>
-      <circle cx="318" cy="148" r="4"   fill="#987048" opacity=".40" class="nd"/>
-      <circle cx="158" cy="186" r="3.5" fill="#7a5830" opacity=".32" class="nd2"/>
-      <circle cx="272" cy="224" r="4"   fill="#987048" opacity=".36" class="nd"/>
-      <circle cx="98"  cy="259" r="3.5" fill="#7a5830" opacity=".28" class="nd2"/>
+      <!-- Nœuds de strates -->
+      <circle cx="112" cy="70"  r="4"   fill="#987048" opacity=".38" class="nd"/>
+      <circle cx="210" cy="111" r="4.5" fill="#7a5830" opacity=".32" class="nd2"/>
+      <circle cx="318" cy="152" r="4"   fill="#987048" opacity=".36" class="nd"/>
+      <circle cx="158" cy="190" r="3.5" fill="#7a5830" opacity=".28" class="nd2"/>
+      <circle cx="272" cy="228" r="4"   fill="#987048" opacity=".32" class="nd"/>
 
-      <!-- Halos autour des nœuds principaux -->
-      <circle cx="210" cy="107" r="16" fill="none" stroke="#987048" stroke-width=".8" opacity=".12" class="nd2"/>
-      <circle cx="318" cy="148" r="14" fill="none" stroke="#987048" stroke-width=".7" opacity=".10" class="nd"/>
+      <!-- Halos -->
+      <circle cx="210" cy="111" r="16" fill="none" stroke="#987048" stroke-width=".8" opacity=".10" class="nd2"/>
+      <circle cx="318" cy="152" r="14" fill="none" stroke="#987048" stroke-width=".7" opacity=".08" class="nd"/>
 
-      <!-- Liaisons inter-strates en pointillés -->
-      <line x1="112" y1="68"  x2="104" y2="107" stroke="#987048" stroke-width=".7" opacity=".16" stroke-dasharray="2 5"/>
-      <line x1="210" y1="107" x2="214" y2="147" stroke="#7a5830" stroke-width=".7" opacity=".14" stroke-dasharray="2 5"/>
-      <line x1="318" y1="148" x2="312" y2="186" stroke="#987048" stroke-width=".7" opacity=".14" stroke-dasharray="2 5"/>
-      <line x1="272" y1="186" x2="272" y2="224" stroke="#7a5830" stroke-width=".7" opacity=".12" stroke-dasharray="2 5"/>
+      <!-- Liaisons inter-strates pointillées -->
+      <line x1="112" y1="70"  x2="104" y2="111" stroke="#987048" stroke-width=".7" opacity=".14" stroke-dasharray="2 5"/>
+      <line x1="210" y1="111" x2="214" y2="151" stroke="#7a5830" stroke-width=".7" opacity=".12" stroke-dasharray="2 5"/>
+      <line x1="318" y1="152" x2="312" y2="190" stroke="#987048" stroke-width=".7" opacity=".12" stroke-dasharray="2 5"/>
 
-      <!-- Cristal prismatique droit — la touche Prismes -->
+      <!-- Cristal prismatique — signature Prismes -->
       <g class="prisme-g" style="transform-origin:355px 185px">
-        <!-- Corps du prisme -->
-        <polygon points="355,120 388,175 355,230 322,175"
-          stroke="#987048" stroke-width="1.2" opacity=".28" fill="#987048" fill-opacity=".04"/>
-        <!-- Facettes internes -->
-        <line x1="355" y1="120" x2="355" y2="230" stroke="#987048" stroke-width=".8" opacity=".20"/>
-        <line x1="322" y1="175" x2="388" y2="175" stroke="#987048" stroke-width=".6" opacity=".15"/>
-        <!-- Reflets de lumière verts — connexion stades maturité -->
-        <line x1="355" y1="120" x2="338" y2="160" stroke="#2e7d4e" stroke-width="1.2" opacity=".32"/>
-        <line x1="355" y1="120" x2="372" y2="158" stroke="#38783c" stroke-width=".9" opacity=".24"/>
-        <circle cx="355" cy="120" r="3.5" fill="#2e7d4e" opacity=".48" class="nd"/>
-        <!-- Petit reflet en bas -->
-        <line x1="355" y1="230" x2="342" y2="260" stroke="#987048" stroke-width=".8" opacity=".18" stroke-dasharray="2 4"/>
-        <line x1="355" y1="230" x2="368" y2="258" stroke="#7a5830" stroke-width=".6" opacity=".15" stroke-dasharray="2 4"/>
+        <polygon points="355,122 388,177 355,232 322,177"
+          stroke="#987048" stroke-width="1.2" opacity=".26" fill="#987048" fill-opacity=".04"/>
+        <line x1="355" y1="122" x2="355" y2="232" stroke="#987048" stroke-width=".8" opacity=".18"/>
+        <line x1="322" y1="177" x2="388" y2="177" stroke="#987048" stroke-width=".6" opacity=".13"/>
+        <!-- Rayons de réfraction — couleur or vif -->
+        <line x1="355" y1="122" x2="310" y2="160" stroke="#e8b832" stroke-width="1.2" opacity=".38" class="rayon-1"/>
+        <line x1="355" y1="122" x2="375" y2="158" stroke="#c4993a" stroke-width=".9"  opacity=".28" class="rayon-2"/>
+        <circle cx="355" cy="122" r="3.5" fill="#e8b832" opacity=".55" class="nd"/>
+        <!-- Reflet bas -->
+        <line x1="355" y1="232" x2="342" y2="262" stroke="#987048" stroke-width=".8" opacity=".16" stroke-dasharray="2 4"/>
+        <line x1="355" y1="232" x2="368" y2="260" stroke="#7a5830" stroke-width=".6" opacity=".13" stroke-dasharray="2 4"/>
       </g>
 
-      <!-- Trait vertical gauche — colonne vertébrale de la série -->
-      <line x1="28" y1="55" x2="28" y2="275" stroke="#987048" stroke-width="1.6" opacity=".20" stroke-linecap="round"/>
-      <circle cx="28" cy="55"  r="3" fill="#987048" opacity=".32"/>
-      <circle cx="28" cy="275" r="3" fill="#987048" opacity=".22"/>
-
-      <!-- Petites marques de terrain le long du trait vertical -->
-      <line x1="23" y1="108" x2="33" y2="108" stroke="#987048" stroke-width="1" opacity=".22"/>
-      <line x1="23" y1="148" x2="33" y2="148" stroke="#987048" stroke-width="1" opacity=".22"/>
-      <line x1="23" y1="186" x2="33" y2="186" stroke="#987048" stroke-width="1" opacity=".22"/>
-      <line x1="23" y1="224" x2="33" y2="224" stroke="#987048" stroke-width="1" opacity=".18"/>
+      <!-- Trait vertical gauche — colonne de la série -->
+      <line x1="28" y1="56" x2="28" y2="276" stroke="#987048" stroke-width="1.6" opacity=".18" stroke-linecap="round"/>
+      <circle cx="28" cy="56"  r="3" fill="#987048" opacity=".30"/>
+      <circle cx="28" cy="276" r="3" fill="#987048" opacity=".20"/>
+      <line x1="23" y1="112" x2="33" y2="112" stroke="#987048" stroke-width="1" opacity=".20"/>
+      <line x1="23" y1="152" x2="33" y2="152" stroke="#987048" stroke-width="1" opacity=".20"/>
+      <line x1="23" y1="190" x2="33" y2="190" stroke="#987048" stroke-width="1" opacity=".18"/>
     </svg>
 
     <a class="back" href="/articles">
@@ -121,7 +114,10 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
       <span class="stat"><span class="stat-n">{totalEpisodes}</span><span class="stat-label">note{totalEpisodes > 1 ? 's' : ''}</span></span>
       <span class="stat-sep">·</span>
       <span class="stat"><span class="stat-n">{auteursAffichés.length}</span><span class="stat-label">auteur{auteursAffichés.length > 1 ? 's' : ''}</span></span>
-      {nbConsolidés > 0 && <><span class="stat-sep">·</span><span class="stat"><span class="stat-n">{nbConsolidés}</span><span class="stat-label">consolidé{nbConsolidés > 1 ? 's' : ''}</span></span></>}
+      {nbConsolidés > 0 && (
+        <><span class="stat-sep">·</span>
+        <span class="stat"><span class="stat-n">{nbConsolidés}</span><span class="stat-label">consolidé{nbConsolidés > 1 ? 's' : ''}</span></span></>
+      )}
       {eng > 0 && (
         <><span class="stat-sep">·</span>
         <span class="eng-wrap">
@@ -161,21 +157,21 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
           <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
             <div class="episode-card-meta">
               <span class="episode-date">{date}</span>
+              <span class="episode-readtime">· {readTime} min</span>
               {stadeInfo && (
-                <span class="badge badge-stade" style={`background:color-mix(in srgb,${stadeInfo.color} 10%,transparent);color:${stadeInfo.color};border:1px solid color-mix(in srgb,${stadeInfo.color} 25%,transparent)`}>
-                  <span>{stadeInfo.emoji}</span><span>{stadeInfo.label}</span>
+                <span class="badge badge-stade" style={`color:${stadeInfo.color}`}>
+                  {stadeInfo.emoji} {stadeInfo.label}
                 </span>
               )}
-              <span class="episode-readtime">{readTime} min</span>
             </div>
             <p class="episode-titre">{ep.data.title}</p>
             {ep.data.description && <p class="episode-desc">{ep.data.description}</p>}
             {ep.data.tags && ep.data.tags.length > 0 && (
               <div class="episode-tags">
-                {ep.data.tags.slice(0, 4).map((tag: string) => <span class="episode-tag">{tag}</span>)}
+                {ep.data.tags.map((t: string) => <span class="episode-tag">{t}</span>)}
               </div>
             )}
-            <span class="episode-lire">Lire la note →</span>
+            <span class="episode-lire">Lire →</span>
           </a>
         </div>
       );
@@ -202,17 +198,19 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
 
 <style>
   :root {
-    /* ── Palette Prismes : terre ambrée + vert maturité comme accent tranchant ── */
-    --pri:        #987048;           /* terre ambrée dominante — la bande */
-    --pri-deep:   #7a5830;           /* terre profonde */
+    /* ── Palette Prismes : terre ambrée + or — même tokens que la bande accueil ── */
+    --pri:        #987048;
+    --pri-deep:   #7a5830;
+    --pri-mid:    #8a6438;
     --pri-dim:    rgba(152,112,72,.38);
     --pri-bg:     rgba(152,112,72,.06);
     --pri-text:   #5a3e1e;
-    --vert:       #2e7d4e;           /* vert maturité — accent tranchant */
-    --vert-vif:   #38783c;           /* vert feuille légèrement plus chaud */
-    --vert-dim:   rgba(46,125,78,.30);
-    --vert-bg:    rgba(46,125,78,.055);
     --gold:       #e8b832;
+    --gold-dim:   rgba(232,184,50,.35);
+    --gold-bg:    rgba(232,184,50,.07);
+    --orange:     #e85d04;   /* indicateur engagement — identique bande accueil */
+    --blue-hover: #3a7fc1;   /* hover titres — identique capsules bande */
+    --vert:       #2e7d4e;
     --parch:      #f5f0e8;
     --ink:        #1a1714;
     --ink-soft:   #9a9189;
@@ -224,7 +222,10 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; }
 
   /* ── Filigrane ── */
-  .page-header { padding: 0 0 2.5rem; position: relative; overflow: visible; opacity: 0; animation: rise .9s .05s ease forwards; }
+  .page-header {
+    padding: 0 0 2.5rem; position: relative; overflow: visible;
+    opacity: 0; animation: rise .9s .05s ease forwards;
+  }
   .header-filigrane {
     position: absolute; right: -1.5rem; top: .5rem;
     width: 360px; height: auto; pointer-events: none;
@@ -242,12 +243,14 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   .strate-fill { animation: stratef 13s ease-in-out infinite; }
   @keyframes strate  { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
   @keyframes stratef { 0%,100%{opacity:1} 50%{opacity:.6} }
-  .nd          { animation: ndp 3.2s ease-in-out infinite; }
-  .nd2         { animation: ndp 4s   ease-in-out infinite .8s; }
-  @keyframes ndp     { 0%,100%{opacity:.22} 50%{opacity:.58} }
-  /* Prisme flottant subtil */
-  .prisme-g    { animation: prisme-float 8s ease-in-out infinite; }
+  .nd  { animation: ndp 3.2s ease-in-out infinite; }
+  .nd2 { animation: ndp 4s   ease-in-out infinite .8s; }
+  @keyframes ndp { 0%,100%{opacity:.22} 50%{opacity:.55} }
+  .prisme-g  { animation: prisme-float 8s ease-in-out infinite; }
   @keyframes prisme-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+  .rayon-1 { animation: rfade 5s ease-in-out infinite; }
+  .rayon-2 { animation: rfade 7s ease-in-out infinite 1s; }
+  @keyframes rfade { 0%,100%{opacity:1} 50%{opacity:.18} }
 
   /* ── Navigation retour ── */
   .back {
@@ -267,18 +270,17 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   }
   .back-arrow svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-  /* ── En-tête de page ── */
+  /* ── En-tête ── */
   .page-eyebrow {
     font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700;
     letter-spacing: .28em; text-transform: uppercase;
-    color: var(--pri-deep); opacity: .82; margin-bottom: 1rem;
+    color: var(--pri-deep); opacity: .80; margin-bottom: 1rem;
   }
   .page-titre {
     font-family: 'Libre Baskerville', Georgia, serif;
     font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
     color: var(--ink); line-height: 1.2; letter-spacing: -.02em; margin-bottom: .9rem;
   }
-  /* L'italique en couleur terre — le prisme reflète la terre */
   .page-titre em { font-style: italic; font-weight: 400; color: var(--pri); }
   .page-sous {
     font-family: 'Mulish', sans-serif; font-size: .875rem; font-weight: 300;
@@ -301,14 +303,13 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   }
   .stat-sep { color: var(--rule); font-size: .9rem; }
 
-  /* ── Indicateur engagement — barres en vert, rappel stades ── */
-  .eng-wrap    { display: inline-flex; align-items: center; gap: .32rem; }
-  .eng-niveau  { font-family: 'Mulish', sans-serif; font-size: .60rem; font-weight: 300; color: var(--ink-soft); opacity: .55; white-space: nowrap; }
+  /* ── Indicateur engagement — orange vif, identique bande accueil ── */
+  .eng-wrap     { display: inline-flex; align-items: center; gap: .32rem; }
+  .eng-niveau   { font-family: 'Mulish', sans-serif; font-size: .60rem; font-weight: 300; color: var(--ink-soft); opacity: .55; white-space: nowrap; }
   .eng-indicator { display: inline-flex; align-items: flex-end; gap: 4px; }
-  .eng-bar     { display: inline-block; width: 4px; border-radius: 2px 2px 1px 1px; background: var(--rule); }
-  .eng-b1      { height: 6px; } .eng-b2 { height: 10px; } .eng-b3 { height: 14px; }
-  /* Vert tranchant pour les barres actives — lien direct aux stades de maturité */
-  .eng-bar.on  { background: var(--vert); }
+  .eng-bar      { display: inline-block; width: 4px; border-radius: 2px 2px 1px 1px; background: var(--rule); }
+  .eng-b1 { height: 6px; } .eng-b2 { height: 10px; } .eng-b3 { height: 14px; }
+  .eng-bar.on   { background: var(--orange); }
 
   /* ── Séparateur avec losange-prisme ── */
   .ornament-sep {
@@ -318,22 +319,21 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   }
   .orn-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
   .orn-centre { display: flex; align-items: center; gap: .6rem; }
-  /* Losange allongé, comme une facette de prisme */
   .orn-prisme {
     width: 6px; height: 10px;
-    background: var(--vert); opacity: .58;
+    background: var(--pri); opacity: .55;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   }
   .orn-label {
     font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700;
-    letter-spacing: .25em; text-transform: uppercase; color: var(--pri-deep); opacity: .68;
+    letter-spacing: .25em; text-transform: uppercase; color: var(--pri-deep); opacity: .65;
   }
 
   /* ── Liste des épisodes ── */
   .episodes-list { display: flex; flex-direction: column; padding-top: 1.5rem; }
   .episode-row   { display: flex; gap: 1.75rem; align-items: flex-start; }
 
-  /* Fil vertical : gradient terre → transparent */
+  /* Fil vertical */
   .episode-fil-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; padding-top: .2rem; }
   .episode-numero {
     width: 28px; height: 28px;
@@ -342,7 +342,7 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
     font-family: 'Libre Baskerville', Georgia, serif; font-size: .72rem; font-weight: 700;
     color: var(--pri); background: rgba(152,112,72,.08); flex-shrink: 0;
   }
-  .episode-numero--ghost { border-color: rgba(152,112,72,.20); color: rgba(152,112,72,.42); background: transparent; }
+  .episode-numero--ghost { border-color: rgba(152,112,72,.18); color: rgba(152,112,72,.38); background: transparent; }
   .episode-trait {
     width: 1px; flex: 1; min-height: 3rem;
     background: linear-gradient(to bottom, var(--pri-dim), transparent);
@@ -353,31 +353,31 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   .episode-card {
     flex: 1; display: flex; flex-direction: column; gap: .5rem;
     text-decoration: none; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-    border: 1px solid var(--rule); border-radius: 6px;
-    /* Fond légèrement teinté terre — parchemin chaud */
+    border: 1px solid var(--rule); border-radius: 0 6px 6px 0;
     background: rgba(250,246,238,.65);
     opacity: 0; animation: rise .7s ease forwards;
     transition: border-color .22s, background .22s, transform .2s, box-shadow .2s;
     position: relative;
   }
-  /* Bande latérale : terre → vert — le prisme réfracte */
+  /* Bande latérale terracotta — couleur de la bande accueil */
   .episode-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-    background: linear-gradient(to bottom, var(--vert), var(--pri));
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to bottom, var(--pri), rgba(152,112,72,.4));
     border-radius: 2px 0 0 2px;
-    transform: scaleY(0); transform-origin: top; transition: transform .3s ease; opacity: .85;
+    transform: scaleY(0); transform-origin: top; transition: transform .3s ease; opacity: .9;
   }
   .episode-card:hover {
     border-color: var(--pri-dim);
-    background: rgba(152,112,72,.05);
-    transform: translateX(3px);
-    box-shadow: 0 2px 20px rgba(122,88,48,.09);
+    background: var(--pri-bg);
+    transform: translateX(4px);
+    box-shadow: 0 3px 22px rgba(122,88,48,.10), 2px 0 0 0 var(--pri);
   }
   .episode-card:hover::before { transform: scaleY(1); }
   .episode-card--ghost {
     opacity: .28 !important; animation: none;
     border-style: dashed; border-color: var(--pri-dim);
     background: transparent; cursor: default; pointer-events: none;
+    border-radius: 6px;
   }
 
   .episode-card-meta { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
@@ -392,6 +392,7 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
     padding: .12rem .38rem; border-radius: 3px;
     display: inline-flex; align-items: center; gap: .25rem;
   }
+  .badge-stade { background: rgba(0,0,0,.04); border: 1px solid rgba(0,0,0,.08); }
 
   .episode-titre {
     font-family: 'Libre Baskerville', Georgia, serif;
@@ -399,7 +400,9 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
     color: var(--ink); line-height: 1.4; transition: color .2s;
   }
   .episode-titre--ghost { font-style: normal; color: var(--ink-soft); }
-  .episode-card:hover .episode-titre { color: var(--pri-text); }
+  /* Hover titre en bleu — identique capsules bande accueil */
+  .episode-card:hover .episode-titre { color: var(--blue-hover); }
+
   .episode-desc {
     font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 300;
     color: var(--ink-soft); line-height: 1.65; max-width: 60ch;
@@ -411,10 +414,11 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
     transition: opacity .2s, border-color .2s;
   }
   .episode-card:hover .episode-tag { opacity: .75; border-color: var(--pri-dim); }
-  /* Lien lire — en vert, le vert qui tranche */
+
+  /* "Lire →" en terracotta */
   .episode-lire {
     font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase; color: var(--vert);
+    letter-spacing: .12em; text-transform: uppercase; color: var(--pri);
     opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s;
     margin-top: .2rem; display: inline-block;
   }
@@ -425,16 +429,13 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
     display: flex; align-items: flex-start; gap: .75rem;
     margin-top: 2.5rem; padding: 1rem 1.25rem;
     border: 1px solid var(--pri-dim);
-    border-left: 3px solid var(--vert-dim);
+    border-left: 3px solid var(--gold-dim);
     border-radius: 0 4px 4px 0;
-    /* Dégradé : vert gauche discret → terre ambrée */
-    background: linear-gradient(105deg, var(--vert-bg) 0%, var(--pri-bg) 55%, transparent 100%);
+    background: linear-gradient(105deg, var(--gold-bg) 0%, var(--pri-bg) 55%, transparent 100%);
     opacity: 0; animation: rise .9s .6s ease forwards;
   }
-  /* Le glyph ◈ en vert — présence du prisme */
   .invitation-glyph {
-    color: var(--vert); opacity: .72; font-size: .85rem;
-    flex-shrink: 0; margin-top: .08rem;
+    color: var(--pri); opacity: .65; font-size: .85rem; flex-shrink: 0; margin-top: .08rem;
   }
   .invitation-texte {
     font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300;
