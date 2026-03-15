@@ -9,201 +9,177 @@ const episodes = allArticles
   .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
 
 const totalEpisodes = episodes.length;
-const nbConsolidés  = episodes.filter(e => e.data.stade === 'arbre').length;
+const nbPousses   = episodes.filter(e => e.data.stade === 'pousse').length;
+const nbGraines   = episodes.filter(e => e.data.stade === 'graine').length;
+const nbArbres    = episodes.filter(e => e.data.stade === 'arbre').length;
 
 const stadeConfig: Record<string, { emoji: string; label: string; color: string }> = {
-  graine: { emoji: '🌱', label: 'Graine', color: '#2e7d4e' },
-  pousse: { emoji: '🌿', label: 'Pousse', color: '#38783c' },
-  arbre:  { emoji: '🌳', label: 'Arbre',  color: '#1e5c2e' },
+  graine: { emoji: '🌱', label: 'Graine', color: '#5a8a4a' },
+  pousse: { emoji: '🌿', label: 'Pousse', color: '#4a7a3a' },
+  arbre:  { emoji: '🌳', label: 'Arbre',  color: '#3a6a2a' },
 };
 
-const engagementRank: Record<string, number> = { pause: 1, lecture: 2, immersion: 3 };
-function maxEngagement(arts: typeof allArticles) {
-  let max = 0;
-  for (const a of arts) {
-    const r = engagementRank[a.data.engagement ?? ''] ?? 0;
-    if (r > max) max = r;
-  }
-  return max;
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
-const eng = maxEngagement(episodes);
 
-const tousTags = episodes.flatMap(e => e.data.tags ?? []);
-const auteursConnus = ['Gottman','Argyris','Watzlawick','Kahneman','Damasio','Frankl','Lembke','Rosling','Bronner','Csikszentmihalyi'];
-const auteursPrésents = auteursConnus.filter(a => tousTags.some(t => t.toLowerCase().includes(a.toLowerCase())));
-const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteursConnus.slice(0, 6);
+function formatDateShort(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+}
+
+function readTime(body: string) {
+  return Math.max(1, Math.round(body.split(/\s+/).length / 200));
+}
+
+// Extraire les auteurs depuis les tags pour la source de chaque note
+const auteursConnus = ['Gottman','Bowlby','Perel','Argyris','Bruner','Korzybski','Watzlawick','Gollwitzer','Kahneman','Damasio','Frankl','Lembke','Rosling','Bronner','Csikszentmihalyi','Berridge','Meadows'];
+
+function sourcesFrom(tags: string[] | undefined): string {
+  if (!tags) return '';
+  return tags
+    .filter(t => auteursConnus.some(a => t.toLowerCase().includes(a.toLowerCase())))
+    .slice(0, 3)
+    .join(' · ');
+}
+
+const hero   = episodes[0] ?? null;
+const grille = episodes.slice(1);
 ---
 
-<Base title="Prismes — Notes d'un modèle en construction · Syncognie">
+<Base title="Prismes — Notes d'un modèle en construction · Syncognie" description="Des lectures qui s'enchaînent et se répondent — pour construire, note après note, une façon de lire le comportement humain.">
 <div class="page-wrap">
 
+  <!-- ── RETOUR ── -->
+  <a class="back" href="/articles">
+    <span class="back-arrow"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>
+    Articles
+  </a>
+
+  <!-- ── HEADER ── -->
   <header class="page-header">
-
-    <a class="back" href="/articles">
-      <span class="back-arrow"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>
-      Articles
-    </a>
-
     <p class="page-eyebrow">Série · Prismes</p>
-    <h1 class="page-titre">Notes d'un modèle<br><em>en construction</em></h1>
-    <p class="page-sous">
-      {auteursAffichés.join(' · ')} — des lectures qui s'enchaînent et se répondent
-      pour construire, note après note, une façon de lire le comportement humain.
-    </p>
+    <h1 class="page-titre">Notes d'un modèle <em>en construction</em></h1>
+
+    <div class="phrase-prisme">
+      <span class="phrase-glyph">◈</span>
+      <p class="phrase-texte">Prismes n'est pas un résumé. C'est un prisme — chaque note fait pivoter la lumière d'un livre pour révéler ce qu'on n'avait pas vu d'abord.</p>
+    </div>
+
+    <p class="page-sous">Des lectures qui s'enchaînent et se répondent — pour construire, note après note, une façon de lire le comportement humain.</p>
 
     <div class="page-stats">
-      <span class="stat"><span class="stat-n">{totalEpisodes}</span><span class="stat-label">note{totalEpisodes > 1 ? 's' : ''}</span></span>
-      <span class="stat-sep">·</span>
-      <span class="stat"><span class="stat-n">{auteursAffichés.length}</span><span class="stat-label">auteur{auteursAffichés.length > 1 ? 's' : ''}</span></span>
-      {nbConsolidés > 0 && (
+      <div class="stat"><span class="stat-n">{totalEpisodes}</span><span class="stat-label">note{totalEpisodes > 1 ? 's' : ''}</span></div>
+      {nbPousses > 0 && (
         <><span class="stat-sep">·</span>
-        <span class="stat"><span class="stat-n">{nbConsolidés}</span><span class="stat-label">consolidé{nbConsolidés > 1 ? 's' : ''}</span></span></>
+        <div class="stat"><span class="stat-n">{nbPousses}</span><span class="stat-label">pousse{nbPousses > 1 ? 's' : ''}</span></div></>
       )}
-      {eng > 0 && (
+      {nbGraines > 0 && (
         <><span class="stat-sep">·</span>
-        <span class="eng-wrap">
-          <span class="eng-niveau">Niveau&nbsp;:</span>
-          <span class="eng-indicator">
-            <span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span>
-            <span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span>
-            <span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span>
-          </span>
-        </span></>
+        <div class="stat"><span class="stat-n">{nbGraines}</span><span class="stat-label">graine{nbGraines > 1 ? 's' : ''}</span></div></>
+      )}
+      {nbArbres > 0 && (
+        <><span class="stat-sep">·</span>
+        <div class="stat"><span class="stat-n">{nbArbres}</span><span class="stat-label">arbre{nbArbres > 1 ? 's' : ''}</span></div></>
       )}
     </div>
   </header>
 
-  <div class="ornament-sep">
-    <div class="orn-line"></div>
-    <div class="orn-centre">
-      <div class="orn-prisme"></div>
-      <span class="orn-label">Les notes</span>
-      <div class="orn-prisme"></div>
-    </div>
-    <div class="orn-line"></div>
-  </div>
+  <!-- ── LABEL GRILLE ── -->
+  <p class="grille-label">Les notes</p>
 
-  <div class="episodes-list">
-    {episodes.map((ep, i) => {
-      const stadeInfo = ep.data.stade ? stadeConfig[ep.data.stade] : null;
-      const date = ep.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-      const readTime = Math.max(1, Math.round(ep.body.split(/\s+/).length / 200));
-      const estDernier = i === episodes.length - 1;
-      return (
-        <div class="episode-row">
-          <div class="episode-fil-wrap">
-            <div class="episode-numero">{ep.data.episode ?? i + 1}</div>
-            {!estDernier && <div class="episode-trait"></div>}
-          </div>
-          <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
-            <div class="episode-card-meta">
-              <span class="episode-date">{date}</span>
-              <span class="episode-readtime">· {readTime} min</span>
-              {stadeInfo && (
-                <span class="badge badge-stade" style={`color:${stadeInfo.color}`}>
-                  {stadeInfo.emoji} {stadeInfo.label}
-                </span>
-              )}
-            </div>
-            <p class="episode-titre">{ep.data.title}</p>
-            {ep.data.description && <p class="episode-desc">{ep.data.description}</p>}
-            {ep.data.tags && ep.data.tags.length > 0 && (
-              <div class="episode-tags">
-                {ep.data.tags.map((t: string) => <span class="episode-tag">{t}</span>)}
-              </div>
-            )}
-            <span class="episode-lire">Lire →</span>
-          </a>
+  <!-- ── CARTE HERO — note 01 ── -->
+  {hero && (() => {
+    const stade = hero.data.stade ? stadeConfig[hero.data.stade] : null;
+    const src   = sourcesFrom(hero.data.tags);
+    const rt    = readTime(hero.body);
+    const dt    = formatDateShort(hero.data.date);
+    return (
+      <a class="carte-hero" href={`/articles/${hero.slug}`}>
+        <div class="hero-gnum" aria-hidden="true">01</div>
+        <span class="hero-badge">Commencer ici</span>
+        <div class="hero-meta">
+          {stade && <span class="hero-stade">{stade.emoji} {stade.label}</span>}
+          <span>· {rt} min · {dt}</span>
         </div>
+        <p class="hero-titre">{hero.data.title}</p>
+        {hero.data.description && <p class="hero-desc">{hero.data.description}</p>}
+        {src && <p class="hero-src">{src}</p>}
+        <span class="hero-lire">Lire →</span>
+      </a>
+    );
+  })()}
+
+  <!-- ── GRILLE notes 02+ ── -->
+  <div class="grille">
+    {grille.map((ep, i) => {
+      const num   = i + 2;
+      const stade = ep.data.stade ? stadeConfig[ep.data.stade] : null;
+      const src   = sourcesFrom(ep.data.tags);
+      const rt    = readTime(ep.body);
+      const dt    = formatDateShort(ep.data.date);
+      return (
+        <a class="carte" href={`/articles/${ep.slug}`} style={`animation-delay:${0.1 + i * 0.08}s`}>
+          <div class="c-gnum" aria-hidden="true">{String(num).padStart(2,'0')}</div>
+          <div class="c-head">
+            <span class="c-num">Note {String(num).padStart(2,'0')}</span>
+            {stade && <span class="c-stade">{stade.emoji} {stade.label}</span>}
+          </div>
+          <p class="c-titre">{ep.data.title}</p>
+          {ep.data.description && <p class="c-desc">{ep.data.description}</p>}
+          {src && <p class="c-src">{src}</p>}
+          <span class="c-time">{rt} min · {dt}</span>
+          <span class="c-lire">Lire →</span>
+        </a>
       );
     })}
 
-    <div class="episode-row">
-      <div class="episode-fil-wrap">
-        <div class="episode-numero episode-numero--ghost">{totalEpisodes + 1}</div>
-      </div>
-      <div class="episode-card episode-card--ghost">
-        <p class="episode-titre episode-titre--ghost">Prochaine note</p>
-        <p class="episode-desc">En cours de lecture — à venir.</p>
-      </div>
+    <!-- carte fantôme "à venir" -->
+    <div class="carte carte--ghost" aria-hidden="true">
+      <div class="c-gnum">{String(totalEpisodes + 1).padStart(2,'0')}</div>
+      <div class="c-head"><span class="c-num">Note {String(totalEpisodes + 1).padStart(2,'0')}</span></div>
+      <p class="c-titre c-titre--ghost">Prochaine note</p>
+      <p class="c-desc">En cours de lecture — à venir.</p>
     </div>
-  </div>
-
-  <div class="invitation-encart">
-    <span class="invitation-glyph">◈</span>
-    <p class="invitation-texte">Prismes n'est pas un résumé. C'est un prisme — chaque note fait pivoter la lumière d'un livre pour révéler ce qu'on n'avait pas vu d'abord.</p>
   </div>
 
 </div>
 </Base>
 
 <style>
+  /* ── Tokens Prismes ── */
   :root {
-    /* ── Palette Prismes : terre ambrée + or — même tokens que la bande accueil ── */
-    --pri:        #987048;
-    --pri-deep:   #7a5830;
-    --pri-mid:    #8a6438;
-    --pri-dim:    rgba(152,112,72,.38);
-    --pri-bg:     rgba(152,112,72,.06);
-    --pri-text:   #5a3e1e;
-    --gold:       #e8b832;
-    --gold-dim:   rgba(232,184,50,.35);
-    --gold-bg:    rgba(232,184,50,.07);
-    --orange:     #e85d04;   /* indicateur engagement — identique bande accueil */
-    --blue-hover: #3a7fc1;   /* hover titres — identique capsules bande */
-    --vert:       #2e7d4e;
-    --parch:      #f5f0e8;
-    --ink:        #1a1714;
-    --ink-soft:   #9a9189;
-    --ink-mid:    #7a7068;
-    --rule:       #ddd6c8;
-    --max:        740px;
+    --pri:       #b8922a;
+    --pri-dim:   rgba(184,146,42,.28);
+    --pri-bg:    rgba(184,146,42,.045);
+    --pri-deep:  #8a6438;
+    --terra:     #e8905a;
+    --terra-dim: rgba(232,144,90,.28);
+    --terra-bg:  rgba(232,144,90,.12);
+    --hero-bg1:  #2e1208;
+    --hero-bg2:  #3d1a0a;
+    --hero-bg3:  #4a2210;
+    --kraft:     #ece4d4;
+    --kraft-h:   #e2d8c4;
+    --ink:       #1a1714;
+    --ink-soft:  #9a9189;
+    --ink-mid:   #7a7068;
+    --parch:     #f5f0e8;
+    --rule:      #ddd6c8;
+    --blue-h:    #3a7fc1;
+    --max:       740px;
   }
 
   .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; }
 
-  /* ── Filigrane ── */
-  .page-header {
-    padding: 0 0 2.5rem; position: relative; overflow: visible;
-    opacity: 0; animation: rise .9s .05s ease forwards;
-  }
-  .header-filigrane {
-    position: absolute; right: -1.5rem; top: .5rem;
-    width: 360px; height: auto; pointer-events: none;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 22%, black 78%, transparent 100%);
-  }
-  @media (max-width: 600px) {
-    .header-filigrane { width: 190px; top: 2rem; right: -.5rem; opacity: .45; }
-  }
-
-  /* Animations strates */
-  .strate-1    { animation: strate  10s ease-in-out infinite; }
-  .strate-2    { animation: strate  13s ease-in-out infinite reverse; }
-  .strate-3    { animation: strate  17s ease-in-out infinite; }
-  .strate-fill { animation: stratef 13s ease-in-out infinite; }
-  @keyframes strate  { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
-  @keyframes stratef { 0%,100%{opacity:1} 50%{opacity:.6} }
-  .nd  { animation: ndp 3.2s ease-in-out infinite; }
-  .nd2 { animation: ndp 4s   ease-in-out infinite .8s; }
-  @keyframes ndp { 0%,100%{opacity:.22} 50%{opacity:.55} }
-  .prisme-g  { animation: prisme-float 8s ease-in-out infinite; }
-  @keyframes prisme-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-  .rayon-1 { animation: rfade 5s ease-in-out infinite; }
-  .rayon-2 { animation: rfade 7s ease-in-out infinite 1s; }
-  @keyframes rfade { 0%,100%{opacity:1} 50%{opacity:.18} }
-
-  /* ── Navigation retour ── */
+  /* ── Retour ── */
   .back {
     display: inline-flex; align-items: center; gap: .5rem;
-    padding: 2.5rem 0 2rem;
-    font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700;
-    letter-spacing: .2em; text-transform: uppercase;
-    color: var(--ink-soft); text-decoration: none;
-    opacity: 0; animation: rise .8s .05s ease forwards;
-    transition: color .2s, gap .2s;
+    margin: 2rem 0 1.75rem;
+    color: var(--ink-soft); font-family: 'Mulish', sans-serif;
+    font-size: .62rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase;
+    text-decoration: none; transition: gap .2s, color .2s;
   }
-  .back:hover { color: var(--pri-text); gap: .7rem; }
+  .back:hover { gap: .7rem; color: var(--ink-mid); }
   .back-arrow {
     width: 18px; height: 18px;
     border: 1px solid var(--rule); border-radius: 3px;
@@ -211,182 +187,215 @@ const auteursAffichés = auteursPrésents.length > 0 ? auteursPrésents : auteur
   }
   .back-arrow svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2; fill: none; }
 
-  /* ── En-tête ── */
-  .page-eyebrow {
-    font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700;
-    letter-spacing: .28em; text-transform: uppercase;
-    color: var(--pri-deep); opacity: .80; margin-bottom: 1rem;
+  /* ── Header ── */
+  .page-header {
+    padding-bottom: 1.75rem;
+    opacity: 0; animation: rise .9s .05s ease forwards;
   }
+
+  .page-eyebrow {
+    font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700;
+    letter-spacing: .28em; text-transform: uppercase;
+    color: var(--pri-deep); opacity: .8; margin-bottom: .9rem;
+  }
+
   .page-titre {
     font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
-    color: var(--ink); line-height: 1.2; letter-spacing: -.02em; margin-bottom: .9rem;
+    font-size: clamp(1.8rem, 3.8vw, 2.4rem); font-weight: 700;
+    color: var(--ink); line-height: 1.15; letter-spacing: -.025em;
+    margin-bottom: 1rem;
   }
   .page-titre em { font-style: italic; font-weight: 400; color: var(--pri); }
+
+  /* ── Phrase prisme ── */
+  .phrase-prisme {
+    display: flex; align-items: flex-start; gap: .65rem;
+    margin-bottom: 1.2rem; padding: .85rem 1.1rem;
+    border: 1px solid var(--pri-dim);
+    border-left: 3px solid rgba(184,146,42,.5);
+    border-radius: 0 4px 4px 0;
+    background: var(--pri-bg);
+  }
+  .phrase-glyph { color: var(--pri); opacity: .65; font-size: .8rem; flex-shrink: 0; margin-top: .06rem; }
+  .phrase-texte {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .82rem; font-style: italic; color: var(--ink-mid); line-height: 1.7;
+  }
+
   .page-sous {
     font-family: 'Mulish', sans-serif; font-size: .875rem; font-weight: 300;
-    color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin-bottom: 1.75rem;
+    color: var(--ink-soft); line-height: 1.8; max-width: 54ch; margin-bottom: 1.4rem;
   }
 
   /* ── Stats ── */
   .page-stats {
-    display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+    display: flex; align-items: center; gap: .7rem; flex-wrap: wrap;
     opacity: 0; animation: rise .9s .15s ease forwards;
   }
-  .stat { display: flex; align-items: baseline; gap: .35rem; }
+  .stat { display: flex; align-items: baseline; gap: .3rem; }
   .stat-n {
     font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 1.4rem; font-weight: 700; color: var(--pri); line-height: 1; letter-spacing: -.02em;
+    font-size: 1.2rem; font-weight: 700; color: var(--pri); line-height: 1; letter-spacing: -.02em;
   }
   .stat-label {
-    font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 300;
+    font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300;
     letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft);
   }
-  .stat-sep { color: var(--rule); font-size: .9rem; }
+  .stat-sep { color: var(--rule); }
 
-  /* ── Indicateur engagement — orange vif, identique bande accueil ── */
-  .eng-wrap     { display: inline-flex; align-items: center; gap: .32rem; }
-  .eng-niveau   { font-family: 'Mulish', sans-serif; font-size: .60rem; font-weight: 300; color: var(--ink-soft); opacity: .55; white-space: nowrap; }
-  .eng-indicator { display: inline-flex; align-items: flex-end; gap: 4px; }
-  .eng-bar      { display: inline-block; width: 4px; border-radius: 2px 2px 1px 1px; background: var(--rule); }
-  .eng-b1 { height: 6px; } .eng-b2 { height: 10px; } .eng-b3 { height: 14px; }
-  .eng-bar.on   { background: var(--orange); }
-
-  /* ── Séparateur avec losange-prisme ── */
-  .ornament-sep {
-    display: flex; align-items: center; gap: 1rem;
-    margin: 2rem 0 .5rem;
-    opacity: 0; animation: rise .9s .25s ease forwards;
-  }
-  .orn-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
-  .orn-centre { display: flex; align-items: center; gap: .6rem; }
-  .orn-prisme {
-    width: 6px; height: 10px;
-    background: var(--pri); opacity: .55;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  }
-  .orn-label {
-    font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700;
-    letter-spacing: .25em; text-transform: uppercase; color: var(--pri-deep); opacity: .65;
+  /* ── Label grille ── */
+  .grille-label {
+    font-family: 'Mulish', sans-serif; font-size: .56rem; font-weight: 700;
+    letter-spacing: .25em; text-transform: uppercase;
+    color: var(--pri-deep); opacity: .55;
+    margin: 1.75rem 0 1.1rem;
+    opacity: 0; animation: rise .9s .22s ease forwards;
   }
 
-  /* ── Liste des épisodes ── */
-  .episodes-list { display: flex; flex-direction: column; padding-top: 1.5rem; }
-  .episode-row   { display: flex; gap: 1.75rem; align-items: flex-start; }
-
-  /* Fil vertical */
-  .episode-fil-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; padding-top: .2rem; }
-  .episode-numero {
-    width: 28px; height: 28px;
-    border: 1px solid var(--pri-dim); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Libre Baskerville', Georgia, serif; font-size: .72rem; font-weight: 700;
-    color: var(--pri); background: rgba(152,112,72,.08); flex-shrink: 0;
+  /* ── CARTE HERO ── */
+  .carte-hero {
+    position: relative; overflow: hidden;
+    padding: 1.5rem 1.5rem 1.35rem;
+    border-radius: 12px; margin-bottom: 1.1rem;
+    background: linear-gradient(135deg, var(--hero-bg1) 0%, var(--hero-bg2) 60%, var(--hero-bg3) 100%);
+    display: flex; flex-direction: column; gap: .42rem;
+    text-decoration: none; color: inherit;
+    box-shadow: 0 4px 0 rgba(46,18,8,.35), 0 8px 32px rgba(46,18,8,.16);
+    transition: transform .2s ease, box-shadow .2s ease;
+    opacity: 0; animation: rise .8s .28s ease forwards;
   }
-  .episode-numero--ghost { border-color: rgba(152,112,72,.18); color: rgba(152,112,72,.38); background: transparent; }
-  .episode-trait {
-    width: 1px; flex: 1; min-height: 3rem;
-    background: linear-gradient(to bottom, var(--pri-dim), transparent);
-    margin: .4rem 0;
+  .carte-hero:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 0 rgba(46,18,8,.3), 0 18px 40px rgba(46,18,8,.22);
   }
-
-  /* ── Cartes épisode ── */
-  .episode-card {
-    flex: 1; display: flex; flex-direction: column; gap: .5rem;
-    text-decoration: none; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-    border: 1px solid var(--rule); border-radius: 0 6px 6px 0;
-    background: rgba(250,246,238,.65);
-    opacity: 0; animation: rise .7s ease forwards;
-    transition: border-color .22s, background .22s, transform .2s, box-shadow .2s;
-    position: relative;
+  .carte-hero::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(to right, var(--terra), rgba(232,144,90,.1));
   }
-  /* Bande latérale terracotta — couleur de la bande accueil */
-  .episode-card::before {
-    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-    background: linear-gradient(to bottom, var(--pri), rgba(152,112,72,.4));
-    border-radius: 2px 0 0 2px;
-    transform: scaleY(0); transform-origin: top; transition: transform .3s ease; opacity: .9;
-  }
-  .episode-card:hover {
-    border-color: var(--pri-dim);
-    background: var(--pri-bg);
-    transform: translateX(4px);
-    box-shadow: 0 3px 22px rgba(122,88,48,.10), 2px 0 0 0 var(--pri);
-  }
-  .episode-card:hover::before { transform: scaleY(1); }
-  .episode-card--ghost {
-    opacity: .28 !important; animation: none;
-    border-style: dashed; border-color: var(--pri-dim);
-    background: transparent; cursor: default; pointer-events: none;
-    border-radius: 6px;
-  }
-
-  .episode-card-meta { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
-  .episode-date {
-    font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300;
-    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); opacity: .55;
-  }
-  .episode-readtime { font-family: 'Mulish', sans-serif; font-size: .58rem; color: var(--ink-soft); opacity: .42; }
-  .badge {
-    font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase;
-    padding: .12rem .38rem; border-radius: 3px;
-    display: inline-flex; align-items: center; gap: .25rem;
-  }
-  .badge-stade { background: rgba(0,0,0,.04); border: 1px solid rgba(0,0,0,.08); }
-
-  .episode-titre {
+  .hero-gnum {
+    position: absolute; bottom: -.5rem; right: .7rem;
     font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 1rem; font-weight: 400; font-style: italic;
-    color: var(--ink); line-height: 1.4; transition: color .2s;
+    font-size: 6.5rem; font-weight: 700; line-height: 1;
+    pointer-events: none; letter-spacing: -.04em;
+    color: rgba(255,255,255,.05);
   }
-  .episode-titre--ghost { font-style: normal; color: var(--ink-soft); }
-  /* Hover titre en bleu — identique capsules bande accueil */
-  .episode-card:hover .episode-titre { color: var(--blue-hover); }
-
-  .episode-desc {
-    font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 300;
-    color: var(--ink-soft); line-height: 1.65; max-width: 60ch;
+  .hero-badge {
+    position: absolute; top: 1.1rem; right: 1.1rem;
+    font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--terra); background: var(--terra-bg);
+    border: 1px solid var(--terra-dim); border-radius: 3px; padding: .18rem .5rem;
   }
-  .episode-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .1rem; }
-  .episode-tag {
-    font-family: 'Mulish', sans-serif; font-size: .58rem; color: var(--ink-soft); opacity: .55;
-    padding: .1rem .45rem; border: 1px solid var(--rule); border-radius: 3px;
-    transition: opacity .2s, border-color .2s;
+  .hero-meta {
+    font-family: 'Mulish', sans-serif; font-size: .53rem; font-weight: 300;
+    color: rgba(245,240,232,.42); display: flex; align-items: center; gap: .35rem;
   }
-  .episode-card:hover .episode-tag { opacity: .75; border-color: var(--pri-dim); }
-
-  /* "Lire →" en terracotta */
-  .episode-lire {
-    font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase; color: var(--pri);
-    opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s;
+  .hero-stade { font-weight: 600; }
+  .hero-titre {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.2rem; font-style: italic; color: #f5ede8; line-height: 1.3;
+    transition: color .2s;
+  }
+  .carte-hero:hover .hero-titre { color: #fff; }
+  .hero-desc {
+    font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300;
+    color: rgba(245,237,232,.58); line-height: 1.6; max-width: 56ch;
+  }
+  .hero-src {
+    font-family: 'Mulish', sans-serif; font-size: .57rem; font-weight: 500;
+    color: var(--terra); opacity: .8;
+  }
+  .hero-lire {
+    font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--terra); opacity: 0; transform: translateY(3px);
+    transition: opacity .2s, transform .2s;
     margin-top: .2rem; display: inline-block;
   }
-  .episode-card:hover .episode-lire { opacity: 1; transform: translateX(0); }
+  .carte-hero:hover .hero-lire { opacity: 1; transform: translateY(0); }
 
-  /* ── Encart invitation ── */
-  .invitation-encart {
-    display: flex; align-items: flex-start; gap: .75rem;
-    margin-top: 2.5rem; padding: 1rem 1.25rem;
-    border: 1px solid var(--pri-dim);
-    border-left: 3px solid var(--gold-dim);
-    border-radius: 0 4px 4px 0;
-    background: linear-gradient(105deg, var(--gold-bg) 0%, var(--pri-bg) 55%, transparent 100%);
-    opacity: 0; animation: rise .9s .6s ease forwards;
-  }
-  .invitation-glyph {
-    color: var(--pri); opacity: .65; font-size: .85rem; flex-shrink: 0; margin-top: .08rem;
-  }
-  .invitation-texte {
-    font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300;
-    font-style: italic; color: var(--ink-mid); line-height: 1.7;
+  /* ── GRILLE ── */
+  .grille {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
   }
 
-  @media (max-width: 600px) {
-    .episode-row { gap: 1rem; }
-    .page-wrap   { padding: 0 1rem 4rem; }
+  /* ── CARTES ORGANIQUES ── */
+  .carte {
+    background: var(--kraft);
+    border-radius: 10px;
+    box-shadow: 0 2px 0 rgba(152,112,72,.2), 0 4px 18px rgba(122,88,48,.07);
+    padding: 1.25rem 1.2rem 1.1rem;
+    display: flex; flex-direction: column; gap: .4rem;
+    text-decoration: none; color: inherit;
+    position: relative; overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease;
+    opacity: 0; animation: rise .7s ease forwards;
+  }
+  .carte:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0 rgba(152,112,72,.18), 0 14px 30px rgba(122,88,48,.12);
+    background: var(--kraft-h);
+  }
+  .carte--ghost {
+    opacity: .28 !important; animation: none;
+    box-shadow: none;
+    border: 1px dashed rgba(152,112,72,.25);
+    background: transparent; cursor: default; pointer-events: none;
   }
 
-  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .c-gnum {
+    position: absolute; bottom: -.5rem; right: .5rem;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 5.5rem; font-weight: 700; line-height: 1;
+    pointer-events: none; letter-spacing: -.04em;
+    color: rgba(184,146,42,.18);
+  }
+  .c-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .08rem; }
+  .c-num {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .68rem; font-weight: 700; color: var(--pri);
+  }
+  .c-stade {
+    font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: #5a8a4a;
+  }
+  .c-titre {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .96rem; font-style: italic; color: var(--ink); line-height: 1.35;
+    transition: color .2s;
+  }
+  .carte:hover .c-titre { color: var(--blue-h); }
+  .c-titre--ghost { font-style: normal; color: var(--ink-soft); }
+  .c-desc {
+    font-family: 'Mulish', sans-serif; font-size: .73rem; font-weight: 300;
+    color: var(--ink-mid); line-height: 1.6;
+  }
+  .c-src {
+    font-family: 'Mulish', sans-serif; font-size: .56rem; font-weight: 500;
+    color: var(--pri); opacity: .65; margin-top: .04rem;
+  }
+  .c-time {
+    font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 300;
+    color: var(--ink-soft); margin-top: .12rem;
+  }
+  .c-lire {
+    font-family: 'Mulish', sans-serif; font-size: .57rem; font-weight: 600;
+    letter-spacing: .12em; text-transform: uppercase;
+    color: var(--pri); opacity: 0; transform: translateY(3px);
+    transition: opacity .2s, transform .2s;
+    margin-top: auto; padding-top: .3rem; display: inline-block;
+  }
+  .carte:hover .c-lire { opacity: 1; transform: translateY(0); }
+
+  /* ── Responsive ── */
+  @media (max-width: 540px) {
+    .grille { grid-template-columns: 1fr; }
+    .page-wrap { padding: 0 1rem 4rem; }
+    .hero-badge { display: none; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
