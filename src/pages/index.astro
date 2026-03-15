@@ -125,7 +125,7 @@ function engagementLabel(rank: number) {
         </div>
         <div class="serie-body serie-body--recit">
           {serieDialogues.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`}>
+            <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 0).padStart(2, '0')}>
               <span class="cap-num cap-num--recit">{String(a.data.episode ?? 0).padStart(2, '0')}</span>
               <span class="cap-titre">{a.data.title}</span>
               <span class="cap-stade">{stadeLabel(a.data.stade)}{a.data.statut === 'en-cours' ? ' · en cours' : ''}</span>
@@ -167,7 +167,7 @@ function engagementLabel(rank: number) {
         </div>
         <div class="serie-body serie-body--mecanique">
           {serieMecanique.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`}>
+            <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 1).padStart(2, '0')}>
               <span class="cap-num cap-num--mecanique">{String(a.data.episode ?? 1).padStart(2, '0')}</span>
               <span class="cap-titre">{a.data.title}</span>
               <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
@@ -209,7 +209,7 @@ function engagementLabel(rank: number) {
         </div>
         <div class="serie-body serie-body--notes">
           {serieNotes.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`}>
+            <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 0).padStart(2, '0')}>
               <span class="cap-num cap-num--notes">{String(a.data.episode ?? 0).padStart(2, '0')}</span>
               <span class="cap-titre">{a.data.title}</span>
               <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
@@ -450,32 +450,32 @@ function engagementLabel(rank: number) {
 
 /* Bordures gauche colorées par identité de série */
 .serie-band--notes     {
-  --band-accent: rgba(152,112,72,1);
-  border-left: 3px solid rgba(152,112,72,.45);
-}
-.serie-band--recit     {
   --band-accent: rgba(232,184,50,1);
   border-left: 3px solid rgba(232,184,50,.45);
 }
+.serie-band--recit     {
+  --band-accent: rgba(124,90,191,1);
+  border-left: 3px solid rgba(124,90,191,.45);
+}
 .serie-band--mecanique {
-  --band-accent: rgba(52,48,42,1);
-  border-left: 3px solid rgba(52,48,42,.6);
+  --band-accent: rgba(58,122,154,1);
+  border-left: 3px solid rgba(58,122,154,.6);
 }
 
 .serie-band--notes:hover     {
-  border-color: rgba(152,112,72,.55);
-  border-left-color: rgba(152,112,72,.85);
-  box-shadow: 0 4px 22px rgba(100,68,28,.11);
+  border-color: rgba(232,184,50,.55);
+  border-left-color: rgba(232,184,50,.85);
+  box-shadow: 0 4px 22px rgba(196,153,58,.11);
 }
 .serie-band--recit:hover     {
-  border-color: rgba(232,184,50,.48);
-  border-left-color: rgba(232,184,50,.9);
-  box-shadow: 0 4px 18px rgba(139,94,60,.09);
+  border-color: rgba(124,90,191,.35);
+  border-left-color: rgba(124,90,191,.75);
+  box-shadow: 0 4px 22px rgba(124,90,191,.12);
 }
 .serie-band--mecanique:hover {
-  border-color: rgba(52,48,42,.35);
-  border-left-color: rgba(52,48,42,.9);
-  box-shadow: 0 4px 22px rgba(52,48,42,.1);
+  border-color: rgba(58,122,154,.35);
+  border-left-color: rgba(58,122,154,.75);
+  box-shadow: 0 4px 22px rgba(58,122,154,.12);
 }
 
 /* ── Headers ── */
@@ -488,16 +488,16 @@ function engagementLabel(rank: number) {
 }
 /* Dégradé subtil et ligne décorative au bas du header */
 .serie-band--notes .serie-head {
-  background: linear-gradient(to right, rgba(152,112,72,.07) 0%, rgba(152,112,72,.01) 60%, transparent 100%);
-  border-bottom-color: rgba(152,112,72,.16);
-}
-.serie-band--recit .serie-head {
   background: linear-gradient(to right, rgba(232,184,50,.07) 0%, rgba(232,184,50,.01) 60%, transparent 100%);
   border-bottom-color: rgba(232,184,50,.18);
 }
+.serie-band--recit .serie-head {
+  background: linear-gradient(to right, rgba(124,90,191,.07) 0%, rgba(124,90,191,.01) 60%, transparent 100%);
+  border-bottom-color: rgba(124,90,191,.18);
+}
 .serie-band--mecanique .serie-head {
-  background: linear-gradient(to right, rgba(52,48,42,.05) 0%, rgba(52,48,42,.01) 60%, transparent 100%);
-  border-bottom-color: rgba(52,48,42,.13);
+  background: linear-gradient(to right, rgba(58,122,154,.06) 0%, rgba(58,122,154,.01) 60%, transparent 100%);
+  border-bottom-color: rgba(58,122,154,.16);
 }
 /* Trait coloré animé au bas du header au hover */
 .serie-head::after {
@@ -506,9 +506,9 @@ function engagementLabel(rank: number) {
   opacity: 0;
   transition: opacity .3s;
 }
-.serie-band--notes .serie-head::after     { background: linear-gradient(to right, rgba(152,112,72,.6), transparent 70%); }
-.serie-band--recit .serie-head::after     { background: linear-gradient(to right, rgba(232,184,50,.7), transparent 70%); }
-.serie-band--mecanique .serie-head::after { background: linear-gradient(to right, rgba(52,48,42,.5), transparent 70%); }
+.serie-band--notes .serie-head::after     { background: linear-gradient(to right, rgba(232,184,50,.7), transparent 70%); }
+.serie-band--recit .serie-head::after     { background: linear-gradient(to right, rgba(124,90,191,.5), transparent 70%); }
+.serie-band--mecanique .serie-head::after { background: linear-gradient(to right, rgba(58,122,154,.5), transparent 70%); }
 .serie-band:hover .serie-head::after { opacity: 1; }
 
 .serie-head-left  { display: flex; align-items: baseline; gap: .65rem; flex-wrap: wrap; }
@@ -524,12 +524,12 @@ function engagementLabel(rank: number) {
   flex-shrink: 0; line-height: 1.6;
   transition: background .2s, border-color .2s;
 }
-.serie-pill--notes     { color: #5a3e1e; background: rgba(152,112,72,.10); border: 1px solid rgba(152,112,72,.30); }
-.serie-pill--recit     { color: #6a4808; background: rgba(232,184,50,.13); border: 1px solid rgba(232,184,50,.32); }
-.serie-pill--mecanique { color: #1e1c18; background: rgba(52,48,42,.09);   border: 1px solid rgba(52,48,42,.26); }
-.serie-band--notes:hover .serie-pill--notes         { background: rgba(152,112,72,.17); border-color: rgba(152,112,72,.5); }
-.serie-band--recit:hover .serie-pill--recit         { background: rgba(232,184,50,.2);  border-color: rgba(232,184,50,.5); }
-.serie-band--mecanique:hover .serie-pill--mecanique { background: rgba(52,48,42,.14);   border-color: rgba(52,48,42,.42); }
+.serie-pill--notes     { color: #6a4808; background: rgba(232,184,50,.13); border: 1px solid rgba(232,184,50,.32); }
+.serie-pill--recit     { color: #4a2a8a; background: rgba(124,90,191,.12); border: 1px solid rgba(124,90,191,.28); }
+.serie-pill--mecanique { color: #2a5a72; background: rgba(58,122,154,.12); border: 1px solid rgba(58,122,154,.26); }
+.serie-band--notes:hover .serie-pill--notes         { background: rgba(232,184,50,.2);  border-color: rgba(232,184,50,.5); }
+.serie-band--recit:hover .serie-pill--recit         { background: rgba(124,90,191,.18); border-color: rgba(124,90,191,.5); }
+.serie-band--mecanique:hover .serie-pill--mecanique { background: rgba(58,122,154,.18); border-color: rgba(58,122,154,.42); }
 
 .serie-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .85rem; font-style: italic; color: #2c2416; }
 
@@ -544,15 +544,15 @@ function engagementLabel(rank: number) {
   transition: opacity .22s, transform .22s;
 }
 .serie-band:hover .serie-cta { opacity: 1; transform: translateX(0); }
-.serie-cta--recit     { color: #c49a10; }
-.serie-cta--mecanique { color: #e85d04; }
+.serie-cta--recit     { color: #7c5abf; }
+.serie-cta--mecanique { color: #3a7a9a; }
 @media (hover: none) { .serie-cta { opacity: .65; transform: translateX(0); } }
 
 /* Corps */
 .serie-body { display: flex; overflow-x: auto; scrollbar-width: none; }
-.serie-body--recit     { background: rgba(252,249,236,.8); }
-.serie-body--mecanique { background: rgba(247,245,241,.85); }
-.serie-body--notes     { background: rgba(251,247,239,.8); }
+.serie-body--recit     { background: rgba(240,234,255,.85); }
+.serie-body--mecanique { background: rgba(232,242,248,.85); }
+.serie-body--notes     { background: rgba(252,249,236,.8); }
 .serie-body::-webkit-scrollbar { display: none; }
 
 /* Capsules */
@@ -565,12 +565,12 @@ function engagementLabel(rank: number) {
   position: relative;
   transition: background .2s;
 }
-.capsule--recit     { border-right-color: rgba(232,184,50,.14); }
-.capsule--mecanique { border-right-color: rgba(52,48,42,.09); }
+.capsule--recit     { border-right-color: rgba(124,90,191,.14); }
+.capsule--mecanique { border-right-color: rgba(58,122,154,.12); }
 .capsule:last-child { border-right: none; }
-.serie-band--notes .capsule:not(.capsule--ghost):hover     { background: rgba(152,112,72,.07); }
-.serie-band--recit .capsule:not(.capsule--ghost):hover     { background: rgba(232,184,50,.07); }
-.serie-band--mecanique .capsule:not(.capsule--ghost):hover { background: rgba(232,93,4,.06); }
+.serie-band--notes .capsule:not(.capsule--ghost):hover     { background: rgba(232,184,50,.07); }
+.serie-band--recit .capsule:not(.capsule--ghost):hover     { background: rgba(124,90,191,.07); }
+.serie-band--mecanique .capsule:not(.capsule--ghost):hover { background: rgba(58,122,154,.07); }
 .capsule:not(:last-child)::after {
   content: '›'; position: absolute; right: -8px; top: 50%;
   transform: translateY(-50%); font-size: .75rem;
@@ -578,16 +578,43 @@ function engagementLabel(rank: number) {
 }
 
 .cap-num { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 800; letter-spacing: .15em; line-height: 1; }
-.cap-num--notes     { color: #8a6838; }
-.cap-num--recit     { color: #c49a10; }
-.cap-num--mecanique { color: #e85d04; }
+.cap-num--notes     { color: #c49a10; }
+.cap-num--recit     { color: #7c5abf; }
+.cap-num--mecanique { color: #3a7a9a; }
 .cap-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .77rem; line-height: 1.38; color: var(--ink); flex: 1; }
 .cap-stade { font-family: 'Mulish', sans-serif; font-size: .65rem; color: var(--ink-soft); margin-top: .18rem; opacity: .8; }
-.capsule--entree { background: rgba(124,92,191,.055); }
-.serie-band--mecanique .capsule--entree { background: rgba(58,159,216,.055); }
+
+/* DA articles.astro : capsules Récit et Mécanique deviennent des mini-cartes */
+.serie-band--recit .capsule:not(.capsule--ghost),
+.serie-band--mecanique .capsule:not(.capsule--ghost) {
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+.serie-band--recit .capsule:not(.capsule--ghost) .cap-titre { font-style: italic; color: #7c5abf; }
+.serie-band--mecanique .capsule:not(.capsule--ghost) .cap-titre { font-style: italic; color: #3a7a9a; }
+.serie-band--notes .capsule:not(.capsule--ghost) .cap-titre { font-style: italic; color: #b8922a; }
+
+/* Numéro fantôme derrière le contenu */
+.serie-band--recit .capsule:not(.capsule--ghost)::before,
+.serie-band--mecanique .capsule:not(.capsule--ghost)::before,
+.serie-band--notes .capsule:not(.capsule--ghost)::before {
+  content: attr(data-num);
+  position: absolute; right: .3rem; bottom: -.5rem;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 3rem; font-weight: 700;
+  line-height: 1; pointer-events: none; user-select: none;
+  z-index: 0;
+}
+.serie-band--recit .capsule:not(.capsule--ghost)::before    { color: rgba(124,90,191,.09); }
+.serie-band--mecanique .capsule:not(.capsule--ghost)::before { color: rgba(58,122,154,.09); }
+.serie-band--notes .capsule:not(.capsule--ghost)::before     { color: rgba(196,153,58,.12); }
+
+.capsule--entree { background: rgba(232,184,50,.06); }
+.serie-band--mecanique .capsule--entree { background: rgba(58,122,154,.06); }
 .capsule--entree .cap-titre { font-weight: 700; }
-.capsule--entree::before { content: 'Commencer ici'; position: absolute; top: .45rem; right: .6rem; font-family: 'Mulish', sans-serif; font-size: .63rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #8a6838; opacity: .7; }
-.serie-band--mecanique .capsule--entree::before { color: #e85d04; }
+.capsule--entree::before { content: 'Commencer ici'; position: absolute; top: .45rem; right: .6rem; font-family: 'Mulish', sans-serif; font-size: .63rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #c49a10; opacity: .7; }
+.serie-band--mecanique .capsule--entree::before { color: #3a7a9a; }
 .capsule--ghost { opacity: .28; cursor: default; pointer-events: none; }
 .capsule--ghost .cap-titre { font-style: italic; color: var(--ink-soft); }
 
