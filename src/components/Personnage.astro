@@ -2,17 +2,32 @@
 const { nom } = Astro.props;
 
 const couleurs: Record<string, string> = {
-  "Clara": "#ff7c0a",
-  "Solène": "#0070dd",
+  "Clara":    "#ff7c0a",
+  "Solène":   "#0070dd",
   "Nathalie": "#ff7c0a",
-  "Élodie": "#0070dd",
+  "Élodie":   "#0070dd",
+  "Rayan":    "#8b6fc4",
+  "Isabelle": "#7a9e7e",
+  "Yanis":    "#c4993a",
+  "Yann":     "#c45c5c",
+  "Karim":    "#5a8a9f",
 };
 
-const couleur = couleurs[nom] ?? "#444";
+const couleur = couleurs[nom] ?? "#4a3f35";
 const estDroite = nom === "Solène" || nom === "Élodie";
 ---
 
-<div class={`personnage ${estDroite ? "droite" : ""}`} style={`--c: ${couleur}`}>
+<div
+  class={`personnage ${estDroite ? "droite" : ""}`}
+  style={`
+    --c: ${couleur};
+    --bulle-bg-start:     color-mix(in srgb, ${couleur} 9%, #fdfcfa);
+    --bulle-bg-end:       color-mix(in srgb, ${couleur} 4%, #fdfcfa);
+    --bulle-shadow:       color-mix(in srgb, ${couleur} 12%, transparent);
+    --bulle-shadow-hover: color-mix(in srgb, ${couleur} 20%, transparent);
+    --bulle-border:       color-mix(in srgb, ${couleur} 70%, transparent);
+  `}
+>
   <span class="personnage-nom">{nom}</span>
   <div class="personnage-bulle">
     <slot />
@@ -42,7 +57,11 @@ const estDroite = nom === "Solène" || nom === "Élodie";
   }
 
   .personnage-bulle {
-    background: #fdfcfa;
+    background: linear-gradient(
+      135deg,
+      var(--bulle-bg-start) 0%,
+      var(--bulle-bg-end) 100%
+    );
     border-radius: 12px;
     border-top-left-radius: 2px;
     padding: 0.65rem 1rem;
@@ -51,14 +70,25 @@ const estDroite = nom === "Solène" || nom === "Élodie";
     line-height: 1.7;
     color: #3d3530;
     max-width: 88%;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-left: 2px solid var(--c);
+    box-shadow:
+      0 1px 3px var(--bulle-shadow),
+      0 3px 10px rgba(0,0,0,0.05);
+    border-left: 2px solid var(--bulle-border);
+    transition:
+      box-shadow 0.22s ease,
+      background 0.22s ease;
+  }
+
+  .personnage-bulle:hover {
+    box-shadow:
+      0 2px 6px var(--bulle-shadow-hover),
+      0 6px 18px rgba(0,0,0,0.08);
   }
 
   .personnage.droite .personnage-bulle {
     border-top-left-radius: 12px;
     border-top-right-radius: 2px;
     border-left: none;
-    border-right: 2px solid var(--c);
+    border-right: 2px solid var(--bulle-border);
   }
 </style>
