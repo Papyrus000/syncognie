@@ -126,13 +126,13 @@ function engagementLabel(rank: number) {
         <div class="serie-body serie-body--recit">
           {serieDialogues.map((a) => (
             <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 0).padStart(2, '0')}>
-              <span class="cap-num cap-num--recit">{String(a.data.episode ?? 0).padStart(2, '0')}</span>
+              <span class="cap-ep cap-ep--recit"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{a.data.episode ?? 0}</span>
               <span class="cap-titre">{a.data.title}</span>
               <span class="cap-stade">{stadeLabel(a.data.stade)}{a.data.statut === 'en-cours' ? ' · en cours' : ''}</span>
             </a>
           ))}
           <div class="capsule capsule--recit capsule--ghost">
-            <span class="cap-num cap-num--recit">{String(serieDialogues.length + 1).padStart(2, '0')}</span>
+            <span class="cap-ep cap-ep--recit"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{serieDialogues.length + 1}</span>
             <span class="cap-titre">Prochain épisode</span>
             <span class="cap-stade">— à venir</span>
           </div>
@@ -168,13 +168,13 @@ function engagementLabel(rank: number) {
         <div class="serie-body serie-body--mecanique">
           {serieMecanique.map((a) => (
             <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 1).padStart(2, '0')}>
-              <span class="cap-num cap-num--mecanique">{String(a.data.episode ?? 1).padStart(2, '0')}</span>
+              <span class="cap-ep cap-ep--mecanique"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{a.data.episode ?? 1}</span>
               <span class="cap-titre">{a.data.title}</span>
               <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
             </a>
           ))}
           <div class="capsule capsule--mecanique capsule--ghost">
-            <span class="cap-num cap-num--mecanique">{String(serieMecanique.length + 1).padStart(2, '0')}</span>
+            <span class="cap-ep cap-ep--mecanique"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{serieMecanique.length + 1}</span>
             <span class="cap-titre">Prochaine note</span>
             <span class="cap-stade">— à venir</span>
           </div>
@@ -210,13 +210,13 @@ function engagementLabel(rank: number) {
         <div class="serie-body serie-body--notes">
           {serieNotes.map((a) => (
             <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 0).padStart(2, '0')}>
-              <span class="cap-num cap-num--notes">{String(a.data.episode ?? 0).padStart(2, '0')}</span>
+              <span class="cap-ep cap-ep--notes"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{a.data.episode ?? 0}</span>
               <span class="cap-titre">{a.data.title}</span>
               <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
             </a>
           ))}
           <div class="capsule capsule--ghost">
-            <span class="cap-num cap-num--notes">{String(serieNotes.length + 1).padStart(2, '0')}</span>
+            <span class="cap-ep cap-ep--notes"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{serieNotes.length + 1}</span>
             <span class="cap-titre">Prochaine note</span>
             <span class="cap-stade">— à venir</span>
           </div>
@@ -577,10 +577,32 @@ function engagementLabel(rank: number) {
   color: var(--rule); pointer-events: none; z-index: 2;
 }
 
-.cap-num { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 800; letter-spacing: .15em; line-height: 1; }
-.cap-num--notes     { color: #c49a10; }
-.cap-num--recit     { color: #7c5abf; }
-.cap-num--mecanique { color: #3a7a9a; }
+/* Badge épisode — pill surélevée */
+.cap-ep {
+  display: inline-flex; align-items: center;
+  border-radius: 20px;
+  padding: .18rem .58rem;
+  font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 700;
+  letter-spacing: .13em; text-transform: uppercase;
+  flex-shrink: 0; line-height: 1.6;
+  width: fit-content; align-self: flex-start;
+  color: #3a9fd8;
+  background: linear-gradient(160deg, rgba(255,255,255,.55) 0%, rgba(58,159,216,.08) 100%);
+  border: 1px solid rgba(58,159,216,.28);
+  box-shadow:
+    0 1px 3px rgba(58,159,216,.14),
+    0 2px 8px rgba(58,159,216,.07),
+    inset 0 1px 0 rgba(255,255,255,.65);
+  transition: box-shadow .2s, transform .15s;
+}
+.capsule:not(.capsule--ghost):hover .cap-ep {
+  box-shadow:
+    0 2px 6px rgba(58,159,216,.22),
+    0 4px 14px rgba(58,159,216,.1),
+    inset 0 1px 0 rgba(255,255,255,.75);
+  transform: translateY(-1px);
+}
+.cap-dot { display: none; }
 .cap-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .77rem; line-height: 1.38; color: var(--ink); flex: 1; }
 .cap-stade { font-family: 'Mulish', sans-serif; font-size: .65rem; color: var(--ink-soft); margin-top: .18rem; opacity: .8; }
 
