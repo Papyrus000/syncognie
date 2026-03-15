@@ -5,1054 +5,895 @@ import { getCollection } from 'astro:content';
 const articles = await getCollection('articles');
 articles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const total = articles.length;
-const recits = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit').length;
-const notes  = total - recits;
+const total   = articles.length;
+const nbSeries = [...new Set(articles.filter(a => a.data.serie).map(a => a.data.serie as string))].length;
+const recits  = articles.filter(a => a.data.format === 'dialogue' || a.data.format === 'recit').length;
+const notes   = total - recits;
 
 function toSlug(str: string) {
   return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
-const seriesUniques = [...new Set(articles.filter(a => a.data.serie).map(a => a.data.serie as string))];
-const nbSeries = seriesUniques.length;
-const serieSlugUnique = nbSeries === 1 ? toSlug(seriesUniques[0]) : null;
+
+// Familles de séries
+const SERIE_RECIT    = "Les rencontres de Nathalie et Élodie";
+const SERIE_MECA     = "Mécanique";
+const SERIE_PRISMES  = "Notes d'un modèle en construction";
+
+const byEpisode = (a: any, b: any) => (a.data.episode ?? 0) - (b.data.episode ?? 0);
+
+const artRecits  = articles.filter(a => a.data.serie === SERIE_RECIT).sort(byEpisode);
+const artMeca    = articles.filter(a => a.data.serie === SERIE_MECA).sort(byEpisode);
+const artPrismes = articles.filter(a => a.data.serie === SERIE_PRISMES).sort(byEpisode);
+
+// Séries dynamiques pour l'onglet Séries
+const seriesData = [
+  { name: SERIE_RECIT,   slug: toSlug(SERIE_RECIT),   label: 'Récit',    cls: 'recit',   count: artRecits.length,  articles: artRecits  },
+  { name: SERIE_MECA,    slug: toSlug(SERIE_MECA),    label: 'Mécanique', cls: 'meca',   count: artMeca.length,    articles: artMeca    },
+  { name: SERIE_PRISMES, slug: toSlug(SERIE_PRISMES), label: 'Prismes',  cls: 'prismes', count: artPrismes.length, articles: artPrismes },
+].filter(s => s.count > 0 || true); // toujours afficher les 3 même vides
+
+function familleClass(article: any): string {
+  if (article.data.serie === SERIE_RECIT)   return 'recit';
+  if (article.data.serie === SERIE_MECA)    return 'meca';
+  if (article.data.serie === SERIE_PRISMES) return 'prismes';
+  if (article.data.format === 'dialogue' || article.data.format === 'recit') return 'recit';
+  return '';
+}
+
+function badgeFormat(article: any) {
+  const s = article.data.serie;
+  if (s === SERIE_RECIT)   return { cls: 'b-recit',   label: '◈ Récit' };
+  if (s === SERIE_MECA)    return { cls: 'b-meca',    label: '◈ Mécanique' };
+  if (s === SERIE_PRISMES) return { cls: 'b-prismes', label: '◈ Prismes' };
+  if (article.data.format === 'dialogue' || article.data.format === 'recit') return { cls: 'b-recit', label: '◈ Récit' };
+  if (article.data.format === 'analyse') return { cls: 'b-analyse', label: '◈ Analyse' };
+  return null;
+}
+
+function lireLabel(article: any): string {
+  const f = article.data.format;
+  if (f === 'dialogue' || f === 'recit') return 'Lire le récit →';
+  return 'Lire →';
+}
 ---
 
 <Base title="Articles — Syncognie">
 
-  <div class="page-wrap">
+<div class="page-wrap">
 
-    <!-- En-tête -->
+  <!-- ══ EN-TÊTE ══ -->
+  <header class="page-header" style="position:relative; overflow:visible;">
 
-<header class="page-header" style="position:relative; overflow:visible;">
+    <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="210" cy="210" r="185"
+        stroke="#8b5e3c" stroke-width=".6"
+        stroke-dasharray="2 10"
+        opacity=".15"
+        class="fil-rotate"/>
+      <path d="M210 210
+               C210 188, 224 174, 240 174
+               C270 174, 295 199, 295 230
+               C295 272, 260 305, 210 305
+               C148 305, 96 253, 96 190
+               C96 116, 151 62, 225 62"
+            stroke="#c4993a" stroke-width="1.2"
+            stroke-linecap="round" opacity=".22"/>
+      <path d="M225 62
+               C272 62, 332 98, 358 155
+               C384 210, 370 285, 322 324"
+            stroke="#c4993a" stroke-width=".8"
+            stroke-linecap="round" opacity=".12"/>
+      <line x1="210" y1="210" x2="240" y2="174" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
+      <line x1="210" y1="210" x2="295" y2="230" stroke="#8b5e3c" stroke-width=".7" opacity=".15"/>
+      <line x1="210" y1="210" x2="210" y2="305" stroke="#8b5e3c" stroke-width=".7" opacity=".15"/>
+      <line x1="210" y1="210" x2="96"  y2="190" stroke="#8b5e3c" stroke-width=".7" opacity=".13"/>
+      <line x1="210" y1="210" x2="225" y2="62"  stroke="#8b5e3c" stroke-width=".7" opacity=".13"/>
+      <circle cx="240" cy="174" r="4.5" fill="#c4993a" class="fil-pulse"/>
+      <circle cx="295" cy="230" r="3.5" fill="#8b5e3c" class="fil-pulse-2"/>
+      <circle cx="210" cy="305" r="4"   fill="#c4993a" class="fil-pulse-3"/>
+      <circle cx="96"  cy="190" r="3.5" fill="#8b5e3c" class="fil-pulse"/>
+      <circle cx="225" cy="62"  r="4"   fill="#c4993a" class="fil-pulse-2"/>
+      <circle cx="210" cy="210" r="28"
+        stroke="#8b5e3c" stroke-width="1"
+        opacity=".15" class="fil-pulse"/>
+      <circle cx="210" cy="210" r="52"
+        stroke="#8b5e3c" stroke-width=".5"
+        opacity=".08" class="fil-pulse-2"/>
+      <circle cx="210" cy="210" r="5"
+        fill="#8b5e3c" opacity=".2"
+        class="fil-float"/>
+      <circle cx="210" cy="210" r="2.5"
+        fill="#f5f0e8" opacity=".6"
+        class="fil-float"/>
+    </svg>
 
-  <svg class="header-filigrane" viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="210" cy="210" r="185"
-      stroke="#8b5e3c" stroke-width=".6"
-      stroke-dasharray="2 10"
-      opacity=".15"
-      class="fil-rotate"/>
-    <path d="M210 210
-             C210 188, 224 174, 240 174
-             C270 174, 295 199, 295 230
-             C295 272, 260 305, 210 305
-             C148 305, 96 253, 96 190
-             C96 116, 151 62, 225 62"
-          stroke="#c4993a" stroke-width="1.2"
-          stroke-linecap="round" opacity=".22"/>
-    <path d="M225 62
-             C272 62, 332 98, 358 155
-             C384 210, 370 285, 322 324"
-          stroke="#c4993a" stroke-width=".8"
-          stroke-linecap="round" opacity=".12"/>
-    <line x1="210" y1="210" x2="240" y2="174" stroke="#8b5e3c" stroke-width=".7" opacity=".18"/>
-    <line x1="210" y1="210" x2="295" y2="230" stroke="#8b5e3c" stroke-width=".7" opacity=".15"/>
-    <line x1="210" y1="210" x2="210" y2="305" stroke="#8b5e3c" stroke-width=".7" opacity=".15"/>
-    <line x1="210" y1="210" x2="96"  y2="190" stroke="#8b5e3c" stroke-width=".7" opacity=".13"/>
-    <line x1="210" y1="210" x2="225" y2="62"  stroke="#8b5e3c" stroke-width=".7" opacity=".13"/>
-    <circle cx="240" cy="174" r="4.5" fill="#c4993a" class="fil-pulse"/>
-    <circle cx="295" cy="230" r="3.5" fill="#8b5e3c" class="fil-pulse-2"/>
-    <circle cx="210" cy="305" r="4"   fill="#c4993a" class="fil-pulse-3"/>
-    <circle cx="96"  cy="190" r="3.5" fill="#8b5e3c" class="fil-pulse"/>
-    <circle cx="225" cy="62"  r="4"   fill="#c4993a" class="fil-pulse-2"/>
-    <circle cx="210" cy="210" r="28"
-      stroke="#8b5e3c" stroke-width="1"
-      opacity=".15" class="fil-pulse"/>
-    <circle cx="210" cy="210" r="52"
-      stroke="#8b5e3c" stroke-width=".5"
-      opacity=".08" class="fil-pulse-2"/>
-    <circle cx="210" cy="210" r="5"
-      fill="#8b5e3c" opacity=".2"
-      class="fil-float"/>
-    <circle cx="210" cy="210" r="2.5"
-      fill="#f5f0e8" opacity=".6"
-      class="fil-float"/>
-  </svg>
-
-      <p class="page-eyebrow">Publications</p>
-      <h1 class="page-titre">Articles</h1>
-      <p class="page-sous">
-        Fragments de réflexion, récits et analyses 
-        où les idées se confrontent pour faire émerger 
-        de nouveaux sens.<br> 
-        Un espace dédié à la cognition et au dialogue, 
-        conçu pour être exploré au rythme de la pensée.
-
-      </p>
-      <div class="page-stats">
-        <span class="stat">
-          <span class="stat-n">{total}</span>
-          <span class="stat-label">publication{total > 1 ? 's' : ''}</span>
-        </span>
-        <span class="stat-sep">·</span>
-        <span class="stat">
-          <span class="stat-n">{recits}</span>
-          <span class="stat-label">récit{recits > 1 ? 's' : ''}</span>
-        </span>
-        <span class="stat-sep">·</span>
-        <span class="stat">
-          <span class="stat-n">{notes}</span>
-          <span class="stat-label">note{notes > 1 ? 's' : ''}</span>
-        </span>
-      </div>
-    </header>
-
-    <div class="ornament-sep">
-      <div class="orn-line"></div>
-      <div class="orn-centre">
-        <div class="orn-diamond"></div>
-        <span class="orn-label">Toutes les publications</span>
-        <div class="orn-diamond"></div>
-      </div>
-      <div class="orn-line"></div>
+    <p class="page-eyebrow">Publications</p>
+    <h1 class="page-titre">Articles &amp; <em>récits</em></h1>
+    <p class="page-sous">
+      Fragments de réflexion, récits et analyses
+      où les idées se confrontent pour faire émerger
+      de nouveaux sens.<br>
+      Un espace dédié à la cognition et au dialogue,
+      conçu pour être exploré au rythme de la pensée.
+    </p>
+    <div class="page-stats">
+      <span class="stat">
+        <span class="stat-n">{total}</span>
+        <span class="stat-label">publication{total > 1 ? 's' : ''}</span>
+      </span>
+      <span class="stat-sep">·</span>
+      <span class="stat">
+        <span class="stat-n">{nbSeries}</span>
+        <span class="stat-label">série{nbSeries > 1 ? 's' : ''}</span>
+      </span>
+      <span class="stat-sep">·</span>
+      <span class="stat">
+        <span class="stat-n">{recits}</span>
+        <span class="stat-label">récit{recits > 1 ? 's' : ''}</span>
+      </span>
+      <span class="stat-sep">·</span>
+      <span class="stat">
+        <span class="stat-n">{notes}</span>
+        <span class="stat-label">note{notes > 1 ? 's' : ''}</span>
+      </span>
     </div>
+  </header>
 
-    <!-- Grille : liste gauche + légende droite -->
+  <!-- ══ ONGLETS ══ -->
+  <nav class="tabs-bar" role="tablist" aria-label="Filtrer les publications">
+    <button class="tab active" data-tab="tout" role="tab" aria-selected="true" aria-controls="panel-tout">
+      Tout <span class="tab-count">{total}</span>
+    </button>
+    <button class="tab" data-tab="series" role="tab" aria-selected="false" aria-controls="panel-series">
+      Séries <span class="tab-count">3</span>
+    </button>
+    <button class="tab t-recit" data-tab="recits" role="tab" aria-selected="false" aria-controls="panel-recits">
+      Récits <span class="tab-count">{artRecits.length}</span>
+    </button>
+    <button class="tab t-meca" data-tab="meca" role="tab" aria-selected="false" aria-controls="panel-meca">
+      Mécanique <span class="tab-count">{artMeca.length}</span>
+    </button>
+    <button class="tab t-prismes" data-tab="prismes" role="tab" aria-selected="false" aria-controls="panel-prismes">
+      Prismes <span class="tab-count">{artPrismes.length}</span>
+    </button>
+  </nav>
+
+  <!-- ══ PANNEAU : TOUT ══ -->
+  <div class="tab-panel visible" id="panel-tout" role="tabpanel">
     <div class="contenu-wrap">
-
-      <!-- Liste articles -->
       <div class="articles-list">
+        <div class="orn-sep">
+          <div class="orn-line"></div>
+          <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Toutes les publications</span><div class="orn-diamond"></div></div>
+          <div class="orn-line"></div>
+        </div>
         {articles.map((article, i) => {
-          const estRecit = article.data.format === 'dialogue' || article.data.format === 'recit';
+          const fc  = familleClass(article);
+          const bf  = badgeFormat(article);
+          const lbl = lireLabel(article);
           return (
             <a
-              class={`article-item${estRecit ? ' est-recit' : ''}`}
+              class={`article-item${fc ? ' ' + fc : ''}`}
               href={`/articles/${article.slug}`}
-              style={`animation-delay: ${0.15 + i * 0.08}s`}
+              style={`animation-delay:${0.05 + i * 0.06}s`}
             >
+              <span class="ghost-num">{String(total - i).padStart(2, '0')}</span>
               <div class="article-aside">
                 <span class="article-date">
                   {article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
                 <div class="article-badges">
-                  {estRecit && <span class="badge badge-recit">◈ Récit</span>}
-                  {article.data.format === 'analyse' && <span class="badge badge-analyse">◈ Analyse</span>}
-                  {article.data.statut === 'en-cours' && <span class="badge badge-wip">En cours</span>}
-                  {article.data.stade === 'graine' && <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>}
-                  {article.data.stade === 'pousse' && <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>}
-                  {article.data.stade === 'arbre'  && <span class="badge badge-arbre  badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>}
-                  {article.data.serie && article.data.episode && (
-                    <span
-                      class="badge badge-serie"
-                      data-tooltip={article.data.serie}
-                    >
-                      <span class="badge-serie-bulles" aria-hidden="true">
-                        <span class="bulle bulle-1"></span>
-                        <span class="bulle bulle-2"></span>
-                      </span>
-                      <span class="badge-serie-ep">ép. {article.data.episode}</span>
-                    </span>
-                  )}
+                  {bf && <span class={`badge ${bf.cls}`}>{bf.label}</span>}
+                  {article.data.episode && <span class="badge b-ep">ép. {article.data.episode}</span>}
+                  {article.data.statut === 'en-cours' && <span class="badge b-wip">En cours</span>}
+                  {article.data.stade === 'graine' && <span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span>}
+                  {article.data.stade === 'pousse' && <span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span>}
+                  {article.data.stade === 'arbre'  && <span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span>}
                 </div>
               </div>
               <div class="article-body">
                 <p class="article-titre">{article.data.title}</p>
-                {article.data.description && (
-                  <p class="article-desc">{article.data.description}</p>
-                )}
-                <span class="article-lire">
-                  {estRecit ? 'Lire le récit →' : 'Lire →'}
-                </span>
+                {article.data.description && <p class="article-desc">{article.data.description}</p>}
+                <span class="article-lire">{lbl}</span>
               </div>
             </a>
           );
         })}
       </div>
-
-      <!-- Colonne droite : série + stades -->
       <aside class="legende-col">
-
-        {nbSeries > 0 && seriesUniques.map((serieName) => {
-          const slug = toSlug(serieName);
-          const nbEp = articles.filter(a => a.data.serie === serieName).length;
-          return (
-            <a href={`/series/${slug}`} class="legende-card legende-card--serie">
-              <div class="legende-serie-top">
-                <svg class="legende-serie-svg" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <rect x="1" y="1" width="24" height="16" rx="4" stroke="#c4993a" stroke-width="1" fill="rgba(196,153,58,.04)" opacity=".7"/>
-                  <circle cx="7"  cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-a"/>
-                  <circle cx="13" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-b"/>
-                  <circle cx="19" cy="9" r="1.5" fill="#c4993a" opacity=".5" class="sdot-c"/>
-                  <path d="M7 17 L4 22 L11 17" fill="rgba(196,153,58,.04)" stroke="#c4993a" stroke-width=".8" opacity=".5" stroke-linejoin="round"/>
-                  <rect x="13" y="21" width="24" height="16" rx="4" stroke="#8b5e3c" stroke-width="1" fill="rgba(139,94,60,.03)" opacity=".55"/>
-                  <circle cx="20" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-d"/>
-                  <circle cx="26" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-e"/>
-                  <circle cx="32" cy="29" r="1.5" fill="#8b5e3c" opacity=".4" class="sdot-f"/>
-                  <path d="M31 21 L34 16 L27 21" fill="rgba(139,94,60,.03)" stroke="#8b5e3c" stroke-width=".8" opacity=".4" stroke-linejoin="round"/>
-                </svg>
-                <div>
-                  <p class="legende-serie-eyebrow">Série · {nbEp} ép.</p>
-                  <p class="legende-titre">{serieName}</p>
-                </div>
-              </div>
-              <div class="legende-serie-voix">
-                <div class="voix-i voix-e">É</div>
-                <div class="voix-i voix-n">N</div>
-                <span class="voix-label">Élodie & Nathalie</span>
-              </div>
-              <span class="legende-cta">Lire la série →</span>
-            </a>
-          );
-        })}
-
-        <a href="/stades" class="legende-card legende-card--link">
+        <a href="/stades" class="legende-card">
           <p class="legende-titre">Stades de maturité</p>
           <ul class="legende-list">
-            <li>
-              <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>
-              <span class="legende-desc">Idée posée, peu développée</span>
-            </li>
-            <li>
-              <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>
-              <span class="legende-desc">En cours d'exploration</span>
-            </li>
-            <li>
-              <span class="badge badge-arbre badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>
-              <span class="legende-desc">Consolidé, dense</span>
-            </li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span><span class="legende-desc">Idée posée, peu développée</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span><span class="legende-desc">En cours d'exploration</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span><span class="legende-desc">Consolidé, dense</span></li>
           </ul>
-          <p class="legende-note">
-            Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.
-          </p>
+          <p class="legende-note">Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.</p>
           <span class="legende-cta">En savoir plus →</span>
         </a>
-
       </aside>
-
     </div>
-
   </div>
 
-</Base>
+  <!-- ══ PANNEAU : SÉRIES ══ -->
+  <div class="tab-panel" id="panel-series" role="tabpanel">
+    <div class="contenu-wrap">
+      <div class="series-grid-col">
+        <div class="orn-sep">
+          <div class="orn-line"></div>
+          <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Toutes les séries</span><div class="orn-diamond"></div></div>
+          <div class="orn-line"></div>
+        </div>
+        <div class="series-grid">
+          {seriesData.map(serie => (
+            <div class={`serie-band sb-${serie.cls}`}>
+              <div class={`serie-head sh-${serie.cls}`}>
+                <div class="serie-head-left">
+                  <span class={`serie-pill sp-${serie.cls}`}>{serie.label}</span>
+                  <span class="serie-titre-txt">{serie.name}</span>
+                </div>
+                <a class="serie-cta-lnk" href={`/series/${serie.slug}`}>Voir la série →</a>
+              </div>
+              <div class="serie-eps">
+                {serie.articles.map(a => (
+                  <a class="ep-row" href={`/articles/${a.slug}`}>
+                    <span class={`ep-num en-${serie.cls}`}>{String(a.data.episode ?? serie.articles.indexOf(a) + 1).padStart(2, '0')}</span>
+                    <span class="ep-titre">{a.data.title}</span>
+                    <span class="ep-stade">
+                      {a.data.stade === 'graine' ? '🌱 Graine' : a.data.stade === 'pousse' ? '🌿 Pousse' : a.data.stade === 'arbre' ? '🌳 Arbre' : ''}
+                      {a.data.statut === 'en-cours' ? ' · en cours' : ''}
+                    </span>
+                  </a>
+                ))}
+                <div class="ep-row ep-ghost">
+                  <span class={`ep-num en-${serie.cls}`}>{String(serie.articles.length + 1).padStart(2, '0')}</span>
+                  <span class="ep-titre">Prochain épisode</span>
+                  <span class="ep-stade">— à venir</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <aside class="legende-col">
+        <a href="/stades" class="legende-card">
+          <p class="legende-titre">Stades de maturité</p>
+          <ul class="legende-list">
+            <li><span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span><span class="legende-desc">Idée posée, peu développée</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span><span class="legende-desc">En cours d'exploration</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span><span class="legende-desc">Consolidé, dense</span></li>
+          </ul>
+          <p class="legende-note">Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.</p>
+          <span class="legende-cta">En savoir plus →</span>
+        </a>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ══ PANNEAU : RÉCITS ══ -->
+  <div class="tab-panel" id="panel-recits" role="tabpanel">
+    <div class="contenu-wrap">
+      <div class="articles-list">
+        <div class="orn-sep">
+          <div class="orn-line"></div>
+          <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Récits — Nathalie &amp; Élodie</span><div class="orn-diamond"></div></div>
+          <div class="orn-line"></div>
+        </div>
+        {artRecits.map((article, i) => (
+          <a class="article-item recit" href={`/articles/${article.slug}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
+            <span class="ghost-num">{String(article.data.episode ?? i + 1).padStart(2, '0')}</span>
+            <div class="article-aside">
+              <span class="article-date">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <div class="article-badges">
+                <span class="badge b-recit">◈ Récit</span>
+                {article.data.episode && <span class="badge b-ep">ép. {article.data.episode}</span>}
+                {article.data.statut === 'en-cours' && <span class="badge b-wip">En cours</span>}
+                {article.data.stade === 'graine' && <span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span>}
+                {article.data.stade === 'pousse' && <span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span>}
+                {article.data.stade === 'arbre'  && <span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span>}
+              </div>
+            </div>
+            <div class="article-body">
+              <p class="article-titre">{article.data.title}</p>
+              {article.data.description && <p class="article-desc">{article.data.description}</p>}
+              <span class="article-lire">Lire le récit →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <aside class="legende-col">
+        <a href="/stades" class="legende-card">
+          <p class="legende-titre">Stades de maturité</p>
+          <ul class="legende-list">
+            <li><span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span><span class="legende-desc">Idée posée, peu développée</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span><span class="legende-desc">En cours d'exploration</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span><span class="legende-desc">Consolidé, dense</span></li>
+          </ul>
+          <p class="legende-note">Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.</p>
+          <span class="legende-cta">En savoir plus →</span>
+        </a>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ══ PANNEAU : MÉCANIQUE ══ -->
+  <div class="tab-panel" id="panel-meca" role="tabpanel">
+    <div class="contenu-wrap">
+      <div class="articles-list">
+        <div class="orn-sep">
+          <div class="orn-line"></div>
+          <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Série Mécanique</span><div class="orn-diamond"></div></div>
+          <div class="orn-line"></div>
+        </div>
+        {artMeca.map((article, i) => (
+          <a class="article-item meca" href={`/articles/${article.slug}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
+            <span class="ghost-num">{String(article.data.episode ?? i + 1).padStart(2, '0')}</span>
+            <div class="article-aside">
+              <span class="article-date">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <div class="article-badges">
+                <span class="badge b-meca">◈ Mécanique</span>
+                {article.data.episode && <span class="badge b-ep">ép. {article.data.episode}</span>}
+                {article.data.statut === 'en-cours' && <span class="badge b-wip">En cours</span>}
+                {article.data.stade === 'graine' && <span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span>}
+                {article.data.stade === 'pousse' && <span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span>}
+                {article.data.stade === 'arbre'  && <span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span>}
+              </div>
+            </div>
+            <div class="article-body">
+              <p class="article-titre">{article.data.title}</p>
+              {article.data.description && <p class="article-desc">{article.data.description}</p>}
+              <span class="article-lire">Lire →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <aside class="legende-col">
+        <a href="/stades" class="legende-card">
+          <p class="legende-titre">Stades de maturité</p>
+          <ul class="legende-list">
+            <li><span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span><span class="legende-desc">Idée posée, peu développée</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span><span class="legende-desc">En cours d'exploration</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span><span class="legende-desc">Consolidé, dense</span></li>
+          </ul>
+          <p class="legende-note">Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.</p>
+          <span class="legende-cta">En savoir plus →</span>
+        </a>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ══ PANNEAU : PRISMES ══ -->
+  <div class="tab-panel" id="panel-prismes" role="tabpanel">
+    <div class="contenu-wrap">
+      <div class="articles-list">
+        <div class="orn-sep">
+          <div class="orn-line"></div>
+          <div class="orn-centre"><div class="orn-diamond"></div><span class="orn-label">Série Prismes</span><div class="orn-diamond"></div></div>
+          <div class="orn-line"></div>
+        </div>
+        {artPrismes.map((article, i) => (
+          <a class="article-item prismes" href={`/articles/${article.slug}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
+            <span class="ghost-num">{String(article.data.episode ?? i + 1).padStart(2, '0')}</span>
+            <div class="article-aside">
+              <span class="article-date">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <div class="article-badges">
+                <span class="badge b-prismes">◈ Prismes</span>
+                {article.data.episode && <span class="badge b-ep">ép. {article.data.episode}</span>}
+                {article.data.statut === 'en-cours' && <span class="badge b-wip">En cours</span>}
+                {article.data.stade === 'graine' && <span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span>}
+                {article.data.stade === 'pousse' && <span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span>}
+                {article.data.stade === 'arbre'  && <span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span>}
+              </div>
+            </div>
+            <div class="article-body">
+              <p class="article-titre">{article.data.title}</p>
+              {article.data.description && <p class="article-desc">{article.data.description}</p>}
+              <span class="article-lire">Lire →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <aside class="legende-col">
+        <a href="/stades" class="legende-card">
+          <p class="legende-titre">Stades de maturité</p>
+          <ul class="legende-list">
+            <li><span class="badge b-stade"><span class="stade-icon">🌱</span> Graine</span><span class="legende-desc">Idée posée, peu développée</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌿</span> Pousse</span><span class="legende-desc">En cours d'exploration</span></li>
+            <li><span class="badge b-stade"><span class="stade-icon">🌳</span> Arbre</span><span class="legende-desc">Consolidé, dense</span></li>
+          </ul>
+          <p class="legende-note">Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.</p>
+          <span class="legende-cta">En savoir plus →</span>
+        </a>
+      </aside>
+    </div>
+  </div>
+
+</div>
 
 <style>
+
+  /* ══ VARIABLES LOCALES ══ */
   .page-wrap {
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 1.75rem 5rem;
+    padding-bottom: 5rem;
   }
 
-  /* ── EN-TÊTE ── */
+  /* ══ EN-TÊTE ══ */
   .page-header {
-    padding: 4rem 0 2.5rem;
+    padding: 4rem 1.75rem 2.5rem;
+    position: relative;
+    overflow: visible;
     opacity: 0;
     animation: rise .9s .05s ease forwards;
   }
 
+  .header-filigrane {
+    position: absolute;
+    top: 50%;
+    right: -60px;
+    transform: translateY(-50%);
+    width: 340px;
+    height: 340px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .85;
+  }
+
+  @media (max-width: 600px) {
+    .header-filigrane { display: none; }
+  }
+
   .page-eyebrow {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 300;
-    letter-spacing: .32em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: .7;
-    margin-bottom: 1rem;
+    font-size: .62rem; font-weight: 700;
+    letter-spacing: .3em; text-transform: uppercase;
+    color: #8b5e3c; opacity: .55;
+    margin-bottom: .9rem;
   }
 
   .page-titre {
-    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: clamp(1.7rem, 3.2vw, 2.2rem);
     font-weight: 700;
     color: var(--ink);
-    line-height: 1.15;
-    letter-spacing: -.02em;
-    margin-bottom: .9rem;
+    line-height: 1.15; letter-spacing: -.02em;
+    margin-bottom: .25rem;
+  }
+
+  .page-titre em {
+    font-style: italic; font-weight: 400;
+    color: #e8b832;
   }
 
   .page-sous {
     font-family: 'Mulish', sans-serif;
-    font-size: .875rem;
-    font-weight: 300;
+    font-size: .84rem; font-weight: 300;
     color: var(--ink-soft);
-    line-height: 1.8;
-    max-width: 52ch;
-    margin-bottom: 1.75rem;
+    line-height: 1.75; max-width: 50ch;
+    margin: .85rem 0 1.5rem;
   }
 
-  /* Compteurs stats */
   .page-stats {
-    display: flex;
-    align-items: baseline;
-    gap: .75rem;
+    display: flex; align-items: center;
+    gap: .65rem; flex-wrap: wrap;
   }
 
-  .stat {
-    display: flex;
-    align-items: baseline;
-    gap: .35rem;
-  }
+  .stat { display: flex; align-items: baseline; gap: .28rem; }
 
   .stat-n {
     font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--blue-slate, #6b7fb8);
-    line-height: 1;
-    letter-spacing: -.02em;
+    font-size: 1.05rem; font-weight: 700;
+    color: #b8922a; line-height: 1;
   }
 
   .stat-label {
     font-family: 'Mulish', sans-serif;
-    font-size: .62rem;
-    font-weight: 300;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size: .58rem; font-weight: 300;
+    letter-spacing: .12em; text-transform: uppercase;
     color: var(--ink-soft);
   }
 
-  .stat-sep {
-    color: var(--rule);
-    font-size: .9rem;
-    line-height: 1;
-  }
+  .stat-sep { color: rgba(139,94,60,.3); font-size: .7rem; }
 
-  .stat-serie-link {
-    display: inline-flex;
-    align-items: baseline;
-    gap: .35rem;
-    text-decoration: none;
-    transition: opacity .2s;
-  }
-  .stat-serie-link:hover { opacity: .7; }
-  .stat-serie-link:hover .stat-label { text-decoration: underline; text-underline-offset: 3px; }
-
-  .stat-n-serie {
-    color: #c4993a;
-  }
-
-  /* ── SÉPARATEUR ── */
-  .ornament-sep {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: .25rem;
+  /* ══ ONGLETS ══ */
+  .tabs-bar {
+    display: flex; align-items: stretch;
+    padding: 0 1.75rem;
+    border-bottom: 1px solid rgba(139,94,60,.15);
+    background: var(--bg, #f5f0e8);
+    gap: 0;
+    overflow-x: auto;
+    position: sticky; top: 52px; z-index: 20;
     opacity: 0;
-    animation: rise .9s .2s ease forwards;
+    animation: rise .7s .15s ease forwards;
   }
 
-  .orn-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--rule), transparent);
-  }
-
-  .orn-centre {
-    display: flex;
-    align-items: center;
-    gap: .55rem;
-  }
-
-  .orn-diamond {
-    width: 5px;
-    height: 5px;
-    background: var(--rule);
-    transform: rotate(45deg);
-  }
-
-  .orn-label {
+  .tab {
     font-family: 'Mulish', sans-serif;
-    font-size: .58rem;
-    font-weight: 700;
-    letter-spacing: .25em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    opacity: .45;
+    font-size: .62rem; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: #9a9189;
+    padding: .82rem .9rem .72rem;
+    cursor: pointer;
+    border: none; background: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color .18s, border-color .18s;
+    display: flex; align-items: center; gap: .4rem;
+    user-select: none; white-space: nowrap; flex-shrink: 0;
   }
 
-  /* ── GRILLE CONTENU (liste + légende) ── */
+  .tab:hover { color: #7a7068; }
+
+  .tab.active           { color: #1a1714;  border-bottom-color: #b8922a; }
+  .tab.active.t-recit   { color: #4a2a8a;  border-bottom-color: #7c5abf; }
+  .tab.active.t-meca    { color: #2a5a72;  border-bottom-color: #3a7a9a; }
+  .tab.active.t-prismes { color: #6a3a10;  border-bottom-color: #c4993a; }
+
+  .tab-count {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px; border-radius: 3px;
+    font-size: .5rem; font-weight: 700; letter-spacing: 0;
+    background: rgba(139,94,60,.1); color: #8b5e3c;
+    transition: background .18s, color .18s;
+  }
+
+  .tab.active           .tab-count { background: rgba(184,146,42,.15); color: #b8922a; }
+  .tab.active.t-recit   .tab-count { background: rgba(124,90,191,.12); color: #7c5abf; }
+  .tab.active.t-meca    .tab-count { background: rgba(58,122,154,.12); color: #3a7a9a; }
+  .tab.active.t-prismes .tab-count { background: rgba(196,153,58,.15); color: #8b6010; }
+
+  /* ══ PANNEAUX ══ */
+  .tab-panel { display: none; }
+  .tab-panel.visible { display: block; }
+
+  /* ══ LAYOUT GRILLE ══ */
   .contenu-wrap {
     display: grid;
-    grid-template-columns: 1fr 168px;
-    gap: 2.5rem;
+    grid-template-columns: 1fr 188px;
+    gap: 2rem;
     align-items: start;
+    padding: 1.4rem 1.75rem 0;
   }
 
-  @media (max-width: 600px) {
+  .series-grid-col { min-width: 0; }
+
+  @media (max-width: 620px) {
     .contenu-wrap { grid-template-columns: 1fr; }
     .legende-col  { display: none; }
   }
 
-  /* ── LISTE ARTICLES ── */
-  .articles-list {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
+  /* ══ SÉPARATEUR ══ */
+  .orn-sep {
+    display: flex; align-items: center; gap: .8rem;
+    margin-bottom: 1.1rem;
   }
+
+  .orn-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(139,94,60,.2), transparent);
+  }
+
+  .orn-centre { display: flex; align-items: center; gap: .5rem; }
+
+  .orn-diamond {
+    width: 5px; height: 5px;
+    background: #c4993a;
+    transform: rotate(45deg); opacity: .4;
+    flex-shrink: 0;
+  }
+
+  .orn-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .52rem; font-weight: 700;
+    letter-spacing: .26em; text-transform: uppercase;
+    color: #8b5e3c; opacity: .45; white-space: nowrap;
+  }
+
+  /* ══ CARTES ARTICLES ══ */
+  .articles-list { display: flex; flex-direction: column; gap: .65rem; }
 
   .article-item {
-    display: grid;
-    grid-template-columns: 148px 1fr;
-    gap: 1.75rem;
+    background: #ece4d4;
+    border-radius: 10px;
+    box-shadow: 0 2px 0 rgba(152,112,72,.2), 0 4px 18px rgba(122,88,48,.07);
+    padding: .82rem 1rem .82rem 1.15rem;
     text-decoration: none;
-    padding: 1.75rem 0;
-    border-bottom: 1px solid var(--rule);
+    display: flex; gap: .9rem;
+    position: relative; overflow: hidden;
     opacity: 0;
-    position: relative;
     animation: rise .6s ease forwards;
-    transition: background .15s;
+    transition: box-shadow .18s, transform .18s;
   }
 
-  .article-item:last-child { border-bottom: none; }
-
-  .article-item::before {
-    content: '';
-    position: absolute;
-    left: -1.75rem;
-    top: 0; bottom: 0;
-    width: 2px;
-    background: var(--accent);
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform .28s ease;
-    opacity: .5;
+  .article-item:hover {
+    box-shadow: 0 3px 0 rgba(152,112,72,.28), 0 8px 28px rgba(122,88,48,.12);
+    transform: translateY(-1px);
   }
 
-  .article-item:hover::before { transform: scaleY(1); }
+  /* familles couleurs */
+  .article-item.recit   { background: #ece8f5; }
+  .article-item.meca    { background: #e3edf2; }
+  .article-item.prismes { background: #f0e8dc; }
+
+  /* numéro fantôme */
+  .ghost-num {
+    position: absolute; right: .55rem; bottom: -.4rem;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 3.4rem; font-weight: 700;
+    color: rgba(184,146,42,.16);
+    line-height: 1; pointer-events: none; user-select: none;
+  }
+
+  .article-item.recit   .ghost-num { color: rgba(124,90,191,.1); }
+  .article-item.meca    .ghost-num { color: rgba(58,122,154,.1); }
+  .article-item.prismes .ghost-num { color: rgba(196,153,58,.13); }
 
   .article-aside {
-    padding-top: .15rem;
-    display: flex;
-    flex-direction: column;
-    gap: .5rem;
-    align-items: flex-start;
+    min-width: 86px;
+    display: flex; flex-direction: column; gap: .28rem;
+    padding-top: .04rem;
   }
 
   .article-date {
     font-family: 'Mulish', sans-serif;
-    font-size: .6rem;
-    font-weight: 300;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    opacity: .55;
-    line-height: 1.5;
+    font-size: .56rem; font-weight: 300;
+    color: #8b5e3c; opacity: .58; line-height: 1.4;
   }
 
-  .article-badges {
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-  }
+  .article-badges { display: flex; flex-direction: column; gap: .22rem; }
 
+  /* ══ BADGES ══ */
   .badge {
+    display: inline-flex; align-items: center; gap: .2rem;
     font-family: 'Mulish', sans-serif;
-    font-size: .52rem;
-    font-weight: 700;
-    letter-spacing: .13em;
-    text-transform: uppercase;
-    padding: .15rem .45rem;
-    border-radius: 3px;
-    display: inline-block;
+    font-size: .5rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    border-radius: 3px; padding: .15rem .38rem;
+    width: fit-content;
   }
 
-  .badge-recit {
-    background: rgba(196, 153, 58, .1);
-    color: #c4993a;
-    border: 1px solid rgba(196, 153, 58, .25);
-  }
+  .b-recit   { background: rgba(124,90,191,.1);  color: #4a2a8a; }
+  .b-meca    { background: rgba(58,122,154,.12); color: #2a5a72; }
+  .b-prismes { background: rgba(196,153,58,.14); color: #7a5010; }
+  .b-analyse { background: rgba(107,127,184,.1); color: #3a4a88; }
+  .b-stade   { background: rgba(90,138,74,.1);   color: #3a6a28; }
+  .b-wip     { background: rgba(196,153,58,.1);  color: #7a5a08; border: 1px dashed rgba(196,153,58,.35); }
+  .b-ep      { background: rgba(139,94,60,.08);  color: #6a4428; font-size: .47rem; letter-spacing: .05em; }
 
-  .badge-analyse {
-    background: rgba(107, 127, 184, .1);
-    color: #6b7fb8;
-    border: 1px solid rgba(107, 127, 184, .25);
-  }
+  .stade-icon { font-size: .6rem; line-height: 1; }
 
-  .badge-wip {
-    background: rgba(139, 94, 60, .07);
-    color: var(--accent);
-    border: 1px solid rgba(139, 94, 60, .2);
-  }
-
-  /* Badges maturité */
-  .badge-stade {
-    display: inline-flex !important;
-    align-items: center;
-    gap: .28rem;
-  }
-
-  .badge-stade-icon { font-size: .62rem; line-height: 1; }
-
-  .badge-graine {
-    background: rgba(46, 125, 78, .07);
-    color: #2e7d4e;
-    border: 1px solid rgba(46, 125, 78, .2);
-  }
-
-  .badge-pousse {
-    background: rgba(56, 120, 60, .09);
-    color: #38783c;
-    border: 1px solid rgba(56, 120, 60, .22);
-  }
-
-  .badge-arbre {
-  background: rgba(46, 125, 78, .18);
-    color: #224422;
-    border: 1px solid rgba(34, 68, 34, .2);
-  }
-
-  .article-body {
-    display: flex;
-    flex-direction: column;
-    gap: .45rem;
-  }
+  /* ══ CORPS CARTE ══ */
+  .article-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .25rem; }
 
   .article-titre {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.35;
-    transition: color .2s;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .93rem; font-weight: 400; font-style: italic;
+    color: #b8922a; line-height: 1.3;
   }
 
-  .article-item:hover .article-titre { color: var(--accent); }
-
-  .est-recit .article-titre {
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1rem;
-  }
+  .article-item.recit   .article-titre { color: #7c5abf; }
+  .article-item.meca    .article-titre { color: #3a7a9a; }
+  .article-item.prismes .article-titre { color: #b8922a; }
 
   .article-desc {
     font-family: 'Mulish', sans-serif;
-    font-size: .82rem;
-    font-weight: 300;
-    color: var(--ink-soft);
-    line-height: 1.65;
-    max-width: 58ch;
+    font-size: .77rem; font-weight: 300;
+    color: var(--ink-soft); line-height: 1.62;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .article-lire {
-    display: inline-flex;
-    align-items: center;
-    gap: .35rem;
+    display: inline-block;
     font-family: 'Mulish', sans-serif;
-    font-size: .65rem;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: #148EFF;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity .2s, transform .2s;
-    margin-top: .1rem;
+    font-size: .56rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    margin-top: .35rem;
+    opacity: 0; transition: opacity .18s;
   }
 
-  .article-item:hover .article-lire {
-    opacity: 1;
-    transform: translateX(0);
+  .article-item:hover .article-lire { opacity: 1; }
+
+  /* ══ ONGLET SÉRIES — bandes ══ */
+  .series-grid { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  .serie-band {
+    border-radius: 10px; overflow: hidden;
+    box-shadow: 0 2px 0 rgba(152,112,72,.18), 0 4px 18px rgba(122,88,48,.06);
   }
 
-  /* ── LÉGENDE MATURITÉ ── */
-  .legende-col {
-    padding-top: .25rem;
-    position: sticky;
-    top: 4.5rem;
-    align-self: start;
+  .serie-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .72rem 1.1rem; gap: 1rem;
   }
+
+  .sh-recit   { background: #e2d9f3; }
+  .sh-meca    { background: #d8eaf2; }
+  .sh-prismes { background: #ede0cc; }
+
+  .serie-head-left { display: flex; align-items: center; gap: .55rem; }
+
+  .serie-pill {
+    font-family: 'Mulish', sans-serif;
+    font-size: .5rem; font-weight: 700;
+    letter-spacing: .16em; text-transform: uppercase;
+    border-radius: 3px; padding: .16rem .48rem;
+  }
+
+  .sp-recit   { background: rgba(124,90,191,.15); color: #4a2a8a; }
+  .sp-meca    { background: rgba(58,122,154,.15);  color: #2a5a72; }
+  .sp-prismes { background: rgba(196,153,58,.18);  color: #7a5010; }
+
+  .serie-titre-txt {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .88rem; font-weight: 400; font-style: italic;
+    color: var(--ink);
+  }
+
+  .serie-cta-lnk {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    text-decoration: none; white-space: nowrap;
+    opacity: .65; transition: opacity .18s; margin-left: auto; flex-shrink: 0;
+  }
+
+  .serie-cta-lnk:hover { opacity: 1; }
+
+  .serie-eps { display: flex; flex-direction: column; background: var(--bg, #f5f0e8); }
+
+  .ep-row {
+    display: flex; align-items: center; gap: .65rem;
+    padding: .5rem 1.1rem;
+    border-top: 1px solid rgba(139,94,60,.1);
+    text-decoration: none;
+    transition: background .14s; cursor: pointer;
+  }
+
+  .ep-row:hover { background: rgba(196,153,58,.06); }
+
+  .ep-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .7rem; font-weight: 700;
+    min-width: 20px; opacity: .32;
+  }
+
+  .en-recit   { color: #7c5abf; }
+  .en-meca    { color: #3a7a9a; }
+  .en-prismes { color: #c4993a; }
+
+  .ep-titre {
+    font-family: 'Mulish', sans-serif;
+    font-size: .76rem; font-weight: 300;
+    color: #3a3028; flex: 1;
+  }
+
+  .ep-stade {
+    font-family: 'Mulish', sans-serif;
+    font-size: .57rem; font-weight: 300;
+    color: #9a9189; white-space: nowrap;
+  }
+
+  .ep-ghost { opacity: .38; font-style: italic; }
+  .ep-ghost .ep-titre { color: #9a9189; }
+
+  /* ══ SIDEBAR STADES ══ */
+  .legende-col { display: flex; flex-direction: column; gap: .8rem; padding-top: 2.4rem; }
 
   .legende-card {
-    padding: 1rem;
-    border: 1px solid var(--rule);
-    border-radius: 6px;
-    background: rgba(245, 240, 232, .6);
-    box-shadow: 0 2px 12px rgba(44, 36, 22, .05);
+    background: #ece4d4;
+    border-radius: 10px;
+    box-shadow: 0 2px 0 rgba(152,112,72,.2), 0 4px 18px rgba(122,88,48,.07);
+    padding: .9rem 1rem;
+    text-decoration: none; display: block; cursor: pointer;
+    transition: background .18s;
   }
 
-   .legende-titre {
-    font-family: 'Mulish', sans-serif;
-    font-size: .55rem;
-    font-weight: 700;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-  color: var(--ink-mid);
-    opacity: .75;
-    margin-bottom: .75rem;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid var(--rule);
+  .legende-card:hover { background: rgba(196,153,58,.08); }
+
+  .legende-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .8rem; font-weight: 400; font-style: italic;
+    color: #b8922a; margin-bottom: .52rem; display: block;
   }
 
   .legende-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: .6rem;
-    margin-bottom: .85rem;
+    list-style: none; display: flex; flex-direction: column;
+    gap: .42rem; margin-bottom: .65rem;
   }
 
   .legende-list li {
-    display: flex;
-    flex-direction: column;
-    gap: .25rem;
+    display: flex; align-items: center; gap: .5rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: .66rem; font-weight: 300;
+    color: var(--ink-soft);
   }
 
-  .legende-desc {
-    font-family: 'Mulish', sans-serif;
-    font-size: .62rem;
-    font-weight: 300;
-    font-style: italic;
-  color: var(--ink-mid);
-    opacity: .9;
-    padding-left: .2rem;
-  }
+  .legende-desc { font-size: .64rem; }
 
   .legende-note {
     font-family: 'Mulish', sans-serif;
-    font-size: .72rem;
-    font-weight: 300;
-    font-style: italic;
-  color: var(--ink-mid);
-    opacity: .75;
-    line-height: 1.6;
-    padding-top: .75rem;
-    border-top: 1px solid var(--rule);
+    font-size: .63rem; font-weight: 300; font-style: italic;
+    color: #8b5e3c; opacity: .52; line-height: 1.6; margin-bottom: .45rem;
   }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .article-item {
-      grid-template-columns: 1fr;
-      gap: .6rem;
-    }
-    .article-aside {
-      flex-direction: row;
-      align-items: center;
-      gap: .75rem;
-    }
-    .article-badges { flex-direction: row; }
+  .legende-cta {
+    display: block;
+    font-family: 'Mulish', sans-serif;
+    font-size: .54rem; font-weight: 600;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--blizzard, #148EFF);
+    opacity: 0; transition: opacity .18s;
   }
 
-/* ── FILIGRANE EN-TÊTE ── */
-.header-filigrane {
-  position: absolute;
-  top: 50%;
-  right: -60px;
-  transform: translateY(-50%);
-  width: 340px;
-  height: 340px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: .85;
-}
+  .legende-card:hover .legende-cta { opacity: 1; }
 
-@media (max-width: 600px) {
-  .header-filigrane { display: none; }
-}
-
-.fil-rotate {
-  transform-origin: 210px 210px;
-  animation: fil-spin 32s linear infinite;
-}
-@keyframes fil-spin { to { transform: rotate(360deg); } }
-
-.fil-pulse   { animation: fil-p 6s ease-in-out infinite; }
-.fil-pulse-2 { animation: fil-p 6s ease-in-out infinite; animation-delay: 1.5s; }
-.fil-pulse-3 { animation: fil-p 6s ease-in-out infinite; animation-delay: 3s; }
-@keyframes fil-p {
-  0%,100% { opacity: .18; }
-  50%      { opacity: .55; }
-}
-
-.fil-float {
-  animation: fil-f 8s ease-in-out infinite;
-  transform-origin: 210px 210px;
-}
-@keyframes fil-f {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-
-
+  /* ══ ANIMATIONS ══ */
   @keyframes rise {
     from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ── BADGE SÉRIE ── */
-  .badge-serie {
-    display: inline-flex;
-    align-items: center;
-    gap: .32rem;
-    background: rgba(107, 127, 184, .08);
-    color: #4a5a8a;
-    border: 1px solid rgba(107, 127, 184, .22);
-    border-radius: 3px;
-    padding: .15rem .42rem .15rem .32rem;
-    font-family: 'Mulish', sans-serif;
-    font-size: .52rem;
-    font-weight: 700;
-    letter-spacing: .11em;
-    text-transform: uppercase;
-    cursor: default;
-    position: relative;
-    transition: background .2s, border-color .2s;
+  .fil-rotate {
+    transform-origin: 210px 210px;
+    animation: fil-spin 32s linear infinite;
+  }
+  @keyframes fil-spin { to { transform: rotate(360deg); } }
+
+  .fil-pulse   { animation: fil-p 6s ease-in-out infinite; }
+  .fil-pulse-2 { animation: fil-p 6s ease-in-out infinite; animation-delay: 1.5s; }
+  .fil-pulse-3 { animation: fil-p 6s ease-in-out infinite; animation-delay: 3s; }
+  @keyframes fil-p {
+    0%,100% { opacity: .18; }
+    50%      { opacity: .55; }
   }
 
-  .badge-serie:hover {
-    background: rgba(107, 127, 184, .14);
-    border-color: rgba(107, 127, 184, .38);
+  .fil-float {
+    animation: fil-f 8s ease-in-out infinite;
+    transform-origin: 210px 210px;
+  }
+  @keyframes fil-f {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
   }
 
-  /* Tooltip nom de la série au survol */
-  .badge-serie::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #2c2416;
-    color: #f5f0e8;
-    font-family: 'Mulish', sans-serif;
-    font-size: .58rem;
-    font-weight: 400;
-    letter-spacing: .06em;
-    text-transform: none;
-    white-space: nowrap;
-    padding: .3rem .55rem;
-    border-radius: 3px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .18s ease;
-  }
-
-  .badge-serie:hover::after {
-    opacity: 1;
-  }
-
-  /* Les deux bulles qui évoquent le dialogue */
-  .badge-serie-bulles {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: 2px;
-    height: 8px;
-    margin-right: 1px;
-  }
-
-  .bulle {
-    display: block;
-    border-radius: 50%;
-    background: #6b7fb8;
-    opacity: .7;
-  }
-
-  .bulle-1 {
-    width: 5px;
-    height: 5px;
-    animation: bulle-p 3.2s ease-in-out infinite;
-  }
-
-  .bulle-2 {
-    width: 3.5px;
-    height: 3.5px;
-    animation: bulle-p 3.2s ease-in-out infinite;
-    animation-delay: .8s;
-  }
-
-  @keyframes bulle-p {
-    0%, 100% { opacity: .45; transform: translateY(0); }
-    50%       { opacity: .9;  transform: translateY(-2px); }
-  }
-
-  .badge-serie-ep {
-    line-height: 1;
-  }
-</style>
-
-<style>
-  /* ══════════════════════════════════════
-     ENCART SÉRIE
-  ══════════════════════════════════════ */
-
-  .serie-encart {
-    display: flex;
-    align-items: flex-start;
-    gap: 1.5rem;
-    margin: 1.25rem 0 2rem;
-    padding: 1.25rem 1.5rem;
-    text-decoration: none;
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    opacity: 0;
-    animation: rise .8s .18s ease forwards;
-    transition: background .25s;
-    cursor: pointer;
-    /* Bordure subtile */
-    border: 1px solid rgba(196,153,58,.18);
-    background: rgba(196,153,58,.025);
-  }
-
-  /* Barre gauche animée */
-  .serie-encart::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 12%; bottom: 12%;
-    width: 2px;
-    border-radius: 2px;
-    background: linear-gradient(to bottom, transparent, #c4993a 30%, #c4993a 70%, transparent);
-    opacity: .4;
-    transition: opacity .25s, top .25s, bottom .25s;
-  }
-
-  /* Lueur de fond au survol */
-  .serie-encart::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 20% 50%, rgba(196,153,58,.06) 0%, transparent 65%);
-    opacity: 0;
-    transition: opacity .35s;
-    pointer-events: none;
-  }
-
-  .serie-encart:hover {
-    background: rgba(196,153,58,.045);
-    border-color: rgba(196,153,58,.32);
-  }
-
-  .serie-encart:hover::before {
-    opacity: .7;
-    top: 0; bottom: 0;
-  }
-
-  .serie-encart:hover::after { opacity: 1; }
-
-  /* SVG bulles de dialogue */
-  .serie-encart-svg {
-    width: 54px;
-    height: 54px;
-    flex-shrink: 0;
-    margin-top: .15rem;
-  }
-
-  /* Points animés dans les bulles SVG */
-  .dot-a { animation: dot-pulse 2.4s ease-in-out infinite; }
-  .dot-b { animation: dot-pulse 2.4s ease-in-out infinite; animation-delay: .4s; }
-  .dot-c { animation: dot-pulse 2.4s ease-in-out infinite; animation-delay: .8s; }
-  .dot-d { animation: dot-pulse 2.8s ease-in-out infinite; animation-delay: .6s; }
-  .dot-e { animation: dot-pulse 2.8s ease-in-out infinite; animation-delay: 1s; }
-  .dot-f { animation: dot-pulse 2.8s ease-in-out infinite; animation-delay: 1.4s; }
-
-  @keyframes dot-pulse {
-    0%, 100% { opacity: .3; transform: translateY(0); }
-    50%       { opacity: .85; transform: translateY(-2px); }
-  }
-
-  /* Corps de l'encart */
-  .serie-encart-body { flex: 1; min-width: 0; }
-
-  .serie-encart-top {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
-    margin-bottom: .4rem;
-    flex-wrap: wrap;
-  }
-
-  .serie-encart-eyebrow {
-    font-family: 'Mulish', sans-serif;
-    font-size: .52rem; font-weight: 700;
-    letter-spacing: .26em; text-transform: uppercase;
-    color: #c4993a; opacity: .65;
-  }
-
-  .serie-encart-pip {
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: rgba(196,153,58,.35);
-    flex-shrink: 0;
-  }
-
-  .serie-encart-count {
-    font-family: 'Mulish', sans-serif;
-    font-size: .55rem; font-weight: 300;
-    letter-spacing: .1em;
-    color: var(--ink-soft); opacity: .5;
-  }
-
-  .serie-encart-titre {
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: .98rem; font-weight: 400; font-style: italic;
-    color: var(--ink);
-    line-height: 1.35;
-    margin-bottom: .35rem;
-    transition: color .2s;
-  }
-
-  .serie-encart:hover .serie-encart-titre { color: var(--accent); }
-
-  .serie-encart-desc {
-    font-family: 'Mulish', sans-serif;
-    font-size: .78rem; font-weight: 300;
-    color: var(--ink-soft); line-height: 1.7;
-    max-width: 58ch;
-    margin-bottom: .75rem;
-  }
-
-  .serie-encart-footer {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  /* Initiales personnages superposées */
-  .serie-voix {
-    display: flex;
-    align-items: center;
-  }
-
-  .voix-i {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: .62rem; font-weight: 700;
-    border: 1.5px solid var(--bg, #f5f0e8);
-    flex-shrink: 0;
-  }
-
-  .voix-e {
-    background: rgba(196,153,58,.12);
-    color: #c4993a;
-    border-color: rgba(196,153,58,.25);
-    z-index: 2;
-  }
-
-  .voix-n {
-    background: rgba(139,94,60,.1);
-    color: var(--accent);
-    border-color: rgba(139,94,60,.2);
-    margin-left: -7px;
-    z-index: 1;
-  }
-
-  .voix-label {
-    font-family: 'Mulish', sans-serif;
-    font-size: .65rem; font-weight: 300; font-style: italic;
-    color: var(--ink-soft); opacity: .5;
-    margin-left: .55rem;
-  }
-
-  .serie-encart-cta {
-    font-family: 'Mulish', sans-serif;
-    font-size: .62rem; font-weight: 600;
-    letter-spacing: .14em; text-transform: uppercase;
-    color: var(--blizzard, #148EFF);
-    margin-left: auto;
-    opacity: 0;
-    transform: translateX(-6px);
-    transition: opacity .2s, transform .2s;
-  }
-
-  .serie-encart:hover .serie-encart-cta {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  @media (max-width: 600px) {
-    .serie-encart { gap: 1rem; }
-    .serie-encart-svg { width: 40px; height: 40px; }
-    .serie-encart-cta { margin-left: 0; }
-  }
-
-  /* ── CARTE SÉRIE (colonne droite) ── */
-  .legende-card--serie {
-    display: flex;
-    flex-direction: column;
-    gap: .6rem;
-    text-decoration: none;
-    margin-bottom: .75rem;
-    cursor: pointer;
-    transition: border-color .2s, background .2s;
-  }
-  .legende-card--serie:hover {
-    border-color: rgba(196,153,58,.35);
-    background: rgba(196,153,58,.06);
-  }
-  .legende-serie-top {
-    display: flex;
-    align-items: flex-start;
-    gap: .55rem;
-  }
-  .legende-serie-svg {
-    width: 34px; height: 34px;
-    flex-shrink: 0;
-    margin-top: .1rem;
-  }
-  .legende-serie-eyebrow {
-    font-family: 'Mulish', sans-serif;
-    font-size: .49rem; font-weight: 700;
-    letter-spacing: .2em; text-transform: uppercase;
-    color: #c4993a; opacity: .65;
-    margin-bottom: .18rem;
-    display: block;
-  }
-  .sdot-a { animation: sdot 2.4s ease-in-out infinite; }
-  .sdot-b { animation: sdot 2.4s ease-in-out infinite; animation-delay: .4s; }
-  .sdot-c { animation: sdot 2.4s ease-in-out infinite; animation-delay: .8s; }
-  .sdot-d { animation: sdot 2.8s ease-in-out infinite; animation-delay: .5s; }
-  .sdot-e { animation: sdot 2.8s ease-in-out infinite; animation-delay: .9s; }
-  .sdot-f { animation: sdot 2.8s ease-in-out infinite; animation-delay: 1.3s; }
-  @keyframes sdot {
-    0%, 100% { opacity: .25; transform: translateY(0); }
-    50%       { opacity: .75; transform: translateY(-1.5px); }
-  }
-  .legende-serie-voix {
-    display: flex;
-    align-items: center;
-  }
-  .voix-i {
-    width: 17px; height: 17px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Libre Baskerville', Georgia, serif;
-    font-size: .52rem; font-weight: 700;
-    border: 1.5px solid var(--bg, #f5f0e8);
-    flex-shrink: 0;
-  }
-  .voix-e {
-    background: rgba(196,153,58,.12); color: #c4993a;
-    border-color: rgba(196,153,58,.25); z-index: 2;
-  }
-  .voix-n {
-    background: rgba(139,94,60,.1); color: var(--accent);
-    border-color: rgba(139,94,60,.2);
-    margin-left: -5px; z-index: 1;
-  }
-  .voix-label {
-    font-family: 'Mulish', sans-serif;
-    font-size: .58rem; font-weight: 300; font-style: italic;
-    color: var(--ink-soft); opacity: .5;
-    margin-left: .4rem;
-  }
-  /* Carte stades cliquable */
-  .legende-card--link {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    cursor: pointer;
-    transition: border-color .2s, background .2s;
-  }
-  .legende-card--link:hover {
-    border-color: rgba(139,94,60,.25);
-    background: rgba(139,94,60,.04);
-  }
-  /* CTA partagé */
-  .legende-cta {
-    display: inline-block;
-    font-family: 'Mulish', sans-serif;
-    font-size: .6rem; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase;
-    color: var(--blizzard, #148EFF);
-    opacity: 0;
-    transform: translateX(-3px);
-    transition: opacity .2s, transform .2s;
-    margin-top: .2rem;
-  }
-  .legende-card--serie:hover .legende-cta,
-  .legende-card--link:hover .legende-cta {
-    opacity: 1;
-    transform: translateX(0);
+  /* ══ RESPONSIVE ══ */
+  @media (max-width: 480px) {
+    .page-titre { font-size: 1.5rem; }
+    .tabs-bar   { padding: 0 1rem; }
+    .tab        { padding: .75rem .65rem .65rem; font-size: .58rem; }
+    .contenu-wrap { padding: 1.2rem 1rem 0; }
   }
 
 </style>
+
+<script>
+  const tabs   = document.querySelectorAll<HTMLElement>('.tab');
+  const panels = document.querySelectorAll<HTMLElement>('.tab-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab as string;
+
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => p.classList.remove('visible'));
+
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+
+      const panel = document.getElementById(`panel-${target}`);
+      if (panel) panel.classList.add('visible');
+    });
+  });
+</script>
+
+</Base>
