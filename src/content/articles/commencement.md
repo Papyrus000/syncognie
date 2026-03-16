@@ -1,7 +1,7 @@
 ---
 title: La première pierre
 description: C'est ici que tout commence...
-date: 2026-03-02
+date: 2026-03-03
 category: Journal
 rubrique: mecanique
 engagement: pause
