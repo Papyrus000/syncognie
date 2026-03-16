@@ -540,22 +540,7 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
     </aside>
   )}
 
-  {article.data.note_genese && article.data.note_genese.length > 0 && (
-    <div class="note-genese">
-      <div class="note-genese-header">
-        <span class="note-genese-glyph">✦</span>
-        <span class="note-genese-label">Note d'atelier</span>
-      </div>
-      <div class="note-genese-body">
-        {article.data.note_genese.map((entry: { date: string; texte: string }) => (
-          <div class="note-genese-entry">
-            <span class="note-genese-date">{entry.date}</span>
-            <p class="note-genese-text">{entry.texte}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  )}
+
 
   <div class="content">
     <Content components={{ Personnage, NoteReference, Instant, SMS }} />
@@ -586,19 +571,7 @@ article.dialogue .content p { font-size: 1.02rem; color: var(--ink-mid); }
     </div>
   )}
 
-  <!-- Stade -->
-  {stadeInfo && (
-    <div class="stade-encart">
-      <div class="stade-encart-left">
-        <span class="stade-emoji-lg">{stadeInfo.emoji}</span>
-        <div>
-          <p class="stade-encart-label" style={`color:${stadeInfo.color}`}>{stadeInfo.label}</p>
-          <p class="stade-encart-desc">{stadeInfo.desc}</p>
-        </div>
-      </div>
-      <a href="/stades" class="stade-encart-lien">Le jardin →</a>
-    </div>
-  )}
+
 
   <!-- Mini-encart série -->
   {article.data.serie && serieSlug && episodesSerie.length > 1 && serieStyle && (
