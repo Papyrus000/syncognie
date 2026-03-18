@@ -1,0 +1,1387 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Les deux mondes — McGilchrist · Syncognie" description="Une expérience en quatre actes pour comprendre, de l'intérieur, la thèse de McGilchrist sur les deux hémisphères.">
+
+<div class="mcg-wrap">
+
+  <!-- BREADCRUMB -->
+  <nav class="mcg-breadcrumb">
+    <a href="/outils" class="mcg-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Tous les outils
+    </a>
+    <span class="mcg-bread-sep">·</span>
+    <span class="mcg-bread-current">Les deux mondes</span>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="mcg-header">
+    <p class="mcg-surtitre">Outil · McGilchrist</p>
+    <h1 class="mcg-titre">Les deux <em>mondes</em></h1>
+    <p class="mcg-sous">Une expérience en quatre actes. Pas un résumé — une traversée. Iain McGilchrist en quatre étapes qui se vivent avant de se comprendre.</p>
+    <div class="mcg-meta">
+      <span class="mcg-version">v1.0</span>
+      <span class="mcg-meta-sep">·</span>
+      <span class="mcg-metainfo">4 actes · ~8 min</span>
+    </div>
+  </div>
+
+  <!-- PROGRESSION -->
+  <div class="mcg-progress" id="mcg-progress">
+    <div class="mcg-prog-track">
+      <div class="mcg-prog-fill" id="mcg-prog-fill"></div>
+    </div>
+    <div class="mcg-prog-actes">
+      <span class="mcg-prog-acte active" data-acte="0">I</span>
+      <span class="mcg-prog-acte" data-acte="1">II</span>
+      <span class="mcg-prog-acte" data-acte="2">III</span>
+      <span class="mcg-prog-acte" data-acte="3">IV</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       ACTE I — L'EXPÉRIENCE DE LA BASCULE
+       ════════════════════════════════ -->
+  <section class="mcg-acte" id="acte-0" data-acte="0">
+
+    <div class="mcg-acte-label">
+      <span class="mcg-acte-num">Acte I</span>
+      <span class="mcg-acte-titre-label">L'expérience</span>
+    </div>
+
+    <!-- ÉTAPE 1 : le mot -->
+    <div class="mcg-step" id="step-0-0" data-step="0">
+      <p class="mcg-step-consigne">Lisez ce mot. Qu'est-ce qu'il évoque ?</p>
+      <div class="mcg-mot-container">
+        <span class="mcg-mot" id="mcg-mot-oiseau">oiseau</span>
+      </div>
+      <div class="mcg-choix-grille" id="choix-oiseau">
+        <button class="mcg-choix" data-val="gauche">
+          <span class="mcg-choix-icon">◻</span>
+          <span class="mcg-choix-label">Un animal vertébré,<br>à plumes, ovipare</span>
+        </button>
+        <button class="mcg-choix" data-val="droit">
+          <span class="mcg-choix-icon">◯</span>
+          <span class="mcg-choix-label">Un vol, un cri,<br>quelque chose de libre</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2 : silence d'abord -->
+    <div class="mcg-step hidden" id="step-0-1" data-step="1">
+      <div class="mcg-silence" id="silence-oiseau">
+        <p class="mcg-silence-mot">oiseau</p>
+        <p class="mcg-silence-sous" id="silence-sous">—</p>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2b : révélation -->
+    <div class="mcg-step hidden" id="step-0-1b" data-step="1b">
+      <div class="mcg-revelation">
+        <div class="mcg-rev-split">
+          <div class="mcg-rev-gauche">
+            <p class="mcg-rev-label gauche-label">Hémisphère gauche</p>
+            <p class="mcg-rev-mot-g">oiseau</p>
+            <p class="mcg-rev-def">Classe : Aves. Caractères : bec, plumes, ailes. Catégorie fermée, définie, utilisable.</p>
+            <p class="mcg-rev-qualite">Précis · Fermé · Exploitable</p>
+          </div>
+          <div class="mcg-rev-droit">
+            <p class="mcg-rev-label droit-label">Hémisphère droit</p>
+            <p class="mcg-rev-mot-d">oiseau</p>
+            <p class="mcg-rev-def">Un matin, une fenêtre ouverte, quelque chose qui part. Ce mot-là, dans ce contexte-là, avec tout ce qu'il porte.</p>
+            <p class="mcg-rev-qualite">Contextuel · Ouvert · Vivant</p>
+          </div>
+        </div>
+        <div class="mcg-rev-note">
+          <p>Les deux hémisphères ont traité le même mot. Ni l'un ni l'autre n'a tort. Mais ils habitent des mondes différents.</p>
+        </div>
+        <button class="mcg-suite" id="suite-0-1">Continuer →</button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3 : second exemple -->
+    <div class="mcg-step hidden" id="step-0-2" data-step="2">
+      <p class="mcg-step-consigne">Regardez cette main. Que voyez-vous ?</p>
+      <div class="mcg-main-container">
+        <svg class="mcg-main-svg" viewBox="0 0 160 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- pouce -->
+          <path d="M38 148 C38 148 22 136 18 122 C14 108 20 96 32 92 C40 89 48 93 52 100 L56 148Z" fill="#e8e0d0" stroke="#c4b89a" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- index -->
+          <path d="M56 118 L54 52 C54 42 60 35 69 35 C78 35 84 42 84 52 L84 118Z" fill="#e8e0d0" stroke="#c4b89a" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- majeur -->
+          <path d="M84 115 L83 44 C83 34 89 27 98 27 C107 27 113 34 113 44 L112 115Z" fill="#e8e0d0" stroke="#c4b89a" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- annulaire -->
+          <path d="M112 116 L112 52 C112 42 118 35 127 35 C136 35 142 42 142 52 L140 116Z" fill="#e8e0d0" stroke="#c4b89a" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- auriculaire -->
+          <path d="M140 118 L140 62 C140 53 145 47 153 47 C161 47 166 53 166 62 L164 118Z" fill="#e8e0d0" stroke="#c4b89a" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- paume -->
+          <path d="M38 148 L40 190 C42 210 55 222 80 224 C108 226 130 216 138 198 L142 170 L164 118 L140 118 L112 116 L84 115 L56 118 L38 148Z" fill="#e8e0d0" stroke="#c4b89a" stroke-width="1.4" stroke-linejoin="round"/>
+          <!-- plis des doigts -->
+          <path d="M57 78 Q70 75 83 78" stroke="#c4b89a" stroke-width=".8" stroke-linecap="round" opacity=".5"/>
+          <path d="M84 76 Q98 73 112 76" stroke="#c4b89a" stroke-width=".8" stroke-linecap="round" opacity=".5"/>
+          <path d="M113 78 Q127 75 140 78" stroke="#c4b89a" stroke-width=".8" stroke-linecap="round" opacity=".5"/>
+          <path d="M141 82 Q153 79 164 82" stroke="#c4b89a" stroke-width=".8" stroke-linecap="round" opacity=".5"/>
+          <!-- lignes de la paume -->
+          <path d="M52 158 Q85 148 118 155" stroke="#c4b89a" stroke-width="1" stroke-linecap="round" opacity=".55"/>
+          <path d="M48 172 Q82 164 122 170" stroke="#c4b89a" stroke-width=".8" stroke-linecap="round" opacity=".38"/>
+          <path d="M55 188 Q88 182 124 186" stroke="#c4b89a" stroke-width=".7" stroke-linecap="round" opacity=".28"/>
+        </svg>
+      </div>
+      <div class="mcg-choix-grille" id="choix-main">
+        <button class="mcg-choix" data-val="gauche">
+          <span class="mcg-choix-icon">◻</span>
+          <span class="mcg-choix-label">Cinq doigts,<br>une structure préhensile</span>
+        </button>
+        <button class="mcg-choix" data-val="droit">
+          <span class="mcg-choix-icon">◯</span>
+          <span class="mcg-choix-label">La main de quelqu'un —<br>qui tend ou qui retient</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 4 : seuil vers acte II -->
+    <div class="mcg-step hidden" id="step-0-3" data-step="3">
+      <div class="mcg-seuil">
+        <div class="mcg-seuil-espace"></div>
+        <p class="mcg-seuil-texte">L'un <em>saisit</em>.<br>L'autre <em>rencontre</em>.</p>
+        <div class="mcg-seuil-espace"></div>
+        <p class="mcg-seuil-sous" id="seuil-sous-01"></p>
+        <button class="mcg-suite mcg-suite--acte mcg-seuil-btn hidden" id="seuil-btn-01" data-next-acte="1">Acte II — Les deux régimes →</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════
+       ACTE II — LES DEUX RÉGIMES
+       ════════════════════════════════ -->
+  <section class="mcg-acte hidden" id="acte-1" data-acte="1">
+
+    <div class="mcg-acte-label">
+      <span class="mcg-acte-num">Acte II</span>
+      <span class="mcg-acte-titre-label">Les deux régimes</span>
+    </div>
+
+    <div class="mcg-step" id="step-1-0">
+
+      <p class="mcg-step-consigne">Deux hémisphères. Deux manières d'être au monde.</p>
+
+      <div class="mcg-duel">
+
+        <div class="mcg-duel-col mcg-duel-gauche">
+          <div class="mcg-duel-header">
+            <div class="mcg-duel-dot gauche-dot"></div>
+            <p class="mcg-duel-nom">Hémisphère gauche</p>
+          </div>
+          <div class="mcg-duel-qualites" id="gauche-qualites">
+            <div class="mcg-qualite" style="--delay:.05s">
+              <span class="mcg-q-titre">Saisit</span>
+              <span class="mcg-q-desc">Prend, fixe, utilise. Son rapport au monde est celui d'un outil à saisir.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.1s">
+              <span class="mcg-q-titre">Catégorise</span>
+              <span class="mcg-q-desc">Classe, nomme, range. Tout ce qui ne rentre pas dans une catégorie est ignoré.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.15s">
+              <span class="mcg-q-titre">Isole</span>
+              <span class="mcg-q-desc">Extrait un élément de son contexte pour mieux l'analyser. Perd le tout pour gagner la partie.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.2s">
+              <span class="mcg-q-titre">Langage littéral</span>
+              <span class="mcg-q-desc">Les mots ont un sens fixe. La métaphore le dérange. L'ambiguïté est une erreur à corriger.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.25s">
+              <span class="mcg-q-titre">Certitude</span>
+              <span class="mcg-q-desc">Préfère une réponse fausse à l'absence de réponse. L'incertitude est inconfortable.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-duel-sep">
+          <div class="mcg-duel-sep-line"></div>
+          <span class="mcg-duel-vs">vs</span>
+          <div class="mcg-duel-sep-line"></div>
+        </div>
+
+        <div class="mcg-duel-col mcg-duel-droit">
+          <div class="mcg-duel-header">
+            <div class="mcg-duel-dot droit-dot"></div>
+            <p class="mcg-duel-nom">Hémisphère droit</p>
+          </div>
+          <div class="mcg-duel-qualites" id="droit-qualites">
+            <div class="mcg-qualite" style="--delay:.05s">
+              <span class="mcg-q-titre">Rencontre</span>
+              <span class="mcg-q-desc">Reste ouvert à ce qui se présente. Son rapport au monde est celui d'une présence à accueillir.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.1s">
+              <span class="mcg-q-titre">Contextualise</span>
+              <span class="mcg-q-desc">Perçoit les relations entre les choses. Ce qui compte, c'est toujours aussi ce qui l'entoure.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.15s">
+              <span class="mcg-q-titre">Relie</span>
+              <span class="mcg-q-desc">Maintient le tout pendant qu'il explore la partie. Ne perd jamais le fil de la connexion.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.2s">
+              <span class="mcg-q-titre">Langage métaphorique</span>
+              <span class="mcg-q-desc">Les mots portent plusieurs sens simultanément. L'ambiguïté est une richesse, pas un défaut.</span>
+            </div>
+            <div class="mcg-qualite" style="--delay:.25s">
+              <span class="mcg-q-titre">Tolérance à l'incertitude</span>
+              <span class="mcg-q-desc">Peut rester dans le flou sans se précipiter vers une conclusion. L'inconnu est habitable.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mcg-duel-note">
+        <p>McGilchrist insiste : <em>les deux sont nécessaires</em>. Le gauche est l'émissaire — précieux, efficace, indispensable. Le droit est le maître — celui qui donne le sens, le contexte, la valeur.</p>
+        <p style="margin-top:.6rem">Le problème n'est pas le gauche. C'est quand il oublie qu'il est l'émissaire.</p>
+      </div>
+
+      <button class="mcg-suite mcg-suite--acte" data-next-acte="2">Acte III — L'usurpation →</button>
+
+      <!-- seuil vers acte III -->
+      <div class="mcg-seuil mcg-seuil--inter hidden" id="seuil-vers-3">
+        <div class="mcg-seuil-espace"></div>
+        <p class="mcg-seuil-texte" style="font-size:1.3rem">Ce n'est pas<br>une question de biologie.</p>
+        <div class="mcg-seuil-espace" style="height:2rem"></div>
+        <p class="mcg-seuil-sous" id="seuil-sous-02"></p>
+        <button class="mcg-suite mcg-suite--acte mcg-seuil-btn hidden" id="seuil-btn-02" data-next-acte="2">Acte III — L'usurpation →</button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════
+       ACTE III — L'USURPATION
+       ════════════════════════════════ -->
+  <section class="mcg-acte hidden" id="acte-2" data-acte="2">
+
+    <div class="mcg-acte-label">
+      <span class="mcg-acte-num">Acte III</span>
+      <span class="mcg-acte-titre-label">L'usurpation</span>
+    </div>
+
+    <div class="mcg-step" id="step-2-0">
+
+      <p class="mcg-step-consigne">L'hémisphère gauche a oublié sa place. Voici comment.</p>
+
+      <div class="mcg-frise">
+
+        <div class="mcg-frise-item" style="--fi-delay:.05s">
+          <div class="mcg-frise-epoque">
+            <span class="mcg-fi-date">Renaissance</span>
+            <span class="mcg-fi-siecle">XVe–XVIe</span>
+          </div>
+          <div class="mcg-frise-contenu">
+            <div class="mcg-fi-gain">
+              <span class="mcg-fi-label gain-label">Ce qu'on a gagné</span>
+              <p>Perspective, anatomie, représentation fidèle du réel. Le gauche apporte la précision, la maîtrise technique.</p>
+            </div>
+            <div class="mcg-fi-perte">
+              <span class="mcg-fi-label perte-label">Ce qu'on a commencé à perdre</span>
+              <p>L'icône médiévale ne représentait pas le réel — elle <em>était</em> une présence. La peinture devient fenêtre, pas seuil.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-frise-item" style="--fi-delay:.12s">
+          <div class="mcg-frise-epoque">
+            <span class="mcg-fi-date">Lumières</span>
+            <span class="mcg-fi-siecle">XVIIIe</span>
+          </div>
+          <div class="mcg-frise-contenu">
+            <div class="mcg-fi-gain">
+              <span class="mcg-fi-label gain-label">Ce qu'on a gagné</span>
+              <p>Raison universelle, droits de l'homme, science empirique. Des outils puissants pour organiser le monde.</p>
+            </div>
+            <div class="mcg-fi-perte">
+              <span class="mcg-fi-label perte-label">Ce qu'on a commencé à perdre</span>
+              <p>Le mystère devient ignorance à effacer. Ce qui ne se prouve pas n'existe pas. Le corps, l'émotion, le sacré — suspects.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-frise-item" style="--fi-delay:.19s">
+          <div class="mcg-frise-epoque">
+            <span class="mcg-fi-date">Révolution industrielle</span>
+            <span class="mcg-fi-siecle">XIXe</span>
+          </div>
+          <div class="mcg-frise-contenu">
+            <div class="mcg-fi-gain">
+              <span class="mcg-fi-label gain-label">Ce qu'on a gagné</span>
+              <p>Productivité, médecine, mobilité. Le monde transformé à une vitesse sans précédent.</p>
+            </div>
+            <div class="mcg-fi-perte">
+              <span class="mcg-fi-label perte-label">Ce qu'on a commencé à perdre</span>
+              <p>L'humain devient ressource. Le travail se fragmente en tâches. Ce qui ne se mesure pas — l'appartenance, le sens, la beauté — disparaît des calculs.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-frise-item" style="--fi-delay:.26s">
+          <div class="mcg-frise-epoque">
+            <span class="mcg-fi-date">Ère numérique</span>
+            <span class="mcg-fi-siecle">XXe–XXIe</span>
+          </div>
+          <div class="mcg-frise-contenu">
+            <div class="mcg-fi-gain">
+              <span class="mcg-fi-label gain-label">Ce qu'on a gagné</span>
+              <p>Accès universel à l'information, connexion planétaire, automatisation du fastidieux.</p>
+            </div>
+            <div class="mcg-fi-perte">
+              <span class="mcg-fi-label perte-label">Ce qu'on a commencé à perdre</span>
+              <p>L'attention elle-même. Le monde devient flux de données à traiter. Ce qui ne se quantifie pas — la présence, la lenteur, le silence — devient inefficience.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mcg-usurpation-note">
+        <div class="mcg-usnote-inner">
+          <p class="mcg-usnote-titre">La thèse de McGilchrist</p>
+          <p class="mcg-usnote-texte">
+            Ce n'est pas l'intelligence ou la technologie le problème.
+            C'est que l'émissaire — le gauche — a progressivement convaincu qu'il n'avait pas besoin du maître.
+            Qu'optimiser, classer, quantifier était suffisant.
+            Que ce qui ne se mesure pas n'existe pas.
+          </p>
+          <p class="mcg-usnote-texte" style="margin-top:.65rem">
+            Résultat : une civilisation extraordinairement compétente
+            et de plus en plus incapable de savoir <em>pourquoi</em> elle fait ce qu'elle fait.
+          </p>
+        </div>
+      </div>
+
+      <button class="mcg-suite mcg-suite--acte" data-next-acte="3">Acte IV — Le personnel →</button>
+
+      <!-- seuil vers acte IV -->
+      <div class="mcg-seuil mcg-seuil--inter hidden" id="seuil-vers-4">
+        <div class="mcg-seuil-espace"></div>
+        <p class="mcg-seuil-texte" style="font-size:1.3rem">Vous connaissez<br>déjà ces deux mondes.</p>
+        <div class="mcg-seuil-espace" style="height:2rem"></div>
+        <p class="mcg-seuil-sous" id="seuil-sous-03"></p>
+        <button class="mcg-suite mcg-suite--acte mcg-seuil-btn hidden" id="seuil-btn-03" data-next-acte="3">Acte IV — Le personnel →</button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ════════════════════════════════
+       ACTE IV — LE PERSONNEL
+       ════════════════════════════════ -->
+  <section class="mcg-acte hidden" id="acte-3" data-acte="3">
+
+    <div class="mcg-acte-label">
+      <span class="mcg-acte-num">Acte IV</span>
+      <span class="mcg-acte-titre-label">Le personnel</span>
+    </div>
+
+    <div class="mcg-step" id="step-3-0">
+
+      <p class="mcg-step-consigne">Ces deux régimes — vous les connaissez déjà. Voici où.</p>
+
+      <div class="mcg-situations">
+
+        <div class="mcg-sit" id="sit-0">
+          <div class="mcg-sit-header" role="button" tabindex="0">
+            <p class="mcg-sit-titre">Une dispute</p>
+            <span class="mcg-sit-arrow">↓</span>
+          </div>
+          <div class="mcg-sit-body">
+            <div class="mcg-sit-split">
+              <div class="mcg-sit-g">
+                <p class="mcg-sit-label gauche-label">Mode gauche</p>
+                <p>Qui a dit quoi. Qui a tort. Les faits, les preuves, les arguments. Gagner le débat. Avoir raison sur les détails.</p>
+              </div>
+              <div class="mcg-sit-d">
+                <p class="mcg-sit-label droit-label">Mode droit</p>
+                <p>Ce qui se passe sous les mots. La peur derrière la colère. Ce que l'autre essaie de dire et n'arrive pas à formuler. Ce que cette dispute révèle sur la relation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-sit" id="sit-1">
+          <div class="mcg-sit-header" role="button" tabindex="0">
+            <p class="mcg-sit-titre">Une décision difficile</p>
+            <span class="mcg-sit-arrow">↓</span>
+          </div>
+          <div class="mcg-sit-body">
+            <div class="mcg-sit-split">
+              <div class="mcg-sit-g">
+                <p class="mcg-sit-label gauche-label">Mode gauche</p>
+                <p>Liste des pour et des contre. Probabilités, risques calculés, critères objectifs. Trouver la réponse optimale.</p>
+              </div>
+              <div class="mcg-sit-d">
+                <p class="mcg-sit-label droit-label">Mode droit</p>
+                <p>Quel est le sens de cette décision dans ma vie ? Qu'est-ce que je trahirais en choisissant l'une ou l'autre voie ? Ce que je ressens avant même de réfléchir.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-sit" id="sit-2">
+          <div class="mcg-sit-header" role="button" tabindex="0">
+            <p class="mcg-sit-titre">Lire un texte difficile</p>
+            <span class="mcg-sit-arrow">↓</span>
+          </div>
+          <div class="mcg-sit-body">
+            <div class="mcg-sit-split">
+              <div class="mcg-sit-g">
+                <p class="mcg-sit-label gauche-label">Mode gauche</p>
+                <p>Identifier les arguments, les définitions, les thèses. Construire un résumé. Chercher ce qui peut être retenu, utilisé, cité.</p>
+              </div>
+              <div class="mcg-sit-d">
+                <p class="mcg-sit-label droit-label">Mode droit</p>
+                <p>Se laisser traverser par le texte. Sentir ce qu'il ouvre. Rester avec ce qu'on ne comprend pas encore — comme une question qui travaille.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mcg-sit" id="sit-3">
+          <div class="mcg-sit-header" role="button" tabindex="0">
+            <p class="mcg-sit-titre">Écouter quelqu'un</p>
+            <span class="mcg-sit-arrow">↓</span>
+          </div>
+          <div class="mcg-sit-body">
+            <div class="mcg-sit-split">
+              <div class="mcg-sit-g">
+                <p class="mcg-sit-label gauche-label">Mode gauche</p>
+                <p>Traiter l'information, préparer la réponse, repérer les incohérences, catégoriser ce que l'autre dit dans des cases connues.</p>
+              </div>
+              <div class="mcg-sit-d">
+                <p class="mcg-sit-label droit-label">Mode droit</p>
+                <p>Être présent à quelqu'un. Entendre ce qui n'est pas dit. Laisser l'autre finir de penser à voix haute sans le devancer.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SYNTHÈSE FINALE -->
+      <div class="mcg-synthese" id="mcg-synthese">
+        <div class="mcg-synth-inner">
+
+          <p class="mcg-synth-titre">Ce que McGilchrist ne dit pas</p>
+          <p class="mcg-synth-texte">
+            Il ne dit pas que le gauche est mauvais. Il dit que le gauche est un outil extraordinaire —
+            à condition que le droit reste aux commandes.
+          </p>
+          <p class="mcg-synth-texte">
+            Le maître envoie l'émissaire faire le travail. L'émissaire revient avec les résultats.
+            Le maître intègre, contextualise, décide du sens.
+            Le problème de notre époque : l'émissaire est rentré et a verrouillé la porte.
+          </p>
+
+          <div class="mcg-synth-citation-grande">
+            <p class="mcg-scg-texte">
+              « Le cerveau gauche est un serviteur extraordinaire<br>
+              et un maître désastreux. »
+            </p>
+            <p class="mcg-scg-source">— Iain McGilchrist</p>
+          </div>
+
+          <div class="mcg-synth-liens">
+            <p class="mcg-synth-liens-label">Pour aller plus loin</p>
+            <div class="mcg-synth-liens-grille">
+              <a href="/outils/constellation" class="mcg-synth-lien">
+                <span class="mcg-sl-icon">◈</span>
+                <span class="mcg-sl-texte">McGilchrist dans la Constellation</span>
+              </a>
+              <a href="/outils/strates" class="mcg-synth-lien">
+                <span class="mcg-sl-icon">◈</span>
+                <span class="mcg-sl-texte">Sa place dans les Strates</span>
+              </a>
+              <a href="/articles/mcgilchrist-hemispheres" class="mcg-synth-lien mcg-synth-lien--article">
+                <span class="mcg-sl-icon">✦</span>
+                <span class="mcg-sl-texte">Lire l'article — Mécanique · ép. 02</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- NOTE BAS -->
+  <div class="mcg-note-bas">
+    <div class="note-dot"></div>
+    <p>Cet outil est une introduction — une porte. L'œuvre de McGilchrist, notamment <em>The Matter with Things</em> (2021), va bien au-delà de ce que ces quatre actes peuvent contenir.</p>
+  </div>
+
+</div>
+
+</Base>
+
+<style is:global>
+
+/* ══ TOKENS ══ */
+:root {
+  --mcg-gauche:     #2c3e52;
+  --mcg-gauche-lt:  #e8edf2;
+  --mcg-gauche-mid: #3a4f62;
+  --mcg-droit:      #5c3a1e;
+  --mcg-droit-lt:   #f2ebe2;
+  --mcg-droit-mid:  #7a4e2a;
+  --mcg-gold:       #c4993a;
+  --mcg-parch:      #ece4d4;
+  --mcg-bg:         #f5f0e8;
+}
+
+/* ══ WRAP ══ */
+.mcg-wrap {
+  max-width: var(--max, 740px);
+  margin: 0 auto;
+  padding: 0 1.75rem 5rem;
+}
+
+/* ══ BREADCRUMB ══ */
+.mcg-breadcrumb {
+  display: flex; align-items: center; gap: .6rem;
+  margin: 2rem 0 1.75rem;
+  opacity: 0; animation: rise .7s .02s ease forwards;
+}
+.mcg-back {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 600;
+  color: var(--accent, #c4993a); text-decoration: none;
+  transition: gap .2s;
+}
+.mcg-back:hover { gap: .7rem; }
+.mcg-back svg { transition: transform .2s; }
+.mcg-back:hover svg { transform: translateX(-2px); }
+.mcg-bread-sep { color: var(--rule, #ddd6c8); }
+.mcg-bread-current {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189);
+}
+
+/* ══ HEADER ══ */
+.mcg-header {
+  margin-bottom: 1.8rem;
+  opacity: 0; animation: rise .9s .06s ease forwards;
+}
+.mcg-surtitre {
+  font-family: 'Mulish', sans-serif;
+  font-size: .67rem; font-weight: 600;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--accent, #c4993a); margin-bottom: .65rem;
+}
+.mcg-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
+  color: var(--ink, #1a1714); line-height: 1.15;
+  letter-spacing: -.02em; margin-bottom: .75rem;
+}
+.mcg-titre em { font-style: italic; font-weight: 400; color: var(--mcg-gold); }
+.mcg-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .96rem; font-weight: 400;
+  color: #5a5248; line-height: 1.8;
+  max-width: 52ch; margin-bottom: .9rem;
+}
+.mcg-meta { display: flex; align-items: center; gap: .65rem; }
+.mcg-version {
+  font-family: 'Courier New', monospace;
+  font-size: .7rem; color: #6a6058;
+  border: 1px solid var(--rule, #ddd6c8);
+  border-radius: 3px; padding: .2rem .5rem;
+}
+.mcg-meta-sep { color: var(--rule, #ddd6c8); }
+.mcg-metainfo {
+  font-family: 'Mulish', sans-serif;
+  font-size: .75rem; color: var(--ink-soft, #9a9189);
+}
+
+/* ══ PROGRESSION ══ */
+.mcg-progress {
+  margin-bottom: 2.2rem;
+  opacity: 0; animation: rise .8s .14s ease forwards;
+}
+.mcg-prog-track {
+  height: 2px; background: var(--rule, #ddd6c8);
+  border-radius: 2px; margin-bottom: .7rem; overflow: hidden;
+}
+.mcg-prog-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(to right, var(--mcg-gauche), var(--mcg-gold), var(--mcg-droit));
+  border-radius: 2px;
+  transition: width .6s ease;
+}
+.mcg-prog-actes { display: flex; gap: 1rem; }
+.mcg-prog-acte {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .72rem; font-weight: 700;
+  color: var(--ink-soft, #9a9189);
+  letter-spacing: .06em; cursor: default;
+  transition: color .3s;
+}
+.mcg-prog-acte.active { color: var(--mcg-gold); }
+.mcg-prog-acte.done   { color: var(--ink, #1a1714); }
+
+/* ══ ACTES ══ */
+.mcg-acte { opacity: 0; animation: rise .7s ease forwards; }
+.mcg-acte.hidden { display: none; }
+
+.mcg-acte-label {
+  display: flex; align-items: baseline; gap: .7rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: .8rem;
+  border-bottom: 1px solid var(--rule, #ddd6c8);
+}
+.mcg-acte-num {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .75rem; font-weight: 700;
+  color: var(--mcg-gold); letter-spacing: .06em;
+}
+.mcg-acte-titre-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem; font-weight: 300;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-soft, #9a9189);
+}
+
+/* ══ STEPS ══ */
+.mcg-step { }
+.mcg-step.hidden { display: none; }
+
+.mcg-step-consigne {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .96rem; font-style: italic; font-weight: 400;
+  color: var(--ink, #1a1714); line-height: 1.55;
+  margin-bottom: 1.6rem; max-width: 46ch;
+}
+
+/* ══ ACTE I — MOT ══ */
+.mcg-mot-container {
+  display: flex; justify-content: center; align-items: center;
+  padding: 2.5rem 0 2rem;
+}
+.mcg-mot {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(2.4rem, 6vw, 3.8rem); font-weight: 400;
+  color: var(--ink, #1a1714); letter-spacing: -.02em;
+  animation: mcg-mot-pulse 3s ease-in-out infinite;
+}
+@keyframes mcg-mot-pulse {
+  0%,100% { opacity: .85; }
+  50%      { opacity: 1; }
+}
+
+.mcg-choix-grille {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .8rem;
+  margin-bottom: 1rem;
+}
+.mcg-choix {
+  background: white;
+  border: 1.5px solid var(--rule, #ddd6c8);
+  border-radius: 9px; padding: 1.1rem 1rem;
+  cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; gap: .4rem;
+  transition: all .2s; font-family: 'Mulish', sans-serif;
+}
+.mcg-choix:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.mcg-choix[data-val="gauche"]:hover { border-color: var(--mcg-gauche); }
+.mcg-choix[data-val="droit"]:hover  { border-color: var(--mcg-droit); }
+.mcg-choix-icon {
+  font-size: 1rem;
+  color: var(--ink-soft, #9a9189);
+}
+.mcg-choix[data-val="gauche"] .mcg-choix-icon { color: var(--mcg-gauche); }
+.mcg-choix[data-val="droit"]  .mcg-choix-icon { color: var(--mcg-droit); }
+.mcg-choix-label {
+  font-size: .8rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.55;
+}
+
+/* MAIN SVG */
+.mcg-main-container {
+  display: flex; justify-content: center; padding: 1.5rem 0 1.8rem;
+}
+.mcg-main-svg {
+  width: 120px; height: 156px;
+  filter: drop-shadow(0 4px 12px rgba(122,88,48,.12));
+  animation: mcg-float 4s ease-in-out infinite;
+}
+@keyframes mcg-float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+/* RÉVÉLATION */
+.mcg-revelation {
+  animation: rise .5s ease forwards;
+}
+.mcg-rev-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+.mcg-rev-gauche {
+  background: var(--mcg-gauche-lt);
+  border-left: 3px solid var(--mcg-gauche);
+  border-radius: 0 8px 8px 0;
+  padding: 1.1rem;
+}
+.mcg-rev-droit {
+  background: var(--mcg-droit-lt);
+  border-left: 3px solid var(--mcg-droit);
+  border-radius: 0 8px 8px 0;
+  padding: 1.1rem;
+}
+.mcg-rev-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .52rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  margin-bottom: .5rem; display: block;
+}
+.gauche-label { color: var(--mcg-gauche); }
+.droit-label  { color: var(--mcg-droit); }
+
+.mcg-rev-mot-g, .mcg-rev-mot-d {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.5rem; font-weight: 700;
+  margin-bottom: .5rem; line-height: 1;
+}
+.mcg-rev-mot-g { color: var(--mcg-gauche); letter-spacing: .04em; }
+.mcg-rev-mot-d { color: var(--mcg-droit); font-style: italic; }
+
+.mcg-rev-def {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.65;
+  margin-bottom: .5rem;
+}
+.mcg-rev-qualite {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft, #9a9189);
+}
+.mcg-rev-note {
+  background: var(--mcg-parch);
+  border-radius: 7px; padding: .9rem 1.1rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.7;
+  font-style: italic; margin-bottom: 1.2rem;
+}
+
+/* TRANSITION */
+.mcg-transition {
+  padding: 1.5rem 0;
+  text-align: center;
+  animation: rise .5s ease forwards;
+}
+.mcg-transition-texte {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem; font-weight: 400;
+  color: var(--ink, #1a1714); line-height: 1.6;
+  margin-bottom: .9rem;
+}
+.mcg-transition-texte em { color: var(--mcg-droit); }
+.mcg-transition-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189); line-height: 1.75;
+  max-width: 46ch; margin: 0 auto 1.8rem;
+}
+
+/* ══ BOUTONS SUITE ══ */
+.mcg-suite {
+  font-family: 'Mulish', sans-serif;
+  font-size: .7rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--bg, #f5f0e8);
+  background: var(--ink, #1a1714);
+  border: none; border-radius: 6px;
+  padding: .65rem 1.3rem;
+  cursor: pointer; margin-top: 1rem;
+  transition: background .2s, transform .18s;
+  display: inline-block;
+}
+.mcg-suite:hover { background: #2e2620; transform: translateY(-1px); }
+.mcg-suite--acte {
+  background: var(--mcg-gold);
+  color: white;
+  margin-top: 1.8rem; display: block; width: fit-content;
+}
+.mcg-suite--acte:hover { background: var(--mcg-droit); }
+
+/* ══ ACTE II — DUEL ══ */
+.mcg-duel {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
+  margin-bottom: 1.4rem;
+}
+.mcg-duel-col { padding: 1.2rem; }
+.mcg-duel-gauche {
+  background: var(--mcg-gauche-lt);
+  border-radius: 10px 0 0 10px;
+  border-top: 3px solid var(--mcg-gauche);
+}
+.mcg-duel-droit {
+  background: var(--mcg-droit-lt);
+  border-radius: 0 10px 10px 0;
+  border-top: 3px solid var(--mcg-droit);
+}
+.mcg-duel-sep {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: .5rem .2rem; gap: .3rem;
+}
+.mcg-duel-sep-line { flex: 1; width: 1px; background: var(--rule, #ddd6c8); }
+.mcg-duel-vs {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .65rem; font-weight: 700;
+  color: var(--ink-faint, #9a9189); letter-spacing: .1em;
+}
+
+.mcg-duel-header {
+  display: flex; align-items: center; gap: .5rem;
+  margin-bottom: 1rem;
+}
+.mcg-duel-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.gauche-dot { background: var(--mcg-gauche); }
+.droit-dot  { background: var(--mcg-droit); }
+.mcg-duel-nom {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+}
+.mcg-duel-gauche .mcg-duel-nom { color: var(--mcg-gauche); }
+.mcg-duel-droit  .mcg-duel-nom { color: var(--mcg-droit); }
+
+.mcg-duel-qualites { display: flex; flex-direction: column; gap: .75rem; }
+.mcg-qualite {
+  opacity: 0; transform: translateY(6px);
+  animation: rise .4s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+.mcg-q-titre {
+  display: block;
+  font-family: 'Libre Baskerville', serif;
+  font-size: .82rem; font-weight: 700;
+  margin-bottom: .2rem;
+}
+.mcg-duel-gauche .mcg-q-titre { color: var(--mcg-gauche-mid); }
+.mcg-duel-droit  .mcg-q-titre { color: var(--mcg-droit-mid); }
+.mcg-q-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.65;
+}
+
+.mcg-duel-note {
+  background: var(--mcg-parch);
+  border-radius: 8px; padding: 1rem 1.2rem;
+  border-left: 3px solid rgba(196,153,58,.4);
+  margin-bottom: .5rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .84rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.75;
+}
+.mcg-duel-note em { color: var(--mcg-droit); font-style: italic; }
+
+/* ══ ACTE III — FRISE ══ */
+.mcg-frise { display: flex; flex-direction: column; gap: .8rem; margin-bottom: 1.4rem; }
+
+.mcg-frise-item {
+  background: white;
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 3px 10px rgba(0,0,0,.04);
+  opacity: 0; transform: translateY(6px);
+  animation: rise .5s ease forwards;
+  animation-delay: var(--fi-delay, 0s);
+}
+.mcg-frise-epoque {
+  background: var(--ink, #1a1714);
+  padding: .55rem 1rem;
+  display: flex; align-items: baseline; gap: .6rem;
+}
+.mcg-fi-date {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .82rem; font-weight: 700;
+  color: var(--mcg-gold);
+}
+.mcg-fi-siecle {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 300;
+  color: rgba(245,240,232,.4); letter-spacing: .1em;
+}
+.mcg-frise-contenu {
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+.mcg-fi-gain, .mcg-fi-perte { padding: .9rem 1rem; }
+.mcg-fi-gain  { border-right: 1px solid var(--rule, #ddd6c8); }
+.mcg-fi-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .5rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  display: block; margin-bottom: .45rem;
+}
+.gain-label  { color: var(--mcg-gauche); }
+.perte-label { color: var(--mcg-droit); }
+.mcg-fi-gain p, .mcg-fi-perte p {
+  font-family: 'Mulish', sans-serif;
+  font-size: .8rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.68;
+}
+.mcg-fi-perte p em { color: var(--mcg-droit); }
+
+.mcg-usurpation-note {
+  margin-bottom: .5rem;
+}
+.mcg-usnote-inner {
+  background: var(--ink, #1a1714);
+  border-radius: 10px; padding: 1.4rem 1.5rem;
+  border-top: 2px solid var(--mcg-gold);
+}
+.mcg-usnote-titre {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--mcg-gold); margin-bottom: .7rem;
+}
+.mcg-usnote-texte {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .92rem; font-weight: 400;
+  color: rgba(245,240,232,.78); line-height: 1.75;
+}
+.mcg-usnote-texte em { color: var(--mcg-gold); font-style: italic; }
+
+/* ══ ACTE IV — SITUATIONS ══ */
+.mcg-situations { display: flex; flex-direction: column; gap: .55rem; margin-bottom: 1.6rem; }
+
+.mcg-sit {
+  background: white;
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 3px 10px rgba(0,0,0,.04);
+  border: 1px solid var(--rule, #ddd6c8);
+  transition: border-color .2s;
+}
+.mcg-sit.open { border-color: rgba(196,153,58,.35); }
+.mcg-sit-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 1.1rem; cursor: pointer;
+  transition: background .18s;
+}
+.mcg-sit-header:hover { background: rgba(196,153,58,.04); }
+.mcg-sit-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .9rem; font-style: italic;
+  color: var(--ink, #1a1714);
+}
+.mcg-sit-arrow {
+  font-size: .8rem; color: var(--ink-soft, #9a9189);
+  transition: transform .28s; display: inline-block;
+}
+.mcg-sit.open .mcg-sit-arrow { transform: rotate(180deg); }
+
+.mcg-sit-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .42s ease, opacity .32s ease;
+  opacity: 0;
+}
+.mcg-sit.open .mcg-sit-body { max-height: 400px; opacity: 1; }
+
+.mcg-sit-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule, #ddd6c8);
+}
+.mcg-sit-g {
+  padding: .9rem 1rem;
+  border-right: 1px solid var(--rule, #ddd6c8);
+  background: var(--mcg-gauche-lt);
+}
+.mcg-sit-d { padding: .9rem 1rem; background: var(--mcg-droit-lt); }
+.mcg-sit-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .5rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  display: block; margin-bottom: .45rem;
+}
+.mcg-sit-g p, .mcg-sit-d p {
+  font-family: 'Mulish', sans-serif;
+  font-size: .8rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.68;
+}
+
+/* ══ SYNTHÈSE ══ */
+.mcg-synthese {
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.mcg-synthese.visible { opacity: 1; transform: translateY(0); }
+
+.mcg-synth-inner {
+  background: var(--mcg-parch);
+  border-radius: 12px; padding: 1.6rem 1.75rem;
+  border-left: 3px solid var(--mcg-gold);
+}
+.mcg-synth-titre {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--mcg-droit-mid); margin-bottom: .8rem;
+}
+.mcg-synth-texte {
+  font-family: 'Mulish', sans-serif;
+  font-size: .88rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.8;
+  margin-bottom: .5rem;
+}
+
+.mcg-synth-citation {
+  margin: 1.2rem 0;
+  padding: 1rem 1.2rem;
+  background: white; border-radius: 8px;
+  border-left: 3px solid var(--mcg-gold);
+}
+.mcg-synth-cit-texte {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .92rem; font-style: italic;
+  color: var(--ink, #1a1714); line-height: 1.6;
+  margin-bottom: .4rem;
+}
+.mcg-synth-cit-source {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 600;
+  letter-spacing: .1em;
+  color: var(--ink-soft, #9a9189);
+}
+
+.mcg-synth-liens-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-soft, #9a9189); margin-bottom: .6rem;
+  margin-top: 1.2rem;
+}
+.mcg-synth-liens-grille { display: flex; gap: .55rem; flex-wrap: wrap; }
+.mcg-synth-lien {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .7rem; font-weight: 600;
+  color: var(--accent, #c4993a); text-decoration: none;
+  background: white; border: 1px solid rgba(196,153,58,.28);
+  border-radius: 5px; padding: .4rem .75rem;
+  transition: all .18s;
+}
+.mcg-synth-lien:hover {
+  background: rgba(196,153,58,.06);
+  border-color: rgba(196,153,58,.5);
+  transform: translateY(-1px);
+}
+.mcg-synth-lien--article {
+  background: rgba(92,58,30,.05);
+  border-color: rgba(92,58,30,.25);
+  color: var(--mcg-droit-mid);
+}
+.mcg-synth-lien--article:hover {
+  background: rgba(92,58,30,.1);
+  border-color: rgba(92,58,30,.45);
+}
+.mcg-sl-icon { opacity: .6; }
+
+/* ══ NOTE BAS ══ */
+.mcg-note-bas {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-top: 3rem; padding-top: 2rem;
+  border-top: 1px solid var(--rule, #ddd6c8);
+  opacity: 0; animation: rise .9s .6s ease forwards;
+}
+.mcg-note-bas p {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189);
+  line-height: 1.7; font-style: italic;
+}
+
+/* ══ MOMENT DE SILENCE ══ */
+.mcg-silence {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 3rem 0;
+  text-align: center;
+}
+.mcg-silence-mot {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 400; font-style: italic;
+  color: var(--ink, #1a1714);
+  letter-spacing: -.02em; line-height: 1;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: mcg-mot-apparait 1.2s ease forwards;
+}
+@keyframes mcg-mot-apparait {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mcg-silence-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .75rem; font-weight: 300;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-faint, #9a9189);
+  min-height: 1.5rem;
+  transition: opacity .6s ease;
+}
+
+/* ══ PHRASE-SEUIL ══ */
+.mcg-seuil {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 1rem 0;
+}
+.mcg-seuil--inter {
+  margin-top: 1rem;
+}
+.mcg-seuil-espace { height: 3.5rem; }
+.mcg-seuil-texte {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 400; line-height: 1.35;
+  color: var(--ink, #1a1714);
+  max-width: 18ch;
+  opacity: 0;
+  animation: mcg-seuil-in 1s ease forwards;
+}
+.mcg-seuil-texte em { font-style: italic; color: var(--mcg-droit, #5c3a1e); }
+@keyframes mcg-seuil-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.mcg-seuil-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft, #9a9189); line-height: 1.7;
+  max-width: 42ch; min-height: 2rem;
+  margin-top: 1.4rem;
+  transition: opacity .6s ease;
+  opacity: 0;
+}
+.mcg-seuil-sous.visible { opacity: 1; }
+.mcg-seuil-btn {
+  margin-top: 1.8rem !important;
+  transition: opacity .4s ease, transform .4s ease !important;
+}
+.mcg-seuil-btn.hidden {
+  opacity: 0 !important; pointer-events: none;
+  transform: translateY(6px);
+}
+.mcg-seuil-btn:not(.hidden) {
+  opacity: 1 !important; pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* ══ CITATION GRANDE ══ */
+.mcg-synth-citation-grande {
+  margin: 2rem -1.75rem;
+  padding: 3.5rem 2.5rem;
+  background: var(--ink, #1a1714);
+  text-align: center;
+  position: relative;
+}
+.mcg-synth-citation-grande::before {
+  content: '«';
+  position: absolute; top: 1.5rem; left: 2rem;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 5rem; line-height: 1;
+  color: var(--mcg-gold, #c4993a); opacity: .15;
+  pointer-events: none;
+}
+.mcg-scg-texte {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+  font-weight: 400; font-style: italic;
+  color: rgba(245,240,232,.88);
+  line-height: 1.65; margin-bottom: 1.2rem;
+}
+.mcg-scg-source {
+  font-family: 'Mulish', sans-serif;
+  font-size: .7rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--mcg-gold, #c4993a); opacity: .7;
+}
+
+/* ══ RESPIRATION ENTRE ACTES ══ */
+.mcg-acte { padding-bottom: 1.5rem; }
+.mcg-acte-label { margin-bottom: 2rem; padding-bottom: 1rem; }
+
+/* ══ RESPONSIVE seuil ══ */
+@media (max-width: 580px) {
+  .mcg-synth-citation-grande { margin: 2rem -1rem; padding: 2.5rem 1.5rem; }
+  .mcg-seuil-espace { height: 2rem; }
+}
+@media (max-width: 580px) {
+  .mcg-wrap { padding: 0 1rem 4rem; }
+  .mcg-rev-split    { grid-template-columns: 1fr; }
+  .mcg-duel         { grid-template-columns: 1fr; }
+  .mcg-duel-sep     { flex-direction: row; padding: .2rem 0; }
+  .mcg-duel-sep-line{ flex: 1; height: 1px; width: auto; }
+  .mcg-duel-gauche  { border-radius: 10px 10px 0 0; border-top: 3px solid var(--mcg-gauche); }
+  .mcg-duel-droit   { border-radius: 0 0 10px 10px; }
+  .mcg-frise-contenu{ grid-template-columns: 1fr; }
+  .mcg-fi-gain      { border-right: none; border-bottom: 1px solid var(--rule); }
+  .mcg-choix-grille { grid-template-columns: 1fr; }
+  .mcg-sit-split    { grid-template-columns: 1fr; }
+  .mcg-sit-g        { border-right: none; border-bottom: 1px solid var(--rule); }
+}
+</style>
+
+<script>
+  // ── PROGRESSION ──
+  let acteActuel = 0;
+  const totalActes = 4;
+
+  function updateProgress(acte) {
+    const fill = document.getElementById('mcg-prog-fill');
+    if (fill) fill.style.width = ((acte / (totalActes - 1)) * 100) + '%';
+    document.querySelectorAll('.mcg-prog-acte').forEach((el, i) => {
+      el.classList.toggle('active', i === acte);
+      el.classList.toggle('done', i < acte);
+    });
+  }
+
+  function showActe(n) {
+    document.querySelectorAll('.mcg-acte').forEach((el, i) => {
+      if (i === n) {
+        el.classList.remove('hidden');
+        el.style.animation = 'none';
+        void el.offsetWidth;
+        el.style.animation = '';
+      } else {
+        el.classList.add('hidden');
+      }
+    });
+    acteActuel = n;
+    updateProgress(n);
+    window.scrollTo({ top: document.getElementById('mcg-progress')?.offsetTop - 80 || 0, behavior: 'smooth' });
+  }
+
+  // ── ACTE I — choix mot oiseau ──
+  function showStep(acte, step) {
+    const id = `step-${acte}-${step}`;
+    document.querySelectorAll(`#acte-${acte} .mcg-step`).forEach(el => {
+      el.classList.toggle('hidden', el.id !== id);
+    });
+  }
+
+  // Après le choix oiseau → silence d'abord
+  document.querySelectorAll('#choix-oiseau .mcg-choix').forEach(btn => {
+    btn.addEventListener('click', () => {
+      showStep(0, 1);
+      // Silence : le mot apparaît seul. Après 2s, une phrase apparaît.
+      // Après 4s, transition vers la révélation.
+      const sous = document.getElementById('silence-sous');
+      setTimeout(() => {
+        if (sous) { sous.textContent = 'votre cerveau vient de faire deux choses en même temps'; }
+      }, 2200);
+      setTimeout(() => { showStep(0, '1b'); }, 4200);
+    });
+  });
+
+  document.getElementById('suite-0-1')?.addEventListener('click', () => showStep(0, 2));
+
+  document.querySelectorAll('#choix-main .mcg-choix').forEach(btn => {
+    btn.addEventListener('click', () => {
+      showStep(0, 3);
+      // Seuil : la phrase est là. Après 2.5s, la note apparaît. Après 4.5s, le bouton.
+      const sousSeuil = document.getElementById('seuil-sous-01');
+      const btnSeuil  = document.getElementById('seuil-btn-01');
+      setTimeout(() => {
+        if (sousSeuil) {
+          sousSeuil.textContent = "Ce n'est pas une métaphore. C'est la thèse d'Iain McGilchrist — neurologue, philosophe, auteur de The Master and His Emissary.";
+          sousSeuil.classList.add('visible');
+        }
+      }, 2600);
+      setTimeout(() => {
+        if (btnSeuil) btnSeuil.classList.remove('hidden');
+      }, 4600);
+    });
+  });
+
+  // ── SUITE acte suivant (boutons directs) ──
+  document.querySelectorAll('.mcg-suite--acte:not(.mcg-seuil-btn)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = parseInt(btn.dataset.nextActe);
+      // Afficher le seuil inter si existant, sinon aller directement
+      const seuilId = `seuil-vers-${next + 1}`;
+      const seuilEl = document.getElementById(seuilId);
+      if (seuilEl && !seuilEl.classList.contains('hidden-perm')) {
+        // Cacher le bouton, montrer le seuil dans l'acte courant
+        btn.style.display = 'none';
+        seuilEl.classList.remove('hidden');
+        // Déclencher les sous-éléments du seuil
+        const idx = next === 2 ? '02' : '03';
+        const sousSeuil = document.getElementById(`seuil-sous-${idx}`);
+        const btnSeuil  = document.getElementById(`seuil-btn-${idx}`);
+        setTimeout(() => {
+          if (sousSeuil) {
+            sousSeuil.textContent = next === 2
+              ? "McGilchrist s'intéresse à quelque chose de plus grand : comment ce déséquilibre a façonné l'histoire de la civilisation occidentale."
+              : "Pas dans les livres. Dans votre dispute d'hier, votre décision de ce matin.";
+            sousSeuil.classList.add('visible');
+          }
+        }, 2400);
+        setTimeout(() => {
+          if (btnSeuil) btnSeuil.classList.remove('hidden');
+        }, 4200);
+      } else {
+        showActe(next);
+      }
+    });
+  });
+
+  // ── Boutons seuil inter ──
+  document.querySelectorAll('.mcg-seuil-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = parseInt(btn.dataset.nextActe);
+      showActe(next);
+    });
+  });
+
+  // ── ACTE IV — situations accordéon ──
+  document.querySelectorAll('.mcg-sit-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const sit = header.closest('.mcg-sit');
+      const wasOpen = sit.classList.contains('open');
+      document.querySelectorAll('.mcg-sit').forEach(s => s.classList.remove('open'));
+      if (!wasOpen) {
+        sit.classList.add('open');
+        // révéler synthèse après ouverture de la dernière
+        const allSits = document.querySelectorAll('.mcg-sit');
+        const lastSit = allSits[allSits.length - 1];
+        if (sit === lastSit) {
+          setTimeout(() => {
+            const synth = document.getElementById('mcg-synthese');
+            if (synth) synth.classList.add('visible');
+          }, 500);
+        }
+      }
+    });
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
+    });
+  });
+
+  // Init
+  updateProgress(0);
+</script>

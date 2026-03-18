@@ -1,0 +1,874 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Strates — Cartographie intellectuelle · Syncognie" description="Une organisation des penseurs de Syncognie — non par discipline, mais par la question qu'ils éclairent.">
+
+<div class="str-wrap">
+
+  <!-- ── BREADCRUMB ── -->
+  <nav class="str-breadcrumb">
+    <a href="/outils" class="str-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Tous les outils
+    </a>
+    <span class="str-bread-sep">·</span>
+    <span class="str-bread-current">Strates</span>
+  </nav>
+
+  <!-- ── HEADER ── -->
+  <div class="str-header">
+    <p class="str-surtitre">Outil · Connaissance</p>
+    <h1 class="str-titre">Strates</h1>
+    <p class="str-sous">Ce qui détermine ce qu'on voit — une organisation des penseurs de Syncognie par la question qu'ils éclairent, plutôt que par leur discipline.</p>
+    <div class="str-meta">
+      <span class="str-version">v1.0</span>
+      <span class="str-meta-sep">·</span>
+      <span class="str-metainfo">11 penseurs · 4 niveaux</span>
+    </div>
+  </div>
+
+  <!-- ══ Q0 — QUESTION FONDATRICE ══ -->
+  <div class="str-q0" id="str-q0" role="button" tabindex="0" aria-expanded="false">
+    <div class="str-q0-top">
+      <div class="str-q0-left">
+        <p class="str-q0-eyebrow">Question fondatrice</p>
+        <p class="str-q0-question">Comment est-ce que je perçois le réel ?</p>
+        <p class="str-q0-desc">
+          Avant toute question sur soi, l'autre ou le système — quel est le mode d'être
+          qui conditionne la perception elle-même ? Les trois questions suivantes en dépendent.
+        </p>
+      </div>
+      <span class="str-q0-toggle" aria-hidden="true">
+        <span class="str-q0-arrow">↓</span> explorer
+      </span>
+    </div>
+
+    <div class="str-q0-penseurs" id="str-q0-penseurs">
+
+      <div class="str-q0-card" data-pid="mcg">
+        <p class="str-q0p-nom">McGilchrist</p>
+        <p class="str-q0p-concept">Deux hémisphères, deux mondes</p>
+        <p class="str-q0p-desc">
+          Le cerveau gauche saisit, découpe, exploite. Le droit perçoit, relie, contextualise.
+          Ce ne sont pas deux fonctions — ce sont deux manières d'être au monde.
+          Leur déséquilibre modèle toute civilisation.
+        </p>
+        <p class="str-q0p-visible">
+          Ce qu'on observe : des institutions qui optimisent ce qui se mesure
+          et détruisent silencieusement ce qui ne se mesure pas.
+        </p>
+      </div>
+
+      <div class="str-q0-card" data-pid="kor">
+        <p class="str-q0p-nom">Korzybski</p>
+        <p class="str-q0p-concept">La carte n'est pas le territoire</p>
+        <p class="str-q0p-desc">
+          Nos représentations du monde ne sont pas le monde. Le langage structure
+          la perception avant même qu'on s'en aperçoive — on ne perçoit jamais
+          la réalité brute, mais toujours à travers une carte héritée.
+        </p>
+        <p class="str-q0p-visible">
+          Ce qu'on observe : deux personnes certaines d'avoir raison,
+          parlant chacune de leur carte sans le savoir.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CONNECTEUR ── -->
+  <div class="str-connector" id="str-connector">
+    <div class="str-conn-line"></div>
+    <span class="str-conn-label">trois déclinaisons</span>
+    <div class="str-conn-line"></div>
+  </div>
+
+  <!-- ══ GRILLE 3 QUESTIONS ══ -->
+  <div class="str-grid" id="str-grid">
+
+    <!-- Q1 -->
+    <div class="str-qcard" data-q="1" role="button" tabindex="0" aria-expanded="false">
+      <span class="str-qghost" aria-hidden="true">1</span>
+      <p class="str-qdomain">Individu</p>
+      <p class="str-qquestion">Pourquoi je fais ce que je ne veux pas faire&nbsp;?</p>
+      <span class="str-qtoggle"><span class="str-qarrow">↓</span> voir les penseurs</span>
+    </div>
+
+    <!-- Q2 -->
+    <div class="str-qcard" data-q="2" role="button" tabindex="0" aria-expanded="false">
+      <span class="str-qghost" aria-hidden="true">2</span>
+      <p class="str-qdomain">Relation</p>
+      <p class="str-qquestion">Pourquoi l'autre ne m'entend pas&nbsp;?</p>
+      <span class="str-qtoggle"><span class="str-qarrow">↓</span> voir les penseurs</span>
+    </div>
+
+    <!-- Q3 -->
+    <div class="str-qcard" data-q="3" role="button" tabindex="0" aria-expanded="false">
+      <span class="str-qghost" aria-hidden="true">3</span>
+      <p class="str-qdomain">Système</p>
+      <p class="str-qquestion">Pourquoi rien ne change vraiment&nbsp;?</p>
+      <span class="str-qtoggle"><span class="str-qarrow">↓</span> voir les penseurs</span>
+    </div>
+
+    <!-- PANEL Q1 -->
+    <div class="str-panel" id="str-panel-1" aria-hidden="true">
+      <div class="str-panel-inner" data-q="1">
+
+        <div class="str-pcard">
+          <p class="str-pnom">Lembke</p>
+          <p class="str-pconcept">Balance plaisir-douleur</p>
+          <p class="str-pdesc">
+            Le cerveau rétablit l'équilibre après chaque plaisir en basculant du côté douleur.
+            La tolérance croît, le plaisir s'érode — c'est le moteur de toute addiction,
+            pas seulement aux substances.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : l'escalade des doses, la consommation « pour se sentir normal ».
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">Berridge</p>
+          <p class="str-pconcept">Wanting ≠ Liking</p>
+          <p class="str-pdesc">
+            Deux systèmes distincts : le désir (dopamine) et le plaisir ressenti (opioïdes).
+            On peut vouloir intensément ce qui ne plaît plus.
+            La motivation se dissocie de la satisfaction.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : continuer à chercher ce qu'on sait ne plus apprécier.
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">Damasio</p>
+          <p class="str-pconcept">Marqueurs somatiques</p>
+          <p class="str-pdesc">
+            Les émotions ne perturbent pas la raison — elles la constituent.
+            Décider sans corps, c'est décider sans boussole.
+            L'émotion précède et guide la pensée rationnelle.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : les décisions dites « rationnelles » qui ignorent
+            le signal corporel et s'avèrent désastreuses.
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">Kahneman</p>
+          <p class="str-pconcept">Système 1 / Système 2</p>
+          <p class="str-pdesc">
+            Deux modes : rapide, automatique, émotionnel (S1) contre lent, délibératif, coûteux (S2).
+            S1 gouverne la plupart des décisions. S2 se croit aux commandes
+            alors qu'il rationalise souvent après coup.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : les biais qui persistent même quand on les connaît.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PANEL Q2 -->
+    <div class="str-panel" id="str-panel-2" aria-hidden="true">
+      <div class="str-panel-inner" data-q="2">
+
+        <div class="str-pcard">
+          <p class="str-pnom">Watzlawick</p>
+          <p class="str-pconcept">On ne peut pas ne pas communiquer</p>
+          <p class="str-pdesc">
+            Tout comportement est communication, y compris le silence.
+            Chaque message a un contenu et une relation —
+            c'est la métacommunication qui détermine le sens réel de l'échange.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : des malentendus qui ne portent pas sur les mots,
+            mais sur ce qu'ils signifient entre ces deux personnes-là.
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">Gottman</p>
+          <p class="str-pconcept">Les Quatre Cavaliers</p>
+          <p class="str-pdesc">
+            Critique, mépris, défensive, dérobade — quatre comportements
+            qui prédisent la rupture avec précision. Il faut cinq interactions positives
+            pour effacer une négative. Le ratio prime sur le contenu.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : une dispute ordinaire qui réactive silencieusement
+            des centaines de disputes passées.
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">Bowlby & Ainsworth</p>
+          <p class="str-pconcept">Attachement</p>
+          <p class="str-pdesc">
+            Les stratégies relationnelles forgées dans l'enfance (Bowlby) se déclinent
+            en styles observables à l'âge adulte — secure, anxieux, évitant (Ainsworth).
+            Sous stress, ces patterns se réactivent sans qu'on le choisisse.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : réagir à son partenaire comme si c'était un parent, sans le savoir.
+          </p>
+        </div>
+
+        <div class="str-pcard str-pcard--linked">
+          <p class="str-pnom">Korzybski</p>
+          <p class="str-pconcept">La carte n'est pas le territoire</p>
+          <p class="str-pdesc">
+            Nos représentations ne sont pas la réalité. Dans une relation,
+            deux personnes communiquent toujours entre deux cartes différentes — jamais directement.
+            Le conflit naît souvent de la confusion entre la carte et ce qu'elle représente.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : une dispute sur les faits qui est en réalité
+            une dispute sur deux visions du monde incompatibles.
+          </p>
+          <span class="str-plink-q0">↑ résonne aussi avec la Question fondatrice</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PANEL Q3 -->
+    <div class="str-panel" id="str-panel-3" aria-hidden="true">
+      <div class="str-panel-inner" data-q="3">
+
+        <div class="str-pcard">
+          <p class="str-pnom">Meadows</p>
+          <p class="str-pconcept">Boucles de rétroaction</p>
+          <p class="str-pdesc">
+            Les systèmes résistent aux interventions directes. Les leviers de changement
+            sont rarement là où on les cherche. Certaines structures produisent des comportements
+            indépendamment des intentions des acteurs.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : une réforme qui aggrave le problème qu'elle devait résoudre.
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">Argyris</p>
+          <p class="str-pconcept">Théorie esposée vs théorie-en-usage</p>
+          <p class="str-pdesc">
+            Ce qu'on dit faire et ce qu'on fait réellement divergent toujours.
+            Les routines défensives protègent l'organisation de l'apprentissage véritable.
+            Le double boucle questionne les fondements — c'est là que le changement réel commence.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : une culture qui déclare valoriser l'erreur mais la punit en pratique.
+          </p>
+        </div>
+
+        <div class="str-pcard">
+          <p class="str-pnom">McGilchrist</p>
+          <p class="str-pconcept">La domination du gauche</p>
+          <p class="str-pdesc">
+            À l'échelle des institutions, l'hémisphère gauche — qui saisit, catégorise, optimise —
+            a pris le dessus sur le droit, qui perçoit les relations et le contexte.
+            Cette asymétrie structure les organisations modernes.
+          </p>
+          <p class="str-pvisible">
+            Ce qu'on observe : des systèmes qui maximisent l'efficience mesurable
+            en appauvrissant silencieusement ce qui ne l'est pas.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /str-grid -->
+
+  <!-- ── LÉGENDE ── -->
+  <div class="str-legende" id="str-legende">
+    <p class="str-legende-titre">Pour chaque penseur — deux niveaux de lecture</p>
+    <div class="str-legende-items">
+      <div class="str-legende-item">
+        <div class="str-ldot" style="background:var(--ink)"></div>
+        <span>Le mécanisme sous-jacent</span>
+      </div>
+      <div class="str-legende-item">
+        <div class="str-ldot" style="background:var(--ink-soft); border:1px dashed var(--ink-mid)"></div>
+        <span><em>Ce qu'on observe</em> — le signal visible</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOUT DÉPLIER ── -->
+  <div class="str-deplier">
+    <button class="str-btn-all" id="str-btn-all">Tout déplier</button>
+  </div>
+
+  <!-- ── NOTE ── -->
+  <div class="str-note">
+    <div class="note-dot"></div>
+    <p>
+      Strates grandit avec Syncognie — chaque série apporte ses penseurs,
+      chaque concept lu devient une entrée potentielle dans la carte.
+    </p>
+  </div>
+
+</div><!-- /str-wrap -->
+
+</Base>
+
+<style is:global>
+/* ══ TOKENS ══ */
+:root {
+  --q1:     #6e2a18;
+  --q1-mid: #8b3a22;
+  --q1-lt:  #f2e8e4;
+  --q2:     #3d5e38;
+  --q2-mid: #4e7248;
+  --q2-lt:  #e6ede4;
+  --q3:     #283e56;
+  --q3-mid: #354f6a;
+  --q3-lt:  #e4eaef;
+}
+
+/* ══ WRAP ══ */
+.str-wrap {
+  max-width: var(--max, 740px);
+  margin: 0 auto;
+  padding: 0 1.75rem 5rem;
+}
+
+/* ══ BREADCRUMB ══ */
+.str-breadcrumb {
+  display: flex; align-items: center; gap: .6rem;
+  margin: 2rem 0 1.75rem;
+  opacity: 0; animation: rise .7s .02s ease forwards;
+}
+.str-back {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 600;
+  color: var(--accent, #c4993a); text-decoration: none;
+  transition: gap .2s;
+}
+.str-back:hover { gap: .7rem; }
+.str-back svg { transition: transform .2s; }
+.str-back:hover svg { transform: translateX(-2px); }
+.str-bread-sep { color: var(--rule, #ddd6c8); }
+.str-bread-current {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189);
+}
+
+/* ══ HEADER ══ */
+.str-header {
+  margin-bottom: 2rem;
+  opacity: 0; animation: rise .9s .06s ease forwards;
+}
+.str-surtitre {
+  font-family: 'Mulish', sans-serif;
+  font-size: .67rem; font-weight: 600;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--accent, #c4993a); margin-bottom: .65rem;
+}
+.str-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
+  color: var(--ink, #1a1714); line-height: 1.15;
+  letter-spacing: -.02em; margin-bottom: .75rem;
+}
+.str-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .96rem; font-weight: 400;
+  color: #5a5248; line-height: 1.8;
+  max-width: 52ch; margin-bottom: .9rem;
+}
+.str-meta { display: flex; align-items: center; gap: .65rem; }
+.str-version {
+  font-family: 'Courier New', monospace;
+  font-size: .7rem; color: #6a6058;
+  border: 1px solid var(--rule, #ddd6c8);
+  border-radius: 3px; padding: .2rem .5rem;
+}
+.str-meta-sep { color: var(--rule, #ddd6c8); }
+.str-metainfo {
+  font-family: 'Mulish', sans-serif;
+  font-size: .75rem; color: var(--ink-soft, #9a9189);
+}
+
+/* ══ Q0 — carte fondatrice ══ */
+.str-q0 {
+  background: var(--parch, #ece4d4);
+  border: 1px solid rgba(184,146,42,.22);
+  border-left: 3px solid rgba(184,146,42,.5);
+  border-radius: 10px;
+  padding: 1.6rem 1.75rem;
+  cursor: pointer; position: relative; overflow: hidden;
+  box-shadow: 0 2px 0 rgba(152,112,72,.18), 0 4px 18px rgba(122,88,48,.07);
+  transition: box-shadow .22s, transform .2s;
+  opacity: 0; animation: rise .9s .12s ease forwards;
+}
+.str-q0::before {
+  content: '0';
+  position: absolute; right: 1rem; bottom: -.7rem;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 6rem; font-weight: 700; line-height: 1;
+  color: rgba(184,146,42,.1);
+  pointer-events: none; user-select: none;
+}
+.str-q0:hover {
+  box-shadow: 0 4px 0 rgba(152,112,72,.15), 0 8px 28px rgba(122,88,48,.1);
+  transform: translateY(-1px);
+}
+.str-q0.open {
+  border-left-color: rgba(184,146,42,.75);
+  box-shadow: 0 4px 0 rgba(152,112,72,.18), 0 8px 28px rgba(122,88,48,.12);
+}
+
+.str-q0-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 1rem;
+}
+.str-q0-left { flex: 1; }
+.str-q0-eyebrow {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--pri-deep, #8a6438); margin-bottom: .5rem;
+  display: flex; align-items: center; gap: .4rem;
+}
+.str-q0-eyebrow::before {
+  content: ''; display: block;
+  width: 12px; height: 1px;
+  background: var(--pri-deep, #8a6438); opacity: .5;
+}
+.str-q0-question {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.1rem; font-style: italic; font-weight: 400;
+  color: var(--ink, #1a1714); line-height: 1.42;
+  margin-bottom: .5rem;
+}
+.str-q0-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .76rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.7;
+  max-width: 46ch;
+}
+.str-q0-toggle {
+  flex-shrink: 0;
+  font-family: 'Mulish', sans-serif;
+  font-size: .5rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--pri-deep, #8a6438); opacity: .5;
+  display: flex; align-items: center; gap: .28rem;
+  margin-top: .1rem; transition: opacity .2s;
+  user-select: none;
+}
+.str-q0:hover .str-q0-toggle { opacity: .8; }
+.str-q0-arrow { transition: transform .3s; display: inline-block; }
+.str-q0.open .str-q0-arrow { transform: rotate(180deg); }
+
+/* Sous-cartes Q0 */
+.str-q0-penseurs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .65rem;
+  margin-top: 0; max-height: 0; overflow: hidden;
+  transition: max-height .45s ease, margin-top .35s ease, opacity .35s ease;
+  opacity: 0;
+}
+.str-q0.open .str-q0-penseurs {
+  max-height: 500px; margin-top: 1.2rem; opacity: 1;
+}
+.str-q0-card {
+  background: rgba(245,240,232,.75);
+  border: 1px solid rgba(184,146,42,.18);
+  border-radius: 7px; padding: .9rem 1rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .18s;
+}
+.str-q0-card:hover {
+  background: white;
+  border-color: rgba(184,146,42,.32);
+  transform: translateY(-1px);
+}
+.str-q0-card.active {
+  background: white;
+  border-color: rgba(184,146,42,.45);
+  box-shadow: 0 2px 10px rgba(122,88,48,.08);
+}
+.str-q0p-nom {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .88rem; font-weight: 700;
+  color: var(--ink, #1a1714); margin-bottom: .2rem;
+}
+.str-q0p-concept {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--pri-deep, #8a6438); margin-bottom: .28rem;
+}
+.str-q0p-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .71rem; font-weight: 300;
+  color: var(--ink-mid, #7a7068); line-height: 1.62;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease, opacity .3s;
+  opacity: 0;
+}
+.str-q0-card.active .str-q0p-desc { max-height: 200px; opacity: 1; }
+.str-q0p-visible {
+  font-family: 'Mulish', sans-serif;
+  font-size: .66rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft, #9a9189); line-height: 1.58;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease .05s, opacity .3s .05s;
+  opacity: 0; margin-top: .4rem;
+  padding-top: .38rem;
+  border-top: 1px solid rgba(184,146,42,.15);
+}
+.str-q0-card.active .str-q0p-visible { max-height: 200px; opacity: 1; }
+
+/* ══ CONNECTEUR ══ */
+.str-connector {
+  display: flex; flex-direction: column; align-items: center;
+  padding: .4rem 0;
+  opacity: 0; transform: scaleY(0); transform-origin: top;
+  transition: opacity .4s ease .1s, transform .4s ease .1s;
+}
+.str-connector.visible { opacity: 1; transform: scaleY(1); }
+.str-conn-line {
+  width: 1px; height: 32px;
+  background: linear-gradient(to bottom, rgba(184,146,42,.3), rgba(184,146,42,.08));
+}
+.str-conn-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .47rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(184,146,42,.4); margin: .22rem 0; white-space: nowrap;
+}
+
+/* ══ GRILLE 3 QUESTIONS ══ */
+.str-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .65rem;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity .5s ease .05s, transform .5s ease .05s;
+}
+.str-grid.visible { opacity: 1; transform: translateY(0); }
+
+/* ══ CARTE QUESTION ══ */
+.str-qcard {
+  border-radius: 10px;
+  padding: 1.25rem 1.1rem 1rem;
+  cursor: pointer; position: relative; overflow: hidden;
+  box-shadow: 0 2px 0 rgba(0,0,0,.07), 0 3px 14px rgba(0,0,0,.05);
+  transition: box-shadow .22s, transform .2s;
+  border: 1.5px solid transparent;
+}
+.str-qcard:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,0,0,.1); }
+.str-qcard.open  { border-color: currentColor; }
+.str-qcard[data-q="1"] { background: var(--q1-lt); color: var(--q1); }
+.str-qcard[data-q="2"] { background: var(--q2-lt); color: var(--q2); }
+.str-qcard[data-q="3"] { background: var(--q3-lt); color: var(--q3); }
+
+.str-qghost {
+  position: absolute; right: .65rem; bottom: -.55rem;
+  font-family: 'Libre Baskerville', serif;
+  font-size: 4.2rem; font-weight: 700; line-height: 1;
+  opacity: .07; pointer-events: none; user-select: none; color: currentColor;
+}
+.str-qdomain {
+  font-family: 'Mulish', sans-serif;
+  font-size: .5rem; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  opacity: .65; margin-bottom: .42rem;
+}
+.str-qquestion {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .84rem; font-style: italic; font-weight: 400;
+  color: inherit; line-height: 1.45; margin-bottom: .6rem;
+}
+.str-qtoggle {
+  font-family: 'Mulish', sans-serif;
+  font-size: .5rem; font-weight: 700;
+  letter-spacing: .15em; text-transform: uppercase;
+  opacity: .4; display: flex; align-items: center; gap: .26rem;
+  transition: opacity .18s; user-select: none;
+}
+.str-qcard:hover .str-qtoggle { opacity: .7; }
+.str-qarrow { transition: transform .28s; display: inline-block; }
+.str-qcard.open .str-qarrow { transform: rotate(180deg); }
+
+/* ══ PANEL PENSEURS ══ */
+.str-panel {
+  grid-column: 1 / -1;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height .5s ease, opacity .38s ease;
+  pointer-events: none;
+}
+.str-panel.visible { max-height: 1200px; opacity: 1; pointer-events: auto; }
+.str-panel-inner {
+  padding: .9rem 0 .5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: .55rem;
+}
+
+/* ══ CARTE PENSEUR ══ */
+.str-pcard {
+  background: white;
+  border-radius: 8px;
+  padding: .9rem 1rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 3px 9px rgba(0,0,0,.04);
+  transition: box-shadow .2s, transform .18s, border-color .2s;
+  opacity: 0; transform: translateY(7px);
+}
+.str-pcard.anim-in {
+  opacity: 1; transform: translateY(0);
+  transition: opacity .28s ease, transform .28s ease, box-shadow .2s, border-color .2s;
+}
+.str-pcard:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.09); }
+
+[data-q="1"] .str-pcard { border-left-color: var(--q1); }
+[data-q="2"] .str-pcard { border-left-color: var(--q2); }
+[data-q="3"] .str-pcard { border-left-color: var(--q3); }
+
+.str-pnom {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .84rem; font-weight: 700;
+  color: var(--ink, #1a1714); margin-bottom: .2rem;
+}
+.str-pconcept {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  margin-bottom: .28rem;
+}
+[data-q="1"] .str-pconcept { color: var(--q1-mid); }
+[data-q="2"] .str-pconcept { color: var(--q2-mid); }
+[data-q="3"] .str-pconcept { color: var(--q3-mid); }
+
+.str-pdesc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .7rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189); line-height: 1.62;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease, opacity .3s; opacity: 0;
+}
+.str-pcard.active .str-pdesc { max-height: 220px; opacity: 1; }
+
+.str-pvisible {
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem; font-weight: 300; font-style: italic;
+  color: var(--ink-faint, #9a9189); line-height: 1.58;
+  max-height: 0; overflow: hidden;
+  transition: max-height .35s ease .05s, opacity .3s .05s;
+  opacity: 0; margin-top: .35rem;
+  padding-top: .35rem; border-top: 1px solid rgba(0,0,0,.06);
+}
+.str-pcard.active .str-pvisible { max-height: 200px; opacity: 1; }
+
+.str-plink-q0 {
+  font-family: 'Mulish', sans-serif;
+  display: inline-block; margin-top: .4rem;
+  font-size: .48rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  background: rgba(26,23,20,.05);
+  color: var(--ink-soft, #9a9189);
+  border-radius: 3px; padding: .14rem .38rem;
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height .3s ease .1s, opacity .25s .1s;
+}
+.str-pcard.active .str-plink-q0 { max-height: 40px; opacity: 1; }
+
+/* ══ LÉGENDE ══ */
+.str-legende {
+  margin-top: 2.5rem;
+  padding: 1rem 1.35rem;
+  background: var(--parch, #ece4d4);
+  border-radius: 8px;
+  border-left: 3px solid rgba(184,146,42,.35);
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.str-legende.visible { opacity: 1; transform: translateY(0); }
+.str-legende-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .74rem; font-style: italic;
+  color: var(--pri-deep, #8a6438); margin-bottom: .5rem;
+}
+.str-legende-items { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.str-legende-item {
+  display: flex; align-items: center; gap: .35rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189);
+}
+.str-ldot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ══ TOUT DÉPLIER ══ */
+.str-deplier { display: flex; justify-content: center; margin-top: 1.5rem; }
+.str-btn-all {
+  font-family: 'Mulish', sans-serif;
+  font-size: .54rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-soft, #9a9189);
+  background: none;
+  border: 1px solid var(--rule, #ddd6c8);
+  border-radius: 5px; padding: .46rem 1rem;
+  cursor: pointer; transition: all .18s;
+}
+.str-btn-all:hover {
+  color: var(--ink, #1a1714);
+  border-color: rgba(139,94,60,.4);
+  background: rgba(196,153,58,.04);
+}
+
+/* ══ NOTE ══ */
+.str-note {
+  display: flex; align-items: flex-start; gap: .75rem;
+  margin-top: 3rem; padding-top: 2rem;
+  border-top: 1px solid var(--rule, #ddd6c8);
+  opacity: 0; animation: rise .9s .5s ease forwards;
+}
+.str-note p {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300;
+  color: var(--ink-soft, #9a9189);
+  line-height: 1.7; font-style: italic;
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 580px) {
+  .str-grid { grid-template-columns: 1fr; }
+  .str-q0-penseurs { grid-template-columns: 1fr; }
+  .str-panel-inner { grid-template-columns: 1fr; }
+  .str-wrap { padding: 0 1rem 4rem; }
+}
+</style>
+
+<script>
+  const q0El      = document.getElementById('str-q0');
+  const connector = document.getElementById('str-connector');
+  const grid      = document.getElementById('str-grid');
+  const legende   = document.getElementById('str-legende');
+  let gridShown   = false;
+
+  function showGrid() {
+    if (gridShown) return;
+    gridShown = true;
+    connector.classList.add('visible');
+    setTimeout(() => {
+      grid.classList.add('visible');
+      setTimeout(() => legende.classList.add('visible'), 450);
+    }, 220);
+  }
+
+  // Q0 toggle
+  q0El.addEventListener('click', () => {
+    const open = !q0El.classList.contains('open');
+    q0El.classList.toggle('open', open);
+    q0El.setAttribute('aria-expanded', String(open));
+    if (open) showGrid();
+  });
+  q0El.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q0El.click(); }
+  });
+
+  // Auto-reveal au scroll
+  new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !gridShown) setTimeout(showGrid, 350);
+  }, { threshold: 0.3 }).observe(q0El);
+
+  // Sous-cartes Q0
+  document.querySelectorAll('.str-q0-card').forEach(c => {
+    c.addEventListener('click', e => {
+      e.stopPropagation();
+      const was = c.classList.contains('active');
+      document.querySelectorAll('.str-q0-card').forEach(x => x.classList.remove('active'));
+      if (!was) c.classList.add('active');
+    });
+  });
+
+  // Cartes questions
+  document.querySelectorAll('.str-qcard').forEach(card => {
+    card.addEventListener('click', () => {
+      const q     = card.dataset.q;
+      const wasOpen = card.classList.contains('open');
+
+      document.querySelectorAll('.str-qcard').forEach(c => {
+        c.classList.remove('open');
+        c.setAttribute('aria-expanded', 'false');
+      });
+      document.querySelectorAll('.str-panel').forEach(p => {
+        p.classList.remove('visible');
+        p.setAttribute('aria-hidden', 'true');
+      });
+
+      if (!wasOpen) {
+        card.classList.add('open');
+        card.setAttribute('aria-expanded', 'true');
+        const panel = document.getElementById('str-panel-' + q);
+        panel.classList.add('visible');
+        panel.setAttribute('aria-hidden', 'false');
+        panel.querySelectorAll('.str-pcard').forEach((pc, i) => {
+          pc.style.transitionDelay = (i * 0.065) + 's';
+          setTimeout(() => pc.classList.add('anim-in'), 10);
+        });
+      }
+    });
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+    });
+  });
+
+  // Cartes penseurs
+  document.querySelectorAll('.str-pcard').forEach(pc => {
+    pc.addEventListener('click', e => {
+      e.stopPropagation();
+      const was = pc.classList.contains('active');
+      pc.closest('.str-panel-inner').querySelectorAll('.str-pcard').forEach(x => x.classList.remove('active'));
+      if (!was) pc.classList.add('active');
+    });
+  });
+
+  // Tout déplier
+  const btnAll  = document.getElementById('str-btn-all');
+  let allOpen   = false;
+  btnAll.addEventListener('click', () => {
+    allOpen = !allOpen;
+    btnAll.textContent = allOpen ? 'Tout refermer' : 'Tout déplier';
+    if (allOpen) {
+      q0El.classList.add('open');
+      q0El.setAttribute('aria-expanded', 'true');
+      showGrid();
+      setTimeout(() => {
+        document.querySelectorAll('.str-qcard').forEach(card => {
+          const q     = card.dataset.q;
+          const panel = document.getElementById('str-panel-' + q);
+          card.classList.add('open');
+          card.setAttribute('aria-expanded', 'true');
+          panel.classList.add('visible');
+          panel.setAttribute('aria-hidden', 'false');
+          panel.querySelectorAll('.str-pcard').forEach((pc, i) => {
+            pc.style.transitionDelay = (i * 0.05) + 's';
+            setTimeout(() => pc.classList.add('anim-in'), 10);
+          });
+        });
+      }, 320);
+    } else {
+      q0El.classList.remove('open');
+      q0El.setAttribute('aria-expanded', 'false');
+      document.querySelectorAll('.str-qcard').forEach(c => {
+        c.classList.remove('open');
+        c.setAttribute('aria-expanded', 'false');
+      });
+      document.querySelectorAll('.str-panel').forEach(p => {
+        p.classList.remove('visible');
+        p.setAttribute('aria-hidden', 'true');
+      });
+      document.querySelectorAll('.str-pcard, .str-q0-card').forEach(pc => pc.classList.remove('active'));
+    }
+  });
+</script>
