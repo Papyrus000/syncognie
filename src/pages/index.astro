@@ -16,6 +16,9 @@ const serieMecanique = allArticles
   .filter(a => a.data.serie === "Mécanique")
   .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
 
+const fenetresAnalyses = allArticles
+  .filter(a => !!a.data.lien_fenetre);
+
 const nbReflexion = serieNotes.length;
 const nbNathalie  = serieDialogues.length;
 
@@ -118,8 +121,8 @@ function engagementLabel(rank: number) {
     <p class="porte-formats">Analyses · Concepts · Penseurs</p>
     <div class="porte-footer">
       <div>
-        <div class="porte-nb">{serieNotes.length + serieMecanique.length}</div>
-        <div class="porte-nb-label">notes</div>
+        <div class="porte-nb">{serieNotes.length + serieMecanique.length + fenetresAnalyses.length}</div>
+        <div class="porte-nb-label">cartes</div>
       </div>
       <span class="porte-cta">Cartographier →</span>
     </div>

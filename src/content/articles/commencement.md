@@ -3,7 +3,7 @@ title: La première pierre
 description: C'est ici que tout commence...
 date: 2026-03-03
 category: Journal
-rubrique: mecanique
+rubrique: journal
 engagement: pause
 slug: la-premiere-pierre
 stade: pousse
