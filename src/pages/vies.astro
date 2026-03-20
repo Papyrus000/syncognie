@@ -1,0 +1,253 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allArticles = await getCollection('articles');
+const fenetres    = await getCollection('fenetres');
+
+const dialogues = allArticles
+  .filter(a => a.data.serie === "Les rencontres de Nathalie et Élodie")
+  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
+
+const fenetresVivantes = [...fenetres].sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return b.data.date.getTime() - a.data.date.getTime();
+});
+
+const COULEURS_PERSO: Record<string, string> = {
+  'Élodie':   '#0070dd',
+  'Nathalie': '#ff7c0a',
+  'Rayan':    '#8b6fc4',
+  'Isabelle': '#7a9e7e',
+  'Yanis':    '#c4993a',
+};
+
+function formatDateShort(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+}
+
+function stadeEmoji(stade?: string) {
+  if (stade === 'pousse') return '🌿';
+  if (stade === 'arbre')  return '🌳';
+  return '🌱';
+}
+---
+
+<Base title="Vies — Syncognie" description="Des personnages qui vivent, parlent, doutent — et se heurtent à l'écart entre comprendre et faire.">
+<div class="page-wrap">
+
+  <svg class="header-filigrane" viewBox="0 0 420 340" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="145" cy="170" r="88"  stroke="#9b3232" stroke-width=".7" stroke-dasharray="3 9" opacity=".14" class="orb-a"/>
+    <circle cx="145" cy="170" r="52"  stroke="#9b3232" stroke-width="1"  opacity=".09" class="orb-a-inner"/>
+    <circle cx="265" cy="170" r="88"  stroke="#c4993a" stroke-width=".7" stroke-dasharray="3 9" opacity=".11" class="orb-b"/>
+    <circle cx="265" cy="170" r="52"  stroke="#9b3232" stroke-width="1"  opacity=".07" class="orb-b-inner"/>
+    <ellipse cx="205" cy="170" rx="30" ry="52" fill="#9b3232" opacity=".035"/>
+    <line x1="90"  y1="170" x2="320" y2="170" stroke="#9b3232" stroke-width=".5" opacity=".12" stroke-dasharray="2 8"/>
+    <circle cx="145" cy="170" r="4"   fill="#9b3232" opacity=".32" class="node-a"/>
+    <circle cx="265" cy="170" r="4"   fill="#c4993a" opacity=".28" class="node-b"/>
+    <circle cx="205" cy="170" r="5.5" fill="#9b3232" opacity=".22" class="node-c"/>
+    <circle cx="205" cy="170" r="2.5" fill="#f5f0e8" opacity=".55"/>
+    <circle cx="145" cy="110" r="2"   fill="#9b3232" opacity=".18" class="node-b"/>
+    <circle cx="265" cy="230" r="2"   fill="#c4993a" opacity=".18" class="node-a"/>
+  </svg>
+
+  <header class="page-header">
+    <p class="page-eyebrow">Vies</p>
+    <h1 class="page-titre">Ce qui se passe<br><em>à l'intérieur.</em></h1>
+    <p class="page-sous">Des personnages qui vivent, parlent, doutent — et se heurtent à l'écart entre comprendre et faire. Dialogues, fenêtres, fragments.</p>
+    <div class="page-stats">
+      <span class="stat"><span class="stat-n">{dialogues.length}</span><span class="stat-label">épisodes</span></span>
+      <span class="stat-sep">·</span>
+      <span class="stat"><span class="stat-n">{fenetresVivantes.length}</span><span class="stat-label">fenêtres</span></span>
+      <span class="stat-sep">·</span>
+      <span class="stat"><span class="stat-n">2</span><span class="stat-label">voix principales</span></span>
+    </div>
+  </header>
+
+  <div class="personnages-wrap">
+    <div class="personnage-card">
+      <div class="personnage-initiale" style="color:#ff7c0a; border-color:rgba(255,124,10,.3); background:rgba(255,124,10,.07)">N</div>
+      <div>
+        <p class="personnage-nom">Nathalie</p>
+        <p class="personnage-desc">39 ans · Travailleuse sociale · Ancrée dans le concret, ironie douce, regard systémique</p>
+      </div>
+    </div>
+    <div class="personnage-et">et</div>
+    <div class="personnage-card">
+      <div class="personnage-initiale" style="color:#0070dd; border-color:rgba(0,112,221,.3); background:rgba(0,112,221,.07)">É</div>
+      <div>
+        <p class="personnage-nom">Élodie</p>
+        <p class="personnage-desc">32 ans · Conseil en communication · Analytique, précise, lâche le contrôle par éclats</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIALOGUES -->
+  <div class="section-sep">
+    <div class="sep-line"></div>
+    <div class="sep-centre"><div class="sep-diamond"></div><span class="sep-label">Dialogues</span><div class="sep-diamond"></div></div>
+    <div class="sep-line"></div>
+  </div>
+  <p class="section-note">La série principale — Nathalie et Élodie en terrasse. Les concepts arrivent après l'identification, contournant les défenses intellectuelles.</p>
+
+  <div class="episodes-list">
+    {dialogues.map((ep, i) => (
+      <div class="episode-row">
+        <div class="episode-fil-wrap">
+          <div class="episode-numero">{String(ep.data.episode ?? i+1).padStart(2,'0')}</div>
+          {i < dialogues.length - 1 && <div class="episode-trait"></div>}
+        </div>
+        <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.1 + i * 0.07}s`}>
+          <div class="episode-meta">
+            <span class="episode-date">{formatDateShort(ep.data.date)}</span>
+            {ep.data.stade && <span class="episode-stade">{stadeEmoji(ep.data.stade)}</span>}
+            {ep.data.statut === 'en-cours' && <span class="badge-encours">En cours</span>}
+          </div>
+          <p class="episode-titre">{ep.data.title}</p>
+          {ep.data.description && <p class="episode-desc">{ep.data.description}</p>}
+          <span class="episode-lire">Lire →</span>
+        </a>
+      </div>
+    ))}
+    <div class="episode-row">
+      <div class="episode-fil-wrap">
+        <div class="episode-numero episode-numero--ghost">{String(dialogues.length + 1).padStart(2,'0')}</div>
+      </div>
+      <div class="episode-card episode-card--ghost">
+        <p class="episode-titre">Prochain épisode — à venir</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FENÊTRES -->
+  <div class="section-sep section-sep--fenetres">
+    <div class="sep-line"></div>
+    <div class="sep-centre"><div class="sep-diamond sep-diamond--soft"></div><span class="sep-label sep-label--soft">Fenêtres</span><div class="sep-diamond sep-diamond--soft"></div></div>
+    <div class="sep-line"></div>
+  </div>
+  <p class="section-note">Des instants brefs, un personnage seul. Pas de concept nommé — juste ce qui est là, et ce que ça fait.</p>
+
+  <div class="fenetres-grille">
+    {fenetresVivantes.map((f, i) => {
+      const couleur = COULEURS_PERSO[f.data.personnage] ?? '#8b5e3c';
+      return (
+        <a class="fenetre-tuile" href={`/fenetres/${f.slug}`}
+           style={`--c:${couleur}; animation-delay:${0.05 + i * 0.06}s`}>
+          <div class="tuile-lueur"></div>
+          <div class="tuile-head">
+            <span class="tuile-perso">{f.data.personnage}</span>
+            <span class="tuile-heure">{f.data.heure}</span>
+          </div>
+          <p class="tuile-titre">{f.data.title}</p>
+          {f.data.description && <p class="tuile-amorce">{f.data.description}</p>}
+          <span class="tuile-lire">Ouvrir →</span>
+        </a>
+      );
+    })}
+  </div>
+
+  <div class="invitation-encart">
+    <span class="invitation-glyph">◈</span>
+    <p class="invitation-texte">Une série vivante — épisodes et fenêtres s'ajoutent au fil du temps, au rythme des rencontres et des questions qui surgissent.</p>
+  </div>
+
+</div>
+</Base>
+
+<style>
+  :root {
+    --vies:      #9b3232;
+    --vies-dim:  rgba(155,50,50,.28);
+    --vies-bg:   rgba(155,50,50,.05);
+    --vies-deep: #7a2020;
+    --max:       740px;
+  }
+
+  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; position: relative; }
+
+  .header-filigrane { position: absolute; right: -1rem; top: 1rem; width: 320px; height: auto; pointer-events: none; }
+  @media (max-width: 600px) { .header-filigrane { width: 160px; opacity: .5; } }
+  .orb-a       { animation: orb-rot-a 20s linear infinite; transform-origin: 145px 170px; }
+  .orb-b       { animation: orb-rot-b 26s linear infinite; transform-origin: 265px 170px; }
+  .orb-a-inner { animation: orb-rot-b 15s linear infinite; transform-origin: 145px 170px; }
+  .orb-b-inner { animation: orb-rot-a 18s linear infinite; transform-origin: 265px 170px; }
+  @keyframes orb-rot-a { from{stroke-dashoffset:0} to{stroke-dashoffset:-60} }
+  @keyframes orb-rot-b { from{stroke-dashoffset:0} to{stroke-dashoffset:60}  }
+  .node-a { animation: nodep 3.2s ease-in-out infinite; }
+  .node-b { animation: nodep 3.8s ease-in-out infinite .6s; }
+  .node-c { animation: nodep 4.4s ease-in-out infinite 1.2s; }
+  @keyframes nodep { 0%,100%{opacity:.18} 50%{opacity:.45} }
+
+  .page-header { padding: 2.8rem 0 2rem; opacity: 0; animation: rise .9s .05s ease forwards; }
+  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--vies-deep); opacity: .8; margin-bottom: .85rem; }
+  .page-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.9rem, 3.8vw, 2.5rem); font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -.02em; margin-bottom: .9rem; }
+  .page-titre em { font-style: italic; font-weight: 400; color: var(--vies); }
+  .page-sous { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin-bottom: 1.5rem; }
+  .page-stats { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; opacity: 0; animation: rise .9s .15s ease forwards; }
+  .stat { display: flex; align-items: baseline; gap: .35rem; }
+  .stat-n { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--vies); line-height: 1; letter-spacing: -.02em; }
+  .stat-label { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+  .stat-sep { color: var(--rule); }
+
+  .personnages-wrap { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: 1.2rem 1.5rem; margin-bottom: 2.2rem; border: 1px solid var(--vies-dim); border-top: 2.5px solid var(--vies); border-radius: 0 0 6px 6px; background: var(--vies-bg); opacity: 0; animation: rise .9s .2s ease forwards; }
+  .personnage-card { display: flex; align-items: flex-start; gap: .85rem; flex: 1; min-width: 180px; }
+  .personnage-initiale { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: 1rem; font-weight: 700; flex-shrink: 0; }
+  .personnage-nom { font-family: 'Libre Baskerville', Georgia, serif; font-size: .9rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem; }
+  .personnage-desc { font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 300; color: var(--ink-soft); line-height: 1.55; }
+  .personnage-et { font-family: 'Libre Baskerville', Georgia, serif; font-size: .8rem; font-style: italic; color: var(--ink-soft); opacity: .4; flex-shrink: 0; }
+
+  .section-sep { display: flex; align-items: center; gap: .9rem; margin: 2.5rem 0 .75rem; opacity: 0; animation: rise .9s .28s ease forwards; }
+  .section-sep--fenetres { margin-top: 3.5rem; }
+  .sep-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
+  .sep-centre { display: flex; align-items: center; gap: .5rem; }
+  .sep-diamond { width: 5px; height: 5px; transform: rotate(45deg); background: var(--vies); opacity: .6; }
+  .sep-diamond--soft { background: var(--ink-soft); opacity: .35; }
+  .sep-label { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--vies-deep); }
+  .sep-label--soft { color: var(--ink-mid); }
+  .section-note { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; font-style: italic; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.25rem; opacity: 0; animation: rise .9s .32s ease forwards; }
+
+  .episodes-list { display: flex; flex-direction: column; }
+  .episode-row { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .episode-fil-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; padding-top: .15rem; }
+  .episode-numero { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--vies-dim); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: .7rem; font-weight: 700; color: var(--vies); background: var(--vies-bg); flex-shrink: 0; }
+  .episode-numero--ghost { opacity: .3; }
+  .episode-trait { width: 1px; flex: 1; min-height: 2.5rem; background: linear-gradient(to bottom, var(--vies-dim), transparent); margin: .35rem 0; }
+  .episode-card { flex: 1; display: flex; flex-direction: column; gap: .45rem; text-decoration: none; padding: 1.1rem 1.35rem; margin-bottom: 1rem; border: 1px solid var(--rule); border-radius: 7px; background: rgba(252,248,245,.55); position: relative; overflow: hidden; opacity: 0; animation: rise .7s ease forwards; transition: border-color .2s, background .2s, transform .2s, box-shadow .2s; }
+  .episode-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--vies); border-radius: 2px 0 0 2px; transform: scaleY(0); transform-origin: top; transition: transform .28s ease; }
+  .episode-card:hover { border-color: var(--vies-dim); background: var(--vies-bg); transform: translateX(3px); box-shadow: 0 2px 18px rgba(155,50,50,.07); }
+  .episode-card:hover::before { transform: scaleY(1); }
+  .episode-card--ghost { opacity: .25 !important; animation: none; pointer-events: none; background: transparent; border-style: dashed; }
+  .episode-meta { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+  .episode-date { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); opacity: .6; }
+  .episode-stade { font-size: .7rem; }
+  .badge-encours { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .12rem .38rem; border-radius: 3px; background: var(--vies-bg); color: var(--vies-deep); border: 1px solid var(--vies-dim); }
+  .episode-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .98rem; font-weight: 400; font-style: italic; color: var(--ink); line-height: 1.4; transition: color .2s; }
+  .episode-card:hover .episode-titre { color: var(--vies-deep); }
+  .episode-desc { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; color: var(--ink-soft); line-height: 1.65; max-width: 58ch; }
+  .episode-lire { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--vies); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; }
+  .episode-card:hover .episode-lire { opacity: 1; transform: translateX(0); }
+  @media (hover: none) { .episode-lire { opacity: .6; transform: translateX(0); } }
+
+  .fenetres-grille { display: grid; grid-template-columns: repeat(2, 1fr); gap: .85rem; opacity: 0; animation: rise .9s .35s ease forwards; }
+  @media (max-width: 540px) { .fenetres-grille { grid-template-columns: 1fr; } }
+  .fenetre-tuile { display: flex; flex-direction: column; gap: .55rem; padding: 1.25rem 1.2rem 1.1rem; border: 1px solid color-mix(in srgb, var(--c) 20%, transparent); border-top: 2.5px solid var(--c); border-radius: 0 0 8px 8px; background: color-mix(in srgb, var(--c) 4%, var(--bg)); text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s, background .25s; }
+  .fenetre-tuile:hover { transform: translateY(-3px); box-shadow: 0 8px 28px color-mix(in srgb, var(--c) 12%, transparent); background: color-mix(in srgb, var(--c) 7%, var(--bg)); }
+  .tuile-lueur { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 35% at 5% 0%, color-mix(in srgb, var(--c) 12%, transparent), transparent 70%); opacity: 0; transition: opacity .3s; pointer-events: none; }
+  .fenetre-tuile:hover .tuile-lueur { opacity: 1; }
+  .tuile-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+  .tuile-perso { font-family: 'Libre Baskerville', Georgia, serif; font-size: .75rem; font-weight: 700; color: var(--c); }
+  .tuile-heure { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; color: var(--ink-soft); opacity: .6; letter-spacing: .08em; }
+  .tuile-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .92rem; font-style: italic; color: var(--ink); line-height: 1.35; flex: 1; }
+  .tuile-amorce { font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 300; color: var(--ink-soft); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .tuile-lire { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c); opacity: 0; transform: translateY(3px); transition: opacity .2s, transform .2s; }
+  .fenetre-tuile:hover .tuile-lire { opacity: 1; transform: translateY(0); }
+  @media (hover: none) { .tuile-lire { opacity: .65; transform: translateY(0); } }
+
+  .invitation-encart { display: flex; align-items: flex-start; gap: .75rem; margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--vies-dim); border-left: 3px solid var(--vies-dim); border-radius: 0 4px 4px 0; background: var(--vies-bg); opacity: 0; animation: rise .9s .6s ease forwards; }
+  .invitation-glyph { color: var(--vies); opacity: .55; font-size: .8rem; flex-shrink: 0; margin-top: .1rem; }
+  .invitation-texte { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
+  @media (max-width: 600px) { .page-wrap { padding: 0 1rem 4rem; } .personnages-wrap { flex-direction: column; gap: 1rem; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>

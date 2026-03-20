@@ -90,217 +90,41 @@ function engagementLabel(rank: number) {
   -->
 </section>
 
-<!-- ══ SÉRIES ══ -->
-<div class="sep sep--series">
+<!-- ══ PORTES D'ENTRÉE ══ -->
+<div class="sep sep--explorer">
   <div class="sep-line"></div>
-  <div class="sep-centre"><div class="sep-diamond"></div><span class="sep-label">Séries en cours</span><div class="sep-diamond"></div></div>
-  <div class="sep-line"></div>
-</div>
-
-<div class="series-wrap">
-
-  <!-- RÉCIT -->
-  {(() => {
-    const eng = maxEngagement(serieDialogues);
-    return (
-      <div class="serie-band serie-band--recit">
-        <div class="serie-head">
-          <div class="serie-head-left">
-            <span class="serie-pill serie-pill--recit">Récit</span>
-            <span class="serie-titre">Les rencontres de Nathalie et Élodie</span>
-          </div>
-          <div class="serie-head-right">
-            {eng > 0 && (
-              <span class="eng-wrap">
-                <span class="eng-niveau">Niveau&nbsp;:</span>
-                <span class="eng-indicator">
-                  <span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span>
-                </span>
-              </span>
-            )}
-            <a class="serie-cta serie-cta--recit" href="/series/les-rencontres-de-nathalie-et-elodie">Voir la série →</a>
-          </div>
-        </div>
-        <div class="serie-body serie-body--recit">
-          {serieDialogues.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 0).padStart(2, '0')}>
-              <span class="cap-ep cap-ep--recit"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{a.data.episode ?? 0}</span>
-              <span class="cap-titre">{a.data.title}</span>
-              <span class="cap-stade">{stadeLabel(a.data.stade)}{a.data.statut === 'en-cours' ? ' · en cours' : ''}</span>
-            </a>
-          ))}
-          <div class="capsule capsule--recit capsule--ghost">
-            <span class="cap-ep cap-ep--recit"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{serieDialogues.length + 1}</span>
-            <span class="cap-titre">Prochain épisode</span>
-            <span class="cap-stade">— à venir</span>
-          </div>
-        </div>
-      </div>
-    );
-  })()}
-
-  <!-- MÉCANIQUE -->
-  {(() => {
-    const eng = maxEngagement(serieMecanique);
-    return (
-      <div class="serie-band serie-band--mecanique">
-        <div class="serie-head">
-          <div class="serie-head-left">
-            <span class="serie-pill serie-pill--mecanique">Mécanique</span>
-            <span class="serie-titre">Le moteur silencieux</span>
-          </div>
-          <div class="serie-head-right">
-            {eng > 0 && (
-              <span class="eng-wrap">
-                <span class="eng-niveau">Niveau&nbsp;:</span>
-                <span class="eng-indicator">
-                  <span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span>
-                </span>
-              </span>
-            )}
-            <a class="serie-cta serie-cta--mecanique" href="/series/mecanique">Voir la série →</a>
-          </div>
-        </div>
-        <div class="serie-body serie-body--mecanique">
-          {serieMecanique.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 1).padStart(2, '0')}>
-              <span class="cap-ep cap-ep--mecanique"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{a.data.episode ?? 1}</span>
-              <span class="cap-titre">{a.data.title}</span>
-              <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
-            </a>
-          ))}
-          <div class="capsule capsule--mecanique capsule--ghost">
-            <span class="cap-ep cap-ep--mecanique"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{serieMecanique.length + 1}</span>
-            <span class="cap-titre">Prochaine note</span>
-            <span class="cap-stade">— à venir</span>
-          </div>
-        </div>
-      </div>
-    );
-  })()}
-
-  <!-- PRISMES -->
-  {(() => {
-    const eng = maxEngagement(serieNotes);
-    return (
-      <div class="serie-band serie-band--notes">
-        <div class="serie-head">
-          <div class="serie-head-left">
-            <span class="serie-pill serie-pill--notes">Prismes</span>
-            <span class="serie-titre">Notes d'un modèle en construction</span>
-          </div>
-          <div class="serie-head-right">
-            {eng > 0 && (
-              <span class="eng-wrap">
-                <span class="eng-niveau">Niveau&nbsp;:</span>
-                <span class="eng-indicator">
-                  <span class={`eng-bar eng-b1${eng >= 1 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b2${eng >= 2 ? ' on' : ''}`}></span>
-                  <span class={`eng-bar eng-b3${eng >= 3 ? ' on' : ''}`}></span>
-                </span>
-              </span>
-            )}
-            <a class="serie-cta" href="/series/notes-d-un-modele-en-construction">Voir la série →</a>
-          </div>
-        </div>
-        <div class="serie-body serie-body--notes">
-          {serieNotes.map((a) => (
-            <a class="capsule" href={`/articles/${a.slug}`} data-num={String(a.data.episode ?? 0).padStart(2, '0')}>
-              <span class="cap-ep cap-ep--notes"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{a.data.episode ?? 0}</span>
-              <span class="cap-titre">{a.data.title}</span>
-              <span class="cap-stade">{stadeLabel(a.data.stade)}</span>
-            </a>
-          ))}
-          <div class="capsule capsule--ghost">
-            <span class="cap-ep cap-ep--notes"><span class="cap-dot" aria-hidden="true"></span>ép.&nbsp;{serieNotes.length + 1}</span>
-            <span class="cap-titre">Prochaine note</span>
-            <span class="cap-stade">— à venir</span>
-          </div>
-        </div>
-      </div>
-    );
-  })()}
-
-
-
-</div>
-
-<!-- ══ OUTILS ══ -->
-<div class="sep sep--outils">
-  <div class="sep-line"></div>
-  <div class="sep-centre"><div class="sep-diamond"></div><span class="sep-label">Outils</span><div class="sep-diamond"></div></div>
+  <div class="sep-centre"><div class="sep-diamond"></div><span class="sep-label">Explorer</span><div class="sep-diamond"></div></div>
   <div class="sep-line"></div>
 </div>
 
-<div class="outils-section">
-  <p class="outils-chapeau">Ces notes ont posé des questions — ces instruments tentent d'y répondre.</p>
+<div class="portes-wrap">
 
-  <div class="outils-grille-home">
+  <a class="porte porte--vies" href="/vies">
+    <span class="porte-pill">Vies</span>
+    <p class="porte-desc">Des personnages qui vivent, parlent, doutent — et se heurtent à l'écart entre comprendre et faire.</p>
+    <p class="porte-formats">Dialogues · Fenêtres · Fragments</p>
+    <div class="porte-footer">
+      <div>
+        <div class="porte-nb">{serieDialogues.length}</div>
+        <div class="porte-nb-label">épisodes</div>
+      </div>
+      <span class="porte-cta">Entrer →</span>
+    </div>
+  </a>
 
-    <a class="ohc" href="/outils/constellation" style="--oc:#c4993a; --oc-mix:196,153,58;">
-      <div class="ohc-num" aria-hidden="true">✦</div>
-      <svg class="ohc-svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <circle cx="24" cy="24" r="3.5" fill="#c4993a" opacity=".45"/>
-        <circle cx="10" cy="12" r="2"   fill="#c4993a" opacity=".3"/>
-        <circle cx="38" cy="11" r="2"   fill="#c4993a" opacity=".3"/>
-        <circle cx="9"  cy="37" r="2"   fill="#c4993a" opacity=".3"/>
-        <circle cx="39" cy="38" r="2"   fill="#c4993a" opacity=".3"/>
-        <circle cx="24" cy="7"  r="1.5" fill="#c4993a" opacity=".2"/>
-        <line x1="12" y1="13" x2="22" y2="21" stroke="#c4993a" stroke-width=".7" opacity=".3"/>
-        <line x1="36" y1="13" x2="26" y2="21" stroke="#c4993a" stroke-width=".7" opacity=".3"/>
-        <line x1="11" y1="35" x2="22" y2="27" stroke="#c4993a" stroke-width=".7" opacity=".3"/>
-        <line x1="37" y1="36" x2="26" y2="27" stroke="#c4993a" stroke-width=".7" opacity=".3"/>
-        <line x1="24" y1="9"  x2="24" y2="20" stroke="#c4993a" stroke-width=".7" opacity=".22"/>
-      </svg>
-      <span class="ohc-label">Exploration</span>
-      <h3 class="ohc-titre">Constellation</h3>
-      <p class="ohc-desc">28 penseurs, leurs concepts, leurs tensions et filiations. Naviguer dans le réseau des idées par domaine ou par contexte — plutôt que mémoriser.</p>
-      <span class="ohc-cta">Explorer →</span>
-    </a>
+  <a class="porte porte--cartes" href="/cartes">
+    <span class="porte-pill">Cartes</span>
+    <p class="porte-desc">Des penseurs convoqués, des mécanismes retournés. Certaines notes partent d'une scène. D'autres d'un concept. Toutes cartographient un territoire.</p>
+    <p class="porte-formats">Analyses · Concepts · Penseurs</p>
+    <div class="porte-footer">
+      <div>
+        <div class="porte-nb">{serieNotes.length + serieMecanique.length}</div>
+        <div class="porte-nb-label">notes</div>
+      </div>
+      <span class="porte-cta">Cartographier →</span>
+    </div>
+  </a>
 
-    <a class="ohc" href="/outils/boussole" style="--oc:#6b7fb8; --oc-mix:107,127,184;">
-      <div class="ohc-num" aria-hidden="true">◈</div>
-      <svg class="ohc-svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <circle cx="24" cy="24" r="14" stroke="#6b7fb8" stroke-width="1" opacity=".25"/>
-        <circle cx="24" cy="24" r="9"  stroke="#6b7fb8" stroke-width=".8" opacity=".18"/>
-        <line x1="24" y1="10" x2="24" y2="16" stroke="#6b7fb8" stroke-width="1.2" opacity=".35" stroke-linecap="round"/>
-        <line x1="24" y1="32" x2="24" y2="38" stroke="#6b7fb8" stroke-width="1.2" opacity=".35" stroke-linecap="round"/>
-        <line x1="10" y1="24" x2="16" y2="24" stroke="#6b7fb8" stroke-width="1.2" opacity=".35" stroke-linecap="round"/>
-        <line x1="32" y1="24" x2="38" y2="24" stroke="#6b7fb8" stroke-width="1.2" opacity=".35" stroke-linecap="round"/>
-        <line x1="24" y1="24" x2="30" y2="16" stroke="#6b7fb8" stroke-width="1.4" opacity=".55" stroke-linecap="round" class="ohc-aiguille-b"/>
-        <circle cx="24" cy="24" r="2" fill="#6b7fb8" opacity=".4"/>
-      </svg>
-      <span class="ohc-label">Guide</span>
-      <h3 class="ohc-titre">Boussole dopaminergique</h3>
-      <p class="ohc-desc">Quelques questions pour estimer ton niveau de charge dopaminergique, ta fatigue nerveuse, et obtenir des pistes d'équilibre adaptées.</p>
-      <span class="ohc-cta">Explorer →</span>
-    </a>
-
-    <a class="ohc" href="/outils/barometre" style="--oc:#3ab87a; --oc-mix:58,184,122;">
-      <div class="ohc-num" aria-hidden="true">⊕</div>
-      <svg class="ohc-svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-        <path d="M10 36 Q10 14 24 14 Q38 14 38 36" stroke="#3ab87a" stroke-width="1" opacity=".22" fill="none"/>
-        <path d="M14 36 Q14 18 24 18 Q34 18 34 36" stroke="#3ab87a" stroke-width="1.1" opacity=".3" fill="none"/>
-        <line x1="24" y1="36" x2="24" y2="14" stroke="#3ab87a" stroke-width=".6" opacity=".15" stroke-dasharray="2 4"/>
-        <line x1="10" y1="36" x2="38" y2="36" stroke="#3ab87a" stroke-width="1.2" opacity=".4" stroke-linecap="round"/>
-        <line x1="24" y1="36" x2="32" y2="22" stroke="#3ab87a" stroke-width="1.5" opacity=".6" stroke-linecap="round" class="ohc-aiguille-v"/>
-        <circle cx="24" cy="36" r="2.2" fill="#3ab87a" opacity=".45"/>
-      </svg>
-      <span class="ohc-label">Immédiat</span>
-      <h3 class="ohc-titre">Baromètre de charge</h3>
-      <p class="ohc-desc">Une photo de ce que tu portes — physique, mental, émotionnel. Sans jugement, sans culpabilité.</p>
-      <span class="ohc-cta">Explorer →</span>
-    </a>
-
-  </div>
-
-  <div class="outils-pied">
-    <a href="/outils" class="outils-lien-tous">Voir tous les outils →</a>
-  </div>
 </div>
 
 <!-- ══ PUBLICATIONS RÉCENTES ══ -->
@@ -322,9 +146,9 @@ function engagementLabel(rank: number) {
           <span class={`badge badge-${a.data.stade ?? 'graine'}`}>{stadeLabel(a.data.stade)}</span>
           {a.data.serie && a.data.episode && (
             <span class="badge badge-serie">
-              {a.data.serie === "Notes d'un modèle en construction" ? 'Prismes' :
-               a.data.serie === "Les rencontres de Nathalie et Élodie" ? 'Récit' :
-               a.data.serie === "Mécanique" ? 'Mécanique' : a.data.serie} · {String(a.data.episode).padStart(2, '0')}
+              {a.data.serie === "Notes d'un modèle en construction" ? 'Cartes' :
+               a.data.serie === "Les rencontres de Nathalie et Élodie" ? 'Vies' :
+               a.data.serie === "Mécanique" ? 'Cartes' : a.data.serie} · {String(a.data.episode).padStart(2, '0')}
             </span>
           )}
         </div>
@@ -336,45 +160,44 @@ function engagementLabel(rank: number) {
   </div>
 
   <aside class="pubs-sidebar">
-    <a href="/stades" class="legende-card legende-card--jardin">
-      <p class="legende-titre">Stades de maturité</p>
-      <ul class="legende-list">
-        <li class="stade-item stade-item--1">
-          <span class="badge badge-graine badge-stade"><span class="badge-stade-icon">🌱</span> Graine</span>
-          <span class="legende-desc">Idée posée, peu développée</span>
-        </li>
-        <li class="stade-item stade-item--2">
-          <span class="badge badge-pousse badge-stade"><span class="badge-stade-icon">🌿</span> Pousse</span>
-          <span class="legende-desc">En cours d'exploration</span>
-        </li>
-        <li class="stade-item stade-item--3">
-          <span class="badge badge-arbre badge-stade"><span class="badge-stade-icon">🌳</span> Arbre</span>
-          <span class="legende-desc">Consolidé, dense</span>
-        </li>
-      </ul>
-      <p class="legende-note">
-        Syncognie est un jardin numérique — les notes évoluent, se ramifient, mûrissent avec le temps.
-      </p>
-      <span class="legende-cta">En savoir plus →</span>
+    <div class="sidebar-outils">
+      <a class="sidebar-outil" href="/outils/constellation">
+        <span class="sidebar-outil-icone" style="color:#c4993a">✦</span>
+        <div>
+          <div class="sidebar-outil-nom">Constellation</div>
+          <div class="sidebar-outil-desc">28 penseurs, leurs concepts et filiations</div>
+        </div>
+      </a>
+      <a class="sidebar-outil" href="/outils/boussole">
+        <span class="sidebar-outil-icone" style="color:#6b7fb8">◈</span>
+        <div>
+          <div class="sidebar-outil-nom">Boussole dopaminergique</div>
+          <div class="sidebar-outil-desc">Estimer sa charge nerveuse</div>
+        </div>
+      </a>
+      <a class="sidebar-outil" href="/outils/barometre">
+        <span class="sidebar-outil-icone" style="color:#3ab87a">⊕</span>
+        <div>
+          <div class="sidebar-outil-nom">Baromètre de charge</div>
+          <div class="sidebar-outil-desc">Une photo de ce que tu portes</div>
+        </div>
+      </a>
+      <a href="/outils" class="sidebar-outils-tous">Tous les outils →</a>
+    </div>
+
+    <div class="sidebar-sep"></div>
+
+    <a href="/stades" class="sidebar-stades">
+      <span>🌱</span>
+      <span class="sidebar-stades-texte">Comment lire les stades →</span>
     </a>
   </aside>
 </div>
 
 <style>
+/* Variables locales — tout le reste vient de Base.astro */
 :root {
-  --gold:      #e8b832;
-  --gold-dim:  rgba(232,184,50,.32);
-  --gold-bg:   rgba(232,184,50,.07);
-  --gold-text: #7a5a08;
-  --terra:     #8b5e3c;
-  --terra-h:   #a06a40;
-  --blue-link: #3a9fd8;
-  --parch:     #f5f0e8;
-  --ink:       #1a1714;
-  --ink-soft:  #9a9189;
-  --ink-mid:   #7a7068;
-  --rule:      #ddd6c8;
-  --max:       740px;
+  --max: 740px;
 }
 
 /* HERO */
@@ -394,7 +217,7 @@ function engagementLabel(rank: number) {
   .hero { grid-template-columns: 1fr 180px; }
 }
 .hero-left { grid-column: 1; grid-row: 1; padding: 3.4rem 1.75rem 2.4rem; }
-.hero-eyebrow { font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 300; letter-spacing: .28em; text-transform: uppercase; color: var(--terra); opacity: .72; margin-bottom: 1rem; }
+.hero-eyebrow { font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 300; letter-spacing: .28em; text-transform: uppercase; color: var(--accent); opacity: .72; margin-bottom: 1rem; }
 .hero-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.4rem, 2.8vw, 1.9rem); font-weight: 700; line-height: 1.2; color: var(--ink); letter-spacing: -.018em; margin-bottom: .9rem; }
 .hero-titre em { font-style: italic; font-weight: 400; color: var(--gold); }
 .hero-sous { font-family: 'Mulish', sans-serif; font-size: .86rem; color: var(--ink-soft); line-height: 1.8; max-width: 40ch; margin-bottom: 1.4rem; }
@@ -404,331 +227,110 @@ function engagementLabel(rank: number) {
 .hero-graphe { grid-column: 2; grid-row: 1; padding-top: 2.6rem; display: flex; align-items: flex-start; justify-content: flex-start; }
 .hero-graphe canvas { display: block; width: 240px; height: 320px; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 72%, transparent 100%); mask-image: linear-gradient(to right, transparent 0%, black 30%, black 72%, transparent 100%); }
 
-/* BANDE RÉFLEXION — styles conservés pour réactivation future */
-.bande-reflexion { grid-column: 1; grid-row: 2; margin: 0 1.75rem 2.2rem; text-decoration: none; display: flex; align-items: stretch; border: 1px solid rgba(232,184,50,.28); border-left: 3px solid var(--gold); border-radius: 4px; background: linear-gradient(105deg, var(--gold-bg) 0%, rgba(245,240,232,0) 65%); position: relative; overflow: hidden; transition: border-color .22s, box-shadow .22s; }
-.bande-reflexion:hover { border-color: rgba(232,184,50,.52); box-shadow: 0 3px 22px rgba(139,94,60,.1); }
-.bande-reflexion::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1.5px; background: linear-gradient(to right, rgba(232,184,50,.5), transparent); transform: scaleX(0); transform-origin: left; transition: transform .36s ease; }
-.bande-reflexion:hover::after { transform: scaleX(1); }
-.br-gauche { padding: .95rem 1.2rem 1rem; flex: 1; display: flex; flex-direction: column; gap: .22rem; }
-.br-eyebrow { font-family: 'Mulish', sans-serif; font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-text); opacity: .85; }
-.br-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .94rem; font-style: italic; color: var(--ink); line-height: 1.3; }
-.br-sous { font-family: 'Mulish', sans-serif; font-size: .7rem; color: var(--ink-mid); line-height: 1.48; max-width: 36ch; margin-top: .05rem; }
-.br-droite { padding: .95rem 1.2rem .95rem .5rem; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: .45rem; flex-shrink: 0; }
-.br-num { font-family: 'Libre Baskerville', Georgia, serif; font-size: 2.3rem; font-weight: 700; color: var(--gold); line-height: 1; letter-spacing: -.03em; opacity: .9; }
-.br-num-label { font-family: 'Mulish', sans-serif; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--gold-text); opacity: .55; text-align: right; margin-top: -.1rem; }
-.br-btn { font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--parch); background: var(--terra); padding: .35rem .82rem; border-radius: 3px; white-space: nowrap; transition: background .18s; }
-.bande-reflexion:hover .br-btn { background: var(--terra-h); }
-
 /* SÉPARATEUR */
 .sep { display: flex; align-items: center; gap: .9rem; max-width: var(--max); margin: 0 auto 1.2rem; padding: 0 1.75rem; }
 .sep-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
 .sep-centre { display: flex; align-items: center; gap: .5rem; }
 .sep-diamond { width: 5px; height: 5px; transform: rotate(45deg); }
-.sep--series .sep-diamond { background: var(--gold); opacity: .62; }
-.sep--outils .sep-diamond { background: var(--gold); opacity: .62; }
-.sep--pubs   .sep-diamond { background: var(--gold); opacity: .62; }
+.sep--series .sep-diamond,
+.sep--outils .sep-diamond,
+.sep--pubs   .sep-diamond,
+.sep--explorer .sep-diamond { background: var(--gold); opacity: .62; }
 .sep-label { font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-.sep--series .sep-label { color: var(--terra); }
-.sep--outils .sep-label { color: var(--terra); }
-.sep--pubs   .sep-label { color: var(--terra); }
+.sep--series .sep-label,
+.sep--outils .sep-label,
+.sep--pubs   .sep-label,
+.sep--explorer .sep-label { color: var(--accent); }
+.sep--explorer { margin-top: 2rem; }
+.sep--series { margin-top: 2.4rem; }
 .sep--outils { margin-top: 2.6rem; }
 .sep--pubs   { margin-top: 2.8rem; }
 
-/* BANDES SÉRIE */
-.series-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem; display: flex; flex-direction: column; gap: .9rem; }
+/* ══ PORTES D'ENTRÉE ══ */
+.portes-wrap {
+  max-width: var(--max); margin: 0 auto; padding: 0 1.75rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+@media (max-width: 560px) { .portes-wrap { grid-template-columns: 1fr; } }
 
-/* Toutes les bandes partagent le même orange vif pour l'indicateur d'engagement */
-.serie-band {
-  --engagement: #e85d04;
+.porte {
+  text-decoration: none;
   border: 1px solid var(--rule);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: border-color .28s, box-shadow .28s, transform .22s;
-  position: relative;
-}
-.serie-band:hover { transform: translateY(-1px); }
-
-/* Bordures gauche colorées par identité de série */
-.serie-band--notes     {
-  --band-accent: rgba(232,184,50,1);
-  border-left: 3px solid rgba(232,184,50,.45);
-}
-.serie-band--recit     {
-  --band-accent: rgba(124,90,191,1);
-  border-left: 3px solid rgba(124,90,191,.45);
-}
-.serie-band--mecanique {
-  --band-accent: rgba(58,122,154,1);
-  border-left: 3px solid rgba(58,122,154,.6);
-}
-
-.serie-band--notes:hover     {
-  border-color: rgba(232,184,50,.55);
-  border-left-color: rgba(232,184,50,.85);
-  box-shadow: 0 4px 22px rgba(196,153,58,.11);
-}
-.serie-band--recit:hover     {
-  border-color: rgba(124,90,191,.35);
-  border-left-color: rgba(124,90,191,.75);
-  box-shadow: 0 4px 22px rgba(124,90,191,.12);
-}
-.serie-band--mecanique:hover {
-  border-color: rgba(58,122,154,.35);
-  border-left-color: rgba(58,122,154,.75);
-  box-shadow: 0 4px 22px rgba(58,122,154,.12);
-}
-
-/* ── Headers ── */
-.serie-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .78rem 1.1rem .72rem;
-  gap: 1rem;
-  border-bottom: 1px solid #ede8df;
-  position: relative;
-}
-/* Dégradé subtil et ligne décorative au bas du header */
-.serie-band--notes .serie-head {
-  background: linear-gradient(to right, rgba(232,184,50,.07) 0%, rgba(232,184,50,.01) 60%, transparent 100%);
-  border-bottom-color: rgba(232,184,50,.18);
-}
-.serie-band--recit .serie-head {
-  background: linear-gradient(to right, rgba(124,90,191,.07) 0%, rgba(124,90,191,.01) 60%, transparent 100%);
-  border-bottom-color: rgba(124,90,191,.18);
-}
-.serie-band--mecanique .serie-head {
-  background: linear-gradient(to right, rgba(58,122,154,.06) 0%, rgba(58,122,154,.01) 60%, transparent 100%);
-  border-bottom-color: rgba(58,122,154,.16);
-}
-/* Trait coloré animé au bas du header au hover */
-.serie-head::after {
-  content: '';
-  position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
-  opacity: 0;
-  transition: opacity .3s;
-}
-.serie-band--notes .serie-head::after     { background: linear-gradient(to right, rgba(232,184,50,.7), transparent 70%); }
-.serie-band--recit .serie-head::after     { background: linear-gradient(to right, rgba(124,90,191,.5), transparent 70%); }
-.serie-band--mecanique .serie-head::after { background: linear-gradient(to right, rgba(58,122,154,.5), transparent 70%); }
-.serie-band:hover .serie-head::after { opacity: 1; }
-
-.serie-head-left  { display: flex; align-items: baseline; gap: .65rem; flex-wrap: wrap; }
-.serie-head-right { display: flex; align-items: center; gap: .75rem; flex-shrink: 0; }
-
-/* Pills */
-.serie-pill {
-  font-family: 'Mulish', sans-serif;
-  font-size: .6rem; font-weight: 800;
-  letter-spacing: .18em; text-transform: uppercase;
-  padding: .16rem .52rem;
-  border-radius: 20px;   /* pill arrondie plutôt que rectangle */
-  flex-shrink: 0; line-height: 1.6;
-  transition: background .2s, border-color .2s;
-}
-.serie-pill--notes     { color: #6a4808; background: rgba(232,184,50,.13); border: 1px solid rgba(232,184,50,.32); }
-.serie-pill--recit     { color: #4a2a8a; background: rgba(124,90,191,.12); border: 1px solid rgba(124,90,191,.28); }
-.serie-pill--mecanique { color: #2a5a72; background: rgba(58,122,154,.12); border: 1px solid rgba(58,122,154,.26); }
-.serie-band--notes:hover .serie-pill--notes         { background: rgba(232,184,50,.2);  border-color: rgba(232,184,50,.5); }
-.serie-band--recit:hover .serie-pill--recit         { background: rgba(124,90,191,.18); border-color: rgba(124,90,191,.5); }
-.serie-band--mecanique:hover .serie-pill--mecanique { background: rgba(58,122,154,.18); border-color: rgba(58,122,154,.42); }
-
-.serie-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .85rem; font-style: italic; color: #2c2416; }
-
-/* CTA */
-.serie-cta {
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 700;
-  letter-spacing: .12em; text-transform: uppercase;
-  text-decoration: none; color: var(--blue-link);
-  flex-shrink: 0; white-space: nowrap;
-  opacity: 0; transform: translateX(-4px);
-  transition: opacity .22s, transform .22s;
-}
-.serie-band:hover .serie-cta { opacity: 1; transform: translateX(0); }
-.serie-cta--recit     { color: #7c5abf; }
-.serie-cta--mecanique { color: #3a7a9a; }
-@media (hover: none) { .serie-cta { opacity: .65; transform: translateX(0); } }
-
-/* Corps */
-.serie-body { display: flex; overflow-x: auto; scrollbar-width: none; }
-.serie-body--recit     { background: rgba(240,234,255,.85); }
-.serie-body--mecanique { background: rgba(232,242,248,.85); }
-.serie-body--notes     { background: rgba(252,249,236,.8); }
-.serie-body::-webkit-scrollbar { display: none; }
-
-/* Capsules */
-.capsule {
-  flex: 0 0 auto; width: 168px;
-  padding: .82rem .95rem .88rem;
-  border-right: 1px solid rgba(221,214,200,.65);
-  text-decoration: none;
-  display: flex; flex-direction: column; gap: .2rem;
-  position: relative;
-  transition: background .2s;
-}
-.capsule--recit     { border-right-color: rgba(124,90,191,.14); }
-.capsule--mecanique { border-right-color: rgba(58,122,154,.12); }
-.capsule:last-child { border-right: none; }
-.serie-band--notes .capsule:not(.capsule--ghost):hover     { background: rgba(232,184,50,.07); }
-.serie-band--recit .capsule:not(.capsule--ghost):hover     { background: rgba(124,90,191,.07); }
-.serie-band--mecanique .capsule:not(.capsule--ghost):hover { background: rgba(58,122,154,.07); }
-.capsule:not(:last-child)::after {
-  content: '›'; position: absolute; right: -8px; top: 50%;
-  transform: translateY(-50%); font-size: .75rem;
-  color: var(--rule); pointer-events: none; z-index: 2;
-}
-
-/* Badge épisode — pill surélevée */
-.cap-ep {
-  display: inline-flex; align-items: center;
-  border-radius: 20px;
-  padding: .18rem .58rem;
-  font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 700;
-  letter-spacing: .13em; text-transform: uppercase;
-  flex-shrink: 0; line-height: 1.6;
-  width: fit-content; align-self: flex-start;
-  color: #3a9fd8;
-  background: linear-gradient(160deg, rgba(255,255,255,.55) 0%, rgba(58,159,216,.08) 100%);
-  border: 1px solid rgba(58,159,216,.28);
-  box-shadow:
-    0 1px 3px rgba(58,159,216,.14),
-    0 2px 8px rgba(58,159,216,.07),
-    inset 0 1px 0 rgba(255,255,255,.65);
-  transition: box-shadow .2s, transform .15s;
-}
-.capsule:not(.capsule--ghost):hover .cap-ep {
-  box-shadow:
-    0 2px 6px rgba(58,159,216,.22),
-    0 4px 14px rgba(58,159,216,.1),
-    inset 0 1px 0 rgba(255,255,255,.75);
-  transform: translateY(-1px);
-}
-.cap-dot { display: none; }
-.cap-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .77rem; line-height: 1.38; color: var(--ink); flex: 1; }
-.cap-stade { font-family: 'Mulish', sans-serif; font-size: .65rem; color: var(--ink-soft); margin-top: .18rem; opacity: .8; }
-
-/* DA articles.astro : capsules Récit et Mécanique deviennent des mini-cartes */
-.serie-band--recit .capsule:not(.capsule--ghost),
-.serie-band--mecanique .capsule:not(.capsule--ghost) {
-  border-radius: 0;
-  position: relative;
-  overflow: hidden;
-}
-.serie-band--recit .capsule:not(.capsule--ghost) .cap-titre { font-style: italic; color: #7c5abf; }
-.serie-band--mecanique .capsule:not(.capsule--ghost) .cap-titre { font-style: italic; color: #3a7a9a; }
-.serie-band--notes .capsule:not(.capsule--ghost) .cap-titre { font-style: italic; color: #b8922a; }
-
-/* Numéro fantôme derrière le contenu */
-.serie-band--recit .capsule:not(.capsule--ghost)::before,
-.serie-band--mecanique .capsule:not(.capsule--ghost)::before,
-.serie-band--notes .capsule:not(.capsule--ghost)::before {
-  content: attr(data-num);
-  position: absolute; right: .3rem; bottom: -.5rem;
-  font-family: 'Libre Baskerville', serif;
-  font-size: 3rem; font-weight: 700;
-  line-height: 1; pointer-events: none; user-select: none;
-  z-index: 0;
-}
-.serie-band--recit .capsule:not(.capsule--ghost)::before    { color: rgba(124,90,191,.09); }
-.serie-band--mecanique .capsule:not(.capsule--ghost)::before { color: rgba(58,122,154,.09); }
-.serie-band--notes .capsule:not(.capsule--ghost)::before     { color: rgba(196,153,58,.12); }
-
-.capsule--entree { background: rgba(232,184,50,.06); }
-.serie-band--mecanique .capsule--entree { background: rgba(58,122,154,.06); }
-.capsule--entree .cap-titre { font-weight: 700; }
-.capsule--entree::before { content: 'Commencer ici'; position: absolute; top: .45rem; right: .6rem; font-family: 'Mulish', sans-serif; font-size: .63rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: #c49a10; opacity: .7; }
-.serie-band--mecanique .capsule--entree::before { color: #3a7a9a; }
-.capsule--ghost { opacity: .28; cursor: default; pointer-events: none; }
-.capsule--ghost .cap-titre { font-style: italic; color: var(--ink-soft); }
-
-/* INDICATEUR ENGAGEMENT + NIVEAU */
-.eng-wrap { display: inline-flex; align-items: center; gap: .38rem; }
-.eng-niveau {
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 500; letter-spacing: .08em;
-  color: var(--ink-mid); opacity: .75;
-  white-space: nowrap; line-height: 1; vertical-align: middle;
-}
-.eng-indicator { display: inline-flex; align-items: flex-end; gap: 4px; }
-.eng-bar {
-  display: inline-block; width: 4px;
-  border-radius: 2px 2px 1px 1px;
-  background: rgba(200,192,178,.45);
-  transition: background .25s;
-}
-.eng-b1 { height: 6px; }
-.eng-b2 { height: 10px; }
-.eng-b3 { height: 14px; }
-/* Orange vif unifié pour les 3 séries */
-.eng-bar.on { background: #e85d04; }
-
-/* ══ OUTILS ══ */
-.outils-section { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem; }
-.outils-chapeau { font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.65; margin-bottom: 1.5rem; }
-
-.outils-grille-home {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-@media (max-width: 580px) { .outils-grille-home { grid-template-columns: 1fr; gap: .75rem; } }
-@media (min-width: 581px) and (max-width: 720px) { .outils-grille-home { grid-template-columns: repeat(2, 1fr); } }
-
-.ohc {
-  display: flex; flex-direction: column;
-  padding: 1.6rem 1.4rem 1.3rem;
-  border: 1px solid color-mix(in srgb, var(--oc) 18%, transparent);
-  border-top: 2.5px solid var(--oc);
-  border-radius: 0 0 8px 8px;
-  background: color-mix(in srgb, var(--oc) 3%, var(--parch));
-  text-decoration: none; color: inherit;
+  border-radius: 10px;
+  padding: 1.8rem 1.6rem 1.5rem;
   position: relative; overflow: hidden;
-  transition: transform .22s, box-shadow .22s, background .25s;
+  display: flex; flex-direction: column; gap: .75rem;
+  transition: transform .22s, box-shadow .28s, border-color .28s;
+  min-height: 200px;
 }
-.ohc::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 40% at 5% 0%, color-mix(in srgb, var(--oc) 14%, transparent), transparent 70%);
-  opacity: 0; transition: opacity .3s; pointer-events: none;
+.porte:hover { transform: translateY(-3px); }
+
+.porte--vies {
+  border-left: 3px solid rgba(155,50,50,.45);
+  background: linear-gradient(145deg, rgba(155,50,50,.05) 0%, rgba(155,50,50,.01) 50%, transparent 100%);
 }
-.ohc:hover { transform: translateY(-4px); box-shadow: 0 12px 32px color-mix(in srgb, var(--oc) 13%, transparent); background: color-mix(in srgb, var(--oc) 6%, var(--parch)); }
-.ohc:hover::after { opacity: 1; }
-
-.ohc-num { position: absolute; top: -.2rem; right: .6rem; font-size: 5.5rem; font-weight: 700; line-height: 1; color: var(--oc); opacity: .055; pointer-events: none; user-select: none; font-family: 'Libre Baskerville', Georgia, serif; }
-.ohc-svg { width: 34px; height: 34px; flex-shrink: 0; margin-bottom: .7rem; position: relative; z-index: 1; }
-
-.ohc-aiguille-b { transform-origin: 24px 24px; animation: ohc-tourne 6s ease-in-out infinite; }
-.ohc-aiguille-v { transform-origin: 24px 36px; animation: ohc-balance 4s ease-in-out infinite; }
-@keyframes ohc-tourne { 0%,100%{transform:rotate(-20deg)} 50%{transform:rotate(20deg)} }
-@keyframes ohc-balance { 0%,100%{transform:rotate(-18deg)} 50%{transform:rotate(18deg)} }
-
-.ohc-label { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--oc); opacity: .7; margin-bottom: .6rem; position: relative; z-index: 1; }
-.ohc-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .95rem; font-weight: 700; color: var(--ink); line-height: 1.25; letter-spacing: -.01em; margin-bottom: .7rem; position: relative; z-index: 1; }
-.ohc-desc { font-family: 'Mulish', sans-serif; font-size: .76rem; font-weight: 300; color: var(--ink-mid); line-height: 1.7; flex: 1; margin-bottom: .9rem; position: relative; z-index: 1; }
-.ohc-cta { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--blue-link); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; align-self: flex-end; position: relative; z-index: 1; }
-.ohc:hover .ohc-cta { opacity: 1; transform: translateX(0); }
-@media (hover: none) {
-  .ohc-cta { opacity: .75; transform: translateX(0); }
-  .ohc:hover { transform: none; box-shadow: none; }
-  .ohc:hover::after { opacity: 0; }
+.porte--vies:hover {
+  border-color: rgba(155,50,50,.3);
+  border-left-color: rgba(155,50,50,.8);
+  box-shadow: 0 6px 28px rgba(155,50,50,.1);
+}
+.porte--cartes {
+  border-left: 3px solid rgba(232,184,50,.5);
+  background: linear-gradient(145deg, rgba(232,184,50,.06) 0%, rgba(232,184,50,.01) 50%, transparent 100%);
+}
+.porte--cartes:hover {
+  border-color: rgba(232,184,50,.38);
+  border-left-color: rgba(232,184,50,.85);
+  box-shadow: 0 6px 28px rgba(196,153,58,.12);
 }
 
-.outils-pied { margin-top: 1.2rem; display: flex; justify-content: flex-end; }
-.outils-lien-tous {
-  font-family: 'Mulish', sans-serif;
-  font-size: .6rem; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--blue-link);
-  text-decoration: none;
-  opacity: .7;
-  transform: translateX(-3px);
-  transition: opacity .2s, transform .2s, letter-spacing .25s;
+.porte-pill {
   display: inline-block;
+  font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  padding: .25rem .65rem; border-radius: 3px; width: fit-content;
 }
-.outils-lien-tous:hover {
-  opacity: 1;
-  transform: translateX(0);
-  letter-spacing: .2em;
+.porte--vies  .porte-pill { background: rgba(155,50,50,.09);  color: #7a2020; border: 1px solid rgba(155,50,50,.18); }
+.porte--cartes .porte-pill { background: rgba(196,153,58,.1); color: #7a5a08; border: 1px solid rgba(196,153,58,.22); }
+
+.porte-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; font-weight: 300; line-height: 1.75;
+  color: var(--ink-mid); flex: 1;
 }
+.porte-formats {
+  font-family: 'Mulish', sans-serif;
+  font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  opacity: .45;
+}
+.porte--vies  .porte-formats { color: #9b3232; }
+.porte--cartes .porte-formats { color: #a07828; }
+
+.porte-footer {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-top: .3rem; padding-top: .9rem;
+  border-top: 1px solid rgba(221,214,200,.5);
+}
+.porte-nb {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.9rem; font-weight: 700; line-height: 1; letter-spacing: -.02em;
+}
+.porte--vies  .porte-nb { color: #9b3232; }
+.porte--cartes .porte-nb { color: #c4993a; }
+.porte-nb-label {
+  font-family: 'Mulish', sans-serif; font-size: .58rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); margin-top: .18rem;
+}
+.porte-cta {
+  font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity .2s, transform .2s;
+}
+.porte:hover .porte-cta { opacity: 1; transform: translateX(0); }
+@media (hover: none) { .porte-cta { opacity: .7; transform: translateX(0); } }
+.porte--vies  .porte-cta { color: #9b3232; }
+.porte--cartes .porte-cta { color: #a07828; }
 
 /* ══ PUBLICATIONS + SIDEBAR ══ */
 .pubs-layout {
@@ -746,7 +348,7 @@ function engagementLabel(rank: number) {
 .articles-col { min-width: 0; }
 .article-item { display: block; padding: .7rem 0 .78rem; border-bottom: 1px solid #ede8df; text-decoration: none; transition: transform .18s; }
 .article-item:hover { transform: translateX(3px); }
-.article-item:hover .article-titre { color: var(--terra); }
+.article-item:hover .article-titre { color: var(--accent); }
 .article-item:hover .article-lire { opacity: 1; }
 .article-meta { display: flex; align-items: center; gap: .4rem; margin-bottom: .25rem; flex-wrap: wrap; }
 .article-date { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 300; letter-spacing: .15em; color: var(--ink-soft); opacity: .6; }
@@ -758,76 +360,65 @@ function engagementLabel(rank: number) {
 .badge-arbre    { background: rgba(46,125,78,.18);   color: #224422; border: 1px solid rgba(34,68,34,.2); }
 .badge-serie    { background: rgba(107,127,184,.08); color: #4a5a8a; border: 1px solid rgba(107,127,184,.22); }
 .badge-stade { display: inline-flex; align-items: center; gap: .28rem; }
-.legende-list .badge-stade { display: flex; width: 100%; }
 .badge-stade-icon { font-size: .65rem; line-height: 1; }
 .article-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .92rem; line-height: 1.35; color: var(--ink); margin-bottom: .2rem; }
 .article-desc { font-family: 'Mulish', sans-serif; font-size: .71rem; color: var(--ink-mid); line-height: 1.52; margin-bottom: .3rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.article-lire { font-family: 'Mulish', sans-serif; font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; color: var(--blue-link); opacity: 0; transition: opacity .18s; }
+.article-lire { font-family: 'Mulish', sans-serif; font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; color: var(--link); opacity: 0; transition: opacity .18s; }
 @media (hover: none) { .article-lire { opacity: .6; } }
 
-/* SIDEBAR STADES — reprise exacte legende-card ancien accueil */
+/* SIDEBAR OUTILS + STADES */
 .pubs-sidebar { position: sticky; top: 4.5rem; align-self: start; }
 
-.legende-card {
-  padding: 1rem;
-  border: 1px solid var(--rule);
-  border-radius: 6px;
-  background: rgba(245,240,232,.6);
-  box-shadow: 0 2px 12px rgba(44,36,22,.05);
-  text-decoration: none;
-  display: block;
-  transition: border-color .2s, background .2s;
+.sidebar-outils { display: flex; flex-direction: column; gap: .5rem; }
+
+.sidebar-outil {
+  display: flex; align-items: flex-start; gap: .65rem;
+  text-decoration: none; padding: .65rem .75rem;
+  border: 1px solid var(--rule); border-radius: 7px;
+  background: rgba(245,240,232,.5);
+  transition: border-color .2s, transform .18s, box-shadow .2s;
 }
-.legende-card--jardin {
-  cursor: pointer;
-  overflow: hidden;
+.sidebar-outil:hover {
+  border-color: rgba(196,153,58,.4);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 14px rgba(196,153,58,.07);
 }
-.legende-card--jardin:hover {
-  border-color: rgba(139,94,60,.25);
-  background: rgba(139,94,60,.04);
+.sidebar-outil-icone {
+  font-size: .9rem; flex-shrink: 0; margin-top: .05rem; line-height: 1; opacity: .75;
+}
+.sidebar-outil-nom {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .76rem; font-weight: 700; color: var(--ink); line-height: 1.25; margin-bottom: .15rem;
+}
+.sidebar-outil-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .67rem; font-weight: 300; color: var(--ink-soft); line-height: 1.5;
+}
+.sidebar-outils-tous {
+  display: block; text-align: right; margin-top: .2rem;
+  font-family: 'Mulish', sans-serif; font-size: .62rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none; opacity: .75;
+  transition: opacity .2s;
+}
+.sidebar-outils-tous:hover { opacity: 1; }
+
+.sidebar-sep {
+  height: 1px; margin: .85rem 0;
+  background: linear-gradient(to right, transparent, var(--rule), transparent);
 }
 
-.legende-titre {
-  font-family: 'Mulish', sans-serif;
-  font-size: .55rem; font-weight: 700;
-  letter-spacing: .22em; text-transform: uppercase;
-  color: var(--ink-mid); opacity: .75;
-  margin-bottom: .75rem; padding-bottom: .5rem;
-  border-bottom: 1px solid var(--rule);
+.sidebar-stades {
+  display: inline-flex; align-items: center; gap: .45rem;
+  text-decoration: none; padding: .4rem .5rem;
+  border-radius: 5px;
+  transition: background .2s;
 }
-.legende-list {
-  list-style: none; padding: 0;
-  display: flex; flex-direction: column;
-  gap: .6rem; margin-bottom: .85rem;
+.sidebar-stades:hover { background: rgba(139,94,60,.05); }
+.sidebar-stades-texte {
+  font-family: 'Mulish', sans-serif; font-size: .63rem; font-weight: 400;
+  font-style: italic; letter-spacing: .06em; color: var(--ink-soft);
 }
-.legende-list li {
-  display: flex; flex-direction: column; gap: .25rem;
-}
-.legende-desc {
-  font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 300; font-style: italic;
-  color: var(--ink-mid); opacity: .9; padding-left: .2rem;
-}
-.legende-note {
-  font-family: 'Mulish', sans-serif;
-  font-size: .72rem; font-weight: 300; font-style: italic;
-  color: var(--ink-mid); opacity: .75; line-height: 1.6;
-  padding-top: .75rem; border-top: 1px solid var(--rule);
-  margin-bottom: .6rem;
-}
-.legende-cta {
-  display: inline-block;
-  font-family: 'Mulish', sans-serif;
-  font-size: .6rem; font-weight: 600;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: var(--blue-link);
-  opacity: 0; transform: translateX(-3px);
-  transition: opacity .2s, transform .2s;
-}
-.legende-card--jardin:hover .legende-cta {
-  opacity: 1; transform: translateX(0);
-}
-@media (hover: none) { .legende-cta { opacity: .7; transform: translateX(0); } }
 </style>
 
 <script>

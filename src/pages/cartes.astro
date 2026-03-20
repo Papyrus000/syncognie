@@ -1,0 +1,409 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allArticles = await getCollection('articles');
+
+// ── PRISMES — unité centrale
+// Exclusion via lien_fenetre : tout article lié à une fenêtre n'est pas un Prisme
+const prismes = allArticles
+  .filter(a =>
+    (a.data.serie === "Notes d'un modèle en construction" || a.data.rubrique === 'prisme') &&
+    !a.data.lien_fenetre
+  )
+  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
+
+// ── FENÊTRES→ — tout article portant un lien_fenetre
+const fenetresAnalyses = allArticles
+  .filter(a => !!a.data.lien_fenetre)
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+// ── NOTES — ex-Mécanique (exclut les entrées Journal)
+const notes = allArticles
+  .filter(a =>
+    (a.data.serie === 'Mécanique' || a.data.rubrique === 'mecanique') &&
+    a.data.category !== 'Journal'
+  )
+  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
+
+// Hero = Prisme le plus dense (engagement immersion > stade arbre/pousse > episode)
+const engagementRank: Record<string, number> = { immersion: 3, lecture: 2, pause: 1 };
+const stadeRank: Record<string, number>      = { arbre: 3, pousse: 2, graine: 1 };
+
+const prismeHero = [...prismes].sort((a, b) => {
+  const ea = engagementRank[a.data.engagement ?? ''] ?? 0;
+  const eb = engagementRank[b.data.engagement ?? ''] ?? 0;
+  if (eb !== ea) return eb - ea;
+  const sa = stadeRank[a.data.stade ?? ''] ?? 0;
+  const sb = stadeRank[b.data.stade ?? ''] ?? 0;
+  if (sb !== sa) return sb - sa;
+  return (a.data.episode ?? 0) - (b.data.episode ?? 0);
+})[0] ?? null;
+
+const prismesSuite = prismes.filter(p => p.slug !== prismeHero?.slug);
+
+const totalPrismes = prismes.length;
+const totalFen     = fenetresAnalyses.length;
+const totalNotes   = notes.length;
+
+const AUTEURS = ['Gottman','Bowlby','Perel','Argyris','Korzybski','Watzlawick',
+                 'Kahneman','Damasio','Frankl','Lembke','Berridge','Meadows',
+                 'McGilchrist','Rizzolatti','Bruner'];
+
+function sourcesFrom(tags: string[] | undefined): string {
+  if (!tags) return '';
+  return tags
+    .filter(t => AUTEURS.some(a => t.toLowerCase().includes(a.toLowerCase())))
+    .slice(0, 3).join(' · ');
+}
+function formatDateShort(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+}
+function readTime(body: string) {
+  return Math.max(1, Math.round(body.split(/\s+/).length / 200));
+}
+function stadeEmoji(stade?: string) {
+  if (stade === 'pousse') return '🌿';
+  if (stade === 'arbre')  return '🌳';
+  return '🌱';
+}
+---
+
+<Base
+  title="Cartes — Syncognie"
+  description="Des penseurs convoqués, des mécanismes retournés. Des notes qui cartographient un territoire."
+>
+<div class="page-wrap">
+
+  <!-- FILIGRANE réseau de concepts -->
+  <svg class="header-filigrane" viewBox="0 0 400 300" fill="none" aria-hidden="true">
+    <circle cx="200" cy="150" r="3.5" fill="#c4993a" opacity=".45" class="node-c"/>
+    <circle cx="100" cy="90"  r="2.5" fill="#c4993a" opacity=".28" class="node-a"/>
+    <circle cx="310" cy="80"  r="2.5" fill="#c4993a" opacity=".28" class="node-b"/>
+    <circle cx="80"  cy="210" r="2"   fill="#c4993a" opacity=".22" class="node-b"/>
+    <circle cx="320" cy="220" r="2"   fill="#c4993a" opacity=".22" class="node-a"/>
+    <circle cx="200" cy="50"  r="1.8" fill="#c4993a" opacity=".18" class="node-c"/>
+    <line x1="103" y1="93"  x2="197" y2="147" stroke="#c4993a" stroke-width=".6" opacity=".22"/>
+    <line x1="307" y1="83"  x2="203" y2="147" stroke="#c4993a" stroke-width=".6" opacity=".22"/>
+    <line x1="83"  y1="207" x2="197" y2="153" stroke="#c4993a" stroke-width=".5" opacity=".18"/>
+    <line x1="317" y1="217" x2="203" y2="153" stroke="#c4993a" stroke-width=".5" opacity=".18"/>
+    <line x1="200" y1="53"  x2="200" y2="146" stroke="#c4993a" stroke-width=".5" opacity=".18"/>
+    <line x1="100" y1="92"  x2="310" y2="82"  stroke="#c4993a" stroke-width=".4" opacity=".1" stroke-dasharray="3 8"/>
+    <circle cx="200" cy="150" r="38" stroke="#c4993a" stroke-width=".5" opacity=".1" stroke-dasharray="2 6" class="ring-outer"/>
+    <circle cx="200" cy="150" r="20" stroke="#c4993a" stroke-width=".8" opacity=".08" class="ring-inner"/>
+  </svg>
+
+  <!-- HEADER -->
+  <header class="page-header">
+    <p class="page-eyebrow">Cartes</p>
+    <h1 class="page-titre">Penseurs convoqués.<br><em>Mécanismes retournés.</em></h1>
+    <div class="phrase-cartes">
+      <span class="phrase-glyph">◈</span>
+      <p class="phrase-texte">Certaines notes partent d'une scène. D'autres d'un concept. Toutes cartographient un territoire — la carte n'est pas le territoire, mais elle permet de s'y repérer.</p>
+    </div>
+    <div class="page-stats">
+      <span class="stat"><span class="stat-n">{totalPrismes}</span><span class="stat-label">prisme{totalPrismes > 1 ? 's' : ''}</span></span>
+      {totalFen > 0 && <>
+        <span class="stat-sep">·</span>
+        <span class="stat"><span class="stat-n">{totalFen}</span><span class="stat-label">fenêtre{totalFen > 1 ? 's' : ''} →</span></span>
+      </>}
+      <span class="stat-sep">·</span>
+      <span class="stat"><span class="stat-n">{totalNotes}</span><span class="stat-label">note{totalNotes > 1 ? 's' : ''}</span></span>
+    </div>
+  </header>
+
+
+  <!-- ══════════════════════════════
+       1. PRISMES — bloc dominant
+  ══════════════════════════════ -->
+  <div class="bloc-prismes">
+
+    <div class="prismes-intro">
+      <div class="prismes-intro-gauche">
+        <span class="prismes-eyebrow">◈ Prismes</span>
+        <p class="prismes-intro-texte">
+          Ces {totalPrismes} analyses forment une unité — elles se suivent dans l'écriture et en sens.
+          Chacune part d'une scène, convoque plusieurs penseurs, retourne un mécanisme.
+        </p>
+      </div>
+      {prismeHero && (
+        <a class="prismes-entree-lien" href={`/articles/${prismeHero.slug}`}>
+          Commencer par la première →
+        </a>
+      )}
+    </div>
+
+    <!-- Carte hero — Prisme le plus dense -->
+    {prismeHero && (() => {
+      const src = sourcesFrom(prismeHero.data.tags);
+      const rt  = readTime(prismeHero.body);
+      const dt  = formatDateShort(prismeHero.data.date);
+      const ep  = prismeHero.data.episode ?? 1;
+      return (
+        <a class="carte-hero" href={`/articles/${prismeHero.slug}`}>
+          <div class="hero-gnum" aria-hidden="true">{String(ep).padStart(2,'0')}</div>
+          <div class="hero-top">
+            <span class="hero-ep">Prisme {String(ep).padStart(2,'0')}</span>
+            {prismeHero.data.engagement === 'immersion' && (
+              <span class="hero-badge">Lecture dense</span>
+            )}
+          </div>
+          <div class="hero-meta">
+            {prismeHero.data.stade && <span>{stadeEmoji(prismeHero.data.stade)}</span>}
+            <span>{rt} min · {dt}</span>
+          </div>
+          <p class="hero-titre">{prismeHero.data.title}</p>
+          {prismeHero.data.description && <p class="hero-desc">{prismeHero.data.description}</p>}
+          {src && <p class="hero-src">{src}</p>}
+          <span class="hero-lire">Lire →</span>
+        </a>
+      );
+    })()}
+
+    <!-- Grille Prismes restants -->
+    {prismesSuite.length > 0 && (
+      <div class="prismes-grille">
+        {prismesSuite.map((p, i) => {
+          const ep  = p.data.episode ?? i + 2;
+          const src = sourcesFrom(p.data.tags);
+          const rt  = readTime(p.body);
+          const dt  = formatDateShort(p.data.date);
+          return (
+            <a class="carte-prisme" href={`/articles/${p.slug}`}
+               style={`animation-delay:${0.1 + i * 0.08}s`}>
+              <div class="cp-gnum">{String(ep).padStart(2,'0')}</div>
+              <div class="cp-head">
+                <span class="cp-num">Prisme {String(ep).padStart(2,'0')}</span>
+                {p.data.stade && <span class="cp-stade">{stadeEmoji(p.data.stade)}</span>}
+              </div>
+              <p class="cp-titre">{p.data.title}</p>
+              {p.data.description && <p class="cp-desc">{p.data.description}</p>}
+              {src && <p class="cp-src">{src}</p>}
+              <span class="cp-time">{rt} min · {dt}</span>
+              <span class="cp-lire">Lire →</span>
+            </a>
+          );
+        })}
+        <div class="carte-prisme carte-prisme--ghost">
+          <div class="cp-gnum">{String(totalPrismes + 1).padStart(2,'0')}</div>
+          <div class="cp-head"><span class="cp-num">Prisme {String(totalPrismes + 1).padStart(2,'0')}</span></div>
+          <p class="cp-titre cp-titre--ghost">Prochain prisme</p>
+          <p class="cp-desc">En cours de lecture — à venir.</p>
+        </div>
+      </div>
+    )}
+
+  </div>
+
+
+  <!-- ══════════════════════════════
+       2. MÉCANIQUE — notes directes
+  ══════════════════════════════ -->
+  {notes.length > 0 && (
+    <>
+      <div class="section-sep section-sep--notes">
+        <div class="sep-line"></div>
+        <div class="sep-centre">
+          <div class="sep-diamond sep-diamond--note"></div>
+          <span class="sep-label sep-label--note">Mécanique — Notes</span>
+          <div class="sep-diamond sep-diamond--note"></div>
+        </div>
+        <div class="sep-line"></div>
+      </div>
+      <p class="section-note">Des notes directes sur un concept ou un auteur — sans scène d'ouverture. Le geste intellectuel à nu.</p>
+
+      <div class="satellites-grille">
+        {notes.map((n, i) => {
+          const src = sourcesFrom(n.data.tags);
+          const rt  = readTime(n.body);
+          const dt  = formatDateShort(n.data.date);
+          return (
+            <a class="carte-satellite" href={`/articles/${n.slug}`}
+               style={`animation-delay:${0.05 + i * 0.06}s`}>
+              <span class="sat-badge sat-badge--note">Note</span>
+              <p class="sat-titre">{n.data.title}</p>
+              {n.data.description && <p class="sat-desc">{n.data.description}</p>}
+              {src && <p class="sat-src">{src}</p>}
+              <div class="sat-foot">
+                {n.data.stade && <span class="sat-stade">{stadeEmoji(n.data.stade)}</span>}
+                <span class="sat-time">{rt} min · {dt}</span>
+              </div>
+              <span class="sat-lire">Lire →</span>
+            </a>
+          );
+        })}
+      </div>
+    </>
+  )}
+
+
+  <!-- ══════════════════════════════
+       3. FENÊTRES→ — analyses de moments
+  ══════════════════════════════ -->
+  {fenetresAnalyses.length > 0 && (
+    <>
+      <div class="section-sep">
+        <div class="sep-line"></div>
+        <div class="sep-centre">
+          <div class="sep-diamond sep-diamond--fen"></div>
+          <span class="sep-label sep-label--fen">Analyse des fenêtres</span>
+          <div class="sep-diamond sep-diamond--fen"></div>
+        </div>
+        <div class="sep-line"></div>
+      </div>
+      <p class="section-note">Ces notes partent d'un moment vécu par un personnage — et en déroulent le mécanisme.</p>
+
+      <div class="satellites-grille">
+        {fenetresAnalyses.map((f, i) => {
+          const src = sourcesFrom(f.data.tags);
+          const rt  = readTime(f.body);
+          const dt  = formatDateShort(f.data.date);
+          return (
+            <a class="carte-satellite" href={`/articles/${f.slug}`}
+               style={`animation-delay:${0.05 + i * 0.06}s`}>
+              <span class="sat-badge sat-badge--fen">Fenêtre →</span>
+              <p class="sat-titre">{f.data.title}</p>
+              {f.data.description && <p class="sat-desc">{f.data.description}</p>}
+              {src && <p class="sat-src">{src}</p>}
+              <div class="sat-foot">
+                {f.data.stade && <span class="sat-stade">{stadeEmoji(f.data.stade)}</span>}
+                <span class="sat-time">{rt} min · {dt}</span>
+              </div>
+              <span class="sat-lire">Lire →</span>
+            </a>
+          );
+        })}
+      </div>
+    </>
+  )}
+
+</div>
+</Base>
+
+<style>
+  :root {
+    --car:         #c4993a;
+    --car-dim:     rgba(196,153,58,.28);
+    --car-bg:      rgba(196,153,58,.05);
+    --car-deep:    #8a6438;
+    --note-col:    #5a7a9a;
+    --fen-col:     #8b6fc4;
+    --hero-bg1:    #1e1208;
+    --hero-bg2:    #2a1a0a;
+    --hero-bg3:    #342210;
+    --kraft:       #ece4d4;
+    --kraft-h:     #e2d8c4;
+    --max:         740px;
+  }
+
+  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; position: relative; }
+
+  /* FILIGRANE */
+  .header-filigrane { position: absolute; right: -1rem; top: 1rem; width: 300px; height: auto; pointer-events: none; }
+  @media (max-width: 600px) { .header-filigrane { width: 150px; opacity: .5; } }
+  .node-a { animation: nodep 3s ease-in-out infinite; }
+  .node-b { animation: nodep 3.8s ease-in-out infinite .8s; }
+  .node-c { animation: nodep 4.5s ease-in-out infinite 1.5s; }
+  .ring-outer { animation: ring-rot 30s linear infinite; transform-origin: 200px 150px; }
+  .ring-inner { animation: ring-rot 20s linear infinite reverse; transform-origin: 200px 150px; }
+  @keyframes nodep    { 0%,100%{opacity:.18} 50%{opacity:.48} }
+  @keyframes ring-rot { from{stroke-dashoffset:0} to{stroke-dashoffset:-80} }
+
+  /* HEADER */
+  .page-header { padding: 2.8rem 0 1.75rem; opacity: 0; animation: rise .9s .05s ease forwards; }
+  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--car-deep); opacity: .8; margin-bottom: .85rem; }
+  .page-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.9rem, 3.8vw, 2.5rem); font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -.02em; margin-bottom: 1rem; }
+  .page-titre em { font-style: italic; font-weight: 400; color: var(--car); }
+  .phrase-cartes { display: flex; align-items: flex-start; gap: .65rem; margin-bottom: 1.4rem; padding: .85rem 1.1rem; border: 1px solid var(--car-dim); border-left: 3px solid rgba(196,153,58,.5); border-radius: 0 4px 4px 0; background: var(--car-bg); }
+  .phrase-glyph { color: var(--car); opacity: .65; font-size: .8rem; flex-shrink: 0; margin-top: .06rem; }
+  .phrase-texte { font-family: 'Libre Baskerville', Georgia, serif; font-size: .82rem; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+  .page-stats { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; opacity: 0; animation: rise .9s .15s ease forwards; }
+  .stat { display: flex; align-items: baseline; gap: .3rem; }
+  .stat-n { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.3rem; font-weight: 700; color: var(--car); line-height: 1; letter-spacing: -.02em; }
+  .stat-label { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+  .stat-sep { color: var(--rule); }
+
+  /* BLOC PRISMES */
+  .bloc-prismes { margin-bottom: 3rem; opacity: 0; animation: rise .9s .2s ease forwards; }
+
+  .prismes-intro { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding: 1.1rem 1.4rem; border: 1px solid var(--car-dim); border-top: 3px solid var(--car); border-radius: 0 0 6px 6px; background: linear-gradient(to right, var(--car-bg) 0%, transparent 70%); }
+  .prismes-intro-gauche { display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+  .prismes-eyebrow { font-family: 'Mulish', sans-serif; font-size: .56rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--car-deep); opacity: .85; }
+  .prismes-intro-texte { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.65; max-width: 52ch; }
+  .prismes-entree-lien { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--car-deep); text-decoration: none; white-space: nowrap; align-self: flex-end; flex-shrink: 0; opacity: .8; transition: opacity .2s, letter-spacing .2s; }
+  .prismes-entree-lien:hover { opacity: 1; letter-spacing: .16em; }
+
+  /* CARTE HERO */
+  .carte-hero { position: relative; overflow: hidden; padding: 1.6rem 1.5rem 1.4rem; border-radius: 12px; margin-bottom: 1rem; background: linear-gradient(135deg, var(--hero-bg1) 0%, var(--hero-bg2) 60%, var(--hero-bg3) 100%); display: flex; flex-direction: column; gap: .45rem; text-decoration: none; color: inherit; box-shadow: 0 4px 0 rgba(30,18,8,.4), 0 8px 32px rgba(30,18,8,.18); transition: transform .2s, box-shadow .2s; }
+  .carte-hero:hover { transform: translateY(-3px); box-shadow: 0 7px 0 rgba(30,18,8,.35), 0 18px 40px rgba(30,18,8,.22); }
+  .carte-hero::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, var(--car), rgba(196,153,58,.1)); }
+  .hero-gnum { position: absolute; bottom: -.5rem; right: .7rem; font-family: 'Libre Baskerville', Georgia, serif; font-size: 6.5rem; font-weight: 700; line-height: 1; pointer-events: none; letter-spacing: -.04em; color: rgba(255,255,255,.04); }
+  .hero-top { display: flex; align-items: center; justify-content: space-between; }
+  .hero-ep { font-family: 'Mulish', sans-serif; font-size: .56rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--car); opacity: .85; }
+  .hero-badge { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--car); background: rgba(196,153,58,.12); border: 1px solid rgba(196,153,58,.3); border-radius: 3px; padding: .18rem .5rem; }
+  .hero-meta { font-family: 'Mulish', sans-serif; font-size: .53rem; font-weight: 300; color: rgba(245,240,232,.42); display: flex; align-items: center; gap: .4rem; }
+  .hero-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.2rem; font-style: italic; color: #f5ede8; line-height: 1.3; transition: color .2s; }
+  .carte-hero:hover .hero-titre { color: #fff; }
+  .hero-desc { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; color: rgba(245,237,232,.55); line-height: 1.65; max-width: 56ch; }
+  .hero-src { font-family: 'Mulish', sans-serif; font-size: .57rem; font-weight: 500; color: var(--car); opacity: .75; }
+  .hero-lire { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--car); opacity: 0; transform: translateY(3px); transition: opacity .2s, transform .2s; margin-top: .2rem; display: inline-block; }
+  .carte-hero:hover .hero-lire { opacity: 1; transform: translateY(0); }
+
+  /* GRILLE PRISMES */
+  .prismes-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 540px) { .prismes-grille { grid-template-columns: 1fr; } }
+
+  .carte-prisme { background: var(--kraft); border-radius: 10px; box-shadow: 0 2px 0 rgba(152,112,72,.2), 0 4px 18px rgba(122,88,48,.07); padding: 1.25rem 1.2rem 1.1rem; display: flex; flex-direction: column; gap: .4rem; text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s, background .2s; opacity: 0; animation: rise .7s ease forwards; }
+  .carte-prisme:not(.carte-prisme--ghost):hover { transform: translateY(-3px); box-shadow: 0 6px 0 rgba(152,112,72,.18), 0 14px 30px rgba(122,88,48,.12); background: var(--kraft-h); }
+  .carte-prisme--ghost { opacity: .28 !important; animation: none; box-shadow: none; border: 1px dashed rgba(152,112,72,.25); background: transparent; cursor: default; pointer-events: none; }
+  .cp-gnum { position: absolute; bottom: -.5rem; right: .5rem; font-family: 'Libre Baskerville', Georgia, serif; font-size: 5.5rem; font-weight: 700; line-height: 1; pointer-events: none; letter-spacing: -.04em; color: rgba(196,153,58,.15); }
+  .cp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: .08rem; }
+  .cp-num { font-family: 'Libre Baskerville', Georgia, serif; font-size: .68rem; font-weight: 700; color: var(--car); }
+  .cp-stade { font-size: .68rem; }
+  .cp-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .96rem; font-style: italic; color: var(--ink); line-height: 1.35; transition: color .2s; }
+  .carte-prisme:not(.carte-prisme--ghost):hover .cp-titre { color: var(--car-deep); }
+  .cp-titre--ghost { font-style: normal; color: var(--ink-soft); }
+  .cp-desc { font-family: 'Mulish', sans-serif; font-size: .73rem; font-weight: 300; color: var(--ink-mid); line-height: 1.6; }
+  .cp-src { font-family: 'Mulish', sans-serif; font-size: .56rem; font-weight: 500; color: var(--car); opacity: .65; }
+  .cp-time { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 300; color: var(--ink-soft); margin-top: .12rem; }
+  .cp-lire { font-family: 'Mulish', sans-serif; font-size: .57rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--car); opacity: 0; transform: translateY(3px); transition: opacity .2s, transform .2s; margin-top: auto; padding-top: .3rem; display: inline-block; }
+  .carte-prisme:not(.carte-prisme--ghost):hover .cp-lire { opacity: 1; transform: translateY(0); }
+  @media (hover: none) { .cp-lire { opacity: .65; transform: translateY(0); } }
+
+  /* SÉPARATEURS DE SECTION */
+  .section-sep { display: flex; align-items: center; gap: .9rem; margin: 2.8rem 0 .75rem; opacity: 0; animation: rise .9s .45s ease forwards; }
+  .section-sep--notes { margin-top: 2.5rem; }
+  .sep-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
+  .sep-centre { display: flex; align-items: center; gap: .5rem; }
+  .sep-diamond { width: 5px; height: 5px; transform: rotate(45deg); }
+  .sep-diamond--fen  { background: var(--fen-col);  opacity: .5; }
+  .sep-diamond--note { background: var(--note-col); opacity: .5; }
+  .sep-label { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+  .sep-label--fen  { color: var(--fen-col);  }
+  .sep-label--note { color: var(--note-col); }
+  .section-note { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; font-style: italic; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.25rem; opacity: 0; animation: rise .9s .5s ease forwards; }
+
+  /* GRILLE SATELLITES */
+  .satellites-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .85rem; opacity: 0; animation: rise .9s .55s ease forwards; }
+  @media (max-width: 480px) { .satellites-grille { grid-template-columns: 1fr; } }
+
+  .carte-satellite { display: flex; flex-direction: column; gap: .38rem; padding: 1rem 1.1rem .9rem; border: 1px solid var(--rule); border-radius: 8px; background: rgba(245,240,232,.4); text-decoration: none; color: inherit; transition: border-color .2s, background .2s, transform .18s; opacity: 0; animation: rise .6s ease forwards; }
+  .carte-satellite:hover { border-color: rgba(196,153,58,.3); background: rgba(245,240,232,.75); transform: translateY(-2px); }
+
+  .sat-badge { font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; padding: .15rem .45rem; border-radius: 3px; width: fit-content; }
+  .sat-badge--note { background: rgba(90,122,154,.1);  color: #3a5a7a; border: 1px solid rgba(90,122,154,.2); }
+  .sat-badge--fen  { background: rgba(139,111,196,.1); color: #5a3a9a; border: 1px solid rgba(139,111,196,.2); }
+
+  .sat-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .88rem; font-style: italic; color: var(--ink); line-height: 1.35; transition: color .2s; }
+  .carte-satellite:hover .sat-titre { color: var(--car-deep); }
+  .sat-desc { font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 300; color: var(--ink-soft); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .sat-src { font-family: 'Mulish', sans-serif; font-size: .54rem; font-weight: 500; color: var(--car); opacity: .6; }
+  .sat-foot { display: flex; align-items: center; gap: .45rem; margin-top: .1rem; }
+  .sat-stade { font-size: .65rem; }
+  .sat-time { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 300; color: var(--ink-soft); }
+  .sat-lire { font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--car); opacity: 0; transform: translateX(-3px); transition: opacity .2s, transform .2s; margin-top: auto; padding-top: .2rem; display: inline-block; }
+  .carte-satellite:hover .sat-lire { opacity: 1; transform: translateX(0); }
+  @media (hover: none) { .sat-lire { opacity: .6; transform: translateX(0); } }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>

@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allArticles = await getCollection('articles');
+
+// Articles de genèse — commencement + tout ce qui a rubrique journal ou tag genese
+const journalArticles = allArticles
+  .filter(a =>
+    a.slug === 'commencement' ||
+    a.slug === 'la-premiere-pierre' ||
+    a.data.rubrique === 'journal' ||
+    (a.data.tags && a.data.tags.includes('genese')) ||
+    (a.data.title && a.data.title.toLowerCase().includes('première pierre'))
+  )
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function stadeEmoji(stade?: string) {
+  if (stade === 'pousse') return '🌿';
+  if (stade === 'arbre')  return '🌳';
+  return '🌱';
+}
+---
+
+<Base title="Journal de genèse — Syncognie" description="Les notes de la première pierre. Ce que c'est de construire un jardin numérique — les décisions, les doutes, les commencements.">
+<div class="page-wrap">
+
+  <!-- Filigrane : graine qui germe -->
+  <svg class="header-filigrane" viewBox="0 0 360 300" fill="none" aria-hidden="true">
+    <circle cx="180" cy="180" r="60" stroke="#8b5e3c" stroke-width=".6" stroke-dasharray="2 8" opacity=".12" class="f-ring"/>
+    <circle cx="180" cy="180" r="32" stroke="#c4993a" stroke-width=".8" opacity=".1" class="f-ring-inner"/>
+    <line x1="180" y1="120" x2="180" y2="50"  stroke="#8b5e3c" stroke-width=".7" opacity=".18" stroke-dasharray="2 5"/>
+    <line x1="180" y1="50"  x2="155" y2="25"  stroke="#8b5e3c" stroke-width=".5" opacity=".12"/>
+    <line x1="180" y1="50"  x2="205" y2="25"  stroke="#8b5e3c" stroke-width=".5" opacity=".12"/>
+    <line x1="180" y1="80"  x2="145" y2="55"  stroke="#8b5e3c" stroke-width=".5" opacity=".1"/>
+    <line x1="180" y1="80"  x2="215" y2="55"  stroke="#8b5e3c" stroke-width=".5" opacity=".1"/>
+    <circle cx="180" cy="180" r="5"   fill="#c4993a" opacity=".35" class="f-seed"/>
+    <circle cx="180" cy="180" r="2.5" fill="#f5f0e8" opacity=".6"/>
+    <circle cx="180" cy="50"  r="3"   fill="#8b5e3c" opacity=".2" class="f-bud"/>
+    <circle cx="155" cy="25"  r="2"   fill="#8b5e3c" opacity=".14"/>
+    <circle cx="205" cy="25"  r="2"   fill="#8b5e3c" opacity=".14"/>
+  </svg>
+
+  <header class="page-header">
+    <p class="page-eyebrow">Journal de genèse</p>
+    <h1 class="page-titre">La première pierre.<br><em>Et ce qui a suivi.</em></h1>
+    <p class="page-sous">Ce que c'est de construire un jardin numérique — les décisions prises, les doutes traversés, les commencements. Pas un journal intime. Plutôt les coulisses d'une pensée qui cherche sa forme.</p>
+  </header>
+
+  <div class="encart-nature">
+    <span class="encart-glyph">🌱</span>
+    <p class="encart-texte">Ces notes ne sont pas du contenu éditorial — elles font partie de la structure du site lui-même. Elles sont ici parce qu'un jardin numérique se comprend mieux quand on voit la graine.</p>
+  </div>
+
+  <!-- CHRONOLOGIE -->
+  <div class="section-sep">
+    <div class="sep-line"></div>
+    <div class="sep-centre"><div class="sep-diamond"></div><span class="sep-label">Chronologie</span><div class="sep-diamond"></div></div>
+    <div class="sep-line"></div>
+  </div>
+
+  {journalArticles.length > 0 ? (
+    <div class="journal-list">
+      {journalArticles.map((a, i) => (
+        <div class="journal-row">
+          <div class="journal-fil">
+            <div class="journal-dot"></div>
+            {i < journalArticles.length - 1 && <div class="journal-trait"></div>}
+          </div>
+          <a class="journal-card" href={`/articles/${a.slug}`} style={`animation-delay:${0.1 + i * 0.08}s`}>
+            <span class="journal-date">{formatDate(a.data.date)}</span>
+            <p class="journal-titre">{a.data.title}</p>
+            {a.data.description && <p class="journal-desc">{a.data.description}</p>}
+            <span class="journal-lire">Lire →</span>
+          </a>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div class="journal-vide">
+      <p class="journal-vide-texte">La première pierre est posée — les notes de genèse arrivent au fil du temps.</p>
+    </div>
+  )}
+
+  <div class="invitation-encart">
+    <span class="invitation-glyph">◈</span>
+    <p class="invitation-texte">Syncognie est un jardin numérique en croissance — ce journal documente sa construction au fur et à mesure qu'elle se fait.</p>
+  </div>
+
+</div>
+</Base>
+
+<style>
+  :root {
+    --jour:      #8b5e3c;
+    --jour-dim:  rgba(139,94,60,.28);
+    --jour-bg:   rgba(139,94,60,.05);
+    --jour-deep: #6b3e1e;
+    --max:       740px;
+  }
+
+  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; position: relative; }
+
+  .header-filigrane { position: absolute; right: -1rem; top: 1rem; width: 260px; height: auto; pointer-events: none; }
+  @media (max-width: 600px) { .header-filigrane { width: 130px; opacity: .5; } }
+  .f-ring       { animation: ring-rot 25s linear infinite; transform-origin: 180px 180px; }
+  .f-ring-inner { animation: ring-rot 18s linear infinite reverse; transform-origin: 180px 180px; }
+  @keyframes ring-rot { from{stroke-dashoffset:0} to{stroke-dashoffset:-60} }
+  .f-seed { animation: nodep 4s ease-in-out infinite; }
+  .f-bud  { animation: nodep 3s ease-in-out infinite .8s; }
+  @keyframes nodep { 0%,100%{opacity:.18} 50%{opacity:.45} }
+
+  .page-header { padding: 2.8rem 0 1.8rem; opacity: 0; animation: rise .9s .05s ease forwards; }
+  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--jour-deep); opacity: .75; margin-bottom: .85rem; }
+  .page-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700; color: var(--ink); line-height: 1.2; letter-spacing: -.02em; margin-bottom: .9rem; }
+  .page-titre em { font-style: italic; font-weight: 400; color: var(--jour); }
+  .page-sous { font-family: 'Mulish', sans-serif; font-size: .86rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; }
+
+  .encart-nature { display: flex; align-items: flex-start; gap: .65rem; margin: 1.8rem 0; padding: .9rem 1.1rem; border: 1px solid var(--jour-dim); border-left: 3px solid rgba(139,94,60,.4); border-radius: 0 4px 4px 0; background: var(--jour-bg); opacity: 0; animation: rise .9s .18s ease forwards; }
+  .encart-glyph { font-size: .9rem; flex-shrink: 0; margin-top: .05rem; }
+  .encart-texte { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
+  .section-sep { display: flex; align-items: center; gap: .9rem; margin: 2rem 0 1.2rem; opacity: 0; animation: rise .9s .25s ease forwards; }
+  .sep-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
+  .sep-centre { display: flex; align-items: center; gap: .5rem; }
+  .sep-diamond { width: 5px; height: 5px; transform: rotate(45deg); background: var(--jour); opacity: .5; }
+  .sep-label { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--jour-deep); opacity: .7; }
+
+  /* TIMELINE */
+  .journal-list { display: flex; flex-direction: column; }
+  .journal-row { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .journal-fil { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 20px; padding-top: .25rem; }
+  .journal-dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--jour-dim); background: var(--jour-bg); flex-shrink: 0; transition: background .2s; }
+  .journal-row:hover .journal-dot { background: var(--jour); }
+  .journal-trait { width: 1px; flex: 1; min-height: 2rem; background: linear-gradient(to bottom, var(--jour-dim), transparent); margin: .3rem 0; }
+
+  .journal-card { flex: 1; display: flex; flex-direction: column; gap: .35rem; text-decoration: none; padding: .9rem 1.2rem; margin-bottom: .85rem; border: 1px solid var(--rule); border-radius: 6px; background: rgba(252,248,244,.5); opacity: 0; animation: rise .7s ease forwards; transition: border-color .2s, background .2s, transform .2s; }
+  .journal-card:hover { border-color: var(--jour-dim); background: var(--jour-bg); transform: translateX(3px); }
+  .journal-date { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); opacity: .6; }
+  .journal-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .95rem; font-weight: 700; color: var(--ink); line-height: 1.35; transition: color .2s; }
+  .journal-card:hover .journal-titre { color: var(--jour-deep); }
+  .journal-desc { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; color: var(--ink-soft); line-height: 1.6; }
+  .journal-lire { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--jour); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; }
+  .journal-card:hover .journal-lire { opacity: 1; transform: translateX(0); }
+  @media (hover: none) { .journal-lire { opacity: .6; transform: translateX(0); } }
+
+  .journal-vide { padding: 2rem 0; text-align: center; }
+  .journal-vide-texte { font-family: 'Mulish', sans-serif; font-size: .82rem; font-style: italic; color: var(--ink-soft); opacity: .65; }
+
+  .invitation-encart { display: flex; align-items: flex-start; gap: .75rem; margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--jour-dim); border-left: 3px solid var(--jour-dim); border-radius: 0 4px 4px 0; background: var(--jour-bg); opacity: 0; animation: rise .9s .5s ease forwards; }
+  .invitation-glyph { color: var(--jour); opacity: .55; font-size: .8rem; flex-shrink: 0; margin-top: .1rem; }
+  .invitation-texte { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
+  @media (max-width: 600px) { .page-wrap { padding: 0 1rem 4rem; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>

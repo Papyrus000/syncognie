@@ -1,88 +1,163 @@
 ---
-const version = 'v0.2.2';
+const version = 'v0.3.0';
 const currentPath = Astro.url.pathname;
 ---
 
 <footer class="site-footer" role="contentinfo">
 
-  <nav class="footer-nav" aria-label="Navigation secondaire">
-    <a href="/articles" class={`footer-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'footer-link--active' : ''}`}>Articles</a>
-    <span class="footer-sep" aria-hidden="true">·</span>
-    <a href="/carte"    class={`footer-link ${currentPath === '/carte'    ? 'footer-link--active' : ''}`}>Carte</a>
-    <span class="footer-sep" aria-hidden="true">·</span>
-    <a href="/apropos"  class={`footer-link ${currentPath === '/apropos'  ? 'footer-link--active' : ''}`}>À propos</a>
-    <span class="footer-sep" aria-hidden="true">·</span>
-    <a href="/contact"  class={`footer-link ${currentPath === '/contact'  ? 'footer-link--active' : ''}`}>Contact</a>
-  </nav>
+  <div class="footer-inner">
 
-  <div class="footer-copy">
-    © {new Date().getFullYear()} Syncognie
-    <span class="footer-version" aria-label={`Version ${version}`}>{version}</span>
+    <nav class="footer-nav" aria-label="Navigation secondaire">
+      <div class="footer-nav-group">
+        <span class="footer-group-label">Explorer</span>
+        <a href="/vies"   class={`footer-link ${currentPath.startsWith('/vies')   ? 'footer-link--active' : ''}`}>Vies</a>
+        <a href="/cartes" class={`footer-link ${currentPath.startsWith('/cartes') ? 'footer-link--active' : ''}`}>Cartes</a>
+        <a href="/outils" class={`footer-link ${currentPath.startsWith('/outils') ? 'footer-link--active' : ''}`}>Outils</a>
+      </div>
+      <div class="footer-nav-group">
+        <span class="footer-group-label">À propos</span>
+        <a href="/apropos"  class={`footer-link ${currentPath === '/apropos'  ? 'footer-link--active' : ''}`}>À propos</a>
+        <a href="/contact"  class={`footer-link ${currentPath === '/contact'  ? 'footer-link--active' : ''}`}>Contact</a>
+        <a href="/stades"   class={`footer-link ${currentPath === '/stades'   ? 'footer-link--active' : ''}`}>Stades</a>
+      </div>
+      <div class="footer-nav-group">
+        <span class="footer-group-label">Archive</span>
+        <a href="/articles" class={`footer-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'footer-link--active' : ''}`}>Tous les articles</a>
+        <a href="/journal"  class={`footer-link ${currentPath === '/journal'  ? 'footer-link--active' : ''}`}>Journal de genèse</a>
+        <a href="/carte"    class={`footer-link ${currentPath === '/carte'    ? 'footer-link--active' : ''}`}>Carte du site</a>
+      </div>
+    </nav>
+
+    <div class="footer-bottom">
+      <div class="footer-signature">
+        <span class="footer-logo-text">syncognie</span>
+        <span class="footer-tagline">Synergie · Cognition · Dialogue</span>
+      </div>
+      <div class="footer-copy">
+        © {new Date().getFullYear()} Syncognie
+        <span class="footer-version">{version}</span>
+      </div>
+    </div>
+
   </div>
 
 </footer>
 
 <style>
   .site-footer {
-    max-width: var(--max);
-    margin: 0 auto;
-    padding: 1.75rem 1.75rem 2.25rem;
     border-top: 1px solid var(--rule);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
+    margin-top: 4rem;
   }
 
-  /* Navigation */
-  .footer-nav {
-    display: flex;
-    align-items: center;
-    gap: .6rem;
+  .footer-inner {
+    max-width: var(--max, 740px);
+    margin: 0 auto;
+    padding: 2.2rem 1.75rem 2rem;
   }
+
+  /* Navigation en groupes */
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .footer-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+  }
+
+  .footer-group-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .52rem;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: .5;
+    margin-bottom: .15rem;
+  }
+
   .footer-link {
     font-family: 'Mulish', sans-serif;
     font-size: .72rem;
     font-weight: 300;
-    letter-spacing: .1em;
+    letter-spacing: .06em;
     color: var(--ink-soft);
     text-decoration: none;
     transition: color .18s;
+    width: fit-content;
   }
-  .footer-link:hover       { color: var(--terra); }
+  .footer-link:hover       { color: var(--accent); }
   .footer-link--active     { color: var(--ink-mid); }
-  .footer-sep {
-    font-size: .72rem;
-    color: var(--ink-soft);
-    opacity: .4;
-    user-select: none;
+
+  /* Bas de footer */
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(221,214,200,.5);
+    flex-wrap: wrap;
   }
 
-  /* Copyright + version */
-  .footer-copy {
+  .footer-signature {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+  }
+
+  .footer-logo-text {
     font-family: 'Mulish', sans-serif;
     font-size: .72rem;
     font-weight: 300;
-    letter-spacing: .1em;
+    letter-spacing: .28em;
     color: var(--ink-soft);
+    opacity: .7;
+  }
+
+  .footer-tagline {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .14em;
+    color: var(--ink-soft);
+    opacity: .38;
+  }
+
+  .footer-copy {
+    font-family: 'Mulish', sans-serif;
+    font-size: .68rem;
+    font-weight: 300;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    opacity: .55;
     display: flex;
     align-items: center;
     gap: .55rem;
-    white-space: nowrap;
-  }
-  .footer-version {
-    opacity: .4;
-    font-size: .68rem;
   }
 
-  /* Mobile : empiler, centrer */
-  @media (max-width: 480px) {
-    .site-footer {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding-bottom: 2rem;
+  .footer-version {
+    opacity: .55;
+    font-size: .62rem;
+  }
+
+  @media (max-width: 560px) {
+    .footer-nav {
+      grid-template-columns: 1fr 1fr;
     }
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .75rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .footer-nav { grid-template-columns: 1fr; }
+    .footer-inner { padding: 1.75rem 1rem 1.5rem; }
   }
 </style>

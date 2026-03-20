@@ -11,50 +11,44 @@ const currentPath = Astro.url.pathname;
   </a>
 
   <nav class="topbar-nav" aria-label="Navigation principale">
-    <a href="/articles" class={`topbar-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'active' : ''}`}>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-      Articles
-    </a>
-    <a href="/fenetres" class={`topbar-link ${currentPath.startsWith('/fenetres') ? 'active' : ''}`}>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <line x1="3" y1="9" x2="21" y2="9"/>
-        <line x1="9" y1="21" x2="9" y2="9"/>
-      </svg>
-      Fenêtres
-    </a>
-    <a href="/carte" class={`topbar-link ${currentPath === '/carte' ? 'active' : ''}`}>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
-        <line x1="12" y1="7" x2="7" y2="17"/><line x1="12" y1="7" x2="17" y2="17"/>
-      </svg>
-      Carte
-    </a>
-    <a href="/outils" class={`topbar-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-      </svg>
-      Outils
-    </a>
-    <a href="/apropos" class={`topbar-link ${currentPath === '/apropos' ? 'active' : ''}`}>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-      À propos
-    </a>
-    <a href="/contact" class={`topbar-link ${currentPath === '/contact' ? 'active' : ''}`}>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/>
-        <polyline points="22,6 12,12 2,6"/>
-      </svg>
-      Contact
-    </a>
+    <div class="nav-primary">
+      <a href="/vies" class={`topbar-link topbar-link--primary ${currentPath.startsWith('/vies') ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Vies
+      </a>
+      <a href="/cartes" class={`topbar-link topbar-link--primary ${currentPath.startsWith('/cartes') ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+        </svg>
+        Cartes
+      </a>
+    </div>
+    <div class="nav-sep" aria-hidden="true"></div>
+    <div class="nav-secondary">
+      <a href="/outils" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+        Outils
+      </a>
+      <a href="/apropos" class={`topbar-link topbar-link--secondary ${currentPath === '/apropos' ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        À propos
+      </a>
+      <a href="/contact" class={`topbar-link topbar-link--secondary ${currentPath === '/contact' ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/>
+          <polyline points="22,6 12,12 2,6"/>
+        </svg>
+        Contact
+      </a>
+    </div>
   </nav>
 
   <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -66,30 +60,20 @@ const currentPath = Astro.url.pathname;
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
   <nav class="mobile-nav" aria-label="Navigation mobile">
-    <a href="/articles" class={`mobile-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'active' : ''}`}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="16" y1="13" x2="8" y2="13"/>
-        <line x1="16" y1="17" x2="8" y2="17"/>
-      </svg>
-      Articles
-    </a>
-    <a href="/fenetres" class={`mobile-link ${currentPath.startsWith('/fenetres') ? 'active' : ''}`}>
+    <a href="/vies" class={`mobile-link mobile-link--primary ${currentPath.startsWith('/vies') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <line x1="3" y1="9" x2="21" y2="9"/>
-        <line x1="9" y1="21" x2="9" y2="9"/>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
-      Fenêtres
+      Vies
     </a>
-    <a href="/carte" class={`mobile-link ${currentPath === '/carte' ? 'active' : ''}`}>
+    <a href="/cartes" class={`mobile-link mobile-link--primary ${currentPath.startsWith('/cartes') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
-        <line x1="12" y1="7" x2="7" y2="17"/><line x1="12" y1="7" x2="17" y2="17"/>
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
       </svg>
-      Carte
+      Cartes
     </a>
+    <div class="mobile-sep" aria-hidden="true"></div>
     <a href="/outils" class={`mobile-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
@@ -156,15 +140,25 @@ const currentPath = Astro.url.pathname;
   .topbar-logo:hover .topbar-name { opacity: 1; }
 
   /* NAV DESKTOP */
-  .topbar-nav { display: flex; align-items: center; gap: 1.5rem; }
+  .topbar-nav { display: flex; align-items: center; gap: 0; }
+  .nav-primary { display: flex; align-items: center; gap: 1.4rem; }
+  .nav-secondary { display: flex; align-items: center; gap: 1.1rem; }
+  .nav-sep {
+    width: 1px; height: 18px;
+    background: rgba(245,240,232,.15);
+    margin: 0 1.1rem;
+    flex-shrink: 0;
+  }
   .topbar-link {
     display: flex; align-items: center; gap: .4rem;
-    font-family: 'Mulish', sans-serif; font-size: .68rem; font-weight: 300;
+    font-family: 'Mulish', sans-serif; font-weight: 300;
     letter-spacing: .18em; text-transform: uppercase;
     color: rgba(245,240,232,.65); text-decoration: none;
     transition: color .2s; white-space: nowrap;
   }
-  .topbar-link:hover, .topbar-link.active { color: #1eff00; }
+  .topbar-link--primary { font-size: .72rem; font-weight: 400; }
+  .topbar-link--secondary { font-size: .62rem; }
+  .topbar-link:hover, .topbar-link.active { color: #e8b832; }
   .topbar-link svg { opacity: .6; flex-shrink: 0; transition: opacity .2s; }
   .topbar-link:hover svg, .topbar-link.active svg { opacity: 1; }
 
@@ -212,7 +206,12 @@ const currentPath = Astro.url.pathname;
     transition: color .2s, background .2s, border-color .2s;
   }
   .mobile-link:hover, .mobile-link.active {
-    color: #1eff00; background: rgba(30,255,0,.04); border-left-color: #1eff00;
+    color: #e8b832; background: rgba(232,184,50,.05); border-left-color: #e8b832;
+  }
+  .mobile-link--primary { font-size: .84rem; font-weight: 400; color: rgba(245,240,232,.75); }
+  .mobile-sep {
+    height: 1px; margin: .5rem 1.75rem;
+    background: rgba(245,240,232,.08);
   }
   .mobile-link svg { opacity: .55; flex-shrink: 0; transition: opacity .2s; }
   .mobile-link:hover svg, .mobile-link.active svg { opacity: 1; }
