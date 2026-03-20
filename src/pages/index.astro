@@ -71,19 +71,21 @@ function formatDate(date: Date) {
       <p class="porte-sous">Des dialogues entre personnages où les concepts arrivent par la vie — avant d'être nommés.</p>
 
       <div class="dial-zone">
-        <p class="dial-scene">La même terrasse. L'ombre a gagné la moitié de l'espace.</p>
+        <div class="dial-echanges">
+          <div class="dial-rp">
+            <span class="dial-nom dial-nom--n">Nathalie</span>
+            <div class="dial-txt">Le mouvement qui continue parce que personne lui a dit d'arrêter.</div>
+          </div>
+          <div class="dial-rp">
+            <span class="dial-nom dial-nom--e">Élodie</span>
+            <div class="dial-txt">Exactement. Et ça peut se refermer sur n'importe quoi. Pas besoin d'une substance.</div>
+          </div>
+        </div>
+        <p class="dial-ellipse">…</p>
         <div class="dial-echanges">
           <div class="dial-rp">
             <span class="dial-nom dial-nom--e">Élodie</span>
-            <div class="dial-txt">Elle utilise l'image d'une balance. D'un côté le plaisir, de l'autre la douleur. Ce que le cerveau cherche toujours, c'est revenir au plateau.</div>
-          </div>
-          <div class="dial-rp">
-            <span class="dial-nom dial-nom--n">Nathalie</span>
-            <div class="dial-txt">Donc plaisir et douleur c'est les deux extrémités du même mouvement. Et entre les deux, le manque.</div>
-          </div>
-          <div class="dial-rp">
-            <span class="dial-nom dial-nom--e">Élodie</span>
-            <div class="dial-txt">Exactement. Ce piège peut se refermer sur n'importe quoi. Une relation, une façon de travailler, une attente répétée. <em>un temps</em> Pas besoin d'une substance.</div>
+            <div class="dial-txt">Peut-être. Ou peut-être que c'est ce qu'on se dit pour se sentir moins démunis.</div>
           </div>
         </div>
       </div>
@@ -390,7 +392,6 @@ function formatDate(date: Date) {
 .dial-rp {
   display: grid; grid-template-columns: 70px 1fr;
   padding: .45rem 0;
-  border-bottom: 1px solid rgba(26,23,20,0.04);
 }
 .dial-rp:last-child { border-bottom: none; }
 .dial-nom {
@@ -407,6 +408,12 @@ function formatDate(date: Date) {
   color: #28201a; line-height: 1.68;
   padding-left: .7rem;
   border-left: 1px solid #ece3d8;
+}
+.dial-ellipse {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1rem; color: rgba(155,50,50,0.4);
+  margin: 1.2rem 0 1rem;
+  letter-spacing: .15em;
 }
 .dial-txt em {
   font-family: 'Libre Baskerville', serif;

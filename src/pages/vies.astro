@@ -37,22 +37,22 @@ const EXTRAITS: Record<number, { nom1: string; txt1: string; nom2: string; txt2:
     txt2: 'Le wanting sans le liking.',
   },
   3: {
-    nom1: 'Élodie',
-    txt1: 'On croit qu\'on pense librement. Mais l\'hémisphère gauche ne sait même pas ce qu\'il ne sait pas.',
-    nom2: 'Nathalie',
-    txt2: 'Donc la certitude, c\'est pas un signe qu\'on a raison. C\'est un signe qu\'on a arrêté de chercher.',
+    nom1: '',
+    txt1: 'Elle est consultante en communication — elle aide des entreprises à trouver les bons mots — et là elle est bloquée sur six mots d\'un homme marié.',
+    nom2: '',
+    txt2: 'Comprendre ne change rien. C\'est exactement ce qu\'elle a dit à Nathalie. Elle aurait pu s\'appliquer la phrase à elle-même.',
   },
   4: {
-    nom1: 'Nathalie',
-    txt1: 'Ces familles — elles connaissent les règles, elles les récitent. Et elles refont les mêmes choses. La carte est là. Le territoire ignore la carte.',
-    nom2: 'Élodie',
-    txt2: 'Parce que la carte, on la lit avec la tête. Et le territoire, on le vit avec quelque chose d\'autre.',
+    nom1: '',
+    txt1: 'Elle déteste avoir des mots pour ça.',
+    nom2: '',
+    txt2: 'Elle aime que Thomas range les tasses à l\'envers comme elle lui a demandé il y a six ans. Elle aime beaucoup de choses ici.',
   },
   5: {
-    nom1: 'Élodie',
-    txt1: 'Il dit que ce n\'est pas la crise qui détruit un couple. C\'est l\'accumulation des micro-retraits. Chaque fois qu\'on ne répond pas à une tentative de connexion.',
-    nom2: 'Nathalie',
-    txt2: 'Les petites absences. Celles qu\'on ne compte pas parce qu\'elles semblent ne rien peser.',
+    nom1: 'Yann',
+    txt1: 'Je me demande ce qu\'on fait là. Pas dans le sens — c\'est une erreur. Dans le sens — qu\'est-ce que c\'est exactement.',
+    nom2: 'Élodie',
+    txt2: 'Je sais pas.',
   },
   6: {
     nom1: 'Élodie',
@@ -147,18 +147,27 @@ function stadeEmoji(stade?: string) {
           {ep.data.description && <p class="episode-desc">{ep.data.description}</p>}
           {EXTRAITS[ep.data.episode ?? 0] && (
             <div class="episode-extrait">
-              <div class="ep-rp">
-                <span class={`ep-nom ep-nom--${EXTRAITS[ep.data.episode!].nom1 === 'Élodie' ? 'e' : 'n'}`}>
-                  {EXTRAITS[ep.data.episode!].nom1}
-                </span>
-                <span class="ep-txt">{EXTRAITS[ep.data.episode!].txt1}</span>
-              </div>
-              <div class="ep-rp">
-                <span class={`ep-nom ep-nom--${EXTRAITS[ep.data.episode!].nom2 === 'Élodie' ? 'e' : 'n'}`}>
-                  {EXTRAITS[ep.data.episode!].nom2}
-                </span>
-                <span class="ep-txt">{EXTRAITS[ep.data.episode!].txt2}</span>
-              </div>
+              {EXTRAITS[ep.data.episode!].nom1 ? (
+                <>
+                  <div class="ep-rp">
+                    <span class={`ep-nom ep-nom--${EXTRAITS[ep.data.episode!].nom1 === 'Élodie' ? 'e' : EXTRAITS[ep.data.episode!].nom1 === 'Nathalie' ? 'n' : 'y'}`}>
+                      {EXTRAITS[ep.data.episode!].nom1}
+                    </span>
+                    <span class="ep-txt">{EXTRAITS[ep.data.episode!].txt1}</span>
+                  </div>
+                  <div class="ep-rp">
+                    <span class={`ep-nom ep-nom--${EXTRAITS[ep.data.episode!].nom2 === 'Élodie' ? 'e' : EXTRAITS[ep.data.episode!].nom2 === 'Nathalie' ? 'n' : 'y'}`}>
+                      {EXTRAITS[ep.data.episode!].nom2}
+                    </span>
+                    <span class="ep-txt">{EXTRAITS[ep.data.episode!].txt2}</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p class="ep-narration">{EXTRAITS[ep.data.episode!].txt1}</p>
+                  <p class="ep-narration">{EXTRAITS[ep.data.episode!].txt2}</p>
+                </>
+              )}
             </div>
           )}
           <span class="episode-lire">Lire →</span>
@@ -339,11 +348,21 @@ function stadeEmoji(stade?: string) {
   }
   .ep-nom--e { color: #0070dd; }
   .ep-nom--n { color: #c4622a; }
+  .ep-nom--y { color: #6a5aaa; }
   .ep-txt {
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
     color: var(--ink-soft);
   }
+  .ep-narration {
+    font-family: 'Libre Baskerville', serif;
+    font-size: .84rem;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .ep-narration + .ep-narration { margin-top: .3rem; }
 
   @media (max-width: 600px) { .page-wrap { padding: 0 1rem 4rem; } .personnages-wrap { flex-direction: column; gap: 1rem; } }
   @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
