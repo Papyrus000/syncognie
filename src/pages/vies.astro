@@ -23,6 +23,45 @@ const COULEURS_PERSO: Record<string, string> = {
   'Yanis':    '#c4993a',
 };
 
+const EXTRAITS: Record<number, { nom1: string; txt1: string; nom2: string; txt2: string }> = {
+  1: {
+    nom1: 'Élodie',
+    txt1: 'Plaisir et douleur, c\'est le même circuit. La balance bascule — et le manque, c\'est juste le retour à zéro.',
+    nom2: 'Nathalie',
+    txt2: 'Ce serait plus simple si la connaissance suffisait.',
+  },
+  2: {
+    nom1: 'Nathalie',
+    txt1: 'Il y a des matins où je le regarde dormir. Il est bien, cet homme. Et je suis debout à six heures du matin à me demander si c\'est suffisant.',
+    nom2: 'Élodie',
+    txt2: 'Le wanting sans le liking.',
+  },
+  3: {
+    nom1: 'Élodie',
+    txt1: 'On croit qu\'on pense librement. Mais l\'hémisphère gauche ne sait même pas ce qu\'il ne sait pas.',
+    nom2: 'Nathalie',
+    txt2: 'Donc la certitude, c\'est pas un signe qu\'on a raison. C\'est un signe qu\'on a arrêté de chercher.',
+  },
+  4: {
+    nom1: 'Nathalie',
+    txt1: 'Ces familles — elles connaissent les règles, elles les récitent. Et elles refont les mêmes choses. La carte est là. Le territoire ignore la carte.',
+    nom2: 'Élodie',
+    txt2: 'Parce que la carte, on la lit avec la tête. Et le territoire, on le vit avec quelque chose d\'autre.',
+  },
+  5: {
+    nom1: 'Élodie',
+    txt1: 'Il dit que ce n\'est pas la crise qui détruit un couple. C\'est l\'accumulation des micro-retraits. Chaque fois qu\'on ne répond pas à une tentative de connexion.',
+    nom2: 'Nathalie',
+    txt2: 'Les petites absences. Celles qu\'on ne compte pas parce qu\'elles semblent ne rien peser.',
+  },
+  6: {
+    nom1: 'Élodie',
+    txt1: 'Le non-dit n\'est pas vraiment non-dit. Il circule quand même. Juste dans un autre canal.',
+    nom2: 'Nathalie',
+    txt2: 'On vit dans l\'écho de ce qu\'on ne dit pas.',
+  },
+};
+
 function formatDateShort(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
 }
@@ -106,6 +145,22 @@ function stadeEmoji(stade?: string) {
           </div>
           <p class="episode-titre">{ep.data.title}</p>
           {ep.data.description && <p class="episode-desc">{ep.data.description}</p>}
+          {EXTRAITS[ep.data.episode ?? 0] && (
+            <div class="episode-extrait">
+              <div class="ep-rp">
+                <span class={`ep-nom ep-nom--${EXTRAITS[ep.data.episode!].nom1 === 'Élodie' ? 'e' : 'n'}`}>
+                  {EXTRAITS[ep.data.episode!].nom1}
+                </span>
+                <span class="ep-txt">{EXTRAITS[ep.data.episode!].txt1}</span>
+              </div>
+              <div class="ep-rp">
+                <span class={`ep-nom ep-nom--${EXTRAITS[ep.data.episode!].nom2 === 'Élodie' ? 'e' : 'n'}`}>
+                  {EXTRAITS[ep.data.episode!].nom2}
+                </span>
+                <span class="ep-txt">{EXTRAITS[ep.data.episode!].txt2}</span>
+              </div>
+            </div>
+          )}
           <span class="episode-lire">Lire →</span>
         </a>
       </div>
@@ -164,6 +219,15 @@ function stadeEmoji(stade?: string) {
     --max:       740px;
   }
 
+  /* repli local si Base.astro ne définit pas ces variables */
+  .page-wrap {
+    --ink:      #1a1108;
+    --ink-soft: #5a4a38;
+    --ink-mid:  #7a6a58;
+    --rule:     #d8cfc4;
+    --bg:       #faf7f1;
+  }
+
   .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 6rem; position: relative; }
 
   .header-filigrane { position: absolute; right: -1rem; top: 1rem; width: 320px; height: auto; pointer-events: none; }
@@ -180,22 +244,22 @@ function stadeEmoji(stade?: string) {
   @keyframes nodep { 0%,100%{opacity:.18} 50%{opacity:.45} }
 
   .page-header { padding: 2.8rem 0 2rem; opacity: 0; animation: rise .9s .05s ease forwards; }
-  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--vies-deep); opacity: .8; margin-bottom: .85rem; }
+  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--vies-deep); margin-bottom: .85rem; }
   .page-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.9rem, 3.8vw, 2.5rem); font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -.02em; margin-bottom: .9rem; }
   .page-titre em { font-style: italic; font-weight: 400; color: var(--vies); }
-  .page-sous { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin-bottom: 1.5rem; }
+  .page-sous { font-family: 'Mulish', sans-serif; font-size: .95rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin-bottom: 1.5rem; }
   .page-stats { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; opacity: 0; animation: rise .9s .15s ease forwards; }
   .stat { display: flex; align-items: baseline; gap: .35rem; }
   .stat-n { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--vies); line-height: 1; letter-spacing: -.02em; }
-  .stat-label { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+  .stat-label { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
   .stat-sep { color: var(--rule); }
 
-  .personnages-wrap { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: 1.2rem 1.5rem; margin-bottom: 2.2rem; border: 1px solid var(--vies-dim); border-top: 2.5px solid var(--vies); border-radius: 0 0 6px 6px; background: var(--vies-bg); opacity: 0; animation: rise .9s .2s ease forwards; }
+  .personnages-wrap { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; padding: 1.2rem 1.5rem; margin-bottom: 2.2rem; border: 1px solid var(--vies-dim); border-top: 2.5px solid var(--vies); border-radius: 0 0 6px 6px; background: var(--vies-bg); opacity: 0; animation: rise .9s .2s ease forwards; box-shadow: 0 2px 6px rgba(60,30,10,.06), 0 1px 2px rgba(60,30,10,.04); }
   .personnage-card { display: flex; align-items: flex-start; gap: .85rem; flex: 1; min-width: 180px; }
   .personnage-initiale { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: 1rem; font-weight: 700; flex-shrink: 0; }
-  .personnage-nom { font-family: 'Libre Baskerville', Georgia, serif; font-size: .9rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem; }
-  .personnage-desc { font-family: 'Mulish', sans-serif; font-size: .7rem; font-weight: 300; color: var(--ink-soft); line-height: 1.55; }
-  .personnage-et { font-family: 'Libre Baskerville', Georgia, serif; font-size: .8rem; font-style: italic; color: var(--ink-soft); opacity: .4; flex-shrink: 0; }
+  .personnage-nom { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem; }
+  .personnage-desc { font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 300; color: var(--ink-soft); line-height: 1.55; }
+  .personnage-et { font-family: 'Libre Baskerville', Georgia, serif; font-size: .85rem; font-style: italic; color: var(--ink-mid); opacity: .7; flex-shrink: 0; }
 
   .section-sep { display: flex; align-items: center; gap: .9rem; margin: 2.5rem 0 .75rem; opacity: 0; animation: rise .9s .28s ease forwards; }
   .section-sep--fenetres { margin-top: 3.5rem; }
@@ -203,50 +267,83 @@ function stadeEmoji(stade?: string) {
   .sep-centre { display: flex; align-items: center; gap: .5rem; }
   .sep-diamond { width: 5px; height: 5px; transform: rotate(45deg); background: var(--vies); opacity: .6; }
   .sep-diamond--soft { background: var(--ink-soft); opacity: .35; }
-  .sep-label { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--vies-deep); }
+  .sep-label { font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--vies-deep); }
   .sep-label--soft { color: var(--ink-mid); }
-  .section-note { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; font-style: italic; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.25rem; opacity: 0; animation: rise .9s .32s ease forwards; }
+  .section-note { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; font-style: italic; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.25rem; opacity: 0; animation: rise .9s .32s ease forwards; }
 
   .episodes-list { display: flex; flex-direction: column; }
   .episode-row { display: flex; gap: 1.5rem; align-items: flex-start; }
   .episode-fil-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; padding-top: .15rem; }
-  .episode-numero { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--vies-dim); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: .7rem; font-weight: 700; color: var(--vies); background: var(--vies-bg); flex-shrink: 0; }
+  .episode-numero { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--vies-dim); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: .78rem; font-weight: 700; color: var(--vies); background: var(--vies-bg); flex-shrink: 0; }
   .episode-numero--ghost { opacity: .3; }
   .episode-trait { width: 1px; flex: 1; min-height: 2.5rem; background: linear-gradient(to bottom, var(--vies-dim), transparent); margin: .35rem 0; }
-  .episode-card { flex: 1; display: flex; flex-direction: column; gap: .45rem; text-decoration: none; padding: 1.1rem 1.35rem; margin-bottom: 1rem; border: 1px solid var(--rule); border-radius: 7px; background: rgba(252,248,245,.55); position: relative; overflow: hidden; opacity: 0; animation: rise .7s ease forwards; transition: border-color .2s, background .2s, transform .2s, box-shadow .2s; }
+  .episode-card { flex: 1; display: flex; flex-direction: column; gap: .45rem; text-decoration: none; padding: 1.1rem 1.35rem; margin-bottom: 1rem; border: 1px solid var(--rule); border-radius: 7px; background: rgba(252,248,245,.55); position: relative; overflow: hidden; opacity: 0; animation: rise .7s ease forwards; transition: border-color .2s, background .2s, transform .2s, box-shadow .2s; box-shadow: 0 2px 6px rgba(60,30,10,.07), 0 1px 2px rgba(60,30,10,.05); }
   .episode-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--vies); border-radius: 2px 0 0 2px; transform: scaleY(0); transform-origin: top; transition: transform .28s ease; }
-  .episode-card:hover { border-color: var(--vies-dim); background: var(--vies-bg); transform: translateX(3px); box-shadow: 0 2px 18px rgba(155,50,50,.07); }
+  .episode-card:hover { border-color: var(--vies-dim); background: var(--vies-bg); transform: translateX(3px); box-shadow: 0 6px 20px rgba(155,50,50,.10), 0 2px 6px rgba(60,30,10,.08); }
   .episode-card:hover::before { transform: scaleY(1); }
   .episode-card--ghost { opacity: .25 !important; animation: none; pointer-events: none; background: transparent; border-style: dashed; }
   .episode-meta { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
-  .episode-date { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); opacity: .6; }
-  .episode-stade { font-size: .7rem; }
-  .badge-encours { font-family: 'Mulish', sans-serif; font-size: .5rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .12rem .38rem; border-radius: 3px; background: var(--vies-bg); color: var(--vies-deep); border: 1px solid var(--vies-dim); }
-  .episode-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .98rem; font-weight: 400; font-style: italic; color: var(--ink); line-height: 1.4; transition: color .2s; }
+  .episode-date { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mid); }
+  .episode-stade { font-size: .78rem; }
+  .badge-encours { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .12rem .38rem; border-radius: 3px; background: var(--vies-bg); color: var(--vies-deep); border: 1px solid var(--vies-dim); }
+  .episode-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.05rem; font-weight: 400; font-style: italic; color: var(--ink); line-height: 1.4; transition: color .2s; }
   .episode-card:hover .episode-titre { color: var(--vies-deep); }
-  .episode-desc { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; color: var(--ink-soft); line-height: 1.65; max-width: 58ch; }
-  .episode-lire { font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--vies); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; }
+  .episode-desc { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; color: var(--ink-soft); line-height: 1.65; max-width: 58ch; }
+  .episode-lire { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--vies); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; }
   .episode-card:hover .episode-lire { opacity: 1; transform: translateX(0); }
   @media (hover: none) { .episode-lire { opacity: .6; transform: translateX(0); } }
 
   .fenetres-grille { display: grid; grid-template-columns: repeat(2, 1fr); gap: .85rem; opacity: 0; animation: rise .9s .35s ease forwards; }
   @media (max-width: 540px) { .fenetres-grille { grid-template-columns: 1fr; } }
-  .fenetre-tuile { display: flex; flex-direction: column; gap: .55rem; padding: 1.25rem 1.2rem 1.1rem; border: 1px solid color-mix(in srgb, var(--c) 20%, transparent); border-top: 2.5px solid var(--c); border-radius: 0 0 8px 8px; background: color-mix(in srgb, var(--c) 4%, var(--bg)); text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s, background .25s; }
+  .fenetre-tuile { display: flex; flex-direction: column; gap: .55rem; padding: 1.25rem 1.2rem 1.1rem; border: 1px solid color-mix(in srgb, var(--c) 20%, transparent); border-top: 2.5px solid var(--c); border-radius: 0 0 8px 8px; background: color-mix(in srgb, var(--c) 4%, var(--bg)); text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s, background .25s; box-shadow: 0 2px 6px rgba(60,30,10,.07), 0 1px 2px rgba(60,30,10,.05); }
   .fenetre-tuile:hover { transform: translateY(-3px); box-shadow: 0 8px 28px color-mix(in srgb, var(--c) 12%, transparent); background: color-mix(in srgb, var(--c) 7%, var(--bg)); }
   .tuile-lueur { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 35% at 5% 0%, color-mix(in srgb, var(--c) 12%, transparent), transparent 70%); opacity: 0; transition: opacity .3s; pointer-events: none; }
   .fenetre-tuile:hover .tuile-lueur { opacity: 1; }
   .tuile-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
-  .tuile-perso { font-family: 'Libre Baskerville', Georgia, serif; font-size: .75rem; font-weight: 700; color: var(--c); }
-  .tuile-heure { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 300; color: var(--ink-soft); opacity: .6; letter-spacing: .08em; }
-  .tuile-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: .92rem; font-style: italic; color: var(--ink); line-height: 1.35; flex: 1; }
-  .tuile-amorce { font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 300; color: var(--ink-soft); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .tuile-lire { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c); opacity: 0; transform: translateY(3px); transition: opacity .2s, transform .2s; }
+  .tuile-perso { font-family: 'Libre Baskerville', Georgia, serif; font-size: .88rem; font-weight: 700; color: var(--c); }
+  .tuile-heure { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300; color: var(--ink-mid); letter-spacing: .08em; }
+  .tuile-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1rem; font-style: italic; color: var(--ink); line-height: 1.35; flex: 1; }
+  .tuile-amorce { font-family: 'Mulish', sans-serif; font-size: .85rem; font-weight: 300; color: var(--ink-soft); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .tuile-lire { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--c); opacity: 0; transform: translateY(3px); transition: opacity .2s, transform .2s; }
   .fenetre-tuile:hover .tuile-lire { opacity: 1; transform: translateY(0); }
   @media (hover: none) { .tuile-lire { opacity: .65; transform: translateY(0); } }
 
   .invitation-encart { display: flex; align-items: flex-start; gap: .75rem; margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--vies-dim); border-left: 3px solid var(--vies-dim); border-radius: 0 4px 4px 0; background: var(--vies-bg); opacity: 0; animation: rise .9s .6s ease forwards; }
-  .invitation-glyph { color: var(--vies); opacity: .55; font-size: .8rem; flex-shrink: 0; margin-top: .1rem; }
-  .invitation-texte { font-family: 'Mulish', sans-serif; font-size: .8rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+  .invitation-glyph { color: var(--vies); font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
+  .invitation-texte { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+
+  .episode-extrait {
+    margin-top: .45rem;
+    padding: .65rem .9rem;
+    border-left: 2px solid var(--vies-dim);
+    background: var(--vies-bg);
+    border-radius: 0 3px 3px 0;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+  .ep-rp {
+    display: flex;
+    align-items: baseline;
+    gap: .45rem;
+    font-size: .86rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .ep-nom {
+    font-family: 'Mulish', sans-serif;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    flex-shrink: 0;
+  }
+  .ep-nom--e { color: #0070dd; }
+  .ep-nom--n { color: #c4622a; }
+  .ep-txt {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
 
   @media (max-width: 600px) { .page-wrap { padding: 0 1rem 4rem; } .personnages-wrap { flex-direction: column; gap: 1rem; } }
   @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
