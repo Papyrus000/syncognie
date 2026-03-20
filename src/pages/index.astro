@@ -291,6 +291,7 @@ function formatDate(date: Date) {
   transition: transform .3s cubic-bezier(.16,.84,.44,1);
 }
 .porte:hover { transform: translateY(-3px); }
+.porte { transition: transform .3s cubic-bezier(.16,.84,.44,1), background .35s, border-color .3s; }
 
 /* Trait de couleur en haut */
 .porte-barre {
@@ -321,8 +322,8 @@ function formatDate(date: Date) {
 .porte--cartes { background: #f5f0e2 linear-gradient(145deg, rgba(196,153,58,.06) 0%, rgba(196,153,58,.01) 50%, transparent 100%); border: 1px solid #ddd0aa; box-shadow: 0 2px 6px rgba(60,40,20,0.08), 0 1px 2px rgba(60,40,20,0.05); }
 
 /* Hover */
-.porte--vies:hover   { box-shadow: 0 10px 28px rgba(60,40,20,0.12), 0 4px 10px rgba(155,50,50,0.09); }
-.porte--cartes:hover { box-shadow: 0 10px 28px rgba(60,40,20,0.12), 0 4px 10px rgba(196,153,58,0.12); }
+.porte--vies:hover   { background: #f5ece8; border-color: #d4b8b0; box-shadow: 0 10px 28px rgba(60,40,20,0.12), 0 4px 10px rgba(155,50,50,0.09); }
+.porte--cartes:hover { background: #f2e8cc; border-color: #c4993a; box-shadow: 0 10px 28px rgba(60,40,20,0.12), 0 4px 10px rgba(196,153,58,0.12); }
 
 /* Numéro décoratif en fond */
 .porte--vies::after, .porte--cartes::after {
