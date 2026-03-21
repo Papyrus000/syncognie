@@ -1,47 +1,62 @@
+// src/content/config.ts
+// Ajouter cette collection à votre config existante
+
 import { defineCollection, z } from 'astro:content';
 
+// ── Collection existante : articles ──
 const articles = defineCollection({
-  type: 'content',
   schema: z.object({
-    title: z.string(),
+    title:       z.string(),
     description: z.string().optional(),
-    date: z.date(),
-    tags: z.array(z.string()).optional(),
-    format: z.string().optional(),
-    statut: z.string().optional(),
-    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
-    serie: z.string().optional(),
-    episode: z.number().optional(),
-    rubrique: z.enum(['prisme', 'recit', 'mecanique', 'journal']).optional(),
-    engagement: z.enum(['pause', 'lecture', 'immersion']).optional(),
+    date:        z.date(),
+    tags:        z.array(z.string()).optional(),
+    format:      z.string().optional(),
+    rubrique:    z.string().optional(),
+    engagement:  z.enum(['pause', 'lecture', 'immersion']).optional(),
+    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
+    serie:       z.string().optional(),
+    episode:     z.number().optional(),
+    lien_fenetre:z.string().optional(),
     note_genese: z.array(z.object({
-      date: z.string(),
+      date:  z.string(),
       texte: z.string(),
     })).optional(),
-    muri_par: z.array(z.object({
-      slug: z.string(),
-      note: z.string().optional(),
-    })).optional(),
-    lien_fenetre: z.string().optional(), // slug de la fenêtre d'entrée associée
   }),
 });
 
+// ── Collection existante : fenetres ──
 const fenetres = defineCollection({
-  type: 'content',
   schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    date: z.date(),
-    tags: z.array(z.string()).optional(),
     personnage: z.string(),
-    heure: z.string(),
-    lieu: z.string(),
-    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
-    lien_dialogue: z.string().optional(),
-    lien_article: z.string().optional(),  // slug de l'article de fond associé
-    amorce: z.string().optional(),
-    featured: z.boolean().optional(), // fenêtre mise en avant (grande tuile)
+    heure:      z.string().optional(),
+    amorce:     z.string().optional(),
+    date:       z.date(),
+    featured:   z.boolean().optional(),
   }),
 });
 
-export const collections = { articles, fenetres };
+// ── Nouvelle collection : carnet ──
+const carnet = defineCollection({
+  schema: z.object({
+    // Obligatoires
+    title: z.string(),
+    date:  z.date(),
+
+    // Type de note — détermine couleur et glyph dans la liste
+    type: z.enum(['dialogue', 'note', 'essai', 'fragment']).default('note'),
+
+    // Optionnels
+    description: z.string().optional(),
+
+    // Extrait affiché dans la liste (une phrase, une idée)
+    extrait: z.string().optional(),
+
+    // Tags pour le codex en bas de page
+    tags: z.array(z.string()).optional(),
+
+    // Stade de maturité (jardin numérique)
+    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
+  }),
+});
+
+export const collections = { articles, fenetres, carnet };

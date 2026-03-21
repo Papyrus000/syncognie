@@ -25,6 +25,12 @@ const currentPath = Astro.url.pathname;
         </svg>
         Cartes
       </a>
+      <a href="/carnet" class={`topbar-link topbar-link--primary ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        Carnet
+      </a>
     </div>
     <div class="nav-sep" aria-hidden="true"></div>
     <div class="nav-secondary">
@@ -72,6 +78,12 @@ const currentPath = Astro.url.pathname;
         <polygon points="3 11 22 2 13 21 11 13 3 11"/>
       </svg>
       Cartes
+    </a>
+    <a href="/carnet" class={`mobile-link mobile-link--primary ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      Carnet
     </a>
     <div class="mobile-sep" aria-hidden="true"></div>
     <a href="/outils" class={`mobile-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>

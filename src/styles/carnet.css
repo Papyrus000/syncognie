@@ -1,0 +1,304 @@
+/* ═══════════════════════════════════════════════════════════
+   SYNCOGNIE — STYLES DU CARNET
+   src/styles/carnet.css
+   Importé dans src/pages/carnet/[slug].astro
+   Styles spécifiques aux notes du carnet — typographie,
+   espacement, callouts, blocs de dialogue.
+═══════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════════════════════════════
+   CORPS DU TEXTE
+═══════════════════════════════════════ */
+
+.content {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.06rem;
+  color: var(--ink-mid);
+  line-height: 1.95;
+}
+
+.content p {
+  margin-bottom: 1.65rem;
+}
+
+/* Paragraphe entièrement en italique = voix narratrice */
+.content p:has(> em:only-child),
+.content p:has(> em:only-child) em {
+  font-family: 'Mulish', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 300 !important;
+  font-style: italic;
+  color: var(--ink-soft) !important;
+  line-height: 1.88;
+}
+
+.content strong { color: var(--ink); font-weight: 700; }
+.content em     { font-style: italic; }
+
+.content a {
+  color: var(--link, #3a9fd8);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.content ul,
+.content ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.content li {
+  margin-bottom: .5rem;
+  line-height: 1.8;
+}
+
+.content code {
+  font-size: .88em;
+  background: rgba(139,94,60,.07);
+  padding: .15em .4em;
+  border-radius: 3px;
+}
+
+.content pre {
+  background: rgba(26,23,20,.04);
+  padding: 1.25rem 1.5rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 1.75rem;
+}
+
+.content pre code {
+  background: none;
+  padding: 0;
+}
+
+
+/* ═══════════════════════════════════════
+   TITRES
+═══════════════════════════════════════ */
+
+.content h2 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 3.75rem 0 1.2rem;
+  letter-spacing: -.01em;
+  line-height: 1.3;
+}
+
+/* Filet sous h2 — marque la section */
+.content h2::after {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 2px;
+  background: rgba(90,127,191,.35);
+  margin-top: .55rem;
+  border-radius: 2px;
+}
+
+.content h3 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 2.5rem 0 .9rem;
+  letter-spacing: -.01em;
+}
+
+
+/* ═══════════════════════════════════════
+   SÉPARATEUR HORIZONTAL
+═══════════════════════════════════════ */
+
+.content hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 3rem auto;
+  width: 30%;
+  opacity: .6;
+}
+
+
+/* ═══════════════════════════════════════
+   CITATION / BLOCKQUOTE
+═══════════════════════════════════════ */
+
+.content blockquote {
+  border-left: 3px solid rgba(90,127,191,.4);
+  padding: .75rem 1.35rem;
+  margin: 2.25rem 0;
+  background: rgba(90,127,191,.04);
+  border-radius: 0 4px 4px 0;
+}
+
+.content blockquote p {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.04rem;
+  font-style: italic;
+  color: var(--ink-mid);
+  line-height: 1.88;
+  margin-bottom: 0;
+}
+
+
+/* ═══════════════════════════════════════
+   CALLOUT — IDÉE FIXÉE
+   Usage MD : <div class="idee">...</div>
+   ou via composant MDX <Idee>
+═══════════════════════════════════════ */
+
+.idee {
+  background: rgba(90,127,191,.05);
+  border-left: 3px solid rgba(90,127,191,.4);
+  padding: 1.1rem 1.4rem;
+  margin: 2.5rem 0;
+  font-style: italic;
+  color: var(--ink-mid);
+  font-size: 1.04rem;
+  line-height: 1.92;
+  border-radius: 0 5px 5px 0;
+  position: relative;
+}
+
+.idee::before {
+  content: '◈';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: .65rem;
+  color: rgba(90,127,191,.4);
+  line-height: 1;
+}
+
+.idee strong {
+  font-style: normal;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.idee p {
+  margin-bottom: .75rem;
+}
+
+.idee p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ═══════════════════════════════════════
+   CALLOUT — QUESTION POSÉE
+   Usage MD : <div class="question-bloc">...</div>
+═══════════════════════════════════════ */
+
+.question-bloc {
+  margin: 2.25rem 0 1.5rem;
+  padding: .85rem 1.25rem;
+  border-left: 2px solid rgba(90,127,191,.45);
+  background: rgba(90,127,191,.03);
+  border-radius: 0 4px 4px 0;
+}
+
+.question-bloc .label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(90,127,191,.75);
+  margin-bottom: .45rem;
+  display: block;
+}
+
+.question-bloc .texte {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--ink);
+  line-height: 1.75;
+  margin: 0;
+}
+
+
+/* ═══════════════════════════════════════
+   CALLOUT — CONCLUSION / SYNTHÈSE
+   Usage : <div class="synthese">...</div>
+═══════════════════════════════════════ */
+
+.synthese {
+  border: 1px solid rgba(90,127,191,.22);
+  border-top: 2.5px solid rgba(90,127,191,.55);
+  border-radius: 0 0 6px 6px;
+  background: rgba(90,127,191,.04);
+  padding: 1.25rem 1.5rem;
+  margin: 2.5rem 0;
+}
+
+.synthese p {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--ink-mid);
+  line-height: 1.85;
+  margin-bottom: .75rem;
+}
+
+.synthese p:last-child {
+  margin-bottom: 0;
+}
+
+.synthese strong {
+  font-weight: 600;
+  color: var(--ink);
+  font-style: normal;
+}
+
+
+/* ═══════════════════════════════════════
+   NOTE DE BAS — CONTEXTE / APARTÉ
+   Usage : <div class="note-contexte">...</div>
+═══════════════════════════════════════ */
+
+.note-contexte {
+  margin: 2rem 0;
+  padding: .85rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: rgba(245,240,232,.5);
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+}
+
+.note-contexte-glyph {
+  font-size: .75rem;
+  color: var(--ink-soft);
+  opacity: .5;
+  flex-shrink: 0;
+  margin-top: .15rem;
+}
+
+.note-contexte-texte {
+  font-family: 'Mulish', sans-serif;
+  font-size: .9rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+.note-contexte-texte p {
+  margin-bottom: .5rem;
+  font-size: .9rem;
+  font-family: 'Mulish', sans-serif;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+.note-contexte-texte p:last-child {
+  margin-bottom: 0;
+}
