@@ -83,6 +83,18 @@ const { title = 'Syncognie', description = 'Jardin numérique en croissance — 
     text-align: left;
   }
 
+  body.page-vies { position: relative; }
+
+  body.page-vies::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 1000px; height: 800px;
+    background: radial-gradient(ellipse 65% 55% at 85% 15%, rgba(220,150,50,0.20) 0%, rgba(210,130,40,0.08) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
 </style>
 </head>
 <body>
