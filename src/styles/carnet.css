@@ -19,7 +19,7 @@
 }
 
 .content p {
-  margin-bottom: 1.65rem;
+  margin-bottom: 0.7rem;
 }
 
 /* Paragraphe entièrement en italique = voix narratrice */
@@ -84,21 +84,12 @@
   font-size: 1.28rem;
   font-weight: 700;
   color: var(--ink);
-  margin: 3.75rem 0 1.2rem;
+  margin: 2rem 0 .8rem;
   letter-spacing: -.01em;
   line-height: 1.3;
 }
 
-/* Filet sous h2 — marque la section */
-.content h2::after {
-  content: '';
-  display: block;
-  width: 2.5rem;
-  height: 2px;
-  background: rgba(90,127,191,.35);
-  margin-top: .55rem;
-  border-radius: 2px;
-}
+/* Pas de filet sous h2 — la typographie se suffit */
 
 .content h3 {
   font-family: 'Libre Baskerville', Georgia, serif;
@@ -117,7 +108,7 @@
 .content hr {
   border: none;
   border-top: 1px solid var(--rule);
-  margin: 3rem auto;
+  margin: 1.5rem auto;
   width: 30%;
   opacity: .6;
 }
@@ -128,10 +119,10 @@
 ═══════════════════════════════════════ */
 
 .content blockquote {
-  border-left: 3px solid rgba(90,127,191,.4);
+  border-left: 3px solid rgba(180,83,9,.35);
   padding: .75rem 1.35rem;
   margin: 2.25rem 0;
-  background: rgba(90,127,191,.04);
+  background: rgba(251,191,36,.05);
   border-radius: 0 4px 4px 0;
 }
 
@@ -152,8 +143,8 @@
 ═══════════════════════════════════════ */
 
 .idee {
-  background: rgba(90,127,191,.05);
-  border-left: 3px solid rgba(90,127,191,.4);
+  background: rgba(180,83,9,.04);
+  border-left: 3px solid rgba(180,83,9,.35);
   padding: 1.1rem 1.4rem;
   margin: 2.5rem 0;
   font-style: italic;
@@ -170,7 +161,7 @@
   top: 1rem;
   right: 1rem;
   font-size: .65rem;
-  color: rgba(90,127,191,.4);
+  color: rgba(180,83,9,.4);
   line-height: 1;
 }
 
@@ -197,8 +188,8 @@
 .question-bloc {
   margin: 2.25rem 0 1.5rem;
   padding: .85rem 1.25rem;
-  border-left: 2px solid rgba(90,127,191,.45);
-  background: rgba(90,127,191,.03);
+  border-left: 2px solid rgba(180,83,9,.4);
+  background: rgba(180,83,9,.03);
   border-radius: 0 4px 4px 0;
 }
 
@@ -208,7 +199,7 @@
   font-weight: 700;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: rgba(90,127,191,.75);
+  color: rgba(180,83,9,.75);
   margin-bottom: .45rem;
   display: block;
 }
@@ -229,10 +220,10 @@
 ═══════════════════════════════════════ */
 
 .synthese {
-  border: 1px solid rgba(90,127,191,.22);
-  border-top: 2.5px solid rgba(90,127,191,.55);
+  border: 1px solid rgba(180,83,9,.18);
+  border-top: 2.5px solid rgba(180,83,9,.45);
   border-radius: 0 0 6px 6px;
-  background: rgba(90,127,191,.04);
+  background: rgba(251,191,36,.04);
   padding: 1.25rem 1.5rem;
   margin: 2.5rem 0;
 }
