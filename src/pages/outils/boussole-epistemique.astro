@@ -1,0 +1,1024 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="La Boussole épistémique — Syncognie"
+  description="Naviguer entre les modèles de pensée selon la question qu'on se pose. Leurs territoires, leurs limites, leurs angles morts."
+>
+
+<div class="bep-wrap">
+
+  <!-- BREADCRUMB -->
+  <nav class="bep-breadcrumb">
+    <a href="/outils" class="bep-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Tous les outils
+    </a>
+    <span class="bep-bread-sep">·</span>
+    <span class="bep-bread-current">La Boussole épistémique</span>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="bep-header">
+    <p class="bep-surtitre">Outil · Épistémologie</p>
+    <h1 class="bep-titre">La <em>Boussole</em> épistémique</h1>
+    <p class="bep-sous">Chaque modèle de pensée répond à certaines questions et reste aveugle à d'autres. La compétence clé n'est pas de maîtriser un modèle — c'est de savoir naviguer entre eux.</p>
+    <div class="bep-meta">
+      <span class="bep-version">v0.2</span>
+      <span class="bep-meta-sep">·</span>
+      <span class="bep-metainfo" id="bep-compteur">— modèles · — domaines</span>
+    </div>
+  </div>
+
+  <!-- INTERFACE -->
+  <div class="bep-interface">
+
+    <!-- COLONNE DOMAINES -->
+    <nav class="bep-nav" id="bep-nav">
+      <p class="bep-nav-label">Domaines</p>
+      <button class="bep-nav-item active" data-domaine="mathematiques">Mathématiques</button>
+      <button class="bep-nav-item" data-domaine="physique">Physique</button>
+      <button class="bep-nav-item" data-domaine="biologie">Biologie</button>
+      <button class="bep-nav-item" data-domaine="neurosciences">Neurosciences cognitives</button>
+      <button class="bep-nav-item" data-domaine="psychologie">Psychologie</button>
+      <button class="bep-nav-item" data-domaine="linguistique">Linguistique · Sémiotique</button>
+      <button class="bep-nav-item" data-domaine="epistemologie">Épistémologie</button>
+      <button class="bep-nav-item" data-domaine="philosophie">Philosophie</button>
+      <button class="bep-nav-item" data-domaine="ethique">Éthique</button>
+      <button class="bep-nav-item" data-domaine="anthropologie">Anthropologie</button>
+      <button class="bep-nav-item" data-domaine="cybernetique">Cybernétique · Systèmes</button>
+      <button class="bep-nav-item" data-domaine="sciences_sociales">Sciences sociales</button>
+      <button class="bep-nav-item" data-domaine="economie">Économie</button>
+      <button class="bep-nav-item" data-domaine="histoire">Histoire</button>
+
+      <div class="bep-nav-question-btn-wrap">
+        <button class="bep-question-toggle" id="bep-question-toggle">
+          Quelle question<br>je me pose ?
+        </button>
+      </div>
+    </nav>
+
+    <!-- ZONE -->
+    <div class="bep-zone">
+
+      <div id="bep-vue-grille">
+        <div class="bep-domaine-header">
+          <h2 class="bep-domaine-nom" id="bep-domaine-nom">Mathématiques</h2>
+          <span class="bep-domaine-count" id="bep-domaine-count"></span>
+        </div>
+        <div class="bep-grille" id="bep-grille"></div>
+      </div>
+
+      <div id="bep-vue-detail" class="bep-hidden">
+        <button class="bep-retour" id="bep-retour">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Retour aux modèles
+        </button>
+        <div id="bep-detail-contenu"></div>
+      </div>
+
+      <div id="bep-vue-question" class="bep-hidden">
+        <button class="bep-retour" id="bep-retour-question">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Retour à la navigation
+        </button>
+        <div class="bep-question-zone">
+          <h2 class="bep-question-titre">Quelle question je me pose ?</h2>
+          <p class="bep-question-sous">Décrivez votre situation ou choisissez un thème. L'outil identifie les modèles pertinents — et ceux à utiliser avec précaution.</p>
+          <div class="bep-themes">
+            <p class="bep-themes-label">Thèmes</p>
+            <div class="bep-themes-grille">
+              <button class="bep-theme" data-theme="decision">Prendre une décision</button>
+              <button class="bep-theme" data-theme="changement">Comprendre un changement</button>
+              <button class="bep-theme" data-theme="limite">Atteindre une limite</button>
+              <button class="bep-theme" data-theme="conflit">Naviguer un conflit</button>
+              <button class="bep-theme" data-theme="connaissance">Acquérir une connaissance</button>
+              <button class="bep-theme" data-theme="apprendre">Apprendre et transmettre</button>
+              <button class="bep-theme" data-theme="systeme">Analyser un système</button>
+              <button class="bep-theme" data-theme="institution">Comprendre une institution</button>
+              <button class="bep-theme" data-theme="valeur">Questionner une valeur</button>
+            </div>
+          </div>
+          <p class="bep-ou">Ou décrivez librement</p>
+          <textarea class="bep-question-input" id="bep-question-input"
+            placeholder="Ex : Je dois prendre une décision importante sous incertitude…" rows="3"></textarea>
+          <button class="bep-question-submit" id="bep-question-submit">
+            Trouver les modèles pertinents →
+          </button>
+          <div id="bep-question-resultat" class="bep-hidden"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NOTE META -->
+  <div class="bep-meta-note">
+    <p class="bep-meta-note-texte">Cette boussole est elle-même une carte. Elle a ses domaines d'origine, ses limites, ses angles morts.</p>
+    <p class="bep-meta-note-citation">La carte n'est pas le territoire — Korzybski</p>
+  </div>
+
+</div>
+
+<style is:global>
+  .bep-wrap { max-width:var(--max,740px); margin:0 auto; padding:0 1.75rem 5rem; font-family:'Mulish',sans-serif; color:var(--ink,#1a1714); }
+  .bep-hidden { display:none !important; }
+
+  .bep-breadcrumb { display:flex; align-items:center; gap:.5rem; padding:1.5rem 0 0; }
+  .bep-back { display:inline-flex; align-items:center; gap:.35rem; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft,#9a9189); text-decoration:none; transition:color .15s; }
+  .bep-back:hover { color:var(--ink,#1a1714); }
+  .bep-bread-sep { font-size:.7rem; color:var(--rule,#ddd6c8); }
+  .bep-bread-current { font-size:.72rem; font-weight:600; letter-spacing:.06em; color:var(--ink-soft,#9a9189); opacity:.65; }
+
+  .bep-header { padding:2.5rem 0 2rem; border-bottom:1px solid var(--rule,#ddd6c8); margin-bottom:2rem; }
+  .bep-surtitre { font-size:.7rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#c4993a; margin-bottom:.5rem; }
+  .bep-titre { font-family:'Libre Baskerville',serif; font-size:clamp(2rem,5vw,3rem); font-weight:400; line-height:1.15; margin-bottom:.8rem; }
+  .bep-titre em { font-style:italic; }
+  .bep-sous { font-family:'Libre Baskerville',serif; font-size:1rem; font-style:italic; color:rgba(26,23,20,.7); line-height:1.6; max-width:600px; margin-bottom:1.2rem; }
+  .bep-meta { display:flex; align-items:center; gap:.6rem; }
+  .bep-version { font-size:.65rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:#c4993a; border:1px solid #c4993a; border-radius:2px; padding:.15rem .4rem; }
+  .bep-meta-sep { color:var(--rule,#ddd6c8); }
+  .bep-metainfo { font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:rgba(26,23,20,.4); }
+
+  .bep-interface { display:grid; grid-template-columns:200px 1fr; gap:3rem; align-items:start; }
+
+  .bep-nav { position:sticky; top:80px; }
+  .bep-nav-label { font-size:.6rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:rgba(26,23,20,.35); margin-bottom:.6rem; margin-top:0; }
+  .bep-nav-item { display:block; width:100%; text-align:left; background:none; border:none; border-left:2px solid transparent; padding:.35rem .75rem; font-family:'Mulish',sans-serif; font-size:.76rem; font-weight:600; color:rgba(26,23,20,.6); cursor:pointer; letter-spacing:.02em; margin-bottom:.05rem; transition:all .12s; border-radius:0 2px 2px 0; }
+  .bep-nav-item:hover { color:var(--ink,#1a1714); }
+  .bep-nav-item.active { border-left-color:#c4993a; color:var(--ink,#1a1714); background:rgba(196,153,58,.07); }
+  .bep-nav-question-btn-wrap { margin-top:1.5rem; }
+  .bep-question-toggle { display:block; width:100%; font-family:'Mulish',sans-serif; font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink,#1a1714); background:none; border:1px solid var(--rule,#ddd6c8); border-radius:3px; padding:.5rem .75rem; cursor:pointer; transition:all .15s; text-align:left; line-height:1.5; }
+  .bep-question-toggle:hover { border-color:#c4993a; color:#c4993a; background:rgba(196,153,58,.05); }
+
+  .bep-zone { min-height:400px; }
+
+  .bep-domaine-header { display:flex; align-items:baseline; gap:.8rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--rule,#ddd6c8); }
+  .bep-domaine-nom { font-family:'Libre Baskerville',serif; font-size:1.3rem; font-weight:400; color:var(--ink,#1a1714); margin:0; }
+  .bep-domaine-count { font-size:.68rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:rgba(26,23,20,.4); }
+
+  .bep-grille { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1rem; }
+
+  .bep-carte { display:flex; background:rgba(255,255,255,.4); border:1px solid var(--rule,#ddd6c8); border-radius:4px; cursor:pointer; text-align:left; overflow:hidden; transition:all .15s; animation:bep-rise .4s ease both; padding:0; font-family:'Mulish',sans-serif; width:100%; }
+  .bep-carte:hover { background:rgba(255,255,255,.7); transform:translateY(-2px); box-shadow:0 4px 16px rgba(26,23,20,.08); }
+  .bep-carte-bord { width:3px; background:#c4993a; flex-shrink:0; }
+  .bep-carte-corps { padding:1rem 1rem .9rem; flex:1; }
+  .bep-carte-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:.5rem; }
+  .bep-carte-auteur { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(26,23,20,.45); }
+  .bep-carte-annee { font-size:.62rem; color:rgba(26,23,20,.3); font-weight:600; }
+  .bep-carte-nom { font-family:'Libre Baskerville',serif; font-size:.9rem; font-weight:700; color:var(--ink,#1a1714); margin-bottom:.45rem; line-height:1.3; }
+  .bep-carte-resume { font-size:.76rem; color:rgba(26,23,20,.65); line-height:1.5; margin-bottom:.75rem; }
+  .bep-carte-indics { display:flex; gap:.6rem; flex-wrap:wrap; }
+  .bep-indic { display:flex; align-items:center; gap:.28rem; }
+  .bep-indic-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+  .bep-indic-label { font-size:.6rem; font-weight:600; letter-spacing:.05em; color:rgba(26,23,20,.4); }
+
+  .bep-retour { display:inline-flex; align-items:center; gap:.4rem; background:none; border:none; color:rgba(26,23,20,.5); font-family:'Mulish',sans-serif; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; padding:0; margin-bottom:1.5rem; transition:color .12s; }
+  .bep-retour:hover { color:var(--ink,#1a1714); }
+
+  .bep-detail-badge { font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#c4993a; border:1px solid #c4993a; border-radius:2px; padding:.15rem .45rem; display:inline-block; margin-bottom:.7rem; }
+  .bep-detail-nom { font-family:'Libre Baskerville',serif; font-size:clamp(1.2rem,3vw,1.7rem); font-weight:700; color:var(--ink,#1a1714); margin-bottom:.3rem; line-height:1.2; }
+  .bep-detail-auteur { font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(26,23,20,.4); margin-bottom:.9rem; }
+  .bep-detail-resume { font-family:'Libre Baskerville',serif; font-size:.95rem; font-style:italic; color:rgba(26,23,20,.75); line-height:1.65; margin-bottom:1rem; padding-bottom:1.5rem; border-bottom:1px solid var(--rule,#ddd6c8); }
+  .bep-detail-indics { display:flex; gap:1.2rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .bep-detail-indic { display:flex; align-items:center; gap:.35rem; }
+  .bep-detail-indic-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .bep-detail-indic-label { font-size:.7rem; font-weight:600; letter-spacing:.07em; color:rgba(26,23,20,.5); }
+
+  .bep-onglets { display:flex; border-bottom:1px solid var(--rule,#ddd6c8); overflow-x:auto; }
+  .bep-onglet { font-family:'Mulish',sans-serif; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; background:none; border:none; border-bottom:2px solid transparent; padding:.8rem 1rem; cursor:pointer; color:rgba(26,23,20,.4); transition:all .12s; white-space:nowrap; margin-right:.2rem; }
+  .bep-onglet:hover { color:rgba(26,23,20,.7); }
+  .bep-onglet.active { font-weight:800; }
+
+  .bep-panneau { padding:1.5rem 0; }
+  .bep-panneau-filet { width:28px; height:2px; border-radius:1px; margin-bottom:1rem; }
+  .bep-liste { list-style:none; padding:0; margin:0; }
+  .bep-liste-item { display:flex; align-items:flex-start; gap:.6rem; margin-bottom:.75rem; font-size:.87rem; line-height:1.55; color:rgba(26,23,20,.8); }
+  .bep-liste-puce { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:.45rem; }
+
+  .bep-conn-groupe { margin-bottom:1.5rem; }
+  .bep-conn-titre { display:flex; align-items:center; gap:.5rem; font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(26,23,20,.4); margin-bottom:.8rem; }
+  .bep-conn-puce { display:inline-block; width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .bep-conn-grille { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:.75rem; }
+  .bep-conn-card { background:rgba(255,255,255,.4); border:1px solid var(--rule,#ddd6c8); border-left:2px solid #2e7d4e; border-radius:3px; padding:.9rem 1rem; }
+  .bep-conn-card--tension { border-left-color:#8b3a2a; }
+  .bep-conn-card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; margin-bottom:.4rem; }
+  .bep-conn-nom { font-family:'Libre Baskerville',serif; font-size:.82rem; font-weight:700; color:var(--ink,#1a1714); line-height:1.3; }
+  .bep-conn-lien { background:none; border:none; font-family:'Mulish',sans-serif; font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#c4993a; cursor:pointer; padding:0; white-space:nowrap; }
+  .bep-conn-lien:hover { opacity:.7; }
+  .bep-conn-synergie { font-size:.78rem; color:rgba(26,23,20,.62); line-height:1.5; margin:0; }
+  .bep-doms-sec { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .bep-dom-badge { font-size:.68rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(26,23,20,.5); border:1px solid var(--rule,#ddd6c8); border-radius:2px; padding:.2rem .55rem; }
+
+  .bep-question-zone { padding-top:.5rem; }
+  .bep-question-titre { font-family:'Libre Baskerville',serif; font-size:1.3rem; font-weight:400; color:var(--ink,#1a1714); margin-bottom:.5rem; }
+  .bep-question-sous { font-family:'Libre Baskerville',serif; font-size:.9rem; font-style:italic; color:rgba(26,23,20,.65); line-height:1.6; margin-bottom:1.5rem; }
+  .bep-themes { margin-bottom:1.2rem; }
+  .bep-themes-label { font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(26,23,20,.4); margin-bottom:.6rem; }
+  .bep-themes-grille { display:flex; flex-wrap:wrap; gap:.4rem; }
+  .bep-theme { font-family:'Mulish',sans-serif; font-size:.72rem; font-weight:600; color:rgba(26,23,20,.6); background:rgba(255,255,255,.5); border:1px solid var(--rule,#ddd6c8); border-radius:3px; padding:.35rem .7rem; cursor:pointer; transition:all .12s; }
+  .bep-theme:hover, .bep-theme.active { border-color:#c4993a; color:var(--ink,#1a1714); background:rgba(196,153,58,.08); }
+  .bep-ou { font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(26,23,20,.35); margin:1.2rem 0 .5rem; }
+  .bep-question-input { width:100%; box-sizing:border-box; font-family:'Mulish',sans-serif; font-size:.9rem; color:var(--ink,#1a1714); background:rgba(255,255,255,.5); border:1px solid var(--rule,#ddd6c8); border-radius:3px; padding:.8rem 1rem; resize:vertical; outline:none; transition:border-color .15s; margin-bottom:1rem; }
+  .bep-question-input:focus { border-color:#c4993a; }
+  .bep-question-submit { font-family:'Mulish',sans-serif; font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#f5f0e8; background:var(--ink,#1a1714); border:none; border-radius:2px; padding:.6rem 1.2rem; cursor:pointer; transition:opacity .15s; }
+  .bep-question-submit:hover { opacity:.8; }
+
+  .bep-resultat { margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--rule,#ddd6c8); }
+  .bep-resultat-note { font-family:'Libre Baskerville',serif; font-size:.9rem; font-style:italic; color:rgba(26,23,20,.65); line-height:1.6; margin-bottom:1.5rem; }
+  .bep-resultat-section { margin-bottom:1.5rem; }
+  .bep-resultat-titre { display:flex; align-items:center; gap:.5rem; font-size:.65rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(26,23,20,.4); margin-bottom:.8rem; }
+  .bep-res-puce { display:inline-block; width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .bep-res-grille { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:.75rem; }
+  .bep-res-card { background:rgba(255,255,255,.45); border:1px solid var(--rule,#ddd6c8); border-left:3px solid #2e7d4e; border-radius:3px; padding:1rem; cursor:pointer; transition:all .15s; }
+  .bep-res-card:hover { transform:translateY(-1px); background:rgba(255,255,255,.7); }
+  .bep-res-card--eviter { border-left-color:#8b3a2a; }
+  .bep-res-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.4rem; }
+  .bep-res-nom { font-family:'Libre Baskerville',serif; font-size:.85rem; font-weight:700; color:var(--ink,#1a1714); }
+  .bep-res-auteur { font-size:.68rem; font-weight:600; letter-spacing:.08em; color:rgba(26,23,20,.4); text-transform:uppercase; }
+  .bep-res-raison { font-size:.82rem; color:rgba(26,23,20,.7); line-height:1.5; margin-bottom:.6rem; }
+  .bep-res-lien { font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#c4993a; }
+
+  .bep-meta-note { margin-top:4rem; padding-top:1.5rem; border-top:1px solid var(--rule,#ddd6c8); text-align:center; }
+  .bep-meta-note-texte { font-family:'Libre Baskerville',serif; font-size:.78rem; font-style:italic; color:rgba(26,23,20,.4); margin-bottom:.3rem; }
+  .bep-meta-note-citation { font-size:.65rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:rgba(196,153,58,.6); }
+
+  @keyframes bep-rise { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width:640px) {
+    .bep-interface { grid-template-columns:1fr; gap:1.5rem; }
+    .bep-nav { position:static; display:flex; flex-wrap:wrap; gap:.25rem; }
+    .bep-nav-label { width:100%; }
+    .bep-nav-item { width:auto; border-left:none; border-bottom:2px solid transparent; border-radius:3px; font-size:.7rem; padding:.3rem .55rem; }
+    .bep-nav-item.active { border-bottom-color:#c4993a; border-left:none; }
+    .bep-nav-question-btn-wrap { width:100%; margin-top:.5rem; }
+    .bep-wrap { padding:0 1rem 4rem; }
+  }
+</style>
+
+<script>
+const DOMAINES_LABELS = {
+  mathematiques:'Mathématiques', physique:'Physique', biologie:'Biologie',
+  neurosciences:'Neurosciences cognitives', psychologie:'Psychologie',
+  linguistique:'Linguistique · Sémiotique', epistemologie:'Épistémologie',
+  philosophie:'Philosophie', ethique:'Éthique', anthropologie:'Anthropologie',
+  cybernetique:'Cybernétique · Systèmes', sciences_sociales:'Sciences sociales',
+  economie:'Économie', histoire:'Histoire',
+};
+
+const MODELES = [
+
+  // ── MATHÉMATIQUES ──────────────────────────
+  {
+    id:'godel', nom:'Incomplétude des systèmes formels', auteur:'Kurt Gödel', annee:'1931',
+    domaine_principal:'mathematiques', domaines_secondaires:['epistemologie','philosophie'],
+    resume:'Tout système formel suffisamment puissant contient des vérités qu\'il ne peut pas démontrer.',
+    territoire:['Les limites internes de tout système axiomatique','La distinction entre vérité et prouvabilité','L\'impossibilité de la complétude et de la cohérence simultanées','Les fondements logiques des mathématiques'],
+    limites:['Ne s\'applique qu\'aux systèmes formels suffisamment expressifs','Ne dit rien sur la vérité des énoncés indécidables','N\'est pas directement transposable aux systèmes humains ou sociaux'],
+    zones_risquees:['Justifier le relativisme général ("rien n\'est prouvable")','Confondre avec de l\'incertitude empirique ordinaire','Servir de prétexte à l\'abandon de la rigueur logique'],
+    connexions:{ complementaires:['korzybski','kuhn','bayes'], contradictoires:[], synergie:[{avec:'korzybski',texte:'Ensemble, ils montrent que ni les cartes formelles ni les cartes linguistiques ne peuvent épuiser leur territoire.'},{avec:'kuhn',texte:'Gödel montre l\'incomplétude interne ; Kuhn l\'incomplétude historique.'}] },
+    mots_cles:['système','logique','preuve','limite','formel','connaissance','vérité','modèle','règle','incomplétude','axiome'],
+  },
+  {
+    id:'bayes', nom:'Inférence bayésienne', auteur:'Thomas Bayes', annee:'1763',
+    domaine_principal:'mathematiques', domaines_secondaires:['epistemologie','psychologie','neurosciences'],
+    resume:'La probabilité est un degré de croyance qui se met à jour à la lumière de nouvelles preuves — pas une fréquence objective.',
+    territoire:['La mise à jour rationnelle des croyances face à de nouvelles données','La quantification de l\'incertitude','Les modèles prédictifs sous incertitude','La décision en contexte d\'information partielle'],
+    limites:['Dépend fortement du choix des probabilités a priori','Difficile à appliquer quand les données sont rares ou bruitées','Ne résout pas la question de l\'origine du prior'],
+    zones_risquees:['Croire que toute inférence bayésienne est objective','Ignorer que le prior encode des hypothèses souvent implicites','Confondre probabilité et certitude dans la communication'],
+    connexions:{ complementaires:['godel','kuhn','friston'], contradictoires:[], synergie:[{avec:'friston',texte:'Friston a formalisé le cerveau comme machine bayésienne — Bayes fournit le cadre mathématique que Friston applique à la perception.'}] },
+    mots_cles:['probabilité','croyance','incertitude','données','prédiction','prior','mise à jour','décision','risque','information','inférence'],
+  },
+  {
+    id:'shannon', nom:'Théorie de l\'information', auteur:'Claude Shannon', annee:'1948',
+    domaine_principal:'mathematiques', domaines_secondaires:['linguistique','cybernetique','epistemologie'],
+    resume:'L\'information se mesure en bits — c\'est la réduction d\'incertitude. Le signal et le bruit sont distincts. Toute communication implique une perte.',
+    territoire:['La mesure quantitative de l\'information','La distinction signal / bruit','Les limites théoriques de la transmission et de la compression','Les fondements des réseaux et de l\'informatique'],
+    limites:['Ne traite pas le sens — seulement la quantité d\'information','Modèle technique qui abstrait l\'intention et le contexte','Peu adapté aux situations où le bruit est porteur de sens'],
+    zones_risquees:['Réduire la communication humaine à un problème de transmission','Confondre information au sens de Shannon et signification','Croire que plus d\'information réduit toujours l\'incertitude pertinente'],
+    connexions:{ complementaires:['korzybski','wiener','bayes'], contradictoires:[], synergie:[{avec:'wiener',texte:'Shannon quantifie l\'information ; Wiener la met en mouvement dans les systèmes de contrôle — deux faces de la cybernétique.'},{avec:'korzybski',texte:'Shannon montre que toute transmission est avec perte ; Korzybski que toute représentation est une carte incomplète.'}] },
+    mots_cles:['information','signal','bruit','communication','entropie','bit','transmission','code','incertitude','données','message'],
+  },
+
+  // ── PHYSIQUE ───────────────────────────────
+  {
+    id:'newton', nom:'Mécanique classique', auteur:'Isaac Newton', annee:'1687',
+    domaine_principal:'physique', domaines_secondaires:['mathematiques'],
+    resume:'Le mouvement des corps obéit à des lois précises, déterministes et universelles.',
+    territoire:['Les mouvements à faible vitesse et grande échelle','La gravitation terrestre et céleste','La prédiction des trajectoires et des forces','L\'ingénierie, l\'architecture, la balistique'],
+    limites:['Inapplicable aux vitesses proches de celle de la lumière','Aveugle à l\'échelle quantique','Suppose un temps et un espace absolus qui n\'existent pas'],
+    zones_risquees:['Croire que l\'univers entier est déterministe et prédictible','Appliquer la logique mécanique aux systèmes vivants ou sociaux','Confondre modèle avec réalité'],
+    connexions:{ complementaires:['einstein'], contradictoires:['einstein'], synergie:[{avec:'einstein',texte:'Newton reste valide dans ses domaines — Einstein le contient comme cas limite.'}] },
+    mots_cles:['mécanique','physique','loi','force','prédiction','causalité','déterminisme','ingénierie','calcul','trajectoire'],
+  },
+  {
+    id:'einstein', nom:'Relativité restreinte et générale', auteur:'Albert Einstein', annee:'1905–1915',
+    domaine_principal:'physique', domaines_secondaires:['mathematiques','philosophie'],
+    resume:'L\'espace, le temps et la masse sont relatifs à l\'observateur ; la gravité est courbure de l\'espace-temps.',
+    territoire:['Les vitesses élevées et les champs gravitationnels intenses','La cosmologie et la structure de l\'univers','Le GPS et les technologies de précision temporelle','L\'unification de l\'espace et du temps'],
+    limites:['Incompatible avec la mécanique quantique à certaines échelles','Les équations deviennent singulières dans les trous noirs','Inutile pour les vitesses ordinaires'],
+    zones_risquees:['Inférer que "tout est relatif" au sens moral ou épistémique','Croire que la relativité supprime toute objectivité','Oublier que la relativité est elle-même une théorie absolue des transformations'],
+    connexions:{ complementaires:['newton'], contradictoires:['newton'], synergie:[{avec:'newton',texte:'Newton est Einstein au repos — deux modèles valides dans des régimes différents.'}] },
+    mots_cles:['relativité','physique','temps','espace','observateur','vitesse','gravité','lumière'],
+  },
+  {
+    id:'thermodynamique', nom:'Thermodynamique — entropie', auteur:'Clausius · Boltzmann', annee:'1850–1877',
+    domaine_principal:'physique', domaines_secondaires:['philosophie','biologie'],
+    resume:'Les systèmes fermés évoluent spontanément vers le désordre. L\'énergie se dégrade, l\'entropie croît — le temps a une direction.',
+    territoire:['Les transformations d\'énergie et leur irréversibilité','La flèche du temps','Les limites du travail et de l\'efficacité des machines','Les systèmes hors équilibre'],
+    limites:['Ne s\'applique rigoureusement qu\'aux systèmes à grand nombre de particules','Les systèmes vivants sont ouverts — ils contournent localement l\'entropie','Silence sur les phénomènes quantiques'],
+    zones_risquees:['Extrapoler l\'entropie comme métaphore universelle du déclin social','Confondre irréversibilité physique et irréversibilité morale','Ignorer que la vie est précisément une réduction locale d\'entropie'],
+    connexions:{ complementaires:['darwin','wiener','shannon'], contradictoires:[], synergie:[{avec:'darwin',texte:'La vie est une machine à réduire localement l\'entropie — Darwin montre comment, la thermodynamique pourquoi c\'est remarquable.'},{avec:'shannon',texte:'L\'entropie de Shannon est une reformulation de l\'entropie thermodynamique — même concept, deux territoires.'}] },
+    mots_cles:['entropie','énergie','désordre','temps','irréversibilité','chaleur','système','équilibre','dégradation'],
+  },
+
+  // ── BIOLOGIE ───────────────────────────────
+  {
+    id:'darwin', nom:'Sélection naturelle', auteur:'Charles Darwin', annee:'1859',
+    domaine_principal:'biologie', domaines_secondaires:['sciences_sociales','philosophie','anthropologie'],
+    resume:'Les organismes qui s\'adaptent le mieux à leur environnement survivent et se reproduisent davantage.',
+    territoire:['L\'origine et la diversification des espèces','Les adaptations morphologiques et comportementales','L\'évolution sur des milliers de générations','La phylogénétique et la biologie comparative'],
+    limites:['N\'explique pas la conscience ou l\'expérience subjective','Aveugle aux dynamiques culturelles et symboliques','Ne prescrit rien — décrit sans valider'],
+    zones_risquees:['Le darwinisme social — confondre description et prescription','Réduire le comportement humain à la "survie du plus fort"','Croire que ce qui existe est nécessairement adaptatif'],
+    connexions:{ complementaires:['maturana','thermodynamique','bateson'], contradictoires:[], synergie:[{avec:'maturana',texte:'Darwin décrit l\'évolution des espèces ; Maturana et Varela décrivent ce qu\'est un être vivant à chaque instant — deux échelles du même phénomène.'}] },
+    mots_cles:['évolution','adaptation','survie','espèce','biologie','environnement','naturel','sélection','génétique','mutation'],
+  },
+  {
+    id:'maturana', nom:'Autopoïèse', auteur:'Maturana · Varela', annee:'1972',
+    domaine_principal:'biologie', domaines_secondaires:['neurosciences','philosophie','cybernetique'],
+    resume:'Un système vivant est un système qui se produit lui-même — qui génère et régénère continuellement ses propres composants. La cognition est la vie.',
+    territoire:['La définition minimale de la vie comme auto-organisation','La clôture opérationnelle des systèmes vivants','La cognition comme processus biologique, pas seulement neurologique','L\'autonomie des systèmes vivants face à l\'environnement'],
+    limites:['Très abstrait — difficile à opérationnaliser en biologie expérimentale','La clôture opérationnelle peut sembler nier l\'influence de l\'environnement','Peu de place pour l\'évolution et le changement dans le modèle original'],
+    zones_risquees:['Conclure que les systèmes vivants sont totalement déterminés par leur structure interne','Utiliser l\'autopoïèse comme métaphore sans rigueur dans les sciences sociales','Confondre clôture opérationnelle et isolement'],
+    connexions:{ complementaires:['darwin','friston','bateson','wiener'], contradictoires:[], synergie:[{avec:'friston',texte:'Maturana définit la vie comme auto-organisation ; Friston formalise comment le cerveau minimise la surprise pour se maintenir — deux versions du même principe.'}] },
+    mots_cles:['autopoïèse','vivant','autonomie','organisation','système','clôture','cognition','vie','auto-organisation','biologie'],
+  },
+
+  // ── NEUROSCIENCES COGNITIVES ───────────────
+  {
+    id:'mcgilchrist', nom:'Hémisphères et modes d\'attention', auteur:'Iain McGilchrist', annee:'2009',
+    domaine_principal:'neurosciences', domaines_secondaires:['philosophie','psychologie','histoire'],
+    resume:'Les deux hémisphères cérébraux offrent deux modes d\'attention fondamentalement différents qui façonnent notre rapport au monde.',
+    territoire:['La neurologie fonctionnelle des hémisphères','La distinction entre attention focale et attention ouverte','L\'impact du déséquilibre hémisphérique sur la civilisation','La relation entre cerveau, culture et représentation du monde'],
+    limites:['Critiqué pour des généralisations sur la latéralisation','Difficile à tester empiriquement dans ses claims civilisationnels','Ne couvre pas les troubles neurologiques précis'],
+    zones_risquees:['Réduire chaque individu à un mode hémisphérique dominant','Confondre métaphore neurologique et anatomie littérale','Utiliser le modèle comme grille de jugement moral'],
+    connexions:{ complementaires:['damasio','friston','korzybski','darwin'], contradictoires:[], synergie:[{avec:'friston',texte:'McGilchrist décrit deux modes d\'attention ; Friston leur donne une mécanique computationnelle — prédiction top-down vs signal d\'erreur bottom-up.'},{avec:'korzybski',texte:'McGilchrist montre comment le cerveau gauche produit des cartes ; Korzybski rappelle qu\'elles ne sont pas le territoire.'}] },
+    mots_cles:['attention','perception','cerveau','hémisphère','culture','conscience','monde','civilisation','saisir','contexte','neurologie'],
+  },
+  {
+    id:'damasio', nom:'Marqueurs somatiques', auteur:'Antonio Damasio', annee:'1994',
+    domaine_principal:'neurosciences', domaines_secondaires:['psychologie','philosophie','biologie'],
+    resume:'Les émotions ne perturbent pas la raison — elles la constituent. Décider sans corps, c\'est décider sans boussole.',
+    territoire:['Le rôle des émotions dans la prise de décision','Les bases neurologiques de la conscience','La relation corps-esprit dans le jugement','Les troubles de la décision après lésions préfrontales'],
+    limites:['Construit sur des cas cliniques — généralisation délicate','Ne couvre pas toutes les formes de raisonnement','Peut être mal interprété comme validation de l\'impulsivité'],
+    zones_risquees:['Confondre "les émotions comptent" avec "les émotions ont toujours raison"','Ignorer les contextes où la distance émotionnelle est utile','Rejeter tout effort de régulation émotionnelle'],
+    connexions:{ complementaires:['freud','beck','mcgilchrist','friston','spinoza'], contradictoires:[], synergie:[{avec:'mcgilchrist',texte:'Damasio ancre dans le corps ce que McGilchrist décrit dans les hémisphères — deux entrées vers la même réalité incarnée.'},{avec:'spinoza',texte:'Damasio a explicitement reconnu Spinoza comme précurseur : le corps et les affects sont centraux dans les deux approches.'}] },
+    mots_cles:['émotion','décision','corps','raison','conscience','intuition','affect','neurologie','ressenti','soma'],
+  },
+  {
+    id:'friston', nom:'Principe d\'énergie libre et cerveau prédictif', auteur:'Karl Friston', annee:'2006',
+    domaine_principal:'neurosciences', domaines_secondaires:['mathematiques','philosophie','biologie'],
+    resume:'Le cerveau est une machine à prédire — il génère en permanence des modèles du monde et minimise l\'écart entre ses prédictions et les signaux sensoriels. La perception est une inférence.',
+    territoire:['La perception comme inférence bayésienne active','L\'apprentissage comme minimisation de la surprise','Les troubles psychiatriques comme dérèglements du modèle prédictif','L\'unification de la perception, de l\'action et de l\'apprentissage'],
+    limites:['Cadre très mathématique — difficile d\'accès sans background technique','Les applications cliniques sont encore en développement','Risque de tout expliquer avec un seul principe — trop général'],
+    zones_risquees:['Croire que le cerveau prédictif explique tout le comportement humain','Ignorer les dimensions sociales et culturelles que le modèle n\'intègre pas directement','Utiliser le cadre pour naturaliser des comportements qui ont des causes sociales'],
+    connexions:{ complementaires:['bayes','maturana','mcgilchrist','damasio'], contradictoires:[], synergie:[{avec:'bayes',texte:'Friston est Bayes appliqué au cerveau — la mise à jour des croyances est le mécanisme fondamental de la perception.'},{avec:'maturana',texte:'Friston formalise mathématiquement ce que Maturana décrit biologiquement : un système qui se maintient en réduisant l\'incertitude.'}] },
+    mots_cles:['prédiction','cerveau','surprise','inférence','modèle','perception','apprentissage','énergie libre','bayésien','action','erreur'],
+  },
+
+  // ── PSYCHOLOGIE ────────────────────────────
+  {
+    id:'freud', nom:'Psychanalyse', auteur:'Sigmund Freud', annee:'1895–1939',
+    domaine_principal:'psychologie', domaines_secondaires:['philosophie','sciences_sociales'],
+    resume:'Le comportement humain est largement déterminé par des forces inconscientes, des conflits et des désirs refoulés.',
+    territoire:['Les symptômes névrotiques et leurs origines','Le rôle de l\'inconscient dans la vie psychique','Les mécanismes de défense','Le transfert dans la relation thérapeutique'],
+    limites:['Difficilement falsifiable empiriquement','Peu efficace sur les troubles sévères ou biologiques','Biais culturel fort — ancré dans la Vienne bourgeoise du XIXe'],
+    zones_risquees:['Attribuer tout comportement à un refoulement sexuel','Confondre interprétation narrative et explication causale','Utiliser la psychanalyse comme modèle universel de la psyché'],
+    connexions:{ complementaires:['beck','damasio','bowlby'], contradictoires:['beck'], synergie:[{avec:'beck',texte:'Freud illumine l\'origine ; Beck intervient sur la structure actuelle. Ensemble ils évitent l\'impasse de chacun.'}] },
+    mots_cles:['inconscient','refoulement','désir','trauma','enfance','comportement','émotion','conflit','psychologie','thérapie','relation','pulsion'],
+  },
+  {
+    id:'beck', nom:'Thérapie Cognitive et Comportementale', auteur:'Aaron Beck', annee:'1960s',
+    domaine_principal:'psychologie', domaines_secondaires:[],
+    resume:'Les pensées automatiques et les schémas cognitifs façonnent les émotions et les comportements — et peuvent être modifiés.',
+    territoire:['Les troubles anxieux, dépressifs, phobiques','Les distorsions cognitives identifiables','Les interventions brèves et ciblées','La mesure des effets thérapeutiques'],
+    limites:['Moins adapté aux troubles de la personnalité profonds','Peut négliger la dimension relationnelle et inconsciente','Centré sur le présent — silence sur les causes historiques'],
+    zones_risquees:['Croire que toute souffrance est une distorsion cognitive à corriger','Ignorer les dimensions corporelles et sociales','Réduire la thérapie à un protocole technique'],
+    connexions:{ complementaires:['freud','mcgilchrist','vygotsky'], contradictoires:['freud'], synergie:[{avec:'freud',texte:'Beck structure et mesure ; Freud explore les profondeurs. Aucun ne couvre seul l\'espace de la psyché.'}] },
+    mots_cles:['pensée','cognitif','comportement','anxiété','dépression','schéma','distorsion','thérapie','émotion','habitude','croyance','automatique'],
+  },
+  {
+    id:'kahneman', nom:'Système 1 / Système 2', auteur:'Daniel Kahneman', annee:'2002',
+    domaine_principal:'psychologie', domaines_secondaires:['economie','sciences_sociales'],
+    resume:'Deux modes de pensée coexistent : le Système 1, rapide et automatique, et le Système 2, lent et délibératif. Le premier gouverne la plupart de nos décisions.',
+    territoire:['Les biais cognitifs et heuristiques','La prise de décision sous incertitude','Les erreurs systématiques de jugement','L\'économie comportementale'],
+    limites:['La dichotomie S1/S2 est une simplification — le cerveau est plus continu','Ne dit pas quand faire confiance à l\'intuition','Connaître les biais ne suffit pas à les éviter'],
+    zones_risquees:['Croire que le Système 2 est toujours supérieur','Invalider toute intuition','Ignorer que l\'expertise rend parfois le S1 très fiable'],
+    connexions:{ complementaires:['damasio','beck','bayes','friston'], contradictoires:[], synergie:[{avec:'damasio',texte:'Kahneman décrit la structure des deux modes ; Damasio montre le rôle du corps dans leur arbitrage.'},{avec:'friston',texte:'Le S1 de Kahneman est le modèle prédictif automatique de Friston — le S2 est l\'inférence consciente qui le corrige.'}] },
+    mots_cles:['biais','intuition','décision','heuristique','automatique','délibératif','jugement','erreur','rapide','lent','cognitif'],
+  },
+  {
+    id:'bowlby', nom:'Théorie de l\'attachement', auteur:'Bowlby · Ainsworth', annee:'1969–1978',
+    domaine_principal:'psychologie', domaines_secondaires:['sciences_sociales','biologie','anthropologie'],
+    resume:'Les stratégies relationnelles forgées dans la prime enfance conditionnent les patterns d\'attachement à l\'âge adulte — secure, anxieux, évitant.',
+    territoire:['Les styles d\'attachement et leur formation','L\'impact des premières relations sur la vie adulte','Les dynamiques de confiance et de dépendance','La psychothérapie centrée sur l\'attachement'],
+    limites:['Difficile de distinguer l\'inné de l\'acquis','Peut produire un déterminisme précoce excessif','Moins opérationnel pour les troubles sans composante relationnelle'],
+    zones_risquees:['Réduire tout conflit adulte à un pattern d\'attachement','Utiliser le modèle comme étiquette identitaire figée','Ignorer la plasticité et la capacité de changement à l\'âge adulte'],
+    connexions:{ complementaires:['freud','damasio','vygotsky'], contradictoires:[], synergie:[{avec:'freud',texte:'Freud explore l\'inconscient pulsionnel ; Bowlby y ajoute la dimension relationnelle éthologique — le besoin de lien est biologique.'}] },
+    mots_cles:['attachement','relation','enfance','lien','confiance','anxiété','sécurité','dépendance','adulte','parent','soin'],
+  },
+  {
+    id:'vygotsky', nom:'Zone proximale de développement', auteur:'Lev Vygotsky', annee:'1934',
+    domaine_principal:'psychologie', domaines_secondaires:['sciences_sociales','linguistique'],
+    resume:'L\'apprentissage précède le développement. La zone entre ce qu\'on peut faire seul et ce qu\'on peut faire avec aide est le lieu de toute croissance cognitive.',
+    territoire:['L\'apprentissage comme processus social avant d\'être individuel','Le rôle du langage dans la construction de la pensée','L\'échafaudage pédagogique — le soutien adapté qui se retire progressivement','Le développement cognitif comme intériorisation du social'],
+    limites:['Difficile à opérationnaliser précisément dans des contextes réels','Peu de place pour les différences biologiques dans les capacités d\'apprentissage','La notion de ZPD reste floue dans ses limites'],
+    zones_risquees:['Croire que tout apprentissage requiert un médiateur humain','Ignorer que la zone proximale varie selon les domaines et les individus','Utiliser la ZPD pour justifier une pédagogie unique'],
+    connexions:{ complementaires:['dewey','bowlby','watzlawick'], contradictoires:[], synergie:[{avec:'dewey',texte:'Dewey insiste sur l\'expérience comme moteur ; Vygotsky y ajoute la médiation sociale — apprendre en faisant avec l\'autre.'}] },
+    mots_cles:['apprentissage','développement','zone','social','langage','médiation','échafaudage','enseignement','collaboration','croissance','cognitif'],
+  },
+
+  // ── LINGUISTIQUE · SÉMIOTIQUE ──────────────
+  {
+    id:'korzybski', nom:'Carte et territoire', auteur:'Alfred Korzybski', annee:'1933',
+    domaine_principal:'linguistique', domaines_secondaires:['epistemologie','philosophie','psychologie'],
+    resume:'La carte n\'est pas le territoire. Nos représentations du monde ne sont pas le monde — et confondre les deux est source d\'erreurs systématiques.',
+    territoire:['La relation entre langage et réalité','Les distorsions produites par la généralisation et l\'abstraction','La conscience des présuppositions dans la communication','La réflexivité comme outil de pensée'],
+    limites:['Peu opérationnel sans méthode complémentaire','Peut mener à un scepticisme paralysant','Ne dit pas quelle carte préférer'],
+    zones_risquees:['Conclure que toutes les cartes se valent','Utiliser le principe pour esquiver tout engagement','Devenir tellement meta qu\'on ne peut plus agir'],
+    connexions:{ complementaires:['godel','kuhn','mcgilchrist','shannon'], contradictoires:[], synergie:[{avec:'godel',texte:'Gödel montre que les cartes formelles ont des trous ; Korzybski que toutes les cartes ont des bords.'},{avec:'shannon',texte:'Shannon montre que toute transmission est avec perte ; Korzybski que toute représentation est une carte incomplète.'}] },
+    mots_cles:['langage','représentation','carte','réalité','communication','modèle','perception','mot','sens','abstraction','présupposition'],
+  },
+  {
+    id:'saussure', nom:'Signe linguistique', auteur:'Ferdinand de Saussure', annee:'1916',
+    domaine_principal:'linguistique', domaines_secondaires:['philosophie','sciences_sociales','anthropologie'],
+    resume:'Le signe est l\'union arbitraire d\'un signifiant et d\'un signifié. Le sens naît de la différence entre les signes, pas de leur essence.',
+    territoire:['La structure du langage comme système de différences','L\'arbitraire du signe et ses conséquences','Les bases de la sémiologie','La distinction langue / parole'],
+    limites:['Centré sur la langue comme système statique — peu de place pour l\'histoire','Silence sur le contexte pragmatique et l\'usage','A été surinterprété vers un relativisme radical'],
+    zones_risquees:['Conclure que le sens est entièrement relatif et instable','Appliquer la sémiologie structurale à tout phénomène sans précaution','Ignorer que les signes ont aussi une histoire et une pragmatique'],
+    connexions:{ complementaires:['korzybski','wittgenstein','levi_strauss'], contradictoires:[], synergie:[{avec:'korzybski',texte:'Saussure décrit la structure du signe ; Korzybski pointe le risque de le confondre avec ce qu\'il désigne.'}] },
+    mots_cles:['signe','langage','sens','signifiant','signifié','arbitraire','code','structure','différence','symbole','sémiologie'],
+  },
+  {
+    id:'wittgenstein', nom:'Jeux de langage', auteur:'Ludwig Wittgenstein', annee:'1953',
+    domaine_principal:'linguistique', domaines_secondaires:['philosophie','epistemologie'],
+    resume:'Le sens d\'un mot n\'est pas une essence cachée mais son usage dans des pratiques sociales — des "jeux de langage" régis par des règles implicites.',
+    territoire:['La pragmatique du langage ordinaire','Les malentendus philosophiques produits par l\'abus du langage','La relation entre règles et pratiques','La dissolution de faux problèmes par l\'analyse du langage'],
+    limites:['Peu prescriptif — décrit mais ne fournit pas d\'alternative','Difficile à mobiliser hors du contexte philosophique','Peut sembler trivialiser des questions profondes'],
+    zones_risquees:['Croire que toute question philosophique est un simple malentendu linguistique','Relativiser tout désaccord par les jeux de langage','Ignorer que certains problèmes résistent à la dissolution linguistique'],
+    connexions:{ complementaires:['korzybski','saussure','kuhn'], contradictoires:[], synergie:[{avec:'korzybski',texte:'Wittgenstein montre que le sens est dans l\'usage ; Korzybski que l\'usage crée des cartes qui ne sont pas le territoire.'}] },
+    mots_cles:['langage','usage','sens','pratique','règle','communication','philosophie','malentendu','jeu','ordinaire','grammaire'],
+  },
+
+  // ── ÉPISTÉMOLOGIE ──────────────────────────
+  {
+    id:'kuhn', nom:'Paradigmes scientifiques', auteur:'Thomas Kuhn', annee:'1962',
+    domaine_principal:'epistemologie', domaines_secondaires:['histoire','philosophie','sciences_sociales'],
+    resume:'La science ne progresse pas linéairement, mais par révolutions — des changements de paradigme qui réorganisent entièrement ce qu\'on croit savoir.',
+    territoire:['L\'histoire et la sociologie de la science','Les changements de paradigme et les révolutions scientifiques','La distinction entre science normale et science extraordinaire','L\'incommensurabilité des paradigmes'],
+    limites:['Peut être lu comme relativisme scientifique','Moins applicable aux sciences formelles','Ne donne pas de critère pour choisir entre paradigmes'],
+    zones_risquees:['Conclure que la science est purement sociale et arbitraire','Nier la réalité du progrès scientifique','Utiliser Kuhn pour légitimer n\'importe quelle alternative'],
+    connexions:{ complementaires:['korzybski','godel','popper'], contradictoires:[], synergie:[{avec:'korzybski',texte:'Kuhn montre quand les cartes collectives changent ; Korzybski pourquoi elles ne peuvent pas être définitives.'},{avec:'godel',texte:'Gödel prouve les limites de l\'intérieur ; Kuhn observe les limites de l\'extérieur, dans l\'histoire.'}] },
+    mots_cles:['paradigme','révolution','science','changement','connaissance','rupture','croyance','communauté','histoire','progrès','résistance','anomalie'],
+  },
+  {
+    id:'popper', nom:'Falsifiabilité et réfutation', auteur:'Karl Popper', annee:'1934',
+    domaine_principal:'epistemologie', domaines_secondaires:['philosophie','sciences_sociales'],
+    resume:'Une théorie n\'est scientifique que si elle est falsifiable. La science avance par réfutations, pas par confirmations.',
+    territoire:['La démarcation entre science et pseudo-science','La logique de la découverte scientifique','La critique de l\'inductivisme','L\'évaluation critique des théories'],
+    limites:['En pratique, les scientifiques ne rejettent pas les théories à la première anomalie','Difficile à appliquer aux sciences sociales et historiques','La falsifiabilité ne garantit pas la vérité d\'une théorie'],
+    zones_risquees:['Rejeter des disciplines entières sans nuance','Confondre non-falsifiable et faux','Discréditer des recherches légitimes mais complexes'],
+    connexions:{ complementaires:['kuhn','bayes'], contradictoires:['kuhn'], synergie:[{avec:'kuhn',texte:'Popper prescrit comment la science devrait avancer ; Kuhn décrit comment elle avance réellement — une tension productive.'}] },
+    mots_cles:['falsification','science','réfutation','théorie','expérience','démarcation','critique','preuve','hypothèse','test'],
+  },
+  {
+    id:'feyerabend', nom:'Anarchisme épistémologique', auteur:'Paul Feyerabend', annee:'1975',
+    domaine_principal:'epistemologie', domaines_secondaires:['philosophie','histoire'],
+    resume:'"Anything goes" — il n\'existe pas de méthode scientifique universelle. Les grandes révolutions scientifiques ont souvent violé les règles établies.',
+    territoire:['La critique des méthodologies rigides','La pluralité des approches de connaissance','L\'histoire des révolutions scientifiques comme argument contre le rationalisme étroit','La défense de la diversité épistémique'],
+    limites:['Peut être lu comme invitation au relativisme total','Difficile à distinguer de la simple apologie du n\'importe quoi','Peu constructif sur ce qu\'il faudrait faire à la place'],
+    zones_risquees:['Conclure que toutes les méthodes se valent','Légitimer des pseudosciences','Ignorer que la pluralité épistémique a des limites pratiques'],
+    connexions:{ complementaires:['kuhn'], contradictoires:['popper'], synergie:[{avec:'kuhn',texte:'Kuhn montre les ruptures ; Feyerabend radicalise : même les ruptures obéissent à des règles que la prochaine révolution violera.'}] },
+    mots_cles:['méthode','pluralisme','anarchisme','connaissance','science','règle','révolution','liberté','épistémologie','diversité'],
+  },
+
+  // ── PHILOSOPHIE ────────────────────────────
+  {
+    id:'spinoza', nom:'Conatus et désir comme essence', auteur:'Baruch Spinoza', annee:'1677',
+    domaine_principal:'philosophie', domaines_secondaires:['psychologie','biologie','ethique'],
+    resume:'Tout être tend à persévérer dans son existence — le désir n\'est pas un manque, c\'est la force même de l\'être.',
+    territoire:['L\'ontologie du désir et de la puissance d\'agir','La distinction entre passions actives et passives','L\'éthique fondée sur la joie et l\'augmentation de puissance','La critique de la finalité et du libre arbitre'],
+    limites:['Système métaphysique difficile à opérationnaliser','La notion de substance unique reste spéculative','Peu de place pour la contingence et l\'histoire'],
+    zones_risquees:['Confondre conatus avec égoïsme ou survie à tout prix','Justifier l\'impuissance face au déterminisme','Ignorer la dimension collective et politique de sa philosophie'],
+    connexions:{ complementaires:['damasio','darwin','nietzsche','rawls'], contradictoires:[], synergie:[{avec:'damasio',texte:'Damasio a explicitement reconnu Spinoza comme précurseur : le corps et les émotions constituent la raison.'}] },
+    mots_cles:['désir','puissance','être','joie','éthique','corps','déterminisme','affect','persévérance','essence','conatus'],
+  },
+  {
+    id:'nietzsche', nom:'Volonté de puissance et généalogie', auteur:'Friedrich Nietzsche', annee:'1883–1887',
+    domaine_principal:'philosophie', domaines_secondaires:['histoire','psychologie','ethique'],
+    resume:'Les valeurs morales ne sont pas éternelles — elles ont une histoire, souvent une histoire de domination. La généalogie les démonte pour révéler ce qu\'elles servent.',
+    territoire:['La critique généalogique des valeurs morales','La psychologie de la force et du ressentiment','Le perspectivisme — toute vérité est un point de vue','La question de ce que peut un corps et une volonté'],
+    limites:['Écriture délibérément non systématique','A été massivement récupéré et déformé','Le perspectivisme peut mener à un relativisme paralysant'],
+    zones_risquees:['Confondre volonté de puissance avec désir de domination sur autrui','Légitimer le cynisme ou le mépris des faibles','Réduire sa pensée à des aphorismes hors contexte'],
+    connexions:{ complementaires:['spinoza','foucault','kuhn'], contradictoires:[], synergie:[{avec:'foucault',texte:'Foucault a appliqué la méthode généalogique de Nietzsche aux institutions modernes — pouvoir, folie, sexualité.'}] },
+    mots_cles:['valeur','morale','généalogie','puissance','perspectivisme','histoire','critique','ressentiment','force','vérité','nihilisme'],
+  },
+  {
+    id:'sartre', nom:'Existence et liberté radicale', auteur:'Jean-Paul Sartre', annee:'1943',
+    domaine_principal:'philosophie', domaines_secondaires:['psychologie','sciences_sociales','ethique'],
+    resume:'L\'existence précède l\'essence — l\'être humain n\'a pas de nature fixe, il se définit par ses choix. Cette liberté est radicale et indépassable.',
+    territoire:['La responsabilité radicale et l\'authenticité','La mauvaise foi comme fuite de la liberté','La condition humaine face à l\'absurde','L\'engagement et la dimension politique de l\'existence'],
+    limites:['Minore les contraintes structurelles, sociales et biologiques','La liberté radicale peut paraître déconnectée des conditions réelles','Peu de place pour l\'inconscient et les conditionnements'],
+    zones_risquees:['Culpabiliser ceux dont les choix sont structurellement contraints','Confondre authenticité et individualisme','Ignorer que la liberté sartrienne est toujours située'],
+    connexions:{ complementaires:['nietzsche','spinoza'], contradictoires:['freud','bowlby','bourdieu'], synergie:[{avec:'nietzsche',texte:'Nietzsche dissout les valeurs héritées ; Sartre tire la conséquence : il faut les choisir soi-même, sans filet.'}] },
+    mots_cles:['liberté','choix','responsabilité','existence','authenticité','engagement','mauvaise foi','condition','absurde','projet'],
+  },
+  {
+    id:'dewey', nom:'Pragmatisme et apprentissage par l\'expérience', auteur:'John Dewey', annee:'1916–1938',
+    domaine_principal:'philosophie', domaines_secondaires:['sciences_sociales','epistemologie'],
+    resume:'La connaissance n\'est pas une contemplation — c\'est un outil forgé dans l\'expérience pour résoudre des problèmes réels. Apprendre, c\'est faire.',
+    territoire:['L\'apprentissage comme expérience active et réflexive','La démocratie comme mode de vie, pas seulement d\'institution','La critique de l\'éducation passive et mécanique','Le pragmatisme comme méthode : la vérité est ce qui fonctionne'],
+    limites:['Le pragmatisme peut réduire la vérité à l\'utilité à court terme','Peu de place pour la connaissance contemplative ou fondamentale','La notion de "ce qui fonctionne" dépend fortement du contexte et des valeurs'],
+    zones_risquees:['Confondre utilité pragmatique et vérité','Rejeter les savoirs théoriques au profit du seul faire','Ignorer que certains apprentissages fondamentaux ne sont pas immédiatement utiles'],
+    connexions:{ complementaires:['vygotsky','kuhn','rawls'], contradictoires:[], synergie:[{avec:'vygotsky',texte:'Dewey insiste sur l\'expérience comme moteur ; Vygotsky y ajoute la médiation sociale — apprendre en faisant avec l\'autre.'}] },
+    mots_cles:['expérience','apprentissage','pragmatisme','faire','action','démocratie','réflexion','problème','utilité','éducation','pratique'],
+  },
+  {
+    id:'weil', nom:'Attention et affliction', auteur:'Simone Weil', annee:'1940s',
+    domaine_principal:'philosophie', domaines_secondaires:['psychologie','histoire','ethique'],
+    resume:'L\'attention — non pas l\'effort mais le consentement au réel — est la forme la plus haute de la pensée et la racine de la justice.',
+    territoire:['La phénoménologie de l\'attention et du travail','L\'analyse de l\'oppression et de la force','La spiritualité comme acte de présence','La critique de la pensée par projet et par utilité'],
+    limites:['Pensée difficile à systématiser — fragmentaire et exigeante','Peu opérationnelle dans un cadre institutionnel','Sa vision de l\'attention peut paraître inaccessible'],
+    zones_risquees:['Idéaliser la passivité au détriment de l\'action','Confondre attention et résignation','Utiliser l\'affliction comme cadre universel'],
+    connexions:{ complementaires:['mcgilchrist','spinoza','rawls'], contradictoires:['sartre'], synergie:[{avec:'mcgilchrist',texte:'Weil décrit phénoménologiquement ce que McGilchrist nomme neurologiquement : l\'attention ouverte du droit contre la saisie du gauche.'}] },
+    mots_cles:['attention','affliction','justice','présence','travail','force','oppression','spiritualité','réel','contemplation','soin'],
+  },
+
+  // ── ÉTHIQUE ────────────────────────────────
+  {
+    id:'rawls', nom:'Théorie de la justice', auteur:'John Rawls', annee:'1971',
+    domaine_principal:'ethique', domaines_secondaires:['philosophie','sciences_sociales','economie'],
+    resume:'Une société juste est celle dont les principes auraient été choisis derrière un "voile d\'ignorance" — sans savoir quelle position on y occuperait.',
+    territoire:['Les fondements de la justice distributive','La distinction entre égalité formelle et équité réelle','L\'évaluation des institutions sociales','Le pluralisme raisonnable et la coopération sociale'],
+    limites:['Le voile d\'ignorance est une fiction abstraite — peut-on vraiment se dépouiller de toute identité ?','Peu adapté aux contextes de pluralisme profond où les valeurs fondamentales divergent','Reste dans un cadre libéral occidental qui n\'est pas universel'],
+    zones_risquees:['Croire que le contrat social résout réellement les désaccords profonds','Utiliser Rawls pour légitimer n\'importe quelle politique redistributive','Ignorer les critiques communautaristes — l\'identité précède souvent le choix'],
+    connexions:{ complementaires:['spinoza','dewey','sen'], contradictoires:[], synergie:[{avec:'sen',texte:'Rawls définit la justice en termes de principes abstraits ; Sen en termes de capabilités réelles — deux façons de penser l\'équité.'}] },
+    mots_cles:['justice','équité','voile','ignorance','institution','distribution','liberté','inégalité','contrat','société','principes'],
+  },
+  {
+    id:'sen', nom:'Capabilités et développement humain', auteur:'Amartya Sen', annee:'1979–1999',
+    domaine_principal:'ethique', domaines_secondaires:['economie','philosophie','sciences_sociales'],
+    resume:'Le développement ne se mesure pas au PIB mais aux capabilités réelles — ce que les personnes sont effectivement en mesure de faire et d\'être.',
+    territoire:['L\'évaluation du bien-être au-delà des ressources','La justice comme expansion des libertés réelles','Les capabilités comme cadre d\'analyse des inégalités','Le développement humain comme finalité politique'],
+    limites:['La liste des capabilités fondamentales reste controversée','Difficile à mesurer et à comparer entre cultures','Peu prescriptif sur les politiques concrètes à mettre en œuvre'],
+    zones_risquees:['Utiliser les capabilités comme prétexte à l\'ingérence culturelle','Croire que le cadre résout les conflits de valeurs fondamentaux','Ignorer les contraintes de ressources et d\'institutions qui limitent les capabilités'],
+    connexions:{ complementaires:['rawls','ostrom','dewey'], contradictoires:['smith'], synergie:[{avec:'rawls',texte:'Rawls pense la justice en termes de principes abstraits ; Sen en termes de ce que les gens peuvent réellement faire — deux niveaux complémentaires.'}] },
+    mots_cles:['capabilités','développement','bien-être','liberté','inégalité','humain','dignité','pouvoir','agir','mesure'],
+  },
+  {
+    id:'jonas', nom:'Principe responsabilité', auteur:'Hans Jonas', annee:'1979',
+    domaine_principal:'ethique', domaines_secondaires:['philosophie','histoire','sciences_sociales'],
+    resume:'Face aux technologies capables d\'effets irréversibles et globaux, la responsabilité envers les générations futures doit devenir le principe éthique central.',
+    territoire:['L\'éthique face aux technologies à longue portée (nucléaire, environnement, biotechnologies)','La responsabilité envers les générations futures','La prudence comme vertu épistémique et morale','La critique de l\'utopisme technologique'],
+    limites:['Le principe de précaution extrême peut paralyser l\'innovation','Difficile à opérationnaliser : quelle responsabilité, envers qui exactement ?','Peu de place pour l\'incertitude sur ce qui sera préjudiciable dans le futur'],
+    zones_risquees:['Utiliser Jonas pour s\'opposer à tout changement technique','Confondre responsabilité avec anxiété généralisée','Ignorer que l\'inaction a aussi des conséquences pour les générations futures'],
+    connexions:{ complementaires:['rawls','meadows','sen'], contradictoires:[], synergie:[{avec:'meadows',texte:'Meadows modélise les effets systémiques à long terme ; Jonas pose la question éthique de notre responsabilité face à eux.'}] },
+    mots_cles:['responsabilité','futur','générations','technologie','précaution','risque','irréversible','environnement','éthique','longue portée'],
+  },
+
+  // ── ANTHROPOLOGIE ──────────────────────────
+  {
+    id:'bateson', nom:'Écologie de l\'esprit', auteur:'Gregory Bateson', annee:'1972',
+    domaine_principal:'anthropologie', domaines_secondaires:['cybernetique','epistemologie','biologie','psychologie'],
+    resume:'L\'esprit n\'est pas dans la tête — il est dans les relations entre les systèmes. La pathologie naît des boucles qui se bouclent mal. "Le modèle qui connecte."',
+    territoire:['Les niveaux logiques de l\'apprentissage et du changement','La double contrainte comme origine des pathologies relationnelles','L\'écologie comme pensée des relations plutôt que des entités','La communication comme système de boucles et de rétroactions'],
+    limites:['Pensée dense et non linéaire — difficile à mobiliser simplement','Peu de prescriptions pratiques directes','La notion de double contrainte a été parfois sur-généralisée'],
+    zones_risquees:['Utiliser les niveaux logiques comme grille rigide','Diagnostiquer des "doubles contraintes" partout','Ignorer que la richesse du modèle exige une lecture rigoureuse'],
+    connexions:{ complementaires:['wiener','maturana','watzlawick','darwin','friston'], contradictoires:[], synergie:[{avec:'wiener',texte:'Wiener invente la cybernétique ; Bateson l\'applique à l\'esprit, à la culture, à l\'écologie — il en fait une épistémologie.'},{avec:'friston',texte:'Bateson pose le cadre écologique de l\'esprit ; Friston le formalise mathématiquement avec le principe d\'énergie libre.'}] },
+    mots_cles:['esprit','relation','boucle','niveau','apprentissage','écologie','double contrainte','système','connexion','communication','épistémologie'],
+  },
+  {
+    id:'levi_strauss', nom:'Structures et mythes', auteur:'Claude Lévi-Strauss', annee:'1949–1964',
+    domaine_principal:'anthropologie', domaines_secondaires:['linguistique','philosophie','histoire'],
+    resume:'Les cultures humaines obéissent à des structures universelles que le mythe, la parenté et la cuisine révèlent — sous la diversité apparente, des logiques communes.',
+    territoire:['L\'analyse structurale des mythes et des systèmes de parenté','L\'universalité de certaines structures culturelles','La pensée "sauvage" comme mode de connaissance légitime','La critique de l\'ethnocentrisme occidental'],
+    limites:['Le structuralisme peut effacer l\'histoire et le changement','Les structures universelles sont controversées — sont-elles vraiment universelles ?','Peu de place pour les acteurs, les conflits et la créativité'],
+    zones_risquees:['Croire que les structures déterminent tout comportement culturel','Utiliser le structuralisme pour nier les spécificités culturelles','Ignorer que Lévi-Strauss a lui-même évolué sur ces questions'],
+    connexions:{ complementaires:['saussure','bateson','bourdieu'], contradictoires:[], synergie:[{avec:'saussure',texte:'Lévi-Strauss a appliqué la méthode structurale de Saussure aux cultures — la parenté et le mythe comme systèmes de signes.'}] },
+    mots_cles:['structure','mythe','parenté','culture','universel','pensée sauvage','binaire','opposition','anthropologie','ethnocentrisme'],
+  },
+  {
+    id:'mauss', nom:'Le don et la réciprocité', auteur:'Marcel Mauss', annee:'1925',
+    domaine_principal:'anthropologie', domaines_secondaires:['economie','sciences_sociales','ethique'],
+    resume:'Le don n\'est pas gratuit — il engage à recevoir, à rendre, et crée du lien social. Les économies non marchandes sont régies par des obligations implicites profondes.',
+    territoire:['Les systèmes d\'échange non marchands','La réciprocité comme fondement du lien social','La critique de la fiction économique de l\'individu calculateur','Le potlatch et les formes extrêmes du don'],
+    limites:['Peut romantiser les sociétés non marchandes','La transposition au monde contemporain reste délicate','La notion d\'obligation implicite est difficile à mesurer'],
+    zones_risquees:['Confondre don et altruisme pur — le don engage','Utiliser Mauss pour critiquer toute économie de marché sans nuance','Ignorer que les dynamiques de don peuvent aussi être des instruments de domination'],
+    connexions:{ complementaires:['bourdieu','ostrom','bateson','rawls'], contradictoires:['smith'], synergie:[{avec:'bourdieu',texte:'Mauss décrit le don comme échange ; Bourdieu raffine : c\'est du capital symbolique qui circule sous des dehors de gratuité.'}] },
+    mots_cles:['don','réciprocité','échange','obligation','lien','social','communauté','potlatch','gratuité','dette','anthropologie'],
+  },
+
+  // ── CYBERNÉTIQUE · SYSTÈMES ────────────────
+  {
+    id:'wiener', nom:'Cybernétique — contrôle et communication', auteur:'Norbert Wiener', annee:'1948',
+    domaine_principal:'cybernetique', domaines_secondaires:['mathematiques','biologie','sciences_sociales'],
+    resume:'La régulation des systèmes — vivants ou machines — repose sur la rétroaction : le système utilise l\'information sur son propre comportement pour s\'ajuster.',
+    territoire:['Les mécanismes de rétroaction dans les systèmes de contrôle','L\'analogie entre machines, êtres vivants et organisations sociales','Les bases théoriques de l\'automatisation et du traitement de l\'information','La communication comme processus de régulation'],
+    limites:['L\'analogie machine-organisme a des limites importantes','Les systèmes sociaux ne se laissent pas réguler comme des machines','Peu de place pour l\'émergence et la créativité dans le modèle original'],
+    zones_risquees:['Traiter les organisations humaines comme des systèmes de contrôle mécaniques','Réduire la communication à de la transmission d\'information','Ignorer les dimensions de sens et de pouvoir que la cybernétique tend à effacer'],
+    connexions:{ complementaires:['shannon','bateson','maturana','meadows'], contradictoires:[], synergie:[{avec:'shannon',texte:'Shannon quantifie l\'information ; Wiener la met en mouvement dans les systèmes de contrôle — deux faces fondatrices de la cybernétique.'},{avec:'bateson',texte:'Wiener invente la cybernétique des machines ; Bateson l\'applique à l\'esprit et à la culture.'}] },
+    mots_cles:['rétroaction','contrôle','communication','régulation','système','information','boucle','automatisation','cybernétique','ajustement'],
+  },
+  {
+    id:'ashby', nom:'Loi de la variété requise', auteur:'W. Ross Ashby', annee:'1956',
+    domaine_principal:'cybernetique', domaines_secondaires:['epistemologie','sciences_sociales','mathematiques'],
+    resume:'Pour contrôler un système, le régulateur doit disposer d\'au moins autant de variété que le système régulé. La complexité requiert de la complexité.',
+    territoire:['Les conditions nécessaires au contrôle et à la régulation','La relation entre complexité du problème et complexité de la solution','Les limites de la simplification dans la gestion des systèmes complexes','Les fondements théoriques du management de la complexité'],
+    limites:['Reste un principe théorique — difficile à appliquer directement','La mesure de la variété est souvent impossible en pratique','Peut conduire à sur-complexifier les solutions'],
+    zones_risquees:['Utiliser la loi pour justifier une bureaucratie sans limites','Croire qu\'augmenter la complexité du régulateur résout toujours le problème','Ignorer que parfois la solution est de réduire la variété du système à réguler'],
+    connexions:{ complementaires:['wiener','meadows','bateson'], contradictoires:[], synergie:[{avec:'meadows',texte:'Ashby fournit le principe théorique ; Meadows montre comment l\'appliquer à des systèmes réels — environnementaux, sociaux, économiques.'}] },
+    mots_cles:['variété','complexité','contrôle','régulation','système','diversité','requis','management','organisation','limites'],
+  },
+  {
+    id:'meadows', nom:'Pensée systémique', auteur:'Donella Meadows', annee:'1972–2008',
+    domaine_principal:'cybernetique', domaines_secondaires:['economie','biologie','sciences_sociales','epistemologie'],
+    resume:'Les systèmes complexes obéissent à des structures — boucles de rétroaction, délais, stocks — qui produisent des comportements souvent contre-intuitifs.',
+    territoire:['L\'analyse des systèmes complexes et de leurs comportements émergents','L\'identification des leviers d\'action non évidents','La modélisation des dynamiques environnementales, économiques et sociales','La compréhension des boucles de renforcement et d\'équilibrage'],
+    limites:['Les modèles systémiques peuvent devenir trop complexes','Difficile sans données quantitatives fiables','Le risque de chercher des leviers là où il n\'y en a pas'],
+    zones_risquees:['Croire qu\'un levier identifié agira sans effets secondaires','Appliquer la pensée systémique comme un algorithme','Effacer les dimensions politiques et de pouvoir'],
+    connexions:{ complementaires:['wiener','ashby','darwin','bourdieu','jonas'], contradictoires:['newton'], synergie:[{avec:'wiener',texte:'Wiener fonde la cybernétique théoriquement ; Meadows l\'applique aux grands systèmes humains et naturels.'},{avec:'darwin',texte:'Darwin décrit les systèmes adaptatifs sur le long terme ; Meadows les dynamiques de rétroaction à plus courte échelle.'}] },
+    mots_cles:['système','rétroaction','boucle','levier','complexité','émergence','délai','stock','comportement','structure','modèle'],
+  },
+
+  // ── SCIENCES SOCIALES ──────────────────────
+  {
+    id:'bourdieu', nom:'Champ, habitus, capital', auteur:'Pierre Bourdieu', annee:'1972–1979',
+    domaine_principal:'sciences_sociales', domaines_secondaires:['histoire','economie','philosophie'],
+    resume:'Les pratiques sociales ne sont pas des choix libres — elles sont le produit de l\'habitus, dispositions incorporées, jouant dans des champs avec des enjeux de capital.',
+    territoire:['La reproduction des inégalités sociales','Les logiques de distinction et de légitimité culturelle','Le rôle des institutions dans la production des dispositions','L\'analyse des champs intellectuels, artistiques, économiques'],
+    limites:['Peut produire un déterminisme social excessif','Laisse peu de place au changement et à l\'agentivité','Difficile à opérationnaliser hors du contexte académique'],
+    zones_risquees:['Réduire toute action à une stratégie de reproduction sociale inconsciente','Invalider tout discours qui n\'analyse pas ses propres conditions','Ignorer que l\'habitus peut changer — lentement'],
+    connexions:{ complementaires:['foucault','kuhn','meadows','marx','mauss'], contradictoires:['sartre'], synergie:[{avec:'foucault',texte:'Bourdieu map les positions dans les champs ; Foucault map les régimes de vérité qui légitiment ces positions.'}] },
+    mots_cles:['habitus','champ','capital','distinction','classe','reproduction','institution','domination','culture','pratique','stratégie'],
+  },
+  {
+    id:'foucault', nom:'Pouvoir et généalogie des institutions', auteur:'Michel Foucault', annee:'1961–1975',
+    domaine_principal:'sciences_sociales', domaines_secondaires:['histoire','philosophie','epistemologie'],
+    resume:'Le pouvoir n\'est pas possédé par des individus — il circule, s\'exerce dans des pratiques, produit des savoirs et des sujets.',
+    territoire:['L\'analyse des institutions de normalisation (prison, hôpital, école)','La production de savoirs liés à des rapports de pouvoir','La généalogie des pratiques sociales','La critique du sujet autonome comme illusion'],
+    limites:['La dissolution du sujet rend difficile toute action politique','Le pouvoir est partout — au risque de n\'être nulle part','Peu prescriptif'],
+    zones_risquees:['Confondre critique du pouvoir et paranoïa','Rejeter toute institution sans analyse','Ignorer que des institutions peuvent aussi émanciper'],
+    connexions:{ complementaires:['bourdieu','nietzsche','kuhn','arendt'], contradictoires:[], synergie:[{avec:'bourdieu',texte:'Foucault analyse les régimes de vérité ; Bourdieu les capitaux qui les légitiment — ensemble ils cartographient les conditions de ce qui peut être dit.'}] },
+    mots_cles:['pouvoir','institution','norme','savoir','discipline','contrôle','sujet','histoire','généalogie','discours','biopolitique'],
+  },
+  {
+    id:'watzlawick', nom:'Pragmatique de la communication', auteur:'Paul Watzlawick et al.', annee:'1967',
+    domaine_principal:'sciences_sociales', domaines_secondaires:['psychologie','linguistique','cybernetique'],
+    resume:'On ne peut pas ne pas communiquer. Tout comportement est message. La relation prime sur le contenu — et les paradoxes de communication produisent des pathologies.',
+    territoire:['Les axiomes de la communication humaine','La distinction contenu / relation','Les doubles contraintes et leurs effets','La thérapie brève et le changement de cadre'],
+    limites:['Modèle essentiellement descriptif','Peut être difficile à appliquer hors d\'un cadre thérapeutique','La notion de double contrainte est parfois sur-utilisée'],
+    zones_risquees:['Croire que toute pathologie relationnelle est un problème de communication','Ignorer les dimensions de pouvoir','Utiliser le recadrage de façon manipulatrice'],
+    connexions:{ complementaires:['korzybski','bowlby','bateson','vygotsky'], contradictoires:[], synergie:[{avec:'bateson',texte:'Bateson a co-développé la notion de double contrainte avec Watzlawick — la communication pathologique comme piège logique.'},{avec:'korzybski',texte:'Watzlawick montre les paradoxes de la communication ; Korzybski explique pourquoi : on communique des cartes, pas le territoire.'}] },
+    mots_cles:['communication','relation','message','paradoxe','double contrainte','contenu','métacommunication','interaction','contexte','recadrage'],
+  },
+  {
+    id:'marx', nom:'Matérialisme historique et capital', auteur:'Karl Marx', annee:'1848–1867',
+    domaine_principal:'sciences_sociales', domaines_secondaires:['histoire','philosophie','economie'],
+    resume:'Les rapports de production matériels déterminent les structures sociales et les idéologies. L\'histoire est le produit des luttes de classes.',
+    territoire:['L\'analyse des modes de production et de leur évolution','La critique de l\'économie politique classique','La théorie de la valeur-travail et de la plus-value','La dynamique des contradictions capitalistes'],
+    limites:['Le déterminisme économique est souvent trop fort','Les prédictions historiques ne se sont pas réalisées comme attendu','Peu de place pour l\'agentivité individuelle et les idées'],
+    zones_risquees:['Réduire tout phénomène culturel à sa base économique','Confondre analyse du capitalisme et programme politique','Ignorer les apports réels en rejetant les applications historiques catastrophiques'],
+    connexions:{ complementaires:['bourdieu','foucault','meadows'], contradictoires:['smith'], synergie:[{avec:'bourdieu',texte:'Marx analyse les rapports de production ; Bourdieu raffine en montrant comment le capital se décline en formes symboliques et culturelles.'}] },
+    mots_cles:['classe','capital','travail','valeur','production','idéologie','lutte','histoire','exploitation','mode','aliénation'],
+  },
+
+  // ── ÉCONOMIE ───────────────────────────────
+  {
+    id:'smith', nom:'Main invisible et marchés', auteur:'Adam Smith', annee:'1776',
+    domaine_principal:'economie', domaines_secondaires:['philosophie','sciences_sociales'],
+    resume:'La poursuite de l\'intérêt individuel, dans un marché concurrentiel, produit spontanément un ordre bénéfique pour la collectivité.',
+    territoire:['Les mécanismes de prix comme signaux d\'information','La division du travail et les gains de productivité','Les fondements théoriques du marché libre','La critique du mercantilisme'],
+    limites:['Présuppose une concurrence parfaite rarement réalisée','Silence sur les externalités, les biens publics et les monopoles','Smith lui-même était plus nuancé que ses héritiers néolibéraux'],
+    zones_risquees:['Justifier l\'absence de toute régulation','Confondre marché idéal et marché réel','Ignorer que Smith avait aussi une Théorie des sentiments moraux'],
+    connexions:{ complementaires:['kahneman','meadows'], contradictoires:['keynes','marx','ostrom'], synergie:[{avec:'kahneman',texte:'Smith postule un homo economicus rationnel ; Kahneman montre que cet acteur n\'existe pas — le marché réel est peuplé de Systèmes 1.'}] },
+    mots_cles:['marché','prix','concurrence','intérêt','invisible','liberté','échange','allocation','capitalisme','offre','demande'],
+  },
+  {
+    id:'keynes', nom:'Demande effective et intervention', auteur:'John Maynard Keynes', annee:'1936',
+    domaine_principal:'economie', domaines_secondaires:['sciences_sociales','histoire'],
+    resume:'Les marchés ne s\'autorégulent pas spontanément en période de crise. La demande effective détermine l\'emploi — l\'État doit intervenir quand elle s\'effondre.',
+    territoire:['Les crises économiques et la sous-utilisation des ressources','La macroéconomie et les agrégats','Le rôle de la dépense publique comme stabilisateur','L\'incertitude fondamentale et la préférence pour la liquidité'],
+    limites:['Peu adapté aux économies à offre contrainte','La dépense publique peut produire des effets d\'éviction','Les anticipations rationnelles peuvent neutraliser la politique budgétaire'],
+    zones_risquees:['Croire que la dépense publique est toujours efficace','Ignorer les contraintes de long terme','Utiliser Keynes pour justifier tout déficit sans analyse contextuelle'],
+    connexions:{ complementaires:['meadows','smith'], contradictoires:['smith'], synergie:[{avec:'smith',texte:'Smith décrit l\'équilibre de long terme ; Keynes s\'intéresse au court terme où "on est tous morts" — deux horizons complémentaires.'}] },
+    mots_cles:['demande','emploi','crise','intervention','État','dépense','récession','anticipation','investissement','macro','fiscal'],
+  },
+  {
+    id:'ostrom', nom:'Gouvernance des communs', auteur:'Elinor Ostrom', annee:'1990',
+    domaine_principal:'economie', domaines_secondaires:['sciences_sociales','epistemologie','ethique'],
+    resume:'La "tragédie des communs" n\'est pas inévitable. Des communautés peuvent gérer collectivement des ressources partagées sans privatisation ni État.',
+    territoire:['La gestion collective des ressources communes (eau, forêts, pêche)','Les conditions d\'émergence d\'une coopération durable','La critique du dilemme du prisonnier comme modèle universel','Les institutions à petite échelle et leur robustesse'],
+    limites:['Fonctionne mieux à petite échelle','Difficile à appliquer aux communs globaux (climat, biodiversité)','Suppose un niveau de confiance et de communication entre les acteurs'],
+    zones_risquees:['Idéaliser les communs comme solution universelle','Ignorer que les conditions d\'Ostrom sont exigeantes et rarement réunies','Utiliser Ostrom contre toute forme de régulation externe'],
+    connexions:{ complementaires:['meadows','smith','mauss','sen'], contradictoires:['smith'], synergie:[{avec:'meadows',texte:'Ostrom documente des systèmes de gouvernance qui gèrent les boucles de rétroaction que Meadows décrit — des institutions comme leviers systémiques.'}] },
+    mots_cles:['communs','coopération','gouvernance','ressource','collectif','institution','confiance','règle','tragédie','partage','bien commun'],
+  },
+
+  // ── HISTOIRE ───────────────────────────────
+  {
+    id:'braudel', nom:'Longue durée et structures', auteur:'Fernand Braudel', annee:'1949',
+    domaine_principal:'histoire', domaines_secondaires:['sciences_sociales','economie'],
+    resume:'L\'histoire se joue à trois vitesses : les événements (surface), les conjonctures (décennies), et la longue durée (siècles) — les structures lentes qui conditionnent tout le reste.',
+    territoire:['L\'analyse des structures géographiques, économiques et culturelles de long terme','La critique de l\'histoire événementielle','La Méditerranée comme objet d\'histoire totale','Les rythmes différentiels du changement historique'],
+    limites:['La longue durée peut minimiser le rôle des acteurs et des événements','Méthode difficile à appliquer à l\'histoire récente','Risque de déterminisme géographique ou structurel'],
+    zones_risquees:['Croire que la longue durée explique tout','Naturaliser des structures qui sont le produit de l\'histoire','Ignorer les dynamiques rapides qui peuvent rompre les structures longues'],
+    connexions:{ complementaires:['marx','meadows','kuhn'], contradictoires:[], synergie:[{avec:'meadows',texte:'Braudel décrit les structures lentes de l\'histoire ; Meadows leur donne une mécanique — stocks, flux et délais à l\'échelle des siècles.'}] },
+    mots_cles:['longue durée','structure','histoire','temps','géographie','économie','rythme','conjoncture','événement','Méditerranée','permanence'],
+  },
+  {
+    id:'arendt', nom:'Action, pluralité et espace public', auteur:'Hannah Arendt', annee:'1951–1958',
+    domaine_principal:'histoire', domaines_secondaires:['philosophie','sciences_sociales','ethique'],
+    resume:'L\'action politique, la pluralité humaine et l\'espace public constituent la condition de l\'homme. La modernité a détruit cet espace — et c\'est de là que naît le totalitarisme.',
+    territoire:['La distinction travail / œuvre / action','L\'analyse des régimes totalitaires et de leurs origines','La pluralité comme condition politique fondamentale','La pensée comme dialogue intérieur et résistance'],
+    limites:['La distinction tripartite est difficile à tenir en pratique','L\'analyse du totalitarisme est datée — les nouvelles formes lui échappent','Peu de programme positif pour reconstruire l\'espace public'],
+    zones_risquees:['Opposer systématiquement politique et social','Réduire sa pensée à une critique du totalitarisme','Ignorer ses limites sur les questions coloniales et raciales'],
+    connexions:{ complementaires:['foucault','bourdieu','weil','rawls'], contradictoires:[], synergie:[{avec:'foucault',texte:'Arendt analyse la destruction de l\'espace public ; Foucault montre les dispositifs de pouvoir qui la produisent silencieusement.'}] },
+    mots_cles:['action','politique','pluralité','public','totalitarisme','liberté','pensée','modernité','violence','espace','natalité'],
+  },
+  {
+    id:'hobsbawm', nom:'Invention des traditions', auteur:'Eric Hobsbawm', annee:'1983',
+    domaine_principal:'histoire', domaines_secondaires:['sciences_sociales','philosophie'],
+    resume:'De nombreuses "traditions anciennes" sont en réalité des inventions récentes, construites pour légitimer un ordre social ou forger une identité nationale.',
+    territoire:['L\'analyse critique des traditions et des mythes fondateurs','La construction des identités nationales','La fonction politique des symboles et rituels','La datation réelle de pratiques présentées comme immémoriales'],
+    limites:['Toutes les traditions ne sont pas des inventions cyniques','Peut mener à un scepticisme généralisé peu utile','Difficile à appliquer sans accès aux archives historiques'],
+    zones_risquees:['Disqualifier toute identité collective','Confondre construction historique et fausseté','Ignorer que des traditions inventées peuvent avoir des effets réels et positifs'],
+    connexions:{ complementaires:['nietzsche','foucault','bourdieu','levi_strauss'], contradictoires:[], synergie:[{avec:'nietzsche',texte:'Nietzsche fait la généalogie des valeurs morales ; Hobsbawm fait la généalogie des traditions nationales — même geste critique, terrains différents.'}] },
+    mots_cles:['tradition','invention','nation','identité','mythe','histoire','rituel','symbole','légitimité','construction','mémoire'],
+  },
+];
+
+// ── THÈMES PRÉDÉFINIS ────────────────────────
+const THEMES = {
+  decision:{
+    note:'Décider sous incertitude mobilise le cadre cognitif, la limite des modèles disponibles, et les biais d\'attention.',
+    utiles:[{id:'kahneman',raison:'Les biais (Système 1) façonnent invisiblement les options qu\'on perçoit comme disponibles.'},{id:'korzybski',raison:'Quelle carte utilise-t-on pour cadrer la décision ? En est-on conscient ?'},{id:'bayes',raison:'Comment mettre à jour rationnellement ses croyances face aux nouvelles informations ?'}],
+    eviter:[{id:'newton',raison:'Traiter une décision complexe comme un calcul déterministe ignore l\'incertitude et les dynamiques humaines.'}],
+  },
+  changement:{
+    note:'Comprendre un changement demande de distinguer ce qui résiste, ce qui se transforme lentement, et les représentations en jeu.',
+    utiles:[{id:'kuhn',raison:'Les résistances au changement sont souvent des paradigmes en train de céder — pas de la mauvaise volonté.'},{id:'braudel',raison:'À quelle vitesse se joue ce changement ? Surface ou longue durée ?'},{id:'meadows',raison:'Quelles boucles de rétroaction maintiennent le système dans son état actuel ?'}],
+    eviter:[{id:'newton',raison:'Les systèmes humains ne changent pas selon des lois mécaniques prévisibles.'}],
+  },
+  limite:{
+    note:'Atteindre une limite peut signifier la limite du modèle utilisé — pas nécessairement la limite de la réalité.',
+    utiles:[{id:'godel',raison:'Toute limite rencontrée peut être interne au système de pensée utilisé, pas un mur absolu.'},{id:'korzybski',raison:'La limite perçue est peut-être la limite de la carte, pas du territoire.'},{id:'ashby',raison:'La complexité du problème requiert-elle une complexité équivalente dans la solution ?'}],
+    eviter:[{id:'freud',raison:'Attribuer systématiquement une limite à un blocage inconscient peut détourner de l\'analyse du cadre lui-même.'}],
+  },
+  conflit:{
+    note:'Un conflit est rarement sur ce qu\'il prétend être. Les modèles de la perception et du langage éclairent souvent plus que ceux du comportement.',
+    utiles:[{id:'watzlawick',raison:'La plupart des conflits se jouent au niveau de la relation, pas du contenu.'},{id:'korzybski',raison:'Deux personnes en conflit parlent souvent de leurs cartes, pas du territoire.'},{id:'bourdieu',raison:'Quels capitaux et positions structurent ce conflit au-delà des personnalités ?'}],
+    eviter:[{id:'darwin',raison:'Interpréter un conflit humain comme une compétition pour la survie réduit des dynamiques symboliques complexes.'}],
+  },
+  connaissance:{
+    note:'Acquérir une connaissance, c\'est aussi acquérir ses limites et ses angles morts. Les modèles épistémiques sont indispensables ici.',
+    utiles:[{id:'godel',raison:'Tout corps de connaissance a des vérités qu\'il ne peut pas démontrer depuis l\'intérieur.'},{id:'korzybski',raison:'La connaissance est toujours une carte — utile, partielle, pas le territoire.'},{id:'kuhn',raison:'Ce qu\'on apprend est toujours situé dans un paradigme qui détermine ce qu\'on peut voir.'}],
+    eviter:[{id:'newton',raison:'Le modèle de la connaissance cumulative et linéaire ne s\'applique qu\'à des domaines très stables.'}],
+  },
+  apprendre:{
+    note:'Apprendre et transmettre mobilisent des modèles cognitifs, sociaux et pragmatiques — c\'est un processus incarné, situé et relationnel, pas une simple transmission d\'information.',
+    utiles:[{id:'vygotsky',raison:'L\'apprentissage est d\'abord social avant d\'être individuel — la zone proximale de développement est le lieu de toute croissance.'},{id:'dewey',raison:'On apprend en faisant et en réfléchissant sur l\'expérience — pas en recevant passivement.'},{id:'friston',raison:'Le cerveau apprend en minimisant l\'erreur de prédiction — l\'apprentissage est une mise à jour constante du modèle interne.'}],
+    eviter:[{id:'shannon',raison:'L\'apprentissage n\'est pas une transmission d\'information — le sens ne se transfère pas comme des bits.'}],
+  },
+  systeme:{
+    note:'Analyser un système demande de repérer ses propres règles — et les limites de ces règles.',
+    utiles:[{id:'meadows',raison:'Identifier les boucles de rétroaction, les stocks et les leviers réels plutôt qu\'apparents.'},{id:'ashby',raison:'Le régulateur doit disposer d\'autant de variété que le système régulé — sinon il ne peut pas le contrôler.'},{id:'bourdieu',raison:'Quels habitus reproduisent ce système indépendamment des intentions de ses acteurs ?'}],
+    eviter:[{id:'freud',raison:'Psychanalyser un système plutôt qu\'une personne produit des métaphores, rarement des leviers d\'action.'}],
+  },
+  institution:{
+    note:'Comprendre une institution demande de voir à la fois ses règles explicites, ses normes implicites, et son histoire.',
+    utiles:[{id:'foucault',raison:'Les institutions normalisent — elles produisent des sujets autant qu\'elles les accueillent.'},{id:'bourdieu',raison:'L\'institution perpétue les rapports de capital et d\'habitus au-delà des intentions individuelles.'},{id:'hobsbawm',raison:'Les traditions de l\'institution sont-elles aussi anciennes qu\'elles le prétendent ?'}],
+    eviter:[{id:'sartre',raison:'La liberté radicale individuelle est difficile à maintenir face aux contraintes institutionnelles réelles.'}],
+  },
+  valeur:{
+    note:'Questionner une valeur demande de remonter à son histoire, ses conditions de production, et ce qu\'elle sert.',
+    utiles:[{id:'nietzsche',raison:'Toute valeur a une généalogie — d\'où vient-elle, qui l\'a forgée, et dans quel intérêt ?'},{id:'rawls',raison:'Cette valeur résisterait-elle au test du voile d\'ignorance — serait-on prêt à en accepter les conséquences sans savoir sa position ?'},{id:'spinoza',raison:'Cette valeur augmente-t-elle ou diminue-t-elle la puissance d\'agir de ceux qui s\'y conforment ?'}],
+    eviter:[{id:'newton',raison:'Les valeurs ne fonctionnent pas comme des lois physiques universelles et immuables.'}],
+  },
+};
+
+// ── LOGIQUE MOTS-CLÉS ────────────────────────
+function suggererLibre(texte) {
+  const t = texte.toLowerCase();
+  const scores = MODELES.map(m => ({
+    id: m.id,
+    score: m.mots_cles.reduce((acc, mot) => acc + (t.includes(mot) ? 1 : 0), 0),
+  })).sort((a, b) => b.score - a.score);
+  const utiles = scores.filter(s => s.score > 0).slice(0, 3).map(s => {
+    const m = MODELES.find(x => x.id === s.id);
+    return { id: s.id, raison: m.territoire.slice(0, 2).join(' · ') };
+  });
+  const eviter = scores.filter(s => s.score === 0).slice(0, 1).map(s => ({
+    id: s.id,
+    raison: 'Ce modèle n\'a pas de prise directe sur votre question telle qu\'elle est formulée.',
+  }));
+  if (!utiles.length) return { note: 'Aucune correspondance forte. Essayez un thème prédéfini ou reformulez.', utiles:[], eviter:[] };
+  return { note: 'Suggestions basées sur les mots-clés. La pertinence dépend du sens réel de votre contexte.', utiles, eviter };
+}
+
+// ── UTILITAIRES ──────────────────────────────
+function pluriel(n, sing, plur) {
+  return n === 1 ? `${n} ${sing}` : `${n} ${plur}`;
+}
+
+function updateCompteur() {
+  const domaines = [...new Set(MODELES.map(m => m.domaine_principal))];
+  const el = document.getElementById('bep-compteur');
+  if (el) el.textContent = `${pluriel(MODELES.length,'modèle','modèles')} · ${pluriel(domaines.length,'domaine','domaines')}`;
+}
+
+// ── ÉTAT ─────────────────────────────────────
+let domaineActif = 'mathematiques';
+
+// ── RENDU GRILLE ─────────────────────────────
+function renderGrille() {
+  const modeles = MODELES.filter(m => m.domaine_principal === domaineActif);
+  document.getElementById('bep-domaine-nom').textContent = DOMAINES_LABELS[domaineActif] || domaineActif;
+  document.getElementById('bep-domaine-count').textContent = pluriel(modeles.length,'modèle','modèles');
+  const grille = document.getElementById('bep-grille');
+  grille.innerHTML = modeles.map((m, i) => `
+    <button class="bep-carte" data-id="${m.id}" style="animation-delay:${i*0.07}s">
+      <div class="bep-carte-bord"></div>
+      <div class="bep-carte-corps">
+        <div class="bep-carte-top">
+          <span class="bep-carte-auteur">${m.auteur}</span>
+          <span class="bep-carte-annee">${m.annee}</span>
+        </div>
+        <h3 class="bep-carte-nom">${m.nom}</h3>
+        <p class="bep-carte-resume">${m.resume}</p>
+        <div class="bep-carte-indics">
+          <div class="bep-indic"><span class="bep-indic-dot" style="background:#2e7d4e"></span><span class="bep-indic-label">${pluriel(m.territoire.length,'territoire','territoires')}</span></div>
+          <div class="bep-indic"><span class="bep-indic-dot" style="background:#c4993a"></span><span class="bep-indic-label">${pluriel(m.limites.length,'limite','limites')}</span></div>
+          <div class="bep-indic"><span class="bep-indic-dot" style="background:#8b3a2a"></span><span class="bep-indic-label">${pluriel(m.zones_risquees.length,'risque','risques')}</span></div>
+        </div>
+      </div>
+    </button>
+  `).join('');
+  grille.querySelectorAll('.bep-carte').forEach(btn => {
+    btn.addEventListener('click', () => { const m = MODELES.find(x => x.id === btn.dataset.id); if(m) ouvrirDetail(m); });
+  });
+}
+
+// ── RENDU DÉTAIL ─────────────────────────────
+function buildConnexions(m) {
+  let html = '';
+  if (m.connexions.complementaires.length) {
+    html += `<div class="bep-conn-groupe"><p class="bep-conn-titre"><span class="bep-conn-puce" style="background:#2e7d4e"></span>Modèles complémentaires</p><div class="bep-conn-grille">`;
+    m.connexions.complementaires.forEach(id => {
+      const rel = MODELES.find(x => x.id === id); if(!rel) return;
+      const syn = m.connexions.synergie?.find(s => s.avec === id);
+      html += `<div class="bep-conn-card"><div class="bep-conn-card-top"><span class="bep-conn-nom">${rel.nom}</span><button class="bep-conn-lien" data-nav="${id}">${rel.auteur} →</button></div>${syn?`<p class="bep-conn-synergie">${syn.texte}</p>`:''}</div>`;
+    });
+    html += `</div></div>`;
+  }
+  if (m.connexions.contradictoires.length) {
+    html += `<div class="bep-conn-groupe"><p class="bep-conn-titre"><span class="bep-conn-puce" style="background:#8b3a2a"></span>Modèles en tension</p><div class="bep-conn-grille">`;
+    m.connexions.contradictoires.forEach(id => {
+      const rel = MODELES.find(x => x.id === id); if(!rel) return;
+      html += `<div class="bep-conn-card bep-conn-card--tension"><div class="bep-conn-card-top"><span class="bep-conn-nom">${rel.nom}</span><button class="bep-conn-lien" data-nav="${id}">${rel.auteur} →</button></div></div>`;
+    });
+    html += `</div></div>`;
+  }
+  if (m.domaines_secondaires.length) {
+    html += `<div class="bep-conn-groupe"><p class="bep-conn-titre"><span class="bep-conn-puce" style="background:#c4993a"></span>Domaines secondaires touchés</p><div class="bep-doms-sec">${m.domaines_secondaires.map(d=>`<span class="bep-dom-badge">${DOMAINES_LABELS[d]||d}</span>`).join('')}</div></div>`;
+  }
+  return html || '<p style="font-size:.85rem;color:rgba(26,23,20,.4);font-style:italic">Aucune connexion recensée pour l\'instant.</p>';
+}
+
+function renderDetail(m) {
+  const domLabel = DOMAINES_LABELS[m.domaine_principal] || m.domaine_principal;
+  document.getElementById('bep-detail-contenu').innerHTML = `
+    <div class="bep-detail-badge">${domLabel}</div>
+    <h2 class="bep-detail-nom">${m.nom}</h2>
+    <p class="bep-detail-auteur">${m.auteur} · ${m.annee}</p>
+    <p class="bep-detail-resume">${m.resume}</p>
+    <div class="bep-detail-indics">
+      <div class="bep-detail-indic"><span class="bep-detail-indic-dot" style="background:#2e7d4e"></span><span class="bep-detail-indic-label">${pluriel(m.territoire.length,'territoire','territoires')}</span></div>
+      <div class="bep-detail-indic"><span class="bep-detail-indic-dot" style="background:#c4993a"></span><span class="bep-detail-indic-label">${pluriel(m.limites.length,'limite','limites')}</span></div>
+      <div class="bep-detail-indic"><span class="bep-detail-indic-dot" style="background:#8b3a2a"></span><span class="bep-detail-indic-label">${pluriel(m.zones_risquees.length,'zone risquée','zones risquées')}</span></div>
+    </div>
+    <div class="bep-onglets" id="bep-onglets">
+      <button class="bep-onglet active" data-onglet="territoire" style="border-bottom-color:#2e7d4e;color:#2e7d4e">Territoire</button>
+      <button class="bep-onglet" data-onglet="limites">Limites</button>
+      <button class="bep-onglet" data-onglet="risques">Zones risquées</button>
+      <button class="bep-onglet" data-onglet="connexions">Connexions</button>
+    </div>
+    <div id="bep-panneau-territoire" class="bep-panneau"><div class="bep-panneau-filet" style="background:#2e7d4e"></div><ul class="bep-liste">${m.territoire.map(t=>`<li class="bep-liste-item"><span class="bep-liste-puce" style="background:#2e7d4e"></span><span>${t}</span></li>`).join('')}</ul></div>
+    <div id="bep-panneau-limites" class="bep-panneau bep-hidden"><div class="bep-panneau-filet" style="background:#c4993a"></div><ul class="bep-liste">${m.limites.map(t=>`<li class="bep-liste-item"><span class="bep-liste-puce" style="background:#c4993a"></span><span>${t}</span></li>`).join('')}</ul></div>
+    <div id="bep-panneau-risques" class="bep-panneau bep-hidden"><div class="bep-panneau-filet" style="background:#8b3a2a"></div><ul class="bep-liste">${m.zones_risquees.map(t=>`<li class="bep-liste-item"><span class="bep-liste-puce" style="background:#8b3a2a"></span><span>${t}</span></li>`).join('')}</ul></div>
+    <div id="bep-panneau-connexions" class="bep-panneau bep-hidden"><div class="bep-panneau-filet" style="background:#1a1714"></div>${buildConnexions(m)}</div>
+  `;
+  const couleurs = {territoire:'#2e7d4e',limites:'#c4993a',risques:'#8b3a2a',connexions:'#1a1714'};
+  document.getElementById('bep-onglets').querySelectorAll('.bep-onglet').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#bep-onglets .bep-onglet').forEach(b => { b.classList.remove('active'); b.style.borderBottomColor='transparent'; b.style.color=''; });
+      btn.classList.add('active'); btn.style.borderBottomColor=couleurs[btn.dataset.onglet]; btn.style.color=couleurs[btn.dataset.onglet];
+      ['territoire','limites','risques','connexions'].forEach(p => document.getElementById('bep-panneau-'+p).classList.toggle('bep-hidden', p !== btn.dataset.onglet));
+    });
+  });
+  document.getElementById('bep-detail-contenu').querySelectorAll('.bep-conn-lien[data-nav]').forEach(btn => {
+    btn.addEventListener('click', () => naviguerVers(btn.dataset.nav));
+  });
+}
+
+function ouvrirDetail(m) {
+  renderDetail(m);
+  setVue('detail');
+  document.getElementById('bep-vue-detail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function naviguerVers(id) {
+  const m = MODELES.find(x => x.id === id); if(!m) return;
+  domaineActif = m.domaine_principal;
+  document.querySelectorAll('.bep-nav-item[data-domaine]').forEach(el => el.classList.toggle('active', el.dataset.domaine === domaineActif));
+  renderGrille();
+  ouvrirDetail(m);
+}
+
+// ── RÉSULTATS ────────────────────────────────
+function renderResultats(res) {
+  const el = document.getElementById('bep-question-resultat');
+  if (!res || (!res.utiles.length && !res.eviter.length)) {
+    el.innerHTML = `<div class="bep-resultat"><p class="bep-resultat-note">${res?.note||'Aucun résultat.'}</p></div>`;
+    el.classList.remove('bep-hidden'); return;
+  }
+  const carteHtml = (item, eviter) => {
+    const m = MODELES.find(x => x.id === item.id); if(!m) return '';
+    return `<div class="bep-res-card ${eviter?'bep-res-card--eviter':''}" data-nav="${m.id}">
+      <div class="bep-res-card-top"><span class="bep-res-nom">${m.nom}</span><span class="bep-res-auteur">${m.auteur}</span></div>
+      <p class="bep-res-raison">${item.raison}</p>
+      <span class="bep-res-lien">${eviter?'Voir ses zones risquées →':'Voir le détail →'}</span>
+    </div>`;
+  };
+  el.innerHTML = `<div class="bep-resultat">
+    ${res.note?`<p class="bep-resultat-note">${res.note}</p>`:''}
+    ${res.utiles.length?`<div class="bep-resultat-section"><p class="bep-resultat-titre"><span class="bep-res-puce" style="background:#2e7d4e"></span>Modèles à mobiliser</p><div class="bep-res-grille">${res.utiles.map(i=>carteHtml(i,false)).join('')}</div></div>`:''}
+    ${res.eviter.length?`<div class="bep-resultat-section"><p class="bep-resultat-titre"><span class="bep-res-puce" style="background:#8b3a2a"></span>Utiliser avec précaution</p><div class="bep-res-grille">${res.eviter.map(i=>carteHtml(i,true)).join('')}</div></div>`:''}
+  </div>`;
+  el.classList.remove('bep-hidden');
+  el.querySelectorAll('.bep-res-card[data-nav]').forEach(card => card.addEventListener('click', () => naviguerVers(card.dataset.nav)));
+}
+
+// ── VUES ─────────────────────────────────────
+function setVue(vue) {
+  document.getElementById('bep-vue-grille').classList.toggle('bep-hidden', vue !== 'grille');
+  document.getElementById('bep-vue-detail').classList.toggle('bep-hidden', vue !== 'detail');
+  document.getElementById('bep-vue-question').classList.toggle('bep-hidden', vue !== 'question');
+}
+
+// ── EVENTS ───────────────────────────────────
+document.querySelectorAll('.bep-nav-item[data-domaine]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    domaineActif = btn.dataset.domaine;
+    document.querySelectorAll('.bep-nav-item[data-domaine]').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+    renderGrille(); setVue('grille');
+  });
+});
+
+document.getElementById('bep-retour').addEventListener('click', () => { renderGrille(); setVue('grille'); });
+document.getElementById('bep-retour-question').addEventListener('click', () => setVue('grille'));
+document.getElementById('bep-question-toggle').addEventListener('click', () => setVue('question'));
+
+document.querySelectorAll('.bep-theme').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.bep-theme').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('bep-question-input').value = '';
+    renderResultats(THEMES[btn.dataset.theme]);
+  });
+});
+
+document.getElementById('bep-question-submit').addEventListener('click', () => {
+  const texte = document.getElementById('bep-question-input').value.trim();
+  if (!texte) return;
+  document.querySelectorAll('.bep-theme').forEach(b => b.classList.remove('active'));
+  renderResultats(suggererLibre(texte));
+});
+
+document.getElementById('bep-question-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('bep-question-submit').click(); }
+});
+
+// ── INIT ─────────────────────────────────────
+updateCompteur();
+renderGrille();
+setVue('grille');
+</script>
+
+</Base>
