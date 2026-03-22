@@ -90,10 +90,6 @@ const numNote = parDate.length - idx;
 
     <h1>{note.data.title}</h1>
 
-    {note.data.description && (
-      <p class="article-chapeau">{note.data.description}</p>
-    )}
-
     <!-- Ornement seuil -->
     <div class="article-seuil">
       <div class="seuil-line seuil-line--left"></div>
@@ -184,11 +180,11 @@ const numNote = parDate.length - idx;
 <style>
   /* ── Progression ── */
   .progress-bar {
-    position: fixed; top: 0; left: 0;
-    height: 2px; width: 0%;
-    background: v-bind('typeCfg.couleur');
-    box-shadow: 0 0 6px v-bind('typeCfg.couleur + "80"');
-    z-index: 999; transition: width .08s linear;
+    position: fixed; top: 52px; left: 0;
+    height: 3px; width: 0%;
+    background: #ea580c;
+    box-shadow: 0 0 6px rgba(234,88,12,.5);
+    z-index: 99; transition: width .08s linear;
   }
 
   /* ── Wrap ── */
@@ -249,9 +245,9 @@ const numNote = parDate.length - idx;
     padding: .15rem .4rem; border-radius: 3px; border: 1px solid;
   }
   .note-num {
-    font-family: 'Mulish', sans-serif; font-size: .6rem;
-    font-weight: 300; letter-spacing: .12em;
-    color: var(--ink-soft); opacity: .6;
+    font-family: 'Mulish', sans-serif; font-size: .72rem;
+    font-weight: 700; letter-spacing: .12em;
+    color: #ea580c; opacity: .75;
   }
 
   /* ── Titre ── */
