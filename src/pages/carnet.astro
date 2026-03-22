@@ -24,8 +24,9 @@ function formatDate(date: Date) {
   <!-- ── En-tête ── -->
   <header class="page-header">
     <p class="page-eyebrow">Carnet</p>
-    <h1 class="page-titre">La pensée<br><em>en mouvement.</em></h1>
-    <p class="page-sous">Dialogues construits avec une IA, notes du quotidien — ce qui se passe quand on pense à voix haute. Le cheminement compte autant que l'arrivée.</p>
+    <h1 class="page-titre">La pensée<br><em>en construction... 🚧</em></h1>
+    <p class="page-sous">Recherches, dialogues, notes... — ce qui se passe quand on pense à l'écrit.  
+    Le cheminement peut se raconter de la même manière que le résultat.</p>
 
     <div class="page-compteurs">
       <div class="compteur">
@@ -45,6 +46,67 @@ function formatDate(date: Date) {
       <button class="filtre-btn filtre-btn--note actif" data-filtre="note">◦ Note</button>
     </div>
   </header>
+
+
+  <!-- ── Notes ── -->
+  {notes.length > 0 && (
+    <section class="bloc" data-section="note" style="animation-delay:.2s">
+      <div class="bloc-sep">
+        <span class="bloc-sep-label">◦ {notes.length > 1 ? `${notes.length} notes` : '1 note'}</span>
+        <span class="bloc-sep-line"/>
+      </div>
+      <div class="entrees-liste">
+        {notes.map((entry, i) => {
+          const isRiche = !!(entry.data.description || (entry.data.tags && entry.data.tags.length > 0));
+          return (
+            <a href={`/carnet/${entry.slug}`}
+               class={`entree-carte ${isRiche ? '' : 'entree-carte--note'}`}
+               style={`animation-delay:${0.2 + i * 0.06}s`}>
+
+              {isRiche ? (
+                /* ── Mode carte complète (style dialogue) ── */
+                <>
+                  <div class="entree-meta">
+                    <span class="entree-date">{formatDate(entry.data.date)}</span>
+                    {entry.data.stade && (
+                      <span class="entree-stade">
+                        {entry.data.stade === 'arbre' ? '🌳' : entry.data.stade === 'pousse' ? '🌿' : '🌱'}
+                      </span>
+                    )}
+                    {entry.data.tags?.slice(0, 3).map((tag: string) => (
+                      <span class="entree-tag">{tag}</span>
+                    ))}
+                  </div>
+                  <h3 class="entree-titre">{entry.data.title}</h3>
+                  {entry.data.description && (
+                    <p class="entree-desc">{entry.data.description}</p>
+                  )}
+                  <span class="entree-lire">Lire →</span>
+                </>
+              ) : (
+                /* ── Mode compact ligne ── */
+                <>
+                  <div class="note-ligne-unique">
+                    <span class="entree-date">{formatDate(entry.data.date)}</span>
+                    {entry.data.stade && (
+                      <span class="entree-stade">
+                        {entry.data.stade === 'arbre' ? '🌳' : entry.data.stade === 'pousse' ? '🌿' : '🌱'}
+                      </span>
+                    )}
+                    <span class="note-sep">·</span>
+                    <h3 class="entree-titre note-titre-inline">{entry.data.title}</h3>
+                  </div>
+                  <span class="entree-lire">Lire →</span>
+                </>
+              )}
+
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
 
   <!-- ── Dialogues ── -->
   {dialogues.length > 0 && (
@@ -81,31 +143,6 @@ function formatDate(date: Date) {
     </section>
   )}
 
-  <!-- ── Notes ── -->
-  {notes.length > 0 && (
-    <section class="bloc" data-section="note" style="animation-delay:.2s">
-      <div class="bloc-sep">
-        <span class="bloc-sep-label">◦ {notes.length > 1 ? `${notes.length} notes` : '1 note'}</span>
-        <span class="bloc-sep-line"/>
-      </div>
-      <div class="entrees-liste">
-        {notes.map((entry, i) => (
-          <a href={`/carnet/${entry.slug}`} class="entree-carte entree-carte--note" style={`animation-delay:${0.2 + i * 0.06}s`}>
-            <div class="note-ligne-unique">
-              <span class="entree-date">{formatDate(entry.data.date)}</span>
-              {entry.data.stade && (
-                <span class="entree-stade">{entry.data.stade === 'arbre' ? '🌳' : entry.data.stade === 'pousse' ? '🌿' : '🌱'}</span>
-              )}
-              <span class="note-sep">·</span>
-              <h3 class="entree-titre note-titre-inline">{entry.data.title}</h3>
-            </div>
-            <span class="entree-lire">Lire →</span>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
-
   <!-- ── Vide ── -->
   {total === 0 && (
     <div class="vide-encart">
@@ -117,7 +154,7 @@ function formatDate(date: Date) {
   <!-- ── Pied ── -->
   <div class="pied-encart">
     <span class="pied-glyph">◈</span>
-    <p class="pied-texte">Ce carnet ne prétend pas à la complétude. Chaque entrée est une carte — utile pour ce qu'elle montre, honnête sur ce qu'elle ne montre pas.</p>
+    <p class="pied-texte">Ce carnet recuille les notes, les recherches et les dialogues qui ont précédé les changements sur le site.</p>
   </div>
 
 </div>
