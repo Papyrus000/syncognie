@@ -8,258 +8,513 @@ const sorted = [...entries].sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime()
 );
 
-const TYPE_CONFIG: Record<string, { label: string; couleur: string; glyph: string }> = {
-  'dialogue':  { label: 'Dialogue',  couleur: '#6a8fa8', glyph: '◈' },
-  'note':      { label: 'Note',      couleur: '#7a9e7e', glyph: '◇' },
-  'essai':     { label: 'Essai',     couleur: '#8b5e3c', glyph: '◉' },
-  'fragment':  { label: 'Fragment',  couleur: '#9a7a5a', glyph: '◌' },
-};
+const dialogues = sorted.filter(e => e.data.type === 'dialogue');
+const notes     = sorted.filter(e => e.data.type === 'note');
+const total     = sorted.length;
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
-
-function formatDateCourt(date: Date) {
+function formatJour(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
 }
-
-function getYear(date: Date) {
-  return date.getFullYear();
-}
-
-// Grouper par année
-const parAnnee: Record<number, typeof sorted> = {};
-for (const entry of sorted) {
-  const y = getYear(entry.data.date);
-  if (!parAnnee[y]) parAnnee[y] = [];
-  parAnnee[y].push(entry);
-}
-const annees = Object.keys(parAnnee).map(Number).sort((a, b) => b - a);
-
-const total = sorted.length;
-const types = [...new Set(sorted.map(e => e.data.type))];
 ---
 
-<Base title="Carnet — Syncognie" description="Notes, dialogues, essais — le cheminement de la pensée en mouvement.">
+<Base title="Carnet — Syncognie" description="Dialogues construits et notes au fil des jours — le cheminement de la pensée en mouvement.">
+
 <div class="page-wrap">
 
-  <!-- Filigrane SVG -->
-  <svg class="header-filigrane" viewBox="0 0 420 340" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="210" cy="170" r="110" stroke="#6a8fa8" stroke-width=".6" stroke-dasharray="2 10" opacity=".12" class="orb-a"/>
-    <circle cx="210" cy="170" r="68"  stroke="#6a8fa8" stroke-width="1"   opacity=".08" class="orb-a-inner"/>
-    <circle cx="210" cy="170" r="30"  fill="#6a8fa8" opacity=".03"/>
-    <line x1="60"  y1="170" x2="360" y2="170" stroke="#6a8fa8" stroke-width=".4" opacity=".10" stroke-dasharray="2 10"/>
-    <line x1="210" y1="60"  x2="210" y2="280" stroke="#6a8fa8" stroke-width=".4" opacity=".08" stroke-dasharray="2 10"/>
-    <circle cx="210" cy="170" r="5"   fill="#6a8fa8" opacity=".22" class="node-c"/>
-    <circle cx="210" cy="170" r="2"   fill="#f5f0e8" opacity=".60"/>
-    <circle cx="130" cy="120" r="2.5" fill="#6a8fa8" opacity=".15" class="node-a"/>
-    <circle cx="290" cy="220" r="2"   fill="#8b5e3c" opacity=".12" class="node-b"/>
-    <circle cx="155" cy="230" r="1.5" fill="#6a8fa8" opacity=".12" class="node-a"/>
-    <circle cx="270" cy="115" r="2"   fill="#6a8fa8" opacity=".10" class="node-b"/>
-  </svg>
-
-  <!-- En-tête -->
+  <!-- ── En-tête ── -->
   <header class="page-header">
     <p class="page-eyebrow">Carnet</p>
     <h1 class="page-titre">La pensée<br><em>en mouvement.</em></h1>
-    <p class="page-sous">Notes prises au fil des conversations, des lectures, des questions qui ne lâchent pas. Dialogues avec une IA, fragments, essais. Le cheminement compte autant que l'arrivée.</p>
-    <div class="page-stats">
-      <span class="stat"><span class="stat-n">{total}</span><span class="stat-label">entrées</span></span>
-      <span class="stat-sep">·</span>
-      <span class="stat"><span class="stat-n">{annees.length}</span><span class="stat-label">{annees.length > 1 ? 'années' : 'année'}</span></span>
-      <span class="stat-sep">·</span>
-      <span class="stat"><span class="stat-n">{types.length}</span><span class="stat-label">formats</span></span>
+    <p class="page-sous">Dialogues construits avec une IA, notes du quotidien — ce qui se passe quand on pense à voix haute. Le cheminement compte autant que l'arrivée.</p>
+
+    <div class="page-compteurs">
+      <div class="compteur">
+        <span class="compteur-n">{dialogues.length}</span>
+        <span class="compteur-label">{dialogues.length > 1 ? 'dialogues' : 'dialogue'}</span>
+      </div>
+      <span class="compteur-sep">·</span>
+      <div class="compteur">
+        <span class="compteur-n">{notes.length}</span>
+        <span class="compteur-label">{notes.length > 1 ? 'notes' : 'note'}</span>
+      </div>
+    </div>
+
+    <div class="page-badges">
+      <span class="type-badge type-badge--dialogue">◈ Dialogue</span>
+      <span class="type-badge type-badge--note">◦ Note</span>
     </div>
   </header>
 
-  <!-- Légende des types -->
-  <div class="legende-wrap">
-    {Object.entries(TYPE_CONFIG).map(([key, cfg]) => (
-      <span class="legende-item">
-        <span class="legende-glyph" style={`color:${cfg.couleur}`}>{cfg.glyph}</span>
-        <span class="legende-label">{cfg.label}</span>
-      </span>
-    ))}
-  </div>
+  <!-- ── Dialogues ── -->
+  {dialogues.length > 0 && (
+    <section class="bloc" style="animation-delay:.1s">
 
-  <!-- Entrées groupées par année -->
-  {annees.map((annee, ai) => (
-    <section class="annee-section" style={`animation-delay:${0.15 + ai * 0.08}s`}>
-
-      <div class="section-sep">
-        <span class="sep-line"/>
-        <span class="sep-centre">
-          <span class="sep-diamond"/>
-          <span class="sep-annee">{annee}</span>
-          <span class="sep-diamond"/>
-        </span>
-        <span class="sep-line"/>
+      <div class="bloc-sep">
+        <span class="bloc-sep-label">◈ {dialogues.length > 1 ? `${dialogues.length} dialogues` : '1 dialogue'}</span>
+        <span class="bloc-sep-line"/>
       </div>
 
-      <div class="entries-list">
-        {parAnnee[annee].map((entry, i) => {
-          const cfg = TYPE_CONFIG[entry.data.type] ?? TYPE_CONFIG['note'];
-          const idx = sorted.indexOf(entry) + 1;
-          const numTotal = total - sorted.indexOf(entry);
+      <div class="dialogues-liste">
+        {dialogues.map((entry, i) => (
+          <a href={`/carnet/${entry.slug}`} class="dialogue-carte" style={`animation-delay:${0.15 + i * 0.07}s`}>
 
-          return (
-            <div class="entry-row" style={`animation-delay:${0.2 + i * 0.06}s`}>
-
-              <!-- Fil chronologique -->
-              <div class="entry-fil-wrap">
-                <div class="entry-num" style={`color:${cfg.couleur}; border-color:${cfg.couleur}33; background:${cfg.couleur}0d`}>
-                  {String(numTotal).padStart(2, '0')}
-                </div>
-                {i < parAnnee[annee].length - 1 && <div class="entry-trait" style={`background:linear-gradient(to bottom, ${cfg.couleur}33, transparent)`}/>}
-              </div>
-
-              <!-- Carte -->
-              <a href={`/carnet/${entry.slug}`} class="entry-card" style={`--c:${cfg.couleur}`}>
-                <div class="entry-card-lueur"/>
-
-                <div class="entry-meta">
-                  <span class="entry-type-badge" style={`color:${cfg.couleur}; background:${cfg.couleur}12; border-color:${cfg.couleur}30`}>
-                    <span class="entry-glyph">{cfg.glyph}</span>
-                    {cfg.label}
-                  </span>
-                  <span class="entry-date">{formatDate(entry.data.date)}</span>
-                  {entry.data.tags?.slice(0, 2).map((tag: string) => (
-                    <span class="entry-tag">{tag}</span>
-                  ))}
-                </div>
-
-                <h2 class="entry-titre">{entry.data.title}</h2>
-
-                {entry.data.description && (
-                  <p class="entry-desc">{entry.data.description}</p>
-                )}
-
-                {entry.data.extrait && (
-                  <blockquote class="entry-extrait" style={`border-color:${cfg.couleur}40`}>
-                    {entry.data.extrait}
-                  </blockquote>
-                )}
-
-                <span class="entry-lire">Lire &rarr;</span>
-              </a>
-
+            <div class="dialogue-meta">
+              <span class="dialogue-date">{formatDate(entry.data.date)}</span>
+              {entry.data.stade && (
+                <span class="dialogue-stade">
+                  {entry.data.stade === 'arbre' ? '🌳' : entry.data.stade === 'pousse' ? '🌿' : '🌱'}
+                </span>
+              )}
+              {entry.data.tags?.slice(0, 3).map((tag: string) => (
+                <span class="dialogue-tag">{tag}</span>
+              ))}
             </div>
-          );
-        })}
+
+            <h3 class="dialogue-titre">{entry.data.title}</h3>
+
+            {entry.data.description && (
+              <p class="dialogue-desc">{entry.data.description}</p>
+            )}
+
+            {entry.data.extrait && (
+              <blockquote class="dialogue-extrait">{entry.data.extrait}</blockquote>
+            )}
+
+            <span class="dialogue-lire">Lire le dialogue →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- ── Notes ── -->
+  {notes.length > 0 && (
+    <section class="bloc" style="animation-delay:.2s">
+
+      <div class="bloc-sep">
+        <span class="bloc-sep-label">◦ {notes.length > 1 ? `${notes.length} notes` : '1 note'}</span>
+        <span class="bloc-sep-line"/>
       </div>
 
+      <div class="notes-liste">
+        {notes.map((entry, i) => (
+          <a href={`/carnet/${entry.slug}`} class="note-ligne" style={`animation-delay:${0.2 + i * 0.05}s`}>
+            <span class="note-jour">{formatJour(entry.data.date)}</span>
+            <div class="note-trait"/>
+            <span class="note-titre">{entry.data.title}</span>
+            <span class="note-fleche">→</span>
+          </a>
+        ))}
+      </div>
     </section>
-  ))}
+  )}
 
-  <!-- État vide -->
+  <!-- ── Vide ── -->
   {total === 0 && (
     <div class="vide-encart">
-      <span class="vide-glyph">◇</span>
-      <p class="vide-texte">Le carnet est vide pour l'instant.<br/>Les premières entrées arrivent bientôt.</p>
+      <span class="vide-glyph">◦</span>
+      <p class="vide-texte">Le carnet commence à s'écrire.<br/>Les premières entrées arrivent bientôt.</p>
     </div>
   )}
 
-  <!-- Note de bas de page -->
-  <div class="invitation-encart">
-    <span class="invitation-glyph">◈</span>
-    <p class="invitation-texte">Ce carnet ne prétend pas à la complétude. Chaque entrée est une carte — utile pour ce qu'elle montre, honnête sur ce qu'elle ne montre pas.</p>
+  <!-- ── Pied ── -->
+  <div class="pied-encart">
+    <span class="pied-glyph">◈</span>
+    <p class="pied-texte">Ce carnet ne prétend pas à la complétude. Chaque entrée est une carte — utile pour ce qu'elle montre, honnête sur ce qu'elle ne montre pas.</p>
   </div>
 
 </div>
 
 <style>
   :root {
-    --carnet:      #6a8fa8;
-    --carnet-dim:  rgba(106,143,168,.28);
-    --carnet-bg:   rgba(106,143,168,.06);
-    --carnet-deep: #3d6478;
+    --feu:       #ea580c;
+    --feu-deep:  #9a3412;
+    --or:        #b45309;
+    --or-vif:    #f59e0b;
+    --or-border: #fde68a;
+    --or-bg:     #fff8f0;
+    --or-bg2:    #fffdf5;
+    --page-bg:   #fffaf5;
   }
 
-  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem 6rem; position: relative; }
-
-  /* ── Filigrane ── */
-  .header-filigrane { position: absolute; top: 1rem; right: -1rem; width: 340px; height: 270px; pointer-events: none; z-index: 0; }
-  @keyframes orb-pulse { 0%,100%{ opacity:.10 } 50%{ opacity:.06 } }
-  .orb-a       { animation: orb-pulse 9s ease-in-out infinite; }
-  .orb-a-inner { animation: orb-pulse 9s 1s ease-in-out infinite; }
-  @keyframes node-drift { 0%,100%{transform:translate(0,0)} 33%{transform:translate(1.5px,-2px)} 66%{transform:translate(-1px,1.5px)} }
-  .node-a { animation: node-drift 9s ease-in-out infinite; }
-  .node-b { animation: node-drift 9s 2s ease-in-out infinite; }
-  .node-c { animation: node-drift 7s 1s ease-in-out infinite; }
+  .page-wrap {
+    max-width: var(--max, 760px);
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
 
   /* ── En-tête ── */
-  .page-header { position: relative; z-index: 1; padding: 2.8rem 0 1.75rem; opacity: 0; animation: rise .9s .05s ease forwards; }
-  .page-eyebrow { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--carnet-deep); opacity: .8; margin-bottom: .85rem; }
-  .page-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: clamp(1.9rem, 3.8vw, 2.5rem); font-weight: 700; color: var(--ink); line-height: 1.15; letter-spacing: -.02em; margin-bottom: .9rem; }
-  .page-titre em { font-style: italic; font-weight: 400; color: var(--carnet); }
-  .page-sous { font-family: 'Mulish', sans-serif; font-size: .95rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin-bottom: 1.5rem; }
-  .page-stats { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; opacity: 0; animation: rise .9s .15s ease forwards; }
-  .stat { display: flex; align-items: baseline; gap: .35rem; }
-  .stat-n { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--carnet); line-height: 1; letter-spacing: -.02em; }
-  .stat-label { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
-  .stat-sep { color: var(--rule); }
+  .page-header {
+    padding: 3rem 0 2.5rem;
+    opacity: 0;
+    animation: rise .9s .05s ease forwards;
+  }
 
-  /* ── Légende ── */
-  .legende-wrap { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.2rem; padding: 1rem 1.35rem; border: 1px solid var(--carnet-dim); border-top: 2.5px solid var(--carnet); border-radius: 0 0 6px 6px; background: var(--carnet-bg); opacity: 0; animation: rise .9s .2s ease forwards; box-shadow: 0 2px 6px rgba(60,30,10,.06), 0 1px 2px rgba(60,30,10,.04); }
-  .legende-item { display: flex; align-items: center; gap: .45rem; }
-  .legende-glyph { font-size: .9rem; line-height: 1; }
-  .legende-label { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300; letter-spacing: .08em; color: var(--ink-mid); }
+  .page-eyebrow {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--feu-deep);
+    margin-bottom: .85rem;
+  }
 
-  /* ── Séparateur année ── */
-  .annee-section { opacity: 0; animation: rise .8s ease forwards; }
-  .section-sep { display: flex; align-items: center; gap: .9rem; margin: 2.5rem 0 .75rem; }
-  .sep-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
-  .sep-centre { display: flex; align-items: center; gap: .5rem; }
-  .sep-diamond { width: 5px; height: 5px; transform: rotate(45deg); background: var(--carnet); opacity: .6; }
-  .sep-annee { font-family: 'Mulish', sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--carnet-deep); }
+  .page-titre {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: clamp(2rem, 4.5vw, 2.9rem);
+    font-weight: 700;
+    color: #1a0800;
+    line-height: 1.1;
+    letter-spacing: -.025em;
+    margin-bottom: .9rem;
+  }
 
-  /* ── Liste des entrées ── */
-  .entries-list { display: flex; flex-direction: column; }
-  .entry-row { display: flex; gap: 1.5rem; align-items: flex-start; opacity: 0; animation: rise .7s ease forwards; }
+  .page-titre em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--feu);
+    display: block;
+  }
 
-  /* Fil numéroté */
-  .entry-fil-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; padding-top: .15rem; }
-  .entry-num { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--carnet-dim); display: flex; align-items: center; justify-content: center; font-family: 'Libre Baskerville', Georgia, serif; font-size: .78rem; font-weight: 700; color: var(--carnet); background: var(--carnet-bg); flex-shrink: 0; }
-  .entry-trait { width: 1px; flex: 1; min-height: 2.5rem; background: linear-gradient(to bottom, var(--carnet-dim), transparent); margin: .35rem 0; }
+  .page-sous {
+    font-family: 'Mulish', sans-serif;
+    font-size: .95rem;
+    font-weight: 300;
+    color: #78350f;
+    line-height: 1.82;
+    max-width: 52ch;
+    margin-bottom: 1.75rem;
+  }
 
-  /* Carte entrée */
-  .entry-card { flex: 1; display: flex; flex-direction: column; gap: .45rem; text-decoration: none; padding: 1.1rem 1.35rem; margin-bottom: 1rem; border: 1px solid var(--rule); border-radius: 7px; background: rgba(245,240,232,.55); position: relative; overflow: hidden; opacity: 0; animation: rise .7s ease forwards; transition: border-color .2s, background .2s, transform .2s, box-shadow .2s; box-shadow: 0 2px 6px rgba(60,30,10,.07), 0 1px 2px rgba(60,30,10,.05); }
-  .entry-card-lueur { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 35% at 5% 0%, color-mix(in srgb, var(--c) 10%, transparent), transparent 70%); opacity: 0; transition: opacity .3s; pointer-events: none; }
-  .entry-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--c); border-radius: 2px 0 0 2px; transform: scaleY(0); transform-origin: top; transition: transform .28s ease; }
-  .entry-card:hover { border-color: color-mix(in srgb, var(--c) 35%, transparent); background: color-mix(in srgb, var(--c) 4%, var(--bg)); transform: translateX(3px); box-shadow: 0 6px 20px color-mix(in srgb, var(--c) 12%, transparent), 0 2px 6px rgba(60,30,10,.08); }
-  .entry-card:hover::before { transform: scaleY(1); }
-  .entry-card:hover .entry-card-lueur { opacity: 1; }
+  .page-compteurs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    opacity: 0;
+    animation: rise .9s .15s ease forwards;
+  }
 
-  /* Méta */
-  .entry-meta { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
-  .entry-type-badge { display: inline-flex; align-items: center; gap: .3rem; font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .12rem .4rem; border-radius: 3px; border: 1px solid; }
-  .entry-glyph { font-size: .85rem; line-height: 1; }
-  .entry-date { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 300; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mid); }
-  .entry-tag { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 300; color: var(--ink-soft); padding: .1rem .38rem; border: 1px solid var(--rule); border-radius: 20px; }
+  .compteur { display: flex; align-items: baseline; gap: .38rem; }
 
-  /* Titre & contenu */
-  .entry-titre { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.05rem; font-weight: 400; font-style: italic; color: var(--ink); line-height: 1.4; transition: color .2s; }
-  .entry-card:hover .entry-titre { color: var(--carnet-deep); }
-  .entry-desc { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; color: var(--ink-soft); line-height: 1.65; max-width: 58ch; }
-  .entry-extrait { margin: .2rem 0 0; padding: .55rem .85rem; border-left: 2px solid var(--carnet-dim); background: var(--carnet-bg); border-radius: 0 3px 3px 0; font-family: 'Libre Baskerville', Georgia, serif; font-size: .86rem; font-style: italic; color: var(--ink-mid); line-height: 1.65; }
-  .entry-lire { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--carnet); opacity: 0; transform: translateX(-4px); transition: opacity .2s, transform .2s; }
-  .entry-card:hover .entry-lire { opacity: 1; transform: translateX(0); }
-  @media (hover: none) { .entry-lire { opacity: .6; transform: translateX(0); } }
+  .compteur-n {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--feu);
+    line-height: 1;
+    letter-spacing: -.03em;
+  }
 
-  /* ── État vide ── */
-  .vide-encart { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 3rem 2rem; border: 1px dashed var(--rule); border-radius: 8px; text-align: center; opacity: 0; animation: rise .9s .3s ease forwards; }
-  .vide-glyph { font-size: 2rem; color: var(--carnet); opacity: .4; }
-  .vide-texte { font-family: 'Mulish', sans-serif; font-size: .9rem; font-weight: 300; font-style: italic; color: var(--ink-soft); line-height: 1.75; }
+  .compteur-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .68rem;
+    font-weight: 300;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
 
-  /* ── Note de bas ── */
-  .invitation-encart { display: flex; align-items: flex-start; gap: .75rem; margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px solid var(--carnet-dim); border-left: 3px solid var(--carnet-dim); border-radius: 0 4px 4px 0; background: var(--carnet-bg); opacity: 0; animation: rise .9s .6s ease forwards; }
-  .invitation-glyph { color: var(--carnet); font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
-  .invitation-texte { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 300; font-style: italic; color: var(--ink-mid); line-height: 1.7; }
+  .compteur-sep { color: var(--or-border); font-size: 1.1rem; }
+
+  .page-badges {
+    display: flex;
+    gap: .6rem;
+    opacity: 0;
+    animation: rise .9s .25s ease forwards;
+  }
+
+  .type-badge {
+    font-family: 'Mulish', sans-serif;
+    font-size: .63rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .26rem .72rem;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .type-badge--dialogue {
+    background: rgba(234,88,12,.07);
+    color: var(--feu-deep);
+    border-color: rgba(234,88,12,.28);
+  }
+
+  .type-badge--note {
+    background: rgba(251,191,36,.09);
+    color: var(--or);
+    border-color: rgba(251,191,36,.42);
+  }
+
+  /* ── Blocs ── */
+  .bloc {
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise .8s ease forwards;
+  }
+
+  .bloc-sep {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .bloc-sep-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--or);
+    white-space: nowrap;
+  }
+
+  .bloc-sep-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--or-border), transparent);
+  }
+
+  /* ── Cartes dialogue ── */
+  .dialogues-liste { display: flex; flex-direction: column; gap: .85rem; }
+
+  .dialogue-carte {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    text-decoration: none;
+    padding: 1.25rem 1.45rem;
+    border: 1px solid var(--or-border);
+    border-left: 3px solid var(--or-vif);
+    border-radius: 0 10px 10px 0;
+    background: var(--or-bg);
+    opacity: 0;
+    animation: rise .7s ease forwards;
+    transition: border-color .22s, border-left-color .22s, background .22s, transform .22s, box-shadow .22s;
+    box-shadow: 0 2px 8px rgba(180,83,9,.06);
+  }
+
+  .dialogue-carte:hover {
+    border-color: rgba(245,158,11,.55);
+    border-left-color: var(--feu);
+    background: #fff4e8;
+    transform: translateX(4px);
+    box-shadow: 0 6px 22px rgba(234,88,12,.09);
+  }
+
+  .dialogue-meta { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+
+  .dialogue-date {
+    font-family: 'Mulish', sans-serif;
+    font-size: .67rem;
+    font-weight: 300;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #92700a;
+  }
+
+  .dialogue-stade { font-size: .78rem; line-height: 1; }
+
+  .dialogue-tag {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    color: #a86010;
+    padding: .1rem .36rem;
+    border: 1px solid rgba(253,230,138,.8);
+    border-radius: 20px;
+    background: rgba(251,191,36,.08);
+  }
+
+  .dialogue-titre {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #1a1000;
+    line-height: 1.35;
+    transition: color .2s;
+  }
+
+  .dialogue-carte:hover .dialogue-titre { color: var(--feu-deep); }
+
+  .dialogue-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: .87rem;
+    font-weight: 300;
+    color: #78580a;
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+
+  .dialogue-extrait {
+    margin: .1rem 0 0;
+    padding: .6rem 1rem;
+    border-left: 2px solid rgba(245,158,11,.35);
+    background: rgba(251,191,36,.06);
+    border-radius: 0 4px 4px 0;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .88rem;
+    font-style: italic;
+    color: #78480a;
+    line-height: 1.72;
+  }
+
+  .dialogue-lire {
+    font-family: 'Mulish', sans-serif;
+    font-size: .67rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--feu);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity .2s, transform .2s;
+    align-self: flex-start;
+  }
+
+  .dialogue-carte:hover .dialogue-lire { opacity: 1; transform: translateX(0); }
+  @media (hover: none) { .dialogue-lire { opacity: .65; transform: translateX(0); } }
+
+  /* ── Liste notes ── */
+  .notes-liste { display: flex; flex-direction: column; gap: .5rem; }
+
+  .note-ligne {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    padding: .75rem .95rem;
+    border: 1px solid var(--or-border);
+    border-radius: 8px;
+    background: var(--or-bg2);
+    opacity: 0;
+    animation: rise .6s ease forwards;
+    transition: background .18s, border-color .18s, transform .18s;
+  }
+
+  .note-ligne:hover {
+    background: #fff8e8;
+    border-color: rgba(245,158,11,.55);
+    transform: translateX(3px);
+  }
+
+  .note-jour {
+    font-family: 'Mulish', sans-serif;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--or);
+    flex-shrink: 0;
+    min-width: 44px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .note-trait {
+    width: 1px;
+    height: 26px;
+    background: linear-gradient(to bottom, rgba(245,158,11,.45), transparent);
+    flex-shrink: 0;
+  }
+
+  .note-titre {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: .97rem;
+    font-style: italic;
+    color: #1a1000;
+    line-height: 1.4;
+    flex: 1;
+    transition: color .18s;
+  }
+
+  .note-ligne:hover .note-titre { color: var(--or); }
+
+  .note-fleche {
+    font-size: .88rem;
+    color: var(--or-vif);
+    opacity: 0;
+    transform: translateX(-3px);
+    transition: opacity .18s, transform .18s;
+    flex-shrink: 0;
+  }
+
+  .note-ligne:hover .note-fleche { opacity: 1; transform: translateX(0); }
+  @media (hover: none) { .note-fleche { opacity: .45; transform: translateX(0); } }
+
+  /* ── Vide ── */
+  .vide-encart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 4rem 2rem;
+    border: 1px dashed var(--or-border);
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .vide-glyph { font-size: 1.8rem; color: var(--or); opacity: .3; }
+
+  .vide-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .9rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #92700a;
+    line-height: 1.78;
+  }
+
+  /* ── Pied ── */
+  .pied-encart {
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+    margin-top: 3.5rem;
+    padding: 1rem 1.3rem;
+    border: 1px solid var(--or-border);
+    border-left: 3px solid rgba(245,158,11,.38);
+    border-radius: 0 6px 6px 0;
+    background: rgba(253,230,138,.07);
+    opacity: 0;
+    animation: rise .9s .7s ease forwards;
+  }
+
+  .pied-glyph {
+    color: var(--or);
+    font-size: .88rem;
+    flex-shrink: 0;
+    margin-top: .12rem;
+    opacity: .55;
+  }
+
+  .pied-texte {
+    font-family: 'Mulish', sans-serif;
+    font-size: .87rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #78580a;
+    line-height: 1.78;
+  }
 
   /* ── Responsive ── */
-  @media (max-width: 600px) { .page-wrap { padding: 0 1rem 4rem; } .header-filigrane { width: 220px; right: -1rem; top: 1rem; } .entry-fil-wrap { width: 28px; } .entry-num { width: 26px; height: 26px; font-size: .65rem; } }
-  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) {
+    .page-wrap { padding: 0 1rem 4rem; }
+    .dialogue-carte { padding: 1rem 1.1rem; }
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
 
 <script>document.body.classList.add('page-carnet');</script>
+
 </Base>
