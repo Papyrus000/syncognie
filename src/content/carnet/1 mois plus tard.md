@@ -63,9 +63,9 @@ Ma compagne a parlé de *bid* l'autre jour. Naturellement, dans une conversation
 
 Je lui avais transmis le mot sans m'en rendre compte. Parce que Gottman était entré dans ma façon de voir les échanges — et que ça s'était glissé dans ce qu'on se dit.
 
-C'est ça qui m'a surpris le plus. Pas le site. Pas le code. Pas les outils.
+C'est ça qui m'a surpris le plus...
 
-Le fait qu'apprendre quelque chose change comment on regarde — et que ça déborde, doucement, sur ce qui nous entoure.
+Le site, forcément. Le code, la recherche, le dialogue avec l'IA, je m'attendais à être impressionné. Mais je ne pensais pas que ça déborderait dans ma vie, mon quotidien...
 
 ---
 
