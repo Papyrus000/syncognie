@@ -130,8 +130,8 @@ const numNote = parDate.length - idx;
     {note.data.tags && note.data.tags.length > 0 && (
       <div class="codex">
         <div class="codex-header">
-          <span class="codex-icon" style={`color:${typeCfg.couleur}`}>{typeCfg.glyph}</span>
-          <span class="codex-label">Mots-clés</span>
+          <span class="codex-icon">◆</span>
+          <span class="codex-label">Codex</span>
         </div>
         <ul class="codex-tags">
           {note.data.tags.map((tag: string) => (
@@ -324,9 +324,9 @@ const numNote = parDate.length - idx;
   .codex {
     margin: 1.5rem 0; padding: 1.25rem 1.5rem;
     border: 1px solid var(--rule);
-    border-left: 3px solid rgba(90,127,191,.5);
+    border-left: 3px solid var(--gold, #c4993a);
     border-radius: 0 6px 6px 0;
-    background: rgba(90,127,191,.03);
+    background: rgba(196,153,58,.03);
     opacity: 0; animation: rise .8s .5s ease forwards;
   }
   .codex-header {
@@ -334,7 +334,7 @@ const numNote = parDate.length - idx;
     margin-bottom: 1rem; padding-bottom: .6rem;
     border-bottom: 1px solid var(--rule);
   }
-  .codex-icon { opacity: .55; font-size: .75rem; }
+  .codex-icon { color: var(--gold, #c4993a); opacity: .55; font-size: .75rem; }
   .codex-label {
     font-family: 'Mulish', sans-serif; font-size: .55rem;
     font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
@@ -349,7 +349,7 @@ const numNote = parDate.length - idx;
     background: rgba(245,240,232,.7);
     transition: border-color .2s, color .2s, transform .15s;
   }
-  .codex-tag:hover { border-color: rgba(90,127,191,.5); color: #5a7fbf; transform: translateY(-1px); }
+  .codex-tag:hover { border-color: var(--gold, #c4993a); color: var(--gold, #c4993a); transform: translateY(-1px); }
 
   /* ── Navigation ── */
   .nav-article {
