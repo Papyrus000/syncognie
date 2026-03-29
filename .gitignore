@@ -5,3 +5,5 @@ src/.DS_Store
 .astro/
 *.dmg
 *.zip
+.DS_Store
+.astro/
