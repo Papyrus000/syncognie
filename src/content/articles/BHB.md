@@ -8,6 +8,8 @@ tags:
   - molécule
 rubrique: mecanique
 engagement: lecture
+serie: "Mécanique"
+episode: 4
 ---
 ## Qu'est-ce que c'est ?
 
