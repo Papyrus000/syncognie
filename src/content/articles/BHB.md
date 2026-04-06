@@ -7,6 +7,7 @@ description: La molécule BHB
 tags:
   - molécule
 rubrique: mecanique
+serie: "Mécanique"
 engagement: lecture
 ---
 ## Qu'est-ce que c'est ?
