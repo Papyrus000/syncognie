@@ -7,8 +7,6 @@ description: La molécule BHB
 tags:
   - molécule
 rubrique: mecanique
-serie: "Mécanique"
-episode: 4
 engagement: lecture
 ---
 ## Qu'est-ce que c'est ?
@@ -60,11 +58,6 @@ Lorsque les réserves de glycogène s'épuisent (jeûne, régime cétogène, eff
 | Cétose nutritionnelle légère | 0,5 – 1,5    |
 | Cétose optimale              | 1,5 – 3,0    |
 | Jeûne prolongé               | 3,0 – 6,0    |
-| Acidocétose diabétique ⚠️    | > 10         |
-
-## À ne pas confondre
-
-L'**acidocétose diabétique (DKA)** est une complication grave (surtout diabète type 1) où le BHB monte au-delà de 10 mmol/L avec hyperglycémie simultanée — très différente de la cétose nutritionnelle physiologique, qui est sûre chez les personnes en bonne santé.
 
 ## En résumé
 
