@@ -79,9 +79,12 @@ const numNote = parDate.length - idx;
       {stadeInfo && (
         <>
           <span class="meta-sep">·</span>
-          <span class="badge-stade" style={`color:${stadeInfo.color}; background:${stadeInfo.color}12; border-color:${stadeInfo.color}28`}>
+          <a href="/stades" class="badge-stade"
+            style={`color:${stadeInfo.color}; background:${stadeInfo.color}12; border-color:${stadeInfo.color}28`}
+            title={`${stadeInfo.emoji} ${stadeInfo.label}`}
+          >
             {stadeInfo.emoji} {stadeInfo.label}
-          </span>
+          </a>
         </>
       )}
       <span class="meta-sep">·</span>
@@ -243,7 +246,10 @@ const numNote = parDate.length - idx;
     font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700;
     letter-spacing: .13em; text-transform: uppercase;
     padding: .15rem .4rem; border-radius: 3px; border: 1px solid;
+    text-decoration: none;
+    transition: opacity .2s;
   }
+  .badge-stade:hover { opacity: .75; }
   .note-num {
     font-family: 'Mulish', sans-serif; font-size: .72rem;
     font-weight: 700; letter-spacing: .12em;
