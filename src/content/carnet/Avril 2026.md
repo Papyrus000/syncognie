@@ -13,3 +13,5 @@ tags:
 
 Depuis hier, relecture de la pensée de McGilchrist. 
 
+Nouvel article : McGilchrist, l'essentiel. État "pousse". A relire pour correction, amélioration des formulations.
+
