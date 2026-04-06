@@ -22,15 +22,20 @@
   margin-bottom: 0.7rem;
 }
 
-/* Paragraphe entièrement en italique = voix narratrice */
-.content p:has(> em:only-child),
-.content p:has(> em:only-child) em {
-  font-family: 'Mulish', sans-serif !important;
-  font-size: 1rem !important;
-  font-weight: 300 !important;
+/* Paragraphe voix narratrice : uniquement si le <p> ne contient
+   QUE un <em> et aucun texte brut autour.
+   Utiliser la classe .narratrice pour forcer le style si besoin :
+   <p class="narratrice">*texte*</p> */
+.content p.narratrice {
+  font-family: 'Mulish', sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
   font-style: italic;
-  color: var(--ink-soft) !important;
+  color: var(--ink-soft);
   line-height: 1.88;
+}
+.content p.narratrice em {
+  font-style: italic;
 }
 
 .content strong { color: var(--ink); font-weight: 700; }
