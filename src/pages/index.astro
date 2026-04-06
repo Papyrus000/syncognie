@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 const allArticles = await getCollection('articles');
+const allCarnet   = await getCollection('carnet');
+const allFenetres = await getCollection('fenetres');
 
 const serieNotes = allArticles
   .filter(a => a.data.serie === "Notes d'un modèle en construction")
@@ -21,7 +23,7 @@ const fenetresAnalyses = allArticles
 
 const nbCartes = serieNotes.length + serieMecanique.length + fenetresAnalyses.length;
 
-const recents = [...allArticles]
+const recents = [...allArticles, ...allCarnet, ...allFenetres]
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 5);
 
@@ -162,9 +164,15 @@ function formatDate(date: Date) {
 <div class="pubs-layout">
   <div class="articles-col">
     {recents.map((a) => (
-      <a class="article-item" href={`/articles/${a.slug}`}>
+      <a class="article-item" href={`/${a.collection}/${a.slug}`}>
         <div class="article-meta">
           <span class="article-date">{formatDate(a.data.date)}</span>
+          {a.collection === 'carnet' && (
+            <span class="badge badge-serie">Carnet</span>
+          )}
+          {a.collection === 'fenetres' && (
+            <span class="badge badge-serie">Fenêtre</span>
+          )}
           {a.data.format && (
             <span class="badge badge-analyse">◈ {a.data.format.charAt(0).toUpperCase() + a.data.format.slice(1)}</span>
           )}
