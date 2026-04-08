@@ -1422,8 +1422,8 @@ function formatDateShort(date: Date) {
 /* Numéro romain — sobre, doré pâle */
 .toc-n {
   font-family: 'Libre Baskerville', serif;
-  font-size: .58rem; font-weight: 400; font-style: italic;
-  color: rgba(46,122,74,.32);
+  font-size: .68rem; font-weight: 400; font-style: italic;
+  color: rgba(46,122,74,.42);
   flex-shrink: 0;
   width: 1.1rem; text-align: right;
   letter-spacing: .03em;
@@ -1433,7 +1433,7 @@ function formatDateShort(date: Date) {
 /* Titre de section */
 .toc-name {
   font-family: 'Libre Baskerville', serif;
-  font-size: .86rem; font-weight: 700;
+  font-size: .94rem; font-weight: 700;
   color: var(--ink);
   flex-shrink: 0;
   letter-spacing: -.01em;
@@ -1447,7 +1447,7 @@ function formatDateShort(date: Date) {
   height: 1px;
   background: repeating-linear-gradient(
     to right,
-    rgba(46,122,74,.12) 0, rgba(46,122,74,.12) 2px,
+    rgba(46,122,74,.15) 0, rgba(46,122,74,.15) 2px,
     transparent 2px, transparent 5px
   );
   align-self: center;
@@ -1457,10 +1457,10 @@ function formatDateShort(date: Date) {
 /* Description courte — italique discret */
 .toc-desc {
   font-family: 'Mulish', sans-serif;
-  font-size: .68rem; font-style: italic;
+  font-size: .76rem; font-style: italic;
   color: var(--ink-soft);
   flex: 2; line-height: 1.3;
-  opacity: .72;
+  opacity: .82;
   transition: opacity .2s;
 }
 .toc-row--section:hover .toc-desc { opacity: .95; }
@@ -1468,12 +1468,12 @@ function formatDateShort(date: Date) {
 /* Compteur — micro-badge */
 .toc-ct {
   font-family: 'Mulish', sans-serif;
-  font-size: .56rem; font-weight: 600;
+  font-size: .66rem; font-weight: 600;
   letter-spacing: .06em;
   padding: .08rem .38rem; border-radius: 20px; flex-shrink: 0;
   background: transparent;
-  color: rgba(46,122,74,.5);
-  border: 1px solid rgba(46,122,74,.18);
+  color: rgba(46,122,74,.62);
+  border: 1px solid rgba(46,122,74,.26);
   white-space: nowrap;
   transition: background .2s, color .2s, border-color .2s;
 }
@@ -1510,13 +1510,13 @@ function formatDateShort(date: Date) {
 .toc-sub-row--episode { align-items: center; }
 
 .toc-sub-bullet {
-  color: rgba(46,122,74,.25);
-  font-size: .62rem;
+  color: rgba(46,122,74,.42);
+  font-size: .72rem;
   flex-shrink: 0;
 }
 .toc-sub-name {
   font-family: 'Mulish', sans-serif;
-  font-size: .76rem; font-weight: 600;
+  font-size: .84rem; font-weight: 600;
   color: var(--ink); flex-shrink: 0;
 }
 .toc-sub-name--lien {
@@ -1527,8 +1527,8 @@ function formatDateShort(date: Date) {
 
 .toc-sub-ct {
   font-family: 'Mulish', sans-serif;
-  font-size: .56rem; font-weight: 300;
-  color: var(--ink-soft); opacity: .45;
+  font-size: .66rem; font-weight: 300;
+  color: var(--ink-soft); opacity: .58;
   margin-left: auto; white-space: nowrap;
 }
 
@@ -1577,16 +1577,16 @@ function formatDateShort(date: Date) {
 
 .toc-mec-date {
   font-family: 'Mulish', sans-serif;
-  font-size: .62rem; font-weight: 300;
-  letter-spacing: .04em; color: var(--ink-soft); opacity: .38;
+  font-size: .70rem; font-weight: 300;
+  letter-spacing: .04em; color: var(--ink-soft); opacity: .52;
   white-space: nowrap; min-width: 5.5rem; flex-shrink: 0;
 }
 .toc-mec-ep {
   font-family: 'Mulish', sans-serif;
-  font-size: .58rem; font-weight: 600;
-  color: rgba(46,122,74,.42);
-  background: rgba(58,124,78,.06);
-  border: 1px solid rgba(58,124,78,.13);
+  font-size: .67rem; font-weight: 600;
+  color: rgba(46,122,74,.55);
+  background: rgba(58,124,78,.07);
+  border: 1px solid rgba(58,124,78,.18);
   padding: .04rem .28rem; border-radius: 3px;
   white-space: nowrap; flex-shrink: 0; letter-spacing: .04em;
   transition: background .15s, color .15s;
@@ -1597,11 +1597,11 @@ function formatDateShort(date: Date) {
 }
 .toc-mec-titre {
   font-family: 'Mulish', sans-serif;
-  font-size: .76rem; font-weight: 400;
+  font-size: .84rem; font-weight: 400;
   color: var(--ink); line-height: 1.3; flex: 1;
 }
 .toc-mec-arr {
-  font-size: .60rem; color: rgba(46,122,74,.4);
+  font-size: .68rem; color: rgba(46,122,74,.5);
   opacity: 0; transform: translateX(-4px);
   transition: opacity .15s, transform .2s cubic-bezier(.16,.84,.44,1);
   flex-shrink: 0;
@@ -1636,22 +1636,22 @@ function formatDateShort(date: Date) {
 
 .toc-outil-nom {
   font-family: 'Mulish', sans-serif;
-  font-size: .76rem; font-weight: 600;
+  font-size: .84rem; font-weight: 600;
   color: var(--ink); flex-shrink: 0;
   transition: color .15s;
 }
 .toc-outil-desc {
   font-family: 'Mulish', sans-serif;
-  font-size: .68rem; font-weight: 300; font-style: italic;
-  color: var(--ink-soft); flex: 1; opacity: .6;
+  font-size: .76rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft); flex: 1; opacity: .72;
   display: none;
   transition: opacity .15s;
 }
-.toc-outil-item:hover .toc-outil-desc { opacity: .85; }
+.toc-outil-item:hover .toc-outil-desc { opacity: .90; }
 @media (min-width: 480px) { .toc-outil-desc { display: block; } }
 
 .toc-outil-arr {
-  font-size: .60rem; color: rgba(196,153,58,.55);
+  font-size: .68rem; color: rgba(196,153,58,.62);
   opacity: 0; transform: translateX(-4px);
   transition: opacity .15s, transform .2s cubic-bezier(.16,.84,.44,1);
   flex-shrink: 0;
