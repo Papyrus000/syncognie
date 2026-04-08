@@ -205,6 +205,7 @@ En état de cétose, la glycémie (taux de sucre dans le sang) reste basse et st
 
 > 💡 **Résistance à l'insuline** : état dans lequel les cellules ne répondent plus bien à l'insuline. Le pancréas doit en produire de plus en plus pour le même effet. C'est un état précurseur du diabète de type 2 et associé à de nombreuses maladies chroniques.
 
+![Le BHB](/images/bhb.jpeg)
 
 ## 5. L'effet Warburg
 
