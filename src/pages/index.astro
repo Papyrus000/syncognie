@@ -452,6 +452,80 @@ function formatDateShort(date: Date) {
       </div>
 
     </a>
+
+    <!-- Séparateur -->
+    <div class="sidebar-sep-line"></div>
+
+    <!-- Encart niveaux d'engagement -->
+    <a class="engage-encart" href="/engagement">
+
+      <!-- Filigrane SVG — ondes concentriques -->
+      <svg class="engage-svg" viewBox="0 0 120 80" fill="none" aria-hidden="true">
+        <circle cx="96" cy="40" r="10" stroke="#7c5cbf" stroke-width=".7" opacity=".15" class="engage-svg-w1"/>
+        <circle cx="96" cy="40" r="21" stroke="#7c5cbf" stroke-width=".5" opacity=".10" class="engage-svg-w2"/>
+        <circle cx="96" cy="40" r="34" stroke="#7c5cbf" stroke-width=".4" opacity=".07" class="engage-svg-w3"/>
+        <circle cx="96" cy="40" r="2.5" fill="#9b7fd4" opacity=".35"/>
+        <circle cx="96" cy="40" r="1.1" fill="#f5f0e8" opacity=".7"/>
+      </svg>
+
+      <!-- En-tête -->
+      <div class="engage-hd">
+        <span class="engage-eyebrow">Niveaux de lecture</span>
+        <span class="engage-glyph">◈</span>
+      </div>
+
+      <!-- Phrase -->
+      <p class="engage-phrase">Chaque article indique ce qu'il demande de toi.</p>
+
+      <!-- Les 3 niveaux -->
+      <div class="engage-legende">
+
+        <div class="engage-niveau">
+          <div class="engage-barres">
+            <span class="engage-bar engage-bar--on"></span>
+            <span class="engage-bar"></span>
+            <span class="engage-bar"></span>
+          </div>
+          <div class="engage-corps">
+            <span class="engage-nom">Survol</span>
+            <span class="engage-desc">L'essentiel en diagonale</span>
+          </div>
+        </div>
+
+        <div class="engage-niveau">
+          <div class="engage-barres">
+            <span class="engage-bar engage-bar--on"></span>
+            <span class="engage-bar engage-bar--on"></span>
+            <span class="engage-bar"></span>
+          </div>
+          <div class="engage-corps">
+            <span class="engage-nom">Lecture</span>
+            <span class="engage-desc">Du début à la fin, un fil à suivre</span>
+          </div>
+        </div>
+
+        <div class="engage-niveau engage-niveau--active">
+          <div class="engage-barres">
+            <span class="engage-bar engage-bar--on"></span>
+            <span class="engage-bar engage-bar--on"></span>
+            <span class="engage-bar engage-bar--on"></span>
+          </div>
+          <div class="engage-corps">
+            <span class="engage-nom">Immersion</span>
+            <span class="engage-desc">On creuse, on prend des notes</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pied CTA -->
+      <div class="engage-cta">
+        <span class="engage-cta-texte">Comment ça fonctionne</span>
+        <span class="engage-cta-arr">→</span>
+      </div>
+
+    </a>
+
   </aside>
 </div>
 
@@ -983,6 +1057,193 @@ function formatDateShort(date: Date) {
   transition: opacity .2s, transform .25s cubic-bezier(.16,.84,.44,1);
 }
 .jardin-encart:hover .jardin-cta-arr {
+  opacity: .75; transform: translateX(0);
+}
+
+/* ── Séparateur sidebar ── */
+.sidebar-sep-line {
+  height: 1px; margin: .85rem 0;
+  background: linear-gradient(to right, transparent, rgba(139,94,60,.12), transparent);
+}
+
+/* ══════════════════════════════════════
+   ENCART NIVEAUX D'ENGAGEMENT — sidebar
+══════════════════════════════════════ */
+.engage-encart {
+  display: flex; flex-direction: column; gap: 0;
+  text-decoration: none; color: inherit;
+  position: relative; overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(124,92,191,.16);
+  background: linear-gradient(150deg,
+    rgba(250,248,255,.98) 0%,
+    rgba(245,242,254,.95) 55%,
+    rgba(248,246,255,.98) 100%
+  );
+  box-shadow:
+    0 2px 8px rgba(124,92,191,.05),
+    inset 0 0 0 1px rgba(255,255,255,.65);
+  padding: 1.15rem 1rem 1rem;
+  transition: border-color .3s, box-shadow .3s, transform .28s cubic-bezier(.16,.84,.44,1);
+}
+.engage-encart:hover {
+  border-color: rgba(124,92,191,.28);
+  box-shadow:
+    0 8px 24px rgba(124,92,191,.09),
+    inset 0 0 0 1px rgba(255,255,255,.7);
+  transform: translateY(-2px);
+}
+
+/* SVG ondes en fond */
+.engage-svg {
+  position: absolute;
+  top: -6px; right: -14px;
+  width: 96px; height: 64px;
+  pointer-events: none;
+  opacity: .7;
+}
+@keyframes engage-wave1 {
+  0%,100% { r: 10; opacity: .15; }
+  50%      { r: 12; opacity: .08; }
+}
+@keyframes engage-wave2 {
+  0%,100% { r: 21; opacity: .10; }
+  50%      { r: 24; opacity: .05; }
+}
+@keyframes engage-wave3 {
+  0%,100% { r: 34; opacity: .07; }
+  50%      { r: 38; opacity: .03; }
+}
+.engage-svg-w1 { animation: engage-wave1 3.0s ease-in-out infinite; }
+.engage-svg-w2 { animation: engage-wave2 3.8s ease-in-out infinite; }
+.engage-svg-w3 { animation: engage-wave3 4.6s ease-in-out infinite; }
+
+/* En-tête */
+.engage-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .62rem;
+  position: relative; z-index: 1;
+}
+.engage-eyebrow {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .26em; text-transform: uppercase;
+  color: #6b48b8;
+  border-bottom: 1px solid rgba(107,72,184,.18);
+  padding-bottom: .12rem;
+}
+.engage-glyph {
+  color: #9b7fd4; font-size: .65rem; opacity: .4;
+  transition: opacity .25s;
+}
+.engage-encart:hover .engage-glyph { opacity: .75; }
+
+/* Phrase */
+.engage-phrase {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .74rem; font-style: italic; font-weight: 400;
+  color: var(--ink); line-height: 1.55;
+  margin-bottom: .9rem;
+  position: relative; z-index: 1;
+  opacity: .8;
+}
+
+/* Légende niveaux */
+.engage-legende {
+  display: flex; flex-direction: column; gap: 0;
+  position: relative; z-index: 1;
+  border-left: 1px solid rgba(124,92,191,.1);
+  padding-left: .75rem;
+  margin-left: .15rem;
+}
+
+.engage-niveau {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .28rem 0;
+  position: relative;
+  transition: padding-left .2s;
+}
+.engage-niveau::before {
+  content: '';
+  position: absolute;
+  left: -.88rem; top: 50%; transform: translateY(-50%);
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(124,92,191,.2);
+  border: 1px solid rgba(124,92,191,.15);
+  transition: background .2s;
+}
+.engage-encart:hover .engage-niveau::before {
+  background: rgba(124,92,191,.38);
+}
+
+/* Niveau actif (immersion) — légère mise en avant */
+.engage-niveau--active .engage-corps .engage-nom {
+  color: #6b48b8;
+}
+.engage-niveau--active::before {
+  background: rgba(107,72,184,.35);
+  border-color: rgba(107,72,184,.25);
+  width: 6px; height: 6px;
+}
+
+/* Barres d'intensité — alignées par le bas, effet égaliseur */
+.engage-barres {
+  display: flex; gap: 2px; align-items: flex-end; flex-shrink: 0;
+}
+.engage-bar {
+  display: block;
+  width: 3px; border-radius: 2px 2px 1px 1px;
+  background: rgba(124,92,191,.12);
+  transition: background .2s;
+}
+/* Hauteurs croissantes ancrées en bas */
+.engage-barres .engage-bar:nth-child(1) { height: 7px; }
+.engage-barres .engage-bar:nth-child(2) { height: 11px; }
+.engage-barres .engage-bar:nth-child(3) { height: 16px; }
+
+.engage-bar--on { background: rgba(107,72,184,.45); }
+.engage-niveau--active .engage-bar--on { background: #7c5cbf; }
+.engage-encart:hover .engage-bar--on { background: rgba(107,72,184,.65); }
+.engage-encart:hover .engage-niveau--active .engage-bar--on { background: #6b48b8; }
+
+/* Texte niveau */
+.engage-corps {
+  display: flex; flex-direction: column; gap: .05rem; flex: 1; min-width: 0;
+}
+.engage-nom {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .74rem; font-weight: 700;
+  color: var(--ink); letter-spacing: -.01em; line-height: 1;
+  transition: color .2s;
+}
+.engage-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft); opacity: .6; line-height: 1.35;
+}
+
+/* CTA pied */
+.engage-cta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: .9rem;
+  padding-top: .72rem;
+  border-top: 1px solid rgba(124,92,191,.08);
+  position: relative; z-index: 1;
+}
+.engage-cta-texte {
+  font-family: 'Mulish', sans-serif;
+  font-size: .56rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: #6b48b8; opacity: .6;
+  transition: opacity .2s;
+}
+.engage-encart:hover .engage-cta-texte { opacity: 1; }
+.engage-cta-arr {
+  font-size: .68rem; color: #6b48b8; opacity: .35;
+  transform: translateX(-3px);
+  transition: opacity .2s, transform .25s cubic-bezier(.16,.84,.44,1);
+}
+.engage-encart:hover .engage-cta-arr {
   opacity: .75; transform: translateX(0);
 }
 

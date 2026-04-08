@@ -1,0 +1,472 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+// getCollection filtre les brouillons automatiquement en prod
+// On récupère TOUS les articles puis on filtre côté JS
+// pour être robuste même si engagement n'est pas dans le schema Zod
+const allArticles = await getCollection('articles');
+
+// Comptage par niveau — on lit le champ brut via data
+const survols    = allArticles.filter(a => (a.data as any).engagement === 'survol').length;
+const lectures   = allArticles.filter(a => (a.data as any).engagement === 'lecture').length;
+const immersions = allArticles.filter(a => (a.data as any).engagement === 'immersion').length;
+
+// Articles par niveau pour les listes illustratives (5 max)
+const articlesSurvol    = allArticles.filter(a => (a.data as any).engagement === 'survol').slice(0,5);
+const articlesLecture   = allArticles.filter(a => (a.data as any).engagement === 'lecture').slice(0,5);
+const articlesImmersion = allArticles.filter(a => (a.data as any).engagement === 'immersion').slice(0,5);
+---
+
+<Base title="Niveaux de lecture — Syncognie">
+
+  <div class="page-wrap">
+
+    <!-- En-tête -->
+    <header class="page-header">
+
+      <!-- Filigrane : ondes concentriques animées -->
+      <svg class="header-filigrane" viewBox="0 0 420 420" fill="none"
+           xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Ondes -->
+        <circle cx="210" cy="210" r="38"  stroke="#7c5cbf" stroke-width=".8"  opacity=".18" class="fil-wave fil-wave--1"/>
+        <circle cx="210" cy="210" r="72"  stroke="#7c5cbf" stroke-width=".6"  opacity=".13" class="fil-wave fil-wave--2"/>
+        <circle cx="210" cy="210" r="112" stroke="#7c5cbf" stroke-width=".5"  opacity=".09" class="fil-wave fil-wave--3"/>
+        <circle cx="210" cy="210" r="155" stroke="#7c5cbf" stroke-width=".4"  opacity=".06" class="fil-wave fil-wave--4"/>
+        <circle cx="210" cy="210" r="185"
+          stroke="#7c5cbf" stroke-width=".5"
+          stroke-dasharray="2 10"
+          opacity=".12"
+          class="fil-rotate"/>
+        <!-- Lignes de rayonnement -->
+        <line x1="210" y1="172" x2="210" y2="145" stroke="#9b7fd4" stroke-width=".7" opacity=".2"/>
+        <line x1="210" y1="248" x2="210" y2="275" stroke="#9b7fd4" stroke-width=".7" opacity=".2"/>
+        <line x1="172" y1="210" x2="145" y2="210" stroke="#9b7fd4" stroke-width=".7" opacity=".18"/>
+        <line x1="248" y1="210" x2="275" y2="210" stroke="#9b7fd4" stroke-width=".7" opacity=".18"/>
+        <line x1="183" y1="183" x2="163" y2="163" stroke="#9b7fd4" stroke-width=".5" opacity=".14"/>
+        <line x1="237" y1="183" x2="257" y2="163" stroke="#9b7fd4" stroke-width=".5" opacity=".14"/>
+        <line x1="183" y1="237" x2="163" y2="257" stroke="#9b7fd4" stroke-width=".5" opacity=".14"/>
+        <line x1="237" y1="237" x2="257" y2="257" stroke="#9b7fd4" stroke-width=".5" opacity=".14"/>
+        <!-- Point central -->
+        <circle cx="210" cy="210" r="6"   fill="#7c5cbf" opacity=".2"  class="fil-float"/>
+        <circle cx="210" cy="210" r="2.8" fill="#f5f0e8" opacity=".7"  class="fil-float"/>
+        <!-- Points sur les ondes -->
+        <circle cx="210" cy="172" r="3"   fill="#9b7fd4" opacity=".45" class="fil-pulse"/>
+        <circle cx="248" cy="210" r="2.5" fill="#7c5cbf" opacity=".4"  class="fil-pulse-2"/>
+        <circle cx="210" cy="248" r="3"   fill="#9b7fd4" opacity=".45" class="fil-pulse-3"/>
+        <circle cx="172" cy="210" r="2.5" fill="#7c5cbf" opacity=".35" class="fil-pulse-2"/>
+      </svg>
+
+      <p class="page-eyebrow">Lire à son rythme</p>
+      <h1 class="page-titre">Niveaux <em>d'engagement</em></h1>
+      <p class="page-sous">
+        Chaque article de Syncognie porte une indication sur ce qu'il demande. 
+        Pas un jugement de complexité — une invitation à choisir 
+        la profondeur avec laquelle tu veux t'y plonger.
+      </p>
+    </header>
+
+    <!-- Séparateur -->
+    <div class="ornament-sep">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">Philosophie</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- Section philosophie -->
+    <section class="philosophie">
+      <div class="phil-intro">
+        <p class="phil-chapeau">
+          Lire n'est pas une performance. C'est une rencontre.
+        </p>
+        <p class="phil-texte">
+          Certains jours on a dix minutes et l'envie d'un aperçu. 
+          D'autres, on a une heure et l'appétit d'aller au fond des choses. 
+          Ce n'est pas la même lecture, et ce n'est pas grave — 
+          les deux ont de la valeur.
+        </p>
+        <p class="phil-texte">
+          Le niveau d'engagement n'est pas lié à la "difficulté" d'un article. 
+          Il indique simplement l'intensité de présence qu'il appelle : 
+          combien de temps, quelle densité, quel type d'attention.
+          Une graine peut être immersive. Un arbre peut se survoler.
+        </p>
+      </div>
+
+      <div class="phil-citation">
+        <span class="cit-glyph">◈</span>
+        <blockquote class="cit-texte">
+          "Il n'y a pas de bonne ou mauvaise façon de lire. 
+          Il y a la façon qui correspond à ce que tu as — 
+          aujourd'hui, maintenant."
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- Séparateur -->
+    <div class="ornament-sep ornament-sep--mid">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">Les trois niveaux</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- Niveaux -->
+    <section class="niveaux-section">
+
+      <!-- ── SURVOL ── -->
+      <div class="niveau-card niveau-survol">
+        <div class="niveau-header">
+          <div class="niveau-signal" aria-hidden="true">
+            <span class="signal-bar signal-bar--on"></span>
+            <span class="signal-bar"></span>
+            <span class="signal-bar"></span>
+          </div>
+          <div class="niveau-titres">
+            <span class="niveau-label">Niveau 1</span>
+            <h2 class="niveau-nom">Survol</h2>
+          </div>
+          <span class="niveau-count">{survols} article{survols > 1 ? 's' : ''}</span>
+        </div>
+        <div class="niveau-corps">
+          <p class="niveau-def">
+            L'essentiel en quelques minutes. On lit les titres, 
+            les encadrés, la conclusion. On repart avec une intuition, 
+            une image, une question posée — sans chercher à tout retenir.
+          </p>
+          <ul class="niveau-traits">
+            <li>5 à 10 minutes de lecture</li>
+            <li>Idéal pour découvrir un territoire inconnu</li>
+            <li>L'article donne sans exiger</li>
+          </ul>
+          <div class="niveau-tempo">
+            <span class="tempo-icone">◎</span>
+            <span class="tempo-texte">Une pause-café. Un trajet.</span>
+          </div>
+          {articlesSurvol.length > 0 && (
+            <ul class="niveau-articles">
+              {articlesSurvol.map(a => (
+                <li><a href={`/articles/${a.slug}`} class="niv-art-lien">
+                  <span class="niv-art-titre">{a.data.title}</span>
+                  <span class="niv-art-arr">→</span>
+                </a></li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+
+      <!-- Flèche -->
+      <div class="niveau-fleche" aria-hidden="true">
+        <div class="fleche-ligne"></div>
+        <span class="fleche-sym">↓</span>
+        <span class="fleche-label">plus profond</span>
+        <div class="fleche-ligne"></div>
+      </div>
+
+      <!-- ── LECTURE ── -->
+      <div class="niveau-card niveau-lecture">
+        <div class="niveau-header">
+          <div class="niveau-signal" aria-hidden="true">
+            <span class="signal-bar signal-bar--on"></span>
+            <span class="signal-bar signal-bar--on"></span>
+            <span class="signal-bar"></span>
+          </div>
+          <div class="niveau-titres">
+            <span class="niveau-label">Niveau 2</span>
+            <h2 class="niveau-nom">Lecture</h2>
+          </div>
+          <span class="niveau-count">{lectures} article{lectures > 1 ? 's' : ''}</span>
+        </div>
+        <div class="niveau-corps">
+          <p class="niveau-def">
+            On suit le fil du début à la fin. L'article a une structure, 
+            une progression, un argument qui se construit. 
+            On peut s'arrêter, relire un passage, laisser une idée faire son chemin.
+          </p>
+          <ul class="niveau-traits">
+            <li>15 à 30 minutes de lecture</li>
+            <li>L'article demande de la continuité, pas de notes</li>
+            <li>Une bonne dose de concentration suffit</li>
+          </ul>
+          <div class="niveau-tempo">
+            <span class="tempo-icone">◈</span>
+            <span class="tempo-texte">Un moment calme. Une soirée.</span>
+          </div>
+          {articlesLecture.length > 0 && (
+            <ul class="niveau-articles">
+              {articlesLecture.map(a => (
+                <li><a href={`/articles/${a.slug}`} class="niv-art-lien">
+                  <span class="niv-art-titre">{a.data.title}</span>
+                  <span class="niv-art-arr">→</span>
+                </a></li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+
+      <!-- Flèche -->
+      <div class="niveau-fleche" aria-hidden="true">
+        <div class="fleche-ligne"></div>
+        <span class="fleche-sym">↓</span>
+        <span class="fleche-label">plongée</span>
+        <div class="fleche-ligne"></div>
+      </div>
+
+      <!-- ── IMMERSION ── -->
+      <div class="niveau-card niveau-immersion">
+        <div class="niveau-header">
+          <div class="niveau-signal" aria-hidden="true">
+            <span class="signal-bar signal-bar--on"></span>
+            <span class="signal-bar signal-bar--on"></span>
+            <span class="signal-bar signal-bar--on"></span>
+          </div>
+          <div class="niveau-titres">
+            <span class="niveau-label">Niveau 3</span>
+            <h2 class="niveau-nom">Immersion</h2>
+          </div>
+          <span class="niveau-count">{immersions} article{immersions > 1 ? 's' : ''}</span>
+        </div>
+        <div class="niveau-corps">
+          <p class="niveau-def">
+            On entre dans la densité. L'article convoque des concepts, 
+            des mécanismes, des connexions à tisser soi-même. 
+            On prend des notes, on relit, on revient. 
+            C'est une exploration — pas une lecture passive.
+          </p>
+          <ul class="niveau-traits">
+            <li>30 minutes à plus d'une heure</li>
+            <li>Un carnet à portée de main est bienvenu</li>
+            <li>L'article se construit avec toi, pas pour toi</li>
+          </ul>
+          <div class="niveau-tempo">
+            <span class="tempo-icone">✦</span>
+            <span class="tempo-texte">Un bloc dégagé. Un état d'esprit curieux.</span>
+          </div>
+          {articlesImmersion.length > 0 && (
+            <ul class="niveau-articles">
+              {articlesImmersion.map(a => (
+                <li><a href={`/articles/${a.slug}`} class="niv-art-lien">
+                  <span class="niv-art-titre">{a.data.title}</span>
+                  <span class="niv-art-arr">→</span>
+                </a></li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Séparateur -->
+    <div class="ornament-sep ornament-sep--mid">
+      <div class="orn-line"></div>
+      <div class="orn-centre">
+        <div class="orn-diamond"></div>
+        <span class="orn-label">À retenir</span>
+        <div class="orn-diamond"></div>
+      </div>
+      <div class="orn-line"></div>
+    </div>
+
+    <!-- Note finale -->
+    <section class="note-finale">
+      <div class="note-encart">
+        <span class="note-glyph">◈</span>
+        <div>
+          <p class="note-texte">
+            Le niveau d'engagement est une invitation, pas une frontière. 
+            Un article "Immersion" peut se survoler — et une graine 
+            peut déclencher deux heures de réflexion. 
+            Le niveau indique ce que l'auteur a mis dans le texte. 
+            Ce que tu en fais, c'est ton affaire.
+          </p>
+          <a href="/articles" class="note-lien">Explorer les publications →</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</Base>
+
+<style>
+  .page-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.75rem 5rem;
+
+<style>
+  .page-wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem 5rem; }
+
+  /* ── EN-TÊTE ── */
+  .page-header {
+    padding: 4rem 0 2.5rem; position: relative; overflow: visible;
+    opacity: 0; animation: rise .9s .05s ease forwards;
+  }
+  .page-eyebrow {
+    font-family: 'Mulish', sans-serif; font-size: .6rem; font-weight: 300;
+    letter-spacing: .32em; text-transform: uppercase;
+    color: #7c5cbf; opacity: .7; margin-bottom: 1rem; position: relative; z-index: 1;
+  }
+  .page-titre {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 700;
+    color: var(--ink); line-height: 1.15; letter-spacing: -.02em;
+    margin-bottom: .9rem; position: relative; z-index: 1;
+  }
+  .page-titre em { font-style: italic; font-weight: 400; color: #7c5cbf; }
+  .page-sous {
+    font-family: 'Mulish', sans-serif; font-size: .95rem; font-weight: 400;
+    color: var(--ink-soft); line-height: 1.8; max-width: 52ch;
+    position: relative; z-index: 1;
+  }
+
+  /* ── FILIGRANE ── */
+  .header-filigrane {
+    position: absolute; top: 50%; right: 0;
+    transform: translateY(-50%); width: 300px; height: 300px;
+    pointer-events: none; z-index: 0;
+  }
+  @media (max-width: 600px) { .header-filigrane { display: none; } }
+
+  .fil-wave { transform-origin: 210px 210px; }
+  .fil-wave--1 { animation: wave-out 4.0s ease-in-out infinite; }
+  .fil-wave--2 { animation: wave-out 4.0s ease-in-out infinite; animation-delay: .8s; }
+  .fil-wave--3 { animation: wave-out 4.0s ease-in-out infinite; animation-delay: 1.6s; }
+  .fil-wave--4 { animation: wave-out 4.0s ease-in-out infinite; animation-delay: 2.4s; }
+  @keyframes wave-out { 0% { opacity: .18; } 50% { opacity: .06; } 100% { opacity: .18; } }
+
+  .fil-rotate { transform-origin: 210px 210px; animation: fil-spin 40s linear infinite; }
+  @keyframes fil-spin { to { transform: rotate(360deg); } }
+  .fil-pulse   { animation: fil-p 5s ease-in-out infinite; }
+  .fil-pulse-2 { animation: fil-p 5s ease-in-out infinite; animation-delay: 1.2s; }
+  .fil-pulse-3 { animation: fil-p 5s ease-in-out infinite; animation-delay: 2.4s; }
+  @keyframes fil-p { 0%,100% { opacity: .18; } 50% { opacity: .55; } }
+  .fil-float { animation: fil-f 7s ease-in-out infinite; transform-origin: 210px 210px; }
+  @keyframes fil-f { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+  /* ── SÉPARATEUR ── */
+  .ornament-sep { display: flex; align-items: center; gap: 1rem; opacity: 0; animation: rise .9s .2s ease forwards; }
+  .ornament-sep--mid { margin: 3rem 0; animation-delay: .3s; }
+  .orn-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--rule), transparent); }
+  .orn-centre { display: flex; align-items: center; gap: .55rem; }
+  .orn-diamond { width: 5px; height: 5px; background: #9b7fd4; opacity: .45; transform: rotate(45deg); }
+  .orn-label { font-family: 'Mulish', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--ink-soft); opacity: .45; }
+
+  /* ── PHILOSOPHIE ── */
+  .philosophie {
+    padding: 2.5rem 0 0; display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: start; opacity: 0; animation: rise .9s .25s ease forwards;
+  }
+  @media (max-width: 600px) { .philosophie { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .phil-chapeau { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.1rem; font-weight: 400; font-style: italic; color: #7c5cbf; line-height: 1.5; margin-bottom: 1.4rem; }
+  .phil-texte { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400; color: var(--ink-soft); line-height: 1.85; margin-bottom: 1rem; }
+  .phil-texte:last-child { margin-bottom: 0; }
+  .phil-citation { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.75rem; background: rgba(124,92,191,.05); border: 1px solid rgba(124,92,191,.15); border-radius: 6px; }
+  .cit-glyph { color: #9b7fd4; opacity: .5; font-size: .9rem; }
+  .cit-texte { font-family: 'Libre Baskerville', Georgia, serif; font-size: .95rem; font-weight: 400; font-style: italic; color: var(--ink); line-height: 1.7; margin: 0; quotes: none; }
+
+  /* ── NIVEAUX ── */
+  .niveaux-section { display: flex; flex-direction: column; gap: 0; opacity: 0; animation: rise .9s .35s ease forwards; }
+
+  .niveau-card {
+    padding: 2rem 2rem 2rem 2.5rem;
+    border: 1px solid var(--rule); border-radius: 6px;
+    background: rgba(248,246,255,.6); position: relative;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .niveau-card:hover { box-shadow: 0 4px 20px rgba(107,72,184,.08); transform: translateY(-1px); }
+
+  .niveau-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; border-radius: 6px 0 0 6px;
+  }
+  .niveau-survol::before   { background: #c4b0e8; }
+  .niveau-lecture::before  { background: #9b7fd4; }
+  .niveau-immersion::before { background: #6b48b8; }
+
+  /* ── Header de la carte ── */
+  .niveau-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.25rem; padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(124,92,191,.1);
+  }
+
+  /* Signal d'égaliseur — dans le flux, aligné en bas */
+  .niveau-signal {
+    display: flex; gap: 3px; align-items: flex-end; flex-shrink: 0;
+    opacity: .4; transition: opacity .2s;
+  }
+  .niveau-card:hover .niveau-signal { opacity: .85; }
+
+  .signal-bar {
+    display: block; width: 4px; border-radius: 2px 2px 1px 1px;
+    background: rgba(124,92,191,.12);
+  }
+  .signal-bar:nth-child(1) { height: 10px; }
+  .signal-bar:nth-child(2) { height: 16px; }
+  .signal-bar:nth-child(3) { height: 22px; }
+
+  .niveau-survol   .signal-bar--on { background: #c4b0e8; }
+  .niveau-lecture  .signal-bar--on { background: #9b7fd4; }
+  .niveau-immersion .signal-bar--on { background: #6b48b8; }
+
+  .niveau-titres { flex: 1; display: flex; flex-direction: column; gap: .2rem; }
+  .niveau-label { font-family: 'Mulish', sans-serif; font-size: .55rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: #9b7fd4; opacity: .6; }
+  .niveau-nom { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); letter-spacing: -.01em; margin: 0; }
+  .niveau-count { font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); opacity: .45; white-space: nowrap; }
+
+  .niveau-corps { padding-left: .25rem; }
+  .niveau-def { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400; color: var(--ink-soft); line-height: 1.8; margin-bottom: 1rem; max-width: 58ch; }
+  .niveau-traits { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.25rem; }
+  .niveau-traits li { font-family: 'Mulish', sans-serif; font-size: .78rem; font-weight: 300; color: var(--ink-soft); opacity: .8; display: flex; align-items: baseline; gap: .5rem; line-height: 1.5; }
+  .niveau-traits li::before { content: '—'; font-size: .6rem; opacity: .35; flex-shrink: 0; }
+
+  .niveau-tempo {
+    display: inline-flex; align-items: center; gap: .55rem;
+    padding: .45rem .75rem; background: rgba(124,92,191,.05);
+    border: 1px solid rgba(124,92,191,.1); border-radius: 4px; margin-bottom: 1.1rem;
+  }
+  .tempo-icone { color: #9b7fd4; font-size: .72rem; opacity: .65; flex-shrink: 0; }
+  .tempo-texte { font-family: 'Mulish', sans-serif; font-size: .74rem; font-weight: 300; font-style: italic; color: var(--ink-soft); opacity: .75; }
+
+  /* ── Articles listés automatiquement ── */
+  .niveau-articles {
+    list-style: none; padding: 0; margin: 0;
+    border-top: 1px solid rgba(124,92,191,.08); padding-top: .75rem;
+    display: flex; flex-direction: column;
+  }
+  .niv-art-lien {
+    display: flex; align-items: baseline; justify-content: space-between; gap: .5rem;
+    padding: .28rem .2rem; text-decoration: none; border-radius: 3px;
+    transition: background .13s, padding-left .15s;
+  }
+  .niv-art-lien:hover { background: rgba(124,92,191,.05); padding-left: .4rem; }
+  .niv-art-lien:hover .niv-art-arr { opacity: 1; transform: translateX(0); }
+  .niv-art-titre { font-family: 'Mulish', sans-serif; font-size: .76rem; font-weight: 400; color: var(--ink); line-height: 1.35; flex: 1; }
+  .niv-art-arr { font-size: .60rem; color: rgba(124,92,191,.45); opacity: 0; transform: translateX(-4px); transition: opacity .15s, transform .2s cubic-bezier(.16,.84,.44,1); flex-shrink: 0; }
+
+  /* ── FLÈCHES ── */
+  .niveau-fleche { display: flex; flex-direction: column; align-items: center; gap: .3rem; padding: .6rem 0; }
+  .fleche-ligne { width: 1px; height: 18px; background: rgba(124,92,191,.2); }
+  .fleche-sym { font-size: .85rem; color: #9b7fd4; opacity: .4; line-height: 1; }
+  .fleche-label { font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 300; letter-spacing: .2em; text-transform: uppercase; color: #9b7fd4; opacity: .3; }
+
+  /* ── NOTE FINALE ── */
+  .note-finale { opacity: 0; animation: rise .9s .45s ease forwards; }
+  .note-encart { display: flex; align-items: flex-start; gap: 1rem; padding: 1.5rem 1.75rem; background: rgba(124,92,191,.04); border-left: 2px solid rgba(124,92,191,.35); border-radius: 0 6px 6px 0; }
+  .note-glyph { color: #9b7fd4; opacity: .45; font-size: .8rem; flex-shrink: 0; margin-top: .15rem; }
+  .note-texte { font-family: 'Mulish', sans-serif; font-size: .88rem; font-weight: 400; font-style: italic; color: var(--ink-soft); line-height: 1.75; margin-bottom: 1rem; }
+  .note-lien { display: inline-flex; align-items: center; font-family: 'Mulish', sans-serif; font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #7c5cbf; text-decoration: none; transition: opacity .2s, transform .2s; transform: translateX(0); }
+  .note-lien:hover { opacity: .75; transform: translateX(3px); }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+</style>
