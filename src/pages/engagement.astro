@@ -2,39 +2,33 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-// On collecte toutes les sources possibles
 const articles  = await getCollection('articles');
 const carnet    = await getCollection('carnet').catch(() => []);
 const fenetres  = await getCollection('fenetres').catch(() => []);
 
-// Fusion — engagement peut venir de n'importe quelle collection
 const tout = [...articles, ...carnet, ...fenetres];
 
-// Comptage par niveau
-const survols    = tout.filter(a => (a.data as any).engagement === 'survol').length;
-const lectures   = tout.filter(a => (a.data as any).engagement === 'lecture').length;
-const immersions = tout.filter(a => (a.data as any).engagement === 'immersion').length;
+// 'pause' est l'ancienne valeur de 'survol' — on accepte les deux
+const estSurvol    = (a: any) => ['survol', 'pause'].includes((a.data as any).engagement);
+const estLecture   = (a: any) => (a.data as any).engagement === 'lecture';
+const estImmersion = (a: any) => (a.data as any).engagement === 'immersion';
 
-// Helper : URL selon la collection
+const survols    = tout.filter(estSurvol).length;
+const lectures   = tout.filter(estLecture).length;
+const immersions = tout.filter(estImmersion).length;
+
 function urlArticle(a: any) {
   if (a.collection === 'carnet')   return `/carnet/${a.slug}`;
   if (a.collection === 'fenetres') return `/fenetres/${a.slug}`;
   return `/articles/${a.slug}`;
 }
 
-// Articles par niveau (5 max), triés par date décroissante
-const articlesSurvol    = tout
-  .filter(a => (a.data as any).engagement === 'survol')
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
-const articlesLecture   = tout
-  .filter(a => (a.data as any).engagement === 'lecture')
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
-const articlesImmersion = tout
-  .filter(a => (a.data as any).engagement === 'immersion')
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 5);
+const articlesSurvol    = tout.filter(estSurvol)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
+const articlesLecture   = tout.filter(estLecture)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
+const articlesImmersion = tout.filter(estImmersion)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 5);
 ---
 
 <Base title="Niveaux de lecture — Syncognie">

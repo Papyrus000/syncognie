@@ -12,7 +12,7 @@ const articles = defineCollection({
     tags:        z.array(z.string()).optional(),
     format:      z.string().optional(),
     rubrique:    z.string().optional(),
-    engagement:  z.enum(['survol', 'lecture', 'immersion']).optional(),
+    engagement:  z.enum(['survol', 'pause', 'lecture', 'immersion']).optional(),
     type:        z.string().optional(),
     stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
     serie:       z.string().optional(),
