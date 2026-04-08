@@ -8,7 +8,7 @@ const allFenetres = await getCollection('fenetres');
 
 const serieNotes = allArticles
   .filter(a => a.data.serie === "Notes d'un modèle en construction")
-  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
+  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0)); // ordre des épisodes croissant
 
 const serieDialogues = allArticles
   .filter(a => a.data.serie === "Les rencontres de Nathalie et Élodie")
@@ -16,7 +16,7 @@ const serieDialogues = allArticles
 
 const serieMecanique = allArticles
   .filter(a => a.data.serie === "Mécanique")
-  .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0));
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()); // plus récent en premier
 
 const fenetresAnalyses = allArticles
   .filter(a => !!a.data.lien_fenetre);
@@ -27,6 +27,25 @@ const recents = [...allArticles, ...allCarnet, ...allFenetres]
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 5);
 
+// Premier épisode de Vies (épisode 1)
+const premierEpisodeVies = [...serieDialogues].sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0))[0];
+
+// Tous les outils — ordre inverse (dernier ajouté en premier)
+const outilsSommaire = [
+  { titre: "Générateur d'ancres",          desc: 'Ancres matinales personnalisées',                  icone: '◎', couleur: '#9a9189', lien: '/outils/ancres',              statut: 'idee' },
+  { titre: 'Journal de gratifications',    desc: 'Conscience du circuit, sans culpabilité',          icone: '◎', couleur: '#9a9189', lien: '/outils/journal',             statut: 'idee' },
+  { titre: 'Minuteur de décompression',    desc: 'Pauses intentionnelles, ancrées en neuroscience',  icone: '◎', couleur: '#9a9189', lien: '/outils/minuteur',            statut: 'idee' },
+  { titre: 'Tableau de bord homéostatique',desc: 'Équilibre stimuli / récupération en temps réel',   icone: '◎', couleur: '#2ecc71', lien: '/outils/homeostasie',         statut: 'bientot' },
+  { titre: 'Les deux mondes',              desc: 'La thèse de McGilchrist vécue en quatre actes',    icone: '◈', couleur: '#5c3a1e', lien: '/outils/mcgilchrist',         statut: 'disponible' },
+  { titre: 'La Boussole épistémique',      desc: '46 modèles, 14 domaines — naviguer par question',  icone: '◈', couleur: '#c4993a', lien: '/outils/boussole-epistemique',statut: 'disponible' },
+  { titre: 'Strates',                      desc: "Penseurs organisés par la question qu'ils éclairent", icone: '◈', couleur: '#b8922a', lien: '/outils/strates',         statut: 'disponible' },
+  { titre: 'Constellation',               desc: '28 penseurs, leurs concepts et filiations',         icone: '✦', couleur: '#c4993a', lien: '/outils/constellation',       statut: 'disponible' },
+  { titre: 'Récits conceptuels',           desc: 'Comprendre en lisant, pas en étudiant',            icone: '◈', couleur: '#c4993a', lien: '/outils/recits',              statut: 'disponible' },
+  { titre: 'Boussole dopaminergique',      desc: "Charge nerveuse & pistes d'équilibre",            icone: '◈', couleur: '#6b7fb8', lien: '/outils/boussole',            statut: 'disponible' },
+  { titre: "Tracker d'habitudes",          desc: 'Trois ancres. Intensité 1–3. Mémoire 7 jours.',    icone: '◉', couleur: '#e8724a', lien: '/outils/tracker',             statut: 'disponible' },
+  { titre: 'Baromètre de charge',          desc: 'Ce que tu portes — physique, mental, émotionnel',  icone: '⊕', couleur: '#3ab87a', lien: '/outils/barometre',           statut: 'disponible' },
+];
+
 function stadeLabel(stade?: string) {
   if (stade === 'pousse') return '🌿 Pousse';
   if (stade === 'arbre')  return '🌳 Arbre';
@@ -35,6 +54,10 @@ function stadeLabel(stade?: string) {
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formatDateShort(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 ---
 
@@ -57,7 +80,7 @@ function formatDate(date: Date) {
   </div>
 </section>
 
-<!-- ══ PORTES — silence de 64px après le hero, pas de séparateur ══ -->
+<!-- ══ PORTES ══ -->
 <div class="portes-wrap">
 
   <!-- VIES -->
@@ -165,7 +188,7 @@ function formatDate(date: Date) {
 
   <div class="explorer-row">
 
-    <!-- VERT — Sommaire (div car contient des <a> enfants) -->
+    <!-- VERT — Sommaire -->
     <div class="cadre cadre--vert">
       <div class="cadre-hd">
         <div class="cadre-ey">
@@ -176,32 +199,118 @@ function formatDate(date: Date) {
       </div>
       <div class="cadre-bd">
         <ul class="toc">
-          <a class="toc-row" href="/vies">
-            <span class="toc-n">I</span>
-            <span class="toc-name">Vies</span>
-            <span class="toc-dots"></span>
-            <span class="toc-desc">Dialogues — personnages qui vivent ce qu'ils ne comprennent pas encore</span>
-            <span class="toc-ct">{serieDialogues.length} épisodes</span>
-          </a>
-          <a class="toc-row" href="/cartes">
-            <span class="toc-n">II</span>
-            <span class="toc-name">Cartes</span>
-            <span class="toc-dots"></span>
-            <span class="toc-desc">Prismes, Notes, Fenêtres — mécanismes retournés jusqu'à ce qu'ils parlent</span>
-            <span class="toc-ct">{nbCartes} cartes</span>
-          </a>
-          <a class="toc-row" href="/outils">
-            <span class="toc-n">III</span>
-            <span class="toc-name">Outils</span>
-            <span class="toc-dots"></span>
-            <span class="toc-desc">Constellation, Boussole, Baromètre — outils interactifs</span>
-            <span class="toc-ct">3 outils</span>
-          </a>
+
+          <!-- ── I. CARTES ── -->
+          <li class="toc-section">
+            <a class="toc-row toc-row--section" href="/cartes">
+              <span class="toc-n">I</span>
+              <span class="toc-name">Cartes</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Mécanismes retournés jusqu'à ce qu'ils parlent</span>
+              <span class="toc-ct">{nbCartes} cartes</span>
+            </a>
+
+            <!-- Sous-rubriques -->
+            <ul class="toc-sub">
+
+              <!-- Prismes -->
+              <li>
+                <div class="toc-sub-row toc-sub-row--mecanique-hd">
+                  <span class="toc-sub-bullet">↳</span>
+                  <a class="toc-sub-name toc-sub-name--lien" href="/cartes#prismes">Prismes</a>
+                  <span class="toc-sub-ct">{serieNotes.length} notes</span>
+                </div>
+                <ul class="toc-mecanique">
+                  {serieNotes.map((note) => (
+                    <li>
+                      <a class="toc-mec-item" href={`/articles/${note.slug}`}>
+                        <span class="toc-mec-ep">Ép. {String(note.data.episode ?? '').padStart(2,'0')}</span>
+                        <span class="toc-mec-titre">{note.data.title}</span>
+                        <span class="toc-mec-arr">→</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+
+              <!-- Mécanique -->
+              <li>
+                <div class="toc-sub-row toc-sub-row--mecanique-hd">
+                  <span class="toc-sub-bullet">↳</span>
+                  <a class="toc-sub-name toc-sub-name--lien" href="/series/mecanique">Mécanique</a>
+                  <span class="toc-sub-ct">{serieMecanique.length} notes</span>
+                </div>
+                <!-- Liste des notes Mécanique par date -->
+                <ul class="toc-mecanique">
+                  {serieMecanique.map((note) => (
+                    <li>
+                      <a class="toc-mec-item" href={`/articles/${note.slug}`}>
+                        <span class="toc-mec-date">{formatDateShort(note.data.date)}</span>
+                        <span class="toc-mec-titre">{note.data.title}</span>
+                        <span class="toc-mec-arr">→</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- ── II. VIES ── -->
+          <li class="toc-section">
+            <a class="toc-row toc-row--section" href="/vies">
+              <span class="toc-n">II</span>
+              <span class="toc-name">Vies</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Dialogues — personnages qui vivent ce qu'ils ne comprennent pas encore</span>
+              <span class="toc-ct">{serieDialogues.length} épisodes</span>
+            </a>
+
+            <!-- Tous les épisodes -->
+            <ul class="toc-mecanique">
+              {serieDialogues.map((ep) => (
+                <li>
+                  <a class="toc-mec-item" href={`/articles/${ep.slug}`}>
+                    <span class="toc-mec-ep">Ép. {String(ep.data.episode ?? '').padStart(2,'0')}</span>
+                    <span class="toc-mec-titre">{ep.data.title}</span>
+                    <span class="toc-mec-arr">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+
+          <!-- ── III. OUTILS ── -->
+          <li class="toc-section toc-section--last">
+            <a class="toc-row toc-row--section" href="/outils">
+              <span class="toc-n">III</span>
+              <span class="toc-name">Outils</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Instruments pour explorer les concepts</span>
+              <span class="toc-ct">{outilsSommaire.filter(o => o.statut === 'disponible').length} outils</span>
+            </a>
+
+            <!-- Outils disponibles uniquement -->
+            <ul class="toc-sub toc-sub--outils">
+              {outilsSommaire.filter(o => o.statut === 'disponible').map((o) => (
+                <li>
+                  <a class="toc-outil-item" href={o.lien} style={`--outil-c: ${o.couleur}`}>
+                    <span class="toc-outil-icone" style={`color: ${o.couleur}`}>{o.icone}</span>
+                    <span class="toc-outil-nom">{o.titre}</span>
+                    <span class="toc-outil-desc">{o.desc}</span>
+                    <span class="toc-outil-arr">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </li>
+
         </ul>
       </div>
     </div>
 
-    <!-- ORANGE — Carnet (div car contient des <a> enfants) -->
+    <!-- ORANGE — Carnet -->
     <div class="cadre cadre--orange">
       <div class="cadre-hd">
         <div class="cadre-ey">
@@ -360,18 +469,17 @@ function formatDate(date: Date) {
 ══════════════════════════════════════ */
 .portes-wrap {
   max-width: var(--max);
-  margin: 2.5rem auto 0;       /* réduit car explorer est au-dessus */
+  margin: 2.5rem auto 0;
   padding: 0 1.75rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
-  align-items: stretch;      /* hauteur identique */
+  align-items: stretch;
 }
 @media (max-width: 560px) {
   .portes-wrap { grid-template-columns: 1fr; margin-top: 2.5rem; }
 }
 
-/* Base commune */
 .porte {
   position: relative;
   display: flex; flex-direction: column;
@@ -383,14 +491,12 @@ function formatDate(date: Date) {
 .porte:hover { transform: translateY(-3px); }
 .porte { transition: transform .3s cubic-bezier(.16,.84,.44,1), background .35s, border-color .3s; }
 
-/* Trait de couleur en haut */
 .porte-barre {
   position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 3;
 }
 .porte--vies   .porte-barre { background: #9b3232; }
 .porte--cartes .porte-barre { background: #c4993a; }
 
-/* Halo Vies — soleil de terrasse haut droite */
 .porte-halo {
   position: absolute; top: -60px; right: -60px;
   width: 320px; height: 280px; border-radius: 50%;
@@ -398,7 +504,6 @@ function formatDate(date: Date) {
   pointer-events: none; z-index: 0;
 }
 
-/* Réglure Cartes */
 .cartes-reglure {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background-image: repeating-linear-gradient(
@@ -407,15 +512,12 @@ function formatDate(date: Date) {
   );
 }
 
-/* Couleurs de fond + dégradé directionnel */
 .porte--vies   { background: #faf6ee; background-image: radial-gradient(ellipse 65% 55% at 85% 8%, rgba(220,150,50,0.20) 0%, rgba(210,130,40,0.08) 40%, transparent 68%), linear-gradient(145deg, rgba(200,120,30,.04) 0%, transparent 60%); border: 1px solid #e0d6c8; box-shadow: 0 2px 6px rgba(60,40,20,0.08), 0 1px 2px rgba(60,40,20,0.05); }
 .porte--cartes { background: #f5f0e2; background-image: radial-gradient(ellipse 65% 55% at 15% 8%, rgba(196,160,58,0.22) 0%, rgba(180,140,40,0.08) 40%, transparent 68%), linear-gradient(225deg, rgba(160,120,20,.04) 0%, transparent 60%); border: 1px solid #ddd0aa; box-shadow: 0 2px 6px rgba(60,40,20,0.08), 0 1px 2px rgba(60,40,20,0.05); }
 
-/* Hover */
 .porte--vies:hover   { background-color: #f7efe2; background-image: radial-gradient(ellipse 70% 60% at 85% 8%, rgba(225,155,55,0.30) 0%, rgba(210,130,40,0.12) 40%, transparent 68%), linear-gradient(145deg, rgba(200,120,30,.06) 0%, transparent 60%); border-color: #cdb99a; box-shadow: 0 10px 28px rgba(60,40,20,0.12), 0 4px 14px rgba(200,130,40,0.14); }
 .porte--cartes:hover { background-color: #f0e8cc; background-image: radial-gradient(ellipse 70% 60% at 15% 8%, rgba(210,172,65,0.32) 0%, rgba(190,150,45,0.13) 40%, transparent 68%), linear-gradient(225deg, rgba(160,120,20,.07) 0%, transparent 60%); border-color: #c4993a; box-shadow: 0 10px 28px rgba(60,40,20,0.12), 0 4px 14px rgba(196,153,58,0.18); }
 
-/* Numéro décoratif en fond */
 .porte--vies::after, .porte--cartes::after {
   position: absolute; top: 22px; right: 26px;
   font-family: 'Libre Baskerville', serif;
@@ -425,14 +527,12 @@ function formatDate(date: Date) {
 .porte--vies::after   { content: 'I';  color: rgba(155,50,50,0.045); }
 .porte--cartes::after { content: 'II'; color: rgba(196,153,58,0.055); }
 
-/* Inner */
 .porte-inner {
   position: relative; z-index: 2;
   padding: 34px 30px 26px 34px;
   flex: 1; display: flex; flex-direction: column;
 }
 
-/* Eyebrow */
 .porte-eyebrow {
   font-family: 'Mulish', sans-serif;
   font-size: .62rem; font-weight: 700;
@@ -446,7 +546,6 @@ function formatDate(date: Date) {
 .porte--cartes .porte-eyebrow { color: #9a7020; }
 .porte--cartes .porte-eyebrow::after { background: rgba(196,153,58,0.4); }
 
-/* Titre */
 .porte-titre {
   font-family: 'Libre Baskerville', serif;
   font-size: 1.2rem; font-weight: 400;
@@ -456,7 +555,6 @@ function formatDate(date: Date) {
 .porte--vies   .porte-titre em { font-style: italic; color: #9b3232; }
 .porte--cartes .porte-titre em { font-style: italic; color: #9a7020; }
 
-/* Sous-titre */
 .porte-sous {
   font-family: 'Mulish', sans-serif;
   font-size: .86rem; font-weight: 300;
@@ -616,7 +714,7 @@ function formatDate(date: Date) {
 .sep--pubs { margin-top: 3.8rem; }
 
 /* ══════════════════════════════════════
-   PUBLICATIONS + SIDEBAR — inchangés
+   PUBLICATIONS + SIDEBAR
 ══════════════════════════════════════ */
 .pubs-layout {
   max-width: var(--max); margin: 0 auto; padding: 0 1.75rem;
@@ -729,11 +827,9 @@ function formatDate(date: Date) {
 .cadre:nth-child(1) { animation-delay: .06s; }
 .cadre:nth-child(2) { animation-delay: .16s; }
 
-/* Couleurs */
 .cadre--vert   { background: #e9f4e6; border-color: rgba(58,124,78,.28); }
-.cadre--orange { background: #fef0e2; border-color: rgba(180,95,30,.28); }
+.cadre--orange { background: #fef0e2; border-color: rgba(180,95,30,.28); align-self: start; }
 
-/* Header cadre */
 .cadre-hd {
   display: flex; align-items: center; justify-content: space-between;
   padding: .8rem 1rem .6rem;
@@ -768,19 +864,26 @@ function formatDate(date: Date) {
 
 .cadre-bd { padding: .65rem 1rem .9rem; flex: 1; }
 
-/* TOC — Sommaire */
-.toc { list-style: none; }
-.toc-row {
+/* ══════════════════════════════════════
+   TOC — Sommaire restructuré
+══════════════════════════════════════ */
+.toc { list-style: none; margin: 0; padding: 0; }
+
+/* Section principale (Cartes / Vies / Outils) */
+.toc-section { list-style: none; }
+.toc-section--last .toc-row--section { border-bottom: none; }
+
+.toc-row--section {
   display: flex; align-items: baseline; gap: .6rem;
-  padding: .4rem .35rem;
-  border-bottom: 1px solid rgba(58,124,78,.07);
+  padding: .42rem .35rem;
+  border-bottom: 1px solid rgba(58,124,78,.09);
   border-radius: 4px;
   text-decoration: none;
   margin: 0 -.35rem;
   transition: background .15s;
 }
-.toc-row:last-child { border-bottom: none; }
-.toc-row:hover { background: rgba(58,124,78,.06); }
+.toc-row--section:hover { background: rgba(58,124,78,.07); }
+
 .toc-n {
   font-family: 'Libre Baskerville', serif;
   font-size: .62rem; font-weight: 700;
@@ -789,7 +892,7 @@ function formatDate(date: Date) {
 }
 .toc-name {
   font-family: 'Libre Baskerville', serif;
-  font-size: .82rem; font-weight: 700;
+  font-size: .84rem; font-weight: 700;
   color: var(--ink); flex-shrink: 0;
 }
 .toc-dots {
@@ -806,7 +909,168 @@ function formatDate(date: Date) {
   font-family: 'Mulish', sans-serif;
   font-size: .58rem; font-weight: 700;
   padding: .1rem .35rem; border-radius: 20px; flex-shrink: 0;
-  background: rgba(58,124,78,.1); color: #2e7a4a;
+  background: rgba(58,124,78,.1); color: #2e7a4a; white-space: nowrap;
+}
+
+/* ── Sous-rubriques ── */
+.toc-sub {
+  list-style: none; margin: 0; padding: 0 0 .3rem 1.1rem;
+}
+
+.toc-sub-row {
+  display: flex; align-items: baseline; gap: .4rem;
+  padding: .22rem .25rem;
+  text-decoration: none; color: inherit;
+  font-size: .8rem;
+  border-radius: 3px;
+  transition: background .14s;
+}
+.toc-sub-row:hover { background: rgba(58,124,78,.06); }
+
+.toc-sub-row--mecanique-hd {
+  display: flex; align-items: baseline; gap: .4rem;
+  padding: .22rem .25rem .1rem;
+}
+
+.toc-sub-row--episode {
+  align-items: center;
+}
+
+.toc-sub-bullet {
+  color: rgba(46,122,74,.38); font-size: .68rem;
+  flex-shrink: 0; opacity: .6;
+}
+.toc-sub-name {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 600; color: var(--ink);
+  flex-shrink: 0;
+}
+.toc-sub-name--lien {
+  text-decoration: none; color: var(--ink);
+  transition: color .15s;
+}
+.toc-sub-name--lien:hover { color: #2e7a4a; text-decoration: underline; }
+
+.toc-sub-ep-num {
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem; font-weight: 700;
+  color: rgba(155,50,50,.55);
+  background: rgba(155,50,50,.07);
+  border: 1px solid rgba(155,50,50,.15);
+  padding: .08rem .32rem; border-radius: 3px;
+  flex-shrink: 0; letter-spacing: .04em;
+}
+.toc-sub-ep-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .78rem; font-style: italic;
+  color: var(--ink); flex: 1; line-height: 1.3;
+}
+/* Date du 1er épisode Vies — alignée sur les autres éléments sub */
+.toc-sub-row--episode .toc-sub-ct {
+  font-size: .62rem; font-weight: 300;
+  background: none; color: var(--ink-soft);
+  opacity: .45; padding: 0;
+}
+
+/* ── Notes Mécanique ── */
+.toc-mecanique {
+  list-style: none; margin: 0; padding: 0 0 .25rem 1.1rem;
+}
+.toc-mec-item {
+  display: flex; align-items: baseline; gap: .45rem;
+  padding: .2rem .2rem;
+  text-decoration: none; color: inherit;
+  border-radius: 3px;
+  transition: background .14s;
+}
+.toc-mec-item:hover { background: rgba(52,48,42,.05); }
+.toc-mec-item:hover .toc-mec-arr { opacity: 1; transform: translateX(0); }
+.toc-mec-date {
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem; font-weight: 300;
+  letter-spacing: .06em; color: var(--ink-soft); opacity: .45;
+  white-space: nowrap; min-width: 5.8rem; flex-shrink: 0;
+}
+.toc-mec-ep {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 700;
+  color: rgba(46,122,74,.45);
+  background: rgba(58,124,78,.08);
+  border: 1px solid rgba(58,124,78,.15);
+  padding: .06rem .3rem; border-radius: 3px;
+  white-space: nowrap; flex-shrink: 0; letter-spacing: .03em;
+}
+.toc-mec-titre {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 400;
+  color: var(--ink); line-height: 1.35; flex: 1;
+}
+.toc-mec-arr {
+  font-size: .65rem; color: rgba(52,48,42,.35);
+  opacity: 0; transform: translateX(-3px);
+  transition: opacity .15s, transform .15s;
+  flex-shrink: 0;
+}
+
+/* ── Outils dans le sommaire ── */
+.toc-sub--outils { padding-bottom: .4rem; }
+
+.toc-outil-item {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .24rem .25rem;
+  text-decoration: none; color: inherit;
+  border-radius: 4px;
+  transition: background .14s;
+}
+.toc-outil-item:hover { background: rgba(196,153,58,.07); }
+.toc-outil-item:hover .toc-outil-arr { opacity: 1; transform: translateX(0); }
+.toc-outil-item:hover .toc-outil-nom { color: var(--outil-c); }
+
+.toc-outil-icone {
+  font-size: .78rem; flex-shrink: 0; line-height: 1; opacity: .8;
+}
+.toc-outil-nom {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 600;
+  color: var(--ink); flex-shrink: 0;
+  transition: color .15s;
+}
+.toc-outil-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .70rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft); flex: 1;
+  display: none; /* masqué sur petites largeurs, visible si place */
+}
+@media (min-width: 480px) { .toc-outil-desc { display: block; } }
+
+.toc-outil-arr {
+  font-size: .65rem; color: rgba(196,153,58,.5);
+  opacity: 0; transform: translateX(-3px);
+  transition: opacity .15s, transform .15s;
+  flex-shrink: 0;
+}
+
+.toc-outil-item--bientot,
+.toc-outil-item--idee {
+  cursor: default; pointer-events: none;
+}
+.toc-outil-nom--grise {
+  color: var(--ink-soft); opacity: .5;
+}
+.toc-outil-statut {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .08rem .32rem; border-radius: 3px;
+  flex-shrink: 0; margin-left: auto;
+}
+.toc-outil-statut--bientot {
+  color: #d4700a; background: rgba(255,128,0,.07);
+  border: 1px solid rgba(255,128,0,.18);
+}
+.toc-outil-statut--idee {
+  color: var(--ink-soft); background: rgba(154,145,137,.07);
+  border: 1px solid var(--rule); opacity: .7;
 }
 
 /* Carnet */
@@ -835,7 +1099,7 @@ function formatDate(date: Date) {
 .cn-stade--pousse { background: rgba(180,95,30,.10); color: #8a4a10; border: 1px solid rgba(180,95,30,.22); }
 .cn-stade--arbre  { background: rgba(180,95,30,.10); color: #8a4a10; border: 1px solid rgba(180,95,30,.22); }
 .cn-titre {
-  font-family: 'Libre Baskerville', serif;
+  font-family: 'Mulish', sans-serif; font-weight: 400;
   font-size: .80rem; color: var(--ink);
   line-height: 1.3; transition: color .2s;
 }
