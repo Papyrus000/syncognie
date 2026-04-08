@@ -75,7 +75,7 @@ function formatDateShort(date: Date) {
     </div>
   </div>
   <div class="hero-graphe">
-    <canvas id="emergence-canvas" width="240" height="320"
+    <canvas id="emergence-canvas" width="280" height="320"
       aria-label="Graphe d'émergence — des concepts qui se rencontrent, se frottent et font naître une propriété nouvelle"></canvas>
   </div>
 </section>
@@ -538,7 +538,7 @@ function formatDateShort(date: Date) {
 ══════════════════════════════════════ */
 .hero {
   max-width: var(--max); margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 240px;
+  display: grid; grid-template-columns: 1fr 280px;
   align-items: start; gap: 0;
 }
 @media (max-width: 580px) {
@@ -546,7 +546,7 @@ function formatDateShort(date: Date) {
   .hero-graphe { display: none; }
 }
 @media (min-width: 581px) and (max-width: 720px) {
-  .hero { grid-template-columns: 1fr 180px; }
+  .hero { grid-template-columns: 1fr 210px; }
 }
 .hero-left { grid-column: 1; grid-row: 1; padding: 3.4rem 1.75rem 2.4rem; }
 .hero-eyebrow {
@@ -574,7 +574,7 @@ function formatDateShort(date: Date) {
 .hero-note-t { font-family: 'Mulish', sans-serif; font-size: .78rem; font-style: italic; color: var(--ink-soft); line-height: 1.6; }
 .hero-graphe { grid-column: 2; grid-row: 1; padding-top: 2.6rem; display: flex; align-items: flex-start; }
 .hero-graphe canvas {
-  display: block; width: 240px; height: 320px;
+  display: block; width: 280px; height: 320px;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 72%, transparent 100%);
   mask-image: linear-gradient(to right, transparent 0%, black 30%, black 72%, transparent 100%);
 }
@@ -1734,7 +1734,7 @@ function formatDateShort(date: Date) {
   const canvas = document.getElementById('emergence-canvas');
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
-  const W = 240, H = 320;
+  const W = 280, H = 320;
 
   const DOMAINS = {
     neuro:  [215,85,30],
@@ -1742,27 +1742,36 @@ function formatDateShort(date: Date) {
     exist:  [145,65,215],
     social: [12,160,100],
     sys:    [200,128,8],
+    godel:  [220,40,80],
+    plasty: [0,210,255],
+    bio:    [255,180,0],
+    bohm:   [160,220,180],
   };
 
   const NODES = [
-    {id:'plaisir',   label:'Balance plaisir / douleur', dom:'neuro',  bx:58,  by:58 },
-    {id:'marqueurs', label:'Marqueurs somatiques',      dom:'neuro',  bx:108, by:35 },
-    {id:'hemisph',   label:'Hémisphères',               dom:'neuro',  bx:38,  by:112},
-    {id:'sys12',     label:'Système 1 / 2',             dom:'neuro',  bx:92,  by:92 },
-    {id:'carte',     label:'Carte & territoire',        dom:'repres', bx:172, by:48 },
-    {id:'narratif',  label:'Pensée narrative',          dom:'repres', bx:208, by:95 },
-    {id:'disso',     label:'Dissonance cognitive',      dom:'repres', bx:158, by:105},
-    {id:'sens',      label:'Volonté de sens',           dom:'exist',  bx:62,  by:195},
-    {id:'flow',      label:'Flow',                      dom:'exist',  bx:125, by:220},
-    {id:'resign',    label:'Résignation apprise',       dom:'exist',  bx:35,  by:248},
-    {id:'cavaliers', label:'Quatre Cavaliers',          dom:'social', bx:188, by:178},
-    {id:'desir',     label:'Désir & altérité',          dom:'social', bx:220, by:228},
-    {id:'attach',    label:'Attachement sécure',        dom:'social', bx:192, by:275},
-    {id:'double',    label:'Double contrainte',         dom:'sys',    bx:105, by:282},
-    {id:'modele',    label:'Modèle I / II',             dom:'sys',    bx:158, by:258},
-    {id:'intentions',label:"Intentions d'impl.",        dom:'sys',    bx:125, by:162},
-    {id:'levier',    label:'Points de levier',          dom:'sys',    bx:75,  by:148},
-    {id:'cinquieme', label:'Cinquième discipline',      dom:'sys',    bx:228, by:148},
+    {id:'plaisir',   label:'Balance plaisir / douleur', dom:'neuro',  bx:68, by:58 },
+    {id:'marqueurs', label:'Marqueurs somatiques',      dom:'neuro',  bx:126, by:35 },
+    {id:'hemisph',   label:'Hémisphères',               dom:'neuro',  bx:44, by:112},
+    {id:'sys12',     label:'Système 1 / 2',             dom:'neuro',  bx:107, by:92 },
+    {id:'carte',     label:'Carte & territoire',        dom:'repres', bx:201, by:48 },
+    {id:'narratif',  label:'Pensée narrative',          dom:'repres', bx:243, by:95 },
+    {id:'disso',     label:'Dissonance cognitive',      dom:'repres', bx:184, by:105},
+    {id:'sens',      label:'Volonté de sens',           dom:'exist',  bx:72, by:195},
+    {id:'flow',      label:'Flow',                      dom:'exist',  bx:146, by:220},
+    {id:'resign',    label:'Résignation apprise',       dom:'exist',  bx:41, by:248},
+    {id:'cavaliers', label:'Quatre Cavaliers',          dom:'social', bx:219, by:178},
+    {id:'desir',     label:'Désir & altérité',          dom:'social', bx:257, by:228},
+    {id:'attach',    label:'Attachement sécure',        dom:'social', bx:224, by:275},
+    {id:'double',    label:'Double contrainte',         dom:'sys',    bx:123, by:282},
+    {id:'modele',    label:'Modèle I / II',             dom:'sys',    bx:184, by:258},
+    {id:'intentions',label:"Intentions d'impl.",        dom:'sys',    bx:146, by:162},
+    {id:'levier',    label:'Points de levier',          dom:'sys',    bx:88, by:148},
+    {id:'cinquieme',  label:'Cinquième discipline',      dom:'sys',    bx:266, by:148},
+    {id:'incomplet',  label:'Incomplétude',              dom:'godel',  bx:245, by:55 },
+    {id:'plasticite', label:'Plasticité neuronale',      dom:'plasty', bx:55,  by:165},
+    {id:'bhb',        label:'BHB',                       dom:'bio',    bx:175, by:270},
+    {id:'bdnf',       label:'BDNF',                      dom:'bio',    bx:95,  by:290},
+    {id:'bohm',       label:'Dialogue de Bohm',            dom:'bohm',   bx:155, by:195},
   ];
 
   const LINKS = [
@@ -1783,6 +1792,20 @@ function formatDateShort(date: Date) {
     {a:'double',    b:'modele',     t:'c'},{a:'modele',    b:'cinquieme', t:'c'},
     {a:'levier',    b:'cinquieme',  t:'c'},{a:'resign',    b:'sens',      t:'c'},
     {a:'resign',    b:'flow',       t:'c'},{a:'intentions',b:'levier',    t:'c'},
+    {a:'incomplet', b:'carte',      t:'t'},{a:'incomplet', b:'narratif',  t:'c'},
+    {a:'incomplet', b:'modele',     t:'t'},{a:'incomplet', b:'double',    t:'c'},
+    {a:'incomplet', b:'cinquieme',  t:'c'},
+    {a:'plasticite',b:'hemisph',    t:'t'},{a:'plasticite',b:'sys12',     t:'c'},
+    {a:'plasticite',b:'flow',       t:'t'},{a:'plasticite',b:'marqueurs', t:'c'},
+    {a:'plasticite',b:'sens',       t:'c'},
+    {a:'bhb',       b:'plasticite', t:'t'},{a:'bhb',       b:'flow',      t:'c'},
+    {a:'bhb',       b:'sens',       t:'c'},
+    {a:'incomplet', b:'hemisph',    t:'t'},
+    {a:'bdnf',      b:'plasticite', t:'t'},{a:'bdnf',      b:'bhb',       t:'t'},
+    {a:'bdnf',      b:'flow',       t:'c'},{a:'bdnf',      b:'hemisph',   t:'c'},
+    {a:'bohm',      b:'hemisph',    t:'t'},{a:'bohm',      b:'modele',    t:'t'},
+    {a:'bohm',      b:'narratif',   t:'c'},{a:'bohm',      b:'double',    t:'c'},
+    {a:'bohm',      b:'incomplet',  t:'c'},{a:'bohm',      b:'sens',      t:'c'},
   ];
 
   const nodeMap = {};
@@ -1791,8 +1814,8 @@ function formatDateShort(date: Date) {
     nodeMap[n.id] = n;
     connCount[n.id] = 0;
     n.angle = Math.random()*Math.PI*2;
-    n.orbitR = 4 + Math.random()*6;
-    n.speed = (0.0003+Math.random()*0.0002)*(Math.random()<0.5?1:-1);
+    n.orbitR = 8 + Math.random()*10;
+    n.speed = (0.0005+Math.random()*0.0003)*(Math.random()<0.5?1:-1);
     n.x = n.bx; n.y = n.by;
     n.labelAlpha = 0;
   });
@@ -1862,7 +1885,7 @@ function formatDateShort(date: Date) {
       ctx.strokeStyle=mc(a.dom,b.dom,alpha);
       ctx.setLineDash(l.t==='t'?[2,4]:[]);
       ctx.stroke();ctx.setLineDash([]);
-      if(dist<58&&Math.random()<0.0005){
+      if(dist<58&&Math.random()<(l.t==='t'?0.0012:0.0003)){
         emergences.push({x:(a.x+b.x)/2,y:(a.y+b.y)/2,life:1,type:l.t,d1:a.dom,d2:b.dom});
       }
     });
@@ -1871,7 +1894,7 @@ function formatDateShort(date: Date) {
       e.life-=0.014;
       if(e.life<=0){emergences.splice(i,1);continue;}
       const p=Math.sin(e.life*Math.PI);
-      const r=(e.type==='t'?14:9)*p;
+      const r=(e.type==='t'?18:10)*p;
       const grd=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,r);
       grd.addColorStop(0,`rgba(255,252,215,${0.95*p})`);
       grd.addColorStop(0.3,`rgba(255,215,55,${0.6*p})`);
@@ -1902,7 +1925,7 @@ function formatDateShort(date: Date) {
         const c=DOMAINS[n.dom];
         ctx.save();
         ctx.globalAlpha=n.labelAlpha;
-        ctx.font='400 8px -apple-system,Arial,sans-serif';
+        ctx.font='400 10px -apple-system,Arial,sans-serif';
         ctx.textAlign='center';ctx.textBaseline='bottom';
         const lx=n.x,ly=n.y-r-5;
         const tw=ctx.measureText(n.label).width;
