@@ -15,6 +15,7 @@ serie: Mécanique
 episode: 4
 ---
 > ⚠️ **Avertissement** : Cet article est rédigé à des fins éducatives et informatives uniquement. Il ne constitue en aucun cas un conseil médical, nutritionnel ou thérapeutique. Rédigé par un non-professionnel.
+> 
 > Les informations ci-dessous sont issues de différentes lectures sur Internet et de discussions avec l’IA sur ce sujet et autres thèmes connexes.
 
 ## Introduction
