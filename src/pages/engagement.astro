@@ -2,20 +2,39 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-// getCollection filtre les brouillons automatiquement en prod
-// On récupère TOUS les articles puis on filtre côté JS
-// pour être robuste même si engagement n'est pas dans le schema Zod
-const allArticles = await getCollection('articles');
+// On collecte toutes les sources possibles
+const articles  = await getCollection('articles');
+const carnet    = await getCollection('carnet').catch(() => []);
+const fenetres  = await getCollection('fenetres').catch(() => []);
 
-// Comptage par niveau — on lit le champ brut via data
-const survols    = allArticles.filter(a => (a.data as any).engagement === 'survol').length;
-const lectures   = allArticles.filter(a => (a.data as any).engagement === 'lecture').length;
-const immersions = allArticles.filter(a => (a.data as any).engagement === 'immersion').length;
+// Fusion — engagement peut venir de n'importe quelle collection
+const tout = [...articles, ...carnet, ...fenetres];
 
-// Articles par niveau pour les listes illustratives (5 max)
-const articlesSurvol    = allArticles.filter(a => (a.data as any).engagement === 'survol').slice(0,5);
-const articlesLecture   = allArticles.filter(a => (a.data as any).engagement === 'lecture').slice(0,5);
-const articlesImmersion = allArticles.filter(a => (a.data as any).engagement === 'immersion').slice(0,5);
+// Comptage par niveau
+const survols    = tout.filter(a => (a.data as any).engagement === 'survol').length;
+const lectures   = tout.filter(a => (a.data as any).engagement === 'lecture').length;
+const immersions = tout.filter(a => (a.data as any).engagement === 'immersion').length;
+
+// Helper : URL selon la collection
+function urlArticle(a: any) {
+  if (a.collection === 'carnet')   return `/carnet/${a.slug}`;
+  if (a.collection === 'fenetres') return `/fenetres/${a.slug}`;
+  return `/articles/${a.slug}`;
+}
+
+// Articles par niveau (5 max), triés par date décroissante
+const articlesSurvol    = tout
+  .filter(a => (a.data as any).engagement === 'survol')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+const articlesLecture   = tout
+  .filter(a => (a.data as any).engagement === 'lecture')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
+const articlesImmersion = tout
+  .filter(a => (a.data as any).engagement === 'immersion')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 5);
 ---
 
 <Base title="Niveaux de lecture — Syncognie">
@@ -153,7 +172,7 @@ const articlesImmersion = allArticles.filter(a => (a.data as any).engagement ===
           {articlesSurvol.length > 0 && (
             <ul class="niveau-articles">
               {articlesSurvol.map(a => (
-                <li><a href={`/articles/${a.slug}`} class="niv-art-lien">
+                <li><a href={urlArticle(a)} class="niv-art-lien">
                   <span class="niv-art-titre">{a.data.title}</span>
                   <span class="niv-art-arr">→</span>
                 </a></li>
@@ -203,7 +222,7 @@ const articlesImmersion = allArticles.filter(a => (a.data as any).engagement ===
           {articlesLecture.length > 0 && (
             <ul class="niveau-articles">
               {articlesLecture.map(a => (
-                <li><a href={`/articles/${a.slug}`} class="niv-art-lien">
+                <li><a href={urlArticle(a)} class="niv-art-lien">
                   <span class="niv-art-titre">{a.data.title}</span>
                   <span class="niv-art-arr">→</span>
                 </a></li>
@@ -254,7 +273,7 @@ const articlesImmersion = allArticles.filter(a => (a.data as any).engagement ===
           {articlesImmersion.length > 0 && (
             <ul class="niveau-articles">
               {articlesImmersion.map(a => (
-                <li><a href={`/articles/${a.slug}`} class="niv-art-lien">
+                <li><a href={urlArticle(a)} class="niv-art-lien">
                   <span class="niv-art-titre">{a.data.title}</span>
                   <span class="niv-art-arr">→</span>
                 </a></li>
