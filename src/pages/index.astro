@@ -382,34 +382,75 @@ function formatDateShort(date: Date) {
   </div>
 
   <aside class="pubs-sidebar">
-    <div class="sidebar-outils">
-      <a class="sidebar-outil" href="/outils/constellation">
-        <span class="sidebar-outil-icone" style="color:#c4993a">✦</span>
-        <div>
-          <div class="sidebar-outil-nom">Constellation</div>
-          <div class="sidebar-outil-desc">28 penseurs, leurs concepts et filiations</div>
+    <a class="jardin-encart" href="/stades">
+
+      <!-- Filigrane SVG végétal -->
+      <svg class="jardin-svg" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+        <circle cx="60" cy="60" r="52"
+          stroke="#3a7c4e" stroke-width=".6"
+          stroke-dasharray="2 8" opacity=".18"
+          class="jardin-svg-rot"/>
+        <path d="M60 60 C60 48, 68 40, 76 40 C90 40, 100 52, 100 66 C100 84, 84 98, 60 98 C32 98, 12 76, 12 52 C12 24, 34 6, 62 6"
+          stroke="#3a7c4e" stroke-width=".9" stroke-linecap="round" opacity=".20"/>
+        <circle cx="76" cy="40" r="3" fill="#4aaa6a" opacity=".5" class="jardin-svg-p1"/>
+        <circle cx="100" cy="66" r="2.5" fill="#3a7c4e" opacity=".4" class="jardin-svg-p2"/>
+        <circle cx="60" cy="98" r="3" fill="#4aaa6a" opacity=".5" class="jardin-svg-p3"/>
+        <circle cx="60" cy="60" r="16" stroke="#3a7c4e" stroke-width=".6" opacity=".12" class="jardin-svg-p1"/>
+        <circle cx="60" cy="60" r="3" fill="#3a7c4e" opacity=".18"/>
+        <circle cx="60" cy="60" r="1.4" fill="#f5f0e8" opacity=".7"/>
+      </svg>
+
+      <!-- En-tête -->
+      <div class="jardin-hd">
+        <span class="jardin-eyebrow">Jardin numérique</span>
+        <span class="jardin-glyph">✦</span>
+      </div>
+
+      <!-- Phrase d'accroche -->
+      <p class="jardin-phrase">Un espace vivant où chaque idée pousse à son propre rythme.</p>
+
+      <!-- Légende des stades -->
+      <div class="jardin-legende">
+
+        <div class="jardin-stade">
+          <span class="jardin-stade-emoji">🌱</span>
+          <div class="jardin-stade-corps">
+            <span class="jardin-stade-nom">Graine</span>
+            <span class="jardin-stade-desc">Intuition fraîche, fragment brut</span>
+          </div>
+          <div class="jardin-stade-barre jardin-stade-barre--g"></div>
         </div>
-      </a>
-      <a class="sidebar-outil" href="/outils/boussole">
-        <span class="sidebar-outil-icone" style="color:#6b7fb8">◈</span>
-        <div>
-          <div class="sidebar-outil-nom">Boussole dopaminergique</div>
-          <div class="sidebar-outil-desc">Estimer sa charge nerveuse</div>
+
+        <div class="jardin-fleche" aria-hidden="true">↓</div>
+
+        <div class="jardin-stade">
+          <span class="jardin-stade-emoji">🌿</span>
+          <div class="jardin-stade-corps">
+            <span class="jardin-stade-nom">Pousse</span>
+            <span class="jardin-stade-desc">Exploration en cours, liens naissants</span>
+          </div>
+          <div class="jardin-stade-barre jardin-stade-barre--p"></div>
         </div>
-      </a>
-      <a class="sidebar-outil" href="/outils/barometre">
-        <span class="sidebar-outil-icone" style="color:#3ab87a">⊕</span>
-        <div>
-          <div class="sidebar-outil-nom">Baromètre de charge</div>
-          <div class="sidebar-outil-desc">Une photo de ce que tu portes</div>
+
+        <div class="jardin-fleche" aria-hidden="true">↓</div>
+
+        <div class="jardin-stade">
+          <span class="jardin-stade-emoji">🌳</span>
+          <div class="jardin-stade-corps">
+            <span class="jardin-stade-nom">Arbre</span>
+            <span class="jardin-stade-desc">Pensée dense, enracinée, révisée</span>
+          </div>
+          <div class="jardin-stade-barre jardin-stade-barre--a"></div>
         </div>
-      </a>
-      <a href="/outils" class="sidebar-outils-tous">Tous les outils →</a>
-    </div>
-    <div class="sidebar-sep"></div>
-    <a href="/stades" class="sidebar-stades">
-      <span>🌱</span>
-      <span class="sidebar-stades-texte">Comment lire les stades →</span>
+
+      </div>
+
+      <!-- Pied CTA -->
+      <div class="jardin-cta">
+        <span class="jardin-cta-texte">Explorer le jardin</span>
+        <span class="jardin-cta-arr">→</span>
+      </div>
+
     </a>
   </aside>
 </div>
@@ -757,26 +798,193 @@ function formatDateShort(date: Date) {
 }
 .articles-tous:hover { opacity: 1; }
 
+/* ── Sidebar positionnement ── */
 .pubs-sidebar { position: sticky; top: 4.5rem; align-self: start; }
-.sidebar-outils { display: flex; flex-direction: column; gap: .5rem; }
-.sidebar-outil {
-  display: flex; align-items: flex-start; gap: .65rem;
-  text-decoration: none; padding: .65rem .75rem;
-  border: 1px solid var(--rule); border-radius: 7px;
-  background: rgba(245,240,232,.5);
-  box-shadow: 0 1px 3px rgba(60,40,20,.06);
-  transition: border-color .2s, background .22s, transform .18s, box-shadow .2s;
+
+/* ══════════════════════════════════
+   ENCART JARDIN — sidebar
+══════════════════════════════════ */
+.jardin-encart {
+  display: flex; flex-direction: column; gap: 0;
+  text-decoration: none; color: inherit;
+  position: relative; overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(46,122,74,.18);
+  background: linear-gradient(160deg,
+    rgba(245,249,245,.98) 0%,
+    rgba(237,247,239,.95) 55%,
+    rgba(245,248,242,.98) 100%
+  );
+  box-shadow:
+    0 2px 8px rgba(46,122,74,.06),
+    inset 0 0 0 1px rgba(255,255,255,.6);
+  padding: 1.15rem 1rem 1rem;
+  transition: border-color .3s, box-shadow .3s, transform .28s cubic-bezier(.16,.84,.44,1);
 }
-.sidebar-outil:hover { border-color: rgba(196,153,58,.45); background: rgba(196,153,58,.055); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(196,153,58,.09); }
-.sidebar-outil-icone { font-size: .9rem; flex-shrink: 0; margin-top: .05rem; line-height: 1; opacity: .75; }
-.sidebar-outil-nom  { font-family: 'Libre Baskerville', Georgia, serif; font-size: .76rem; font-weight: 700; color: var(--ink); line-height: 1.25; margin-bottom: .15rem; }
-.sidebar-outil-desc { font-family: 'Mulish', sans-serif; font-size: .74rem; font-weight: 300; color: var(--ink-soft); line-height: 1.5; }
-.sidebar-outils-tous { display: block; text-align: left; margin-top: .2rem; font-family: 'Mulish', sans-serif; font-size: .70rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); text-decoration: none; opacity: .75; transition: opacity .2s; }
-.sidebar-outils-tous:hover { opacity: 1; }
-.sidebar-sep { height: 1px; margin: .85rem 0; background: linear-gradient(to right, transparent, var(--rule), transparent); }
-.sidebar-stades { display: inline-flex; align-items: center; gap: .45rem; text-decoration: none; padding: .4rem .5rem; border-radius: 5px; transition: background .2s, box-shadow .2s, transform .18s; }
-.sidebar-stades:hover { background: rgba(139,94,60,.05); box-shadow: 0 1px 4px rgba(60,40,20,.07); transform: translateY(-1px); }
-.sidebar-stades-texte { font-family: 'Mulish', sans-serif; font-size: .72rem; font-weight: 400; font-style: italic; letter-spacing: .06em; color: var(--ink-soft); }
+.jardin-encart:hover {
+  border-color: rgba(46,122,74,.32);
+  box-shadow:
+    0 8px 24px rgba(46,122,74,.10),
+    inset 0 0 0 1px rgba(255,255,255,.7);
+  transform: translateY(-2px);
+}
+
+/* SVG filigrane en arrière-plan */
+.jardin-svg {
+  position: absolute;
+  top: -8px; right: -12px;
+  width: 88px; height: 88px;
+  pointer-events: none;
+  opacity: .55;
+}
+@keyframes jardin-rot { to { transform: rotate(360deg); } }
+@keyframes jardin-pulse {
+  0%,100% { transform: scale(1); opacity: .5; }
+  50% { transform: scale(1.4); opacity: .25; }
+}
+@keyframes jardin-pulse2 {
+  0%,100% { transform: scale(1); opacity: .4; }
+  50% { transform: scale(1.3); opacity: .18; }
+}
+@keyframes jardin-pulse3 {
+  0%,100% { transform: scale(1); opacity: .5; }
+  50% { transform: scale(1.5); opacity: .22; }
+}
+.jardin-svg-rot { animation: jardin-rot 28s linear infinite; transform-origin: 60px 60px; }
+.jardin-svg-p1  { animation: jardin-pulse  3.2s ease-in-out infinite; }
+.jardin-svg-p2  { animation: jardin-pulse2 4.1s ease-in-out infinite; }
+.jardin-svg-p3  { animation: jardin-pulse3 2.9s ease-in-out infinite; }
+
+/* En-tête */
+.jardin-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: .62rem;
+  position: relative; z-index: 1;
+}
+.jardin-eyebrow {
+  font-family: 'Mulish', sans-serif;
+  font-size: .55rem; font-weight: 700;
+  letter-spacing: .26em; text-transform: uppercase;
+  color: #3a7c4e;
+  border-bottom: 1px solid rgba(46,122,74,.2);
+  padding-bottom: .12rem;
+}
+.jardin-glyph {
+  color: #3a7c4e; font-size: .62rem; opacity: .35;
+  animation: jardin-pulse 3.5s ease-in-out infinite;
+}
+
+/* Phrase */
+.jardin-phrase {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .74rem; font-style: italic; font-weight: 400;
+  color: var(--ink); line-height: 1.55;
+  margin-bottom: 1rem;
+  position: relative; z-index: 1;
+  opacity: .85;
+}
+
+/* Légende des stades */
+.jardin-legende {
+  display: flex; flex-direction: column; gap: 0;
+  position: relative; z-index: 1;
+  border-left: 1px solid rgba(46,122,74,.12);
+  padding-left: .75rem;
+  margin-left: .15rem;
+}
+
+.jardin-stade {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .32rem 0;
+  position: relative;
+}
+/* Point sur le liseré gauche */
+.jardin-stade::before {
+  content: '';
+  position: absolute;
+  left: -.88rem; top: 50%; transform: translateY(-50%);
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(46,122,74,.28);
+  border: 1px solid rgba(46,122,74,.18);
+  transition: background .2s, border-color .2s;
+}
+.jardin-encart:hover .jardin-stade::before {
+  background: rgba(46,122,74,.45);
+}
+
+.jardin-stade-emoji {
+  font-size: .9rem; line-height: 1; flex-shrink: 0;
+  transition: transform .25s cubic-bezier(.16,.84,.44,1);
+}
+.jardin-encart:hover .jardin-stade-emoji { transform: scale(1.15); }
+
+.jardin-stade-corps {
+  display: flex; flex-direction: column; gap: .06rem; flex: 1; min-width: 0;
+}
+.jardin-stade-nom {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .74rem; font-weight: 700;
+  color: var(--ink); letter-spacing: -.01em; line-height: 1;
+}
+.jardin-stade-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .63rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft); opacity: .65; line-height: 1.35;
+}
+
+/* Barre de maturité */
+.jardin-stade-barre {
+  width: 28px; height: 3px; border-radius: 2px;
+  flex-shrink: 0; opacity: .55;
+  transition: opacity .2s, width .3s;
+}
+.jardin-encart:hover .jardin-stade-barre { opacity: .8; }
+.jardin-stade-barre--g { background: #7ac898; width: 10px; }
+.jardin-stade-barre--p { background: #4aaa6a; width: 19px; }
+.jardin-stade-barre--a { background: #2e7a4a; width: 28px; }
+.jardin-encart:hover .jardin-stade-barre--g { width: 14px; }
+.jardin-encart:hover .jardin-stade-barre--p { width: 22px; }
+.jardin-encart:hover .jardin-stade-barre--a { width: 28px; }
+
+/* Flèche entre stades */
+.jardin-fleche {
+  font-size: .5rem; color: rgba(46,122,74,.22);
+  padding: 0 0 0 .02rem;
+  line-height: 1; user-select: none;
+  position: relative;
+}
+.jardin-fleche::before {
+  content: '';
+  position: absolute;
+  left: -.88rem; top: 50%; transform: translateY(-50%);
+  width: 1px; height: 12px;
+  background: rgba(46,122,74,.1);
+}
+
+/* CTA pied */
+.jardin-cta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: .95rem;
+  padding-top: .75rem;
+  border-top: 1px solid rgba(46,122,74,.09);
+  position: relative; z-index: 1;
+}
+.jardin-cta-texte {
+  font-family: 'Mulish', sans-serif;
+  font-size: .56rem; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: #3a7c4e; opacity: .6;
+  transition: opacity .2s;
+}
+.jardin-encart:hover .jardin-cta-texte { opacity: 1; }
+.jardin-cta-arr {
+  font-size: .68rem; color: #3a7c4e; opacity: .35;
+  transform: translateX(-3px);
+  transition: opacity .2s, transform .25s cubic-bezier(.16,.84,.44,1);
+}
+.jardin-encart:hover .jardin-cta-arr {
+  opacity: .75; transform: translateX(0);
+}
 
 /* ══════════════════════════════════════
    EXPLORER — Sommaire + Carnet
