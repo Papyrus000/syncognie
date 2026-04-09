@@ -9,6 +9,16 @@ tags:
   - carnet
   - pensée
 ---
+## Semaine du 6 avril 2026
+
+### Site
+
+Modification de la page d'accueil. Ajout d'un sommaire. Je crois que cette présentation me permet de mieux voir le site... ce n'était pas la fonction première 😅
+
+Le sommaire rend manifeste les titres... trop peu explicite si la curiosité et la passion pour le site ne guide pas le visiteur 😝
+
+Ajout des encadrés "Jardin numérique" et "Niveaux de lecture"
+
 ## lundi 6 avril 2026
 
 ### Le contenu, les concepts...
