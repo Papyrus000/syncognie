@@ -20,6 +20,7 @@ Le sommaire rend manifeste les titres... trop peu explicite si la curiosité et 
 
 Ajout des encadrés "Jardin numérique" et "Niveaux de lecture"
 
+
 ## lundi 6 avril 2026
 
 ### Le contenu, les concepts...
