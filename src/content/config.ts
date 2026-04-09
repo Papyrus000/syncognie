@@ -56,7 +56,10 @@ const carnet = defineCollection({
     tags: z.array(z.string()).optional(),
 
     // Stade de maturité (jardin numérique)
-    stade: z.enum(['graine', 'pousse', 'arbre']).optional(),
+    stade: z.enum(["graine", "pousse", "arbre"]).optional(),
+
+    // Niveau d'engagement / de lecture
+    engagement: z.enum(["pause", "lecture", "immersion"]).optional(),
   }),
 });
 

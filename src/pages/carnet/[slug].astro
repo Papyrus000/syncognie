@@ -47,6 +47,10 @@ const suivant   = idx > 0                  ? parDate[idx - 1]  : null;
 
 // Numéro de la note (ordre chronologique, la plus ancienne = 01)
 const numNote = parDate.length - idx;
+
+// Indicateur engagement
+const engagementRank: Record<string, number> = { pause: 1, lecture: 2, immersion: 3 };
+const eng = engagementRank[note.data.engagement ?? ''] ?? 0;
 ---
 
 <Base title={`${note.data.title} — Carnet · Syncognie`}>
@@ -76,6 +80,19 @@ const numNote = parDate.length - idx;
       <span class="date">{date}</span>
       <span class="meta-sep">·</span>
       <span class="readtime">{readTime} min</span>
+      {eng > 0 && (
+        <>
+          <span class="meta-sep">·</span>
+          <span class="eng-meta" title={`Niveau de lecture : ${note.data.engagement}`}>
+            <span class="eng-meta-indicator">
+              <span class={`eng-meta-bar eng-meta-b1${eng >= 1 ? ' on' : ''}`}></span>
+              <span class={`eng-meta-bar eng-meta-b2${eng >= 2 ? ' on' : ''}`}></span>
+              <span class={`eng-meta-bar eng-meta-b3${eng >= 3 ? ' on' : ''}`}></span>
+            </span>
+            <span class="eng-meta-label">{note.data.engagement}</span>
+          </span>
+        </>
+      )}
       {stadeInfo && (
         <>
           <span class="meta-sep">·</span>
@@ -255,6 +272,14 @@ const numNote = parDate.length - idx;
     font-weight: 700; letter-spacing: .12em;
     color: #ea580c; opacity: .75;
   }
+
+  /* ── Indicateur engagement ── */
+  .eng-meta { display: inline-flex; align-items: center; gap: .28rem; }
+  .eng-meta-indicator { display: inline-flex; align-items: flex-end; gap: 3px; }
+  .eng-meta-bar { display: inline-block; width: 3px; border-radius: 2px 2px 1px 1px; background: var(--rule); }
+  .eng-meta-b1 { height: 5px; } .eng-meta-b2 { height: 8px; } .eng-meta-b3 { height: 12px; }
+  .eng-meta-bar.on { background: #7c5cbf; }
+  .eng-meta-label { font-family: 'Mulish', sans-serif; font-size: .52rem; font-weight: 300; letter-spacing: .04em; color: var(--ink-soft); opacity: .5; }
 
   /* ── Titre ── */
   h1 {

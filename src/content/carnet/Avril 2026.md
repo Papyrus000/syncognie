@@ -8,6 +8,7 @@ tags:
   - blog
   - carnet
   - pensée
+engagement: pause
 ---
 ## Semaine du 6 avril 2026
 
