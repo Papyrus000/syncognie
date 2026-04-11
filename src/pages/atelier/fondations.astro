@@ -1,0 +1,347 @@
+---
+import { getCollection } from 'astro:content';
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+import { PENSEURS, DOMAINES } from '../../data/penseurs';
+import type { Domaine } from '../../data/penseurs';
+
+const entrees = await getCollection('atelier');
+const exploresIds = new Set(
+  entrees.filter(e => e.data.penseur).map(e => e.data.penseur as string)
+);
+
+const parDomaine = (Object.entries(DOMAINES) as [Domaine, { label: string; couleur: string }][])
+  .map(([id, domaine]) => ({
+    id,
+    ...domaine,
+    penseurs: PENSEURS.filter(p => p.domaine === id),
+  }));
+
+const niveaux = [
+  { num: 1, label: 'Soi',           desc: 'Comment je fonctionne, comment je me relie, pourquoi je fais ce que je fais' },
+  { num: 2, label: 'Le monde',      desc: 'Comment fonctionnent les systèmes, le pouvoir, la complexité' },
+  { num: 3, label: 'Comment vivre', desc: 'Les fondations philosophiques qui tiennent depuis des siècles' },
+] as const;
+
+const total    = PENSEURS.length;
+const explores = PENSEURS.filter(p => exploresIds.has(p.id)).length;
+const pct      = Math.round((explores / total) * 100);
+---
+
+<AtelierLayout title="Fondations" filename="fondations">
+
+  <!-- En-tête -->
+  <div class="f-header">
+    <h1>Fondations</h1>
+    <p class="f-sub">Les idées et penseurs essentiels pour comprendre le réel et naviguer sa vie.</p>
+    <p class="f-sub">Sélectionnés sur trois critères : solidité empirique, pouvoir structurant, applicabilité concrète.</p>
+
+    <div class="f-prog">
+      <div class="f-prog-bar">
+        <div class="f-prog-fill" style={`width:${pct}%`}></div>
+      </div>
+      <span class="f-prog-label">{explores} / {total} explorés</span>
+    </div>
+  </div>
+
+  <hr class="f-hr" />
+
+  <!-- Niveaux -->
+  {niveaux.map(niv => {
+    const domaines = parDomaine.filter(d =>
+      d.penseurs.some(p => p.niveau === niv.num)
+    );
+    return (
+      <section class="f-niveau">
+        <div class="f-niv-head">
+          <span class="f-niv-badge">niveau {niv.num}</span>
+          <h2 class="f-niv-titre">{niv.label}</h2>
+          <p class="f-niv-desc">{niv.desc}</p>
+        </div>
+
+        {domaines.map(dom => {
+          const list = dom.penseurs.filter(p => p.niveau === niv.num);
+          return (
+            <div class="f-dom">
+              <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
+                <span class="f-dom-dot"></span>
+                {dom.label}
+              </h3>
+              <div class="f-grille">
+                {list.map(p => {
+                  const on = exploresIds.has(p.id);
+                  return (
+                    <div class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`} style={`--c:${dom.couleur}`}>
+                      <div class="f-c-top">
+                        <span class="f-c-concept">{p.concept}</span>
+                        {on && <a href={`/atelier/${p.id}`} class="f-c-lien">→</a>}
+                      </div>
+                      <p class="f-c-nom">{p.nom}</p>
+                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                      <p class="f-c-desc">{p.description}</p>
+                      <div class="f-c-foot">
+                        <span class="f-c-val">{p.validite}</span>
+                        {!on && <span class="f-c-avenir">à venir</span>}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </section>
+    );
+  })}
+
+  <!-- Retour -->
+  <div class="f-retour">
+    <div class="f-retour-sep"></div>
+    <a href="/atelier" class="f-retour-link">← retour à l'atelier</a>
+  </div>
+
+</AtelierLayout>
+
+<style>
+  /* En-tête */
+  .f-header { margin-bottom: 2rem; }
+
+  .f-header h1 {
+    color: #e8a050;
+    font-size: 1.35rem;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 1rem;
+    font-family: 'Libre Baskerville', serif;
+  }
+
+  .f-sub {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    color: #d4a878;
+    line-height: 1.75;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Progression */
+  .f-prog {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.4rem;
+  }
+  .f-prog-bar {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .f-prog-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c07040, #e8a050);
+    border-radius: 2px;
+  }
+  .f-prog-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #8a6a4a;
+    white-space: nowrap;
+  }
+
+  .f-hr {
+    border: none;
+    border-top: 1px solid rgba(255,150,80,0.1);
+    margin: 0 0 2.5rem;
+  }
+
+  /* Niveau */
+  .f-niveau { margin-bottom: 3rem; }
+
+  .f-niv-head { margin-bottom: 1.6rem; }
+
+  .f-niv-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .f-niv-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #c88840;
+    margin-bottom: 0.35rem;
+  }
+  .f-niv-desc {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: #9a7858;
+    line-height: 1.6;
+  }
+
+  /* Domaine */
+  .f-dom { margin-bottom: 2rem; }
+
+  .f-dom-titre {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--c);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.9rem;
+  }
+  .f-dom-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--c);
+    flex-shrink: 0;
+  }
+
+  /* Grille */
+  .f-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.85rem;
+  }
+
+  /* Carte */
+  .f-carte {
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem 1rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .f-carte::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  /* Carte explorée */
+  .f-carte--on {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+  }
+  .f-carte--on::before { opacity: 0.5; }
+  .f-carte--on:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.13);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .f-carte--on:hover::before { opacity: 1; }
+
+  /* Carte à venir */
+  .f-carte--off {
+    background: rgba(255,255,255,0.015);
+    border-color: rgba(255,255,255,0.04);
+  }
+
+  /* Contenu */
+  .f-c-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.45rem;
+  }
+  .f-c-concept {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--c);
+    line-height: 1.4;
+    flex: 1;
+  }
+  .f-carte--off .f-c-concept { opacity: 0.5; }
+
+  .f-c-lien {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--c);
+    text-decoration: none;
+    opacity: 0.6;
+    margin-left: 0.4rem;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .f-c-lien:hover { opacity: 1; transform: translateX(2px); }
+
+  .f-c-nom {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #d4a878;
+    margin-bottom: 0.1rem;
+  }
+  .f-carte--off .f-c-nom { color: #a07858; }
+
+  .f-c-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.28);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .f-c-desc {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: #c4986a;
+    line-height: 1.7;
+    margin-top: 0.5rem;
+    margin-bottom: 0.85rem;
+  }
+  .f-carte--off .f-c-desc { color: #8a6848; }
+
+  .f-c-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .f-c-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.22);
+    letter-spacing: 0.03em;
+  }
+  .f-c-avenir {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Retour */
+  .f-retour { margin-top: 3rem; }
+  .f-retour-sep {
+    border-top: 1px solid rgba(255,150,80,0.1);
+    margin-bottom: 1.2rem;
+  }
+  .f-retour-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #7a5a3a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .f-retour-link:hover { color: #f0a050; }
+
+  @media (max-width: 640px) {
+    .f-grille { grid-template-columns: 1fr; }
+  }
+</style>

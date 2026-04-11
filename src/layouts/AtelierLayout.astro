@@ -18,7 +18,11 @@ const { title = "Atelier", filename = "atelier" } = Astro.props;
 
     <style is:global>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      :root { --gold: #e8b832; }
+      :root {
+        --gold: #e8b832;
+        --frame-bg:       #3d2510;
+        --frame-titlebar: #331e0a;
+      }
     </style>
   </head>
   <body class="atelier-body">
@@ -54,6 +58,7 @@ const { title = "Atelier", filename = "atelier" } = Astro.props;
   /* ── Fond gradient orange ── */
   .atelier-body {
     background: linear-gradient(135deg, #f5c842 0%, #f07c1e 50%, #e8572a 100%);
+    background-attachment: fixed;
     min-height: 100vh;
   }
 
@@ -114,7 +119,7 @@ const { title = "Atelier", filename = "atelier" } = Astro.props;
 
   /* ── Cadre — couleurs de la capture ── */
   .atelier-frame {
-    background: #1e1108;
+    background: var(--frame-bg);
     border-radius: 12px;
     border-top: 1px solid rgba(232, 150, 60, 0.10);
     transform: translateY(-2px);
@@ -132,7 +137,7 @@ const { title = "Atelier", filename = "atelier" } = Astro.props;
     display: flex;
     align-items: center;
     padding: 12px 20px;
-    background: #170d05;
+    background: var(--frame-titlebar);
     border-bottom: 1px solid rgba(255,255,255,0.04);
   }
   .atelier-filename {

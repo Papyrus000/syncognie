@@ -1,11 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
+import { PENSEURS } from '../../data/penseurs';
 
-// Charge toutes les entrées de l'atelier
 const tout = await getCollection('atelier');
 
-// Sépare le fichier maître des entrées
 const master = tout.find(e => e.id === 'index.md' || e.slug === 'index');
 const entrees = tout
   .filter(e => e.id !== 'index.md' && e.slug !== 'index' && e.data.draft !== true)
@@ -14,7 +13,12 @@ const entrees = tout
 if (!master) throw new Error('Fichier src/content/atelier/index.md introuvable');
 const { Content } = await master.render();
 
-// Formatage de la date
+// Progression Fondations
+const exploresIds = new Set(tout.filter(e => e.data.penseur).map(e => e.data.penseur));
+const total = PENSEURS.length;
+const explores = PENSEURS.filter(p => exploresIds.has(p.id)).length;
+const pct = Math.round((explores / total) * 100);
+
 function formatDate(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
@@ -22,17 +26,34 @@ function formatDate(date: Date) {
 
 <AtelierLayout title={master.data.title} filename={master.data.title}>
 
-  <!-- Contenu du fichier maître -->
   <Content />
 
-  <!-- Liste automatique des entrées -->
+  <!-- ── Bloc Fondations ── -->
+  <a href="/atelier/fondations" class="fondations-bloc">
+    <div class="fondations-top">
+      <span class="fondations-label">référence permanente</span>
+      <span class="fondations-arrow">→</span>
+    </div>
+    <p class="fondations-titre">Fondations</p>
+    <p class="fondations-desc">
+      Les penseurs et idées essentiels pour comprendre le réel et naviguer sa vie.
+    </p>
+    <div class="fondations-meta">
+      <div class="fondations-bar">
+        <div class="fondations-fill" style={`width: ${pct}%`}></div>
+      </div>
+      <span class="fondations-compte">{explores} / {total} explorés</span>
+    </div>
+  </a>
+
+  <!-- ── Articles ── -->
   {entrees.length > 0 && (
     <div class="atelier-entrees">
       <div class="entrees-sep"></div>
       <h2>Exploration</h2>
       <ul class="entrees-list">
         {entrees.map((entree) => (
-          <li class="entree-item">
+          <li>
             <a href={`/atelier/${entree.slug}`} class="entree-link">
               <span class="entree-arrow">→</span>
               <span class="entree-title">{entree.data.title}</span>
@@ -50,15 +71,102 @@ function formatDate(date: Date) {
 </AtelierLayout>
 
 <style>
-  .atelier-entrees {
-    margin-top: 2.5rem;
+  /* ── Bloc Fondations ── */
+  .fondations-bloc {
+    display: block;
+    text-decoration: none;
+    border: 1px solid rgba(224, 144, 80, 0.18);
+    background: rgba(224, 144, 80, 0.04);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem 1.2rem;
+    margin: 1.8rem 0 0;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  }
+  .fondations-bloc::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #c07040, #e8a050, #c07040);
+    opacity: 0.5;
+    transition: opacity 0.25s;
+  }
+  .fondations-bloc:hover {
+    border-color: rgba(224, 144, 80, 0.32);
+    background: rgba(224, 144, 80, 0.08);
+    transform: translateY(-2px);
+  }
+  .fondations-bloc:hover::before { opacity: 1; }
+
+  .fondations-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .fondations-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+  .fondations-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: #c07040;
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .fondations-bloc:hover .fondations-arrow { opacity: 1; transform: translateX(3px); }
+
+  .fondations-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #e8a050;
+    margin-bottom: 0.4rem;
+  }
+  .fondations-desc {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: #8a6040;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .fondations-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .fondations-bar {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .fondations-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #c07040, #e8a050);
+    border-radius: 2px;
+  }
+  .fondations-compte {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: #6a4a2a;
+    white-space: nowrap;
   }
 
+  /* ── Articles (code original préservé) ── */
+  .atelier-entrees { margin-top: 2.5rem; }
   .entrees-sep {
     border-top: 1px solid rgba(255,150,80,0.12);
     margin-bottom: 1.8rem;
   }
-
   .atelier-entrees h2 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.95rem;
@@ -66,7 +174,6 @@ function formatDate(date: Date) {
     color: #c87830;
     margin-bottom: 1.2rem;
   }
-
   .entrees-list {
     list-style: none;
     padding: 0;
@@ -74,7 +181,6 @@ function formatDate(date: Date) {
     flex-direction: column;
     gap: 0.6rem;
   }
-
   .entree-link {
     display: flex;
     align-items: baseline;
@@ -84,9 +190,6 @@ function formatDate(date: Date) {
     border-radius: 6px;
     transition: background 0.2s;
   }
-  .entree-link:hover {
-  }
-
   .entree-arrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
@@ -94,11 +197,7 @@ function formatDate(date: Date) {
     flex-shrink: 0;
     transition: color 0.2s, transform 0.2s;
   }
-  .entree-link:hover .entree-arrow {
-    color: #7abd6e;
-    transform: translateX(3px);
-  }
-
+  .entree-link:hover .entree-arrow { color: #7abd6e; transform: translateX(3px); }
   .entree-title {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
@@ -106,10 +205,7 @@ function formatDate(date: Date) {
     flex-shrink: 0;
     transition: color 0.2s;
   }
-  .entree-link:hover .entree-title {
-    color: #7abd6e;
-  }
-
+  .entree-link:hover .entree-title { color: #7abd6e; }
   .entree-extrait {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
@@ -119,7 +215,6 @@ function formatDate(date: Date) {
     white-space: nowrap;
     flex: 1;
   }
-
   .entree-date {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
