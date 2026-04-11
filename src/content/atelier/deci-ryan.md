@@ -140,7 +140,3 @@ Les relations qui nourrissent l'autonomie de l'autre — qui ne confondent pas s
 Trois besoins. Leur satisfaction crée les conditions de la motivation durable, du bien-être, de l'engagement authentique. Leur frustration produit des comportements prévisibles : conformité sans conviction, résistance passive, désengagement progressif.
 
 Et une leçon en filigrane dans tous les travaux de Deci et Ryan : **les êtres humains n'ont pas besoin d'être poussés**. Ils ont besoin d'un environnement qui ne détruise pas l'élan qu'ils portent déjà.
-
----
-
-*← [retour aux Fondations](/atelier/fondations)*
