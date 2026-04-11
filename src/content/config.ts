@@ -58,12 +58,12 @@ const atelier = defineCollection({
 
     // Optionnels
     description: z.string().optional(),
-
-    // Extrait affiché dans la liste index
     extrait:     z.string().optional(),
-
-    // Pour masquer une entrée de la liste sans la supprimer
     draft:       z.boolean().optional(),
+    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
+
+    // Lien vers un penseur dans penseurs.ts — active la case dans Fondations
+    penseur:     z.string().optional(),
   }),
 });
 
