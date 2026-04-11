@@ -1,5 +1,4 @@
 // src/content/config.ts
-// Ajouter cette collection à votre config existante
 
 import { defineCollection, z } from 'astro:content';
 
@@ -36,31 +35,36 @@ const fenetres = defineCollection({
   }),
 });
 
-// ── Nouvelle collection : carnet ──
+// ── Collection existante : carnet ──
 const carnet = defineCollection({
   schema: z.object({
-    // Obligatoires
-    title: z.string(),
-    date:  z.date(),
+    title:       z.string(),
+    date:        z.date(),
+    type:        z.enum(['dialogue', 'note', 'essai', 'fragment']).default('note'),
+    description: z.string().optional(),
+    extrait:     z.string().optional(),
+    tags:        z.array(z.string()).optional(),
+    stade:       z.enum(["graine", "pousse", "arbre"]).optional(),
+    engagement:  z.enum(["pause", "lecture", "immersion"]).optional(),
+  }),
+});
 
-    // Type de note — détermine couleur et glyph dans la liste
-    type: z.enum(['dialogue', 'note', 'essai', 'fragment']).default('note'),
+// ── Nouvelle collection : atelier ──
+const atelier = defineCollection({
+  schema: z.object({
+    // Obligatoires
+    title:       z.string(),
+    date:        z.date(),
 
     // Optionnels
     description: z.string().optional(),
 
-    // Extrait affiché dans la liste (une phrase, une idée)
-    extrait: z.string().optional(),
+    // Extrait affiché dans la liste index
+    extrait:     z.string().optional(),
 
-    // Tags pour le codex en bas de page
-    tags: z.array(z.string()).optional(),
-
-    // Stade de maturité (jardin numérique)
-    stade: z.enum(["graine", "pousse", "arbre"]).optional(),
-
-    // Niveau d'engagement / de lecture
-    engagement: z.enum(["pause", "lecture", "immersion"]).optional(),
+    // Pour masquer une entrée de la liste sans la supprimer
+    draft:       z.boolean().optional(),
   }),
 });
 
-export const collections = { articles, fenetres, carnet };
+export const collections = { articles, fenetres, carnet, atelier };

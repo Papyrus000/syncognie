@@ -1,0 +1,438 @@
+---
+// src/pages/jardin/index.astro
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { computeStade, computeMoss, ageText, STADE_META } from '../../lib/jardin';
+
+const entries = await getCollection('jardin');
+
+const notes = entries
+  .map((entry, i) => {
+    const { title, date, modifie, tags, stade: forcedStade, description } = entry.data;
+    const refDate = modifie || date;
+    const stade = computeStade(refDate, forcedStade);
+    const mossIntensity = computeMoss(refDate, stade);
+    const ageDays = refDate
+      ? Math.floor((Date.now() - refDate.getTime()) / 86400000)
+      : 0;
+    return { slug: entry.slug, title, date, modifie, tags: tags || [], stade, description, mossIntensity, ageDays, _seed: i + 1 };
+  })
+  .sort((a, b) => (b.date?.getTime() ?? 0) - (a.date?.getTime() ?? 0));
+
+const stats = {
+  total:   notes.length,
+  graine:  notes.filter(n => n.stade === 'graine').length,
+  pousse:  notes.filter(n => n.stade === 'pousse').length,
+  arbre:   notes.filter(n => n.stade === 'arbre').length,
+  dormant: notes.filter(n => n.stade === 'dormant').length,
+};
+
+function mossSVG(intensity: number, seed: number): string {
+  if (intensity < 0.08) return '';
+  const r = (n: number) => Math.abs(Math.sin(seed * 9301 + n * 49297 + 233) % 1);
+  const count = Math.floor(intensity * 6) + 1;
+  const colors = ['rgba(180,140,80,.18)', 'rgba(160,120,60,.14)', 'rgba(140,110,50,.12)', 'rgba(90,80,50,.1)'];
+  let out = `<svg class="moss-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`;
+  for (let i = 0; i < count; i++) {
+    const x = r(i*3) * 85 + 5;
+    const y = r(i*3+1) * 80 + 5;
+    const rx = 5 + r(i*3+2) * 14;
+    const ry = rx * (0.35 + r(i) * 0.45);
+    const col = colors[Math.floor(r(i*2) * colors.length)];
+    out += `<ellipse cx="${x}%" cy="${y}%" rx="${rx}" ry="${ry}" fill="${col}" opacity="${(0.5 + r(i) * 0.5 * intensity).toFixed(2)}"/>`;
+    for (let j = 0; j < 3; j++) {
+      const sx = x + (r(i+j)-.5)*rx*2.2;
+      const sy = y + (r(i+j+1)-.5)*ry*2.8;
+      out += `<circle cx="${sx}%" cy="${sy}%" r="${0.3+r(i+j)*.9}" fill="${col}" opacity="${(0.6*intensity).toFixed(2)}"/>`;
+    }
+  }
+  if (intensity > 0.55) {
+    out += `<path d="M0 80 Q10 75 15 88 Q6 84 0 92 Z" fill="rgba(150,120,60,.12)" opacity="${(intensity*.6).toFixed(2)}"/>`;
+    out += `<path d="M85 5 Q95 2 100 12 Q90 8 88 18 Z" fill="rgba(140,110,50,.1)" opacity="${(intensity*.5).toFixed(2)}"/>`;
+  }
+  out += `</svg>`;
+  return out;
+}
+---
+
+<Base title="Jardin · Syncognie" description="Un espace vivant — fragments, graines et pensées en croissance.">
+
+  <style>
+    :global(body) {
+      background-color: #1a1714 !important;
+      background-image: none !important;
+    }
+
+    :root {
+      --j-seed:    #9a7a20;
+      --j-sprout:  #4a8a30;
+      --j-tree:    #2a6820;
+      --j-dormant: #6a5a40;
+    }
+
+    .jardin-header {
+      padding: 3.5rem 2rem 0;
+      max-width: 900px;
+      margin: 0 auto;
+      animation: rise .5s ease both;
+    }
+
+    .jardin-eyebrow {
+      font-family: 'Mulish', sans-serif;
+      font-size: .65rem; font-weight: 300;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: rgba(100,160,60,.7);
+      margin-bottom: .6rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .jardin-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 1px;
+      background: rgba(100,160,60,.4);
+    }
+
+    .jardin-title {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400; line-height: 1.1;
+      color: #f5f0e8;
+      margin-bottom: .5rem;
+    }
+    .jardin-title em { font-style: italic; color: var(--gold); }
+
+    .jardin-desc {
+      font-family: 'Libre Baskerville', serif;
+      font-style: italic;
+      font-size: .95rem; line-height: 1.7;
+      color: rgba(245,240,232,.45);
+      max-width: 480px;
+      margin-bottom: 2rem;
+    }
+
+    .jardin-filters {
+      display: flex; gap: .4rem; flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      display: flex; align-items: center; gap: .4rem;
+      padding: .35rem .85rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .62rem; font-weight: 300;
+      letter-spacing: .14em; text-transform: uppercase;
+      background: rgba(245,240,232,.04);
+      border: 1px solid rgba(245,240,232,.09);
+      color: rgba(245,240,232,.4);
+      border-radius: 2px; cursor: pointer;
+      transition: all .2s;
+    }
+    .filter-btn:hover {
+      background: rgba(245,240,232,.07);
+      border-color: rgba(245,240,232,.15);
+      color: rgba(245,240,232,.75);
+    }
+    .filter-btn.active {
+      background: rgba(232,184,50,.08);
+      border-color: rgba(232,184,50,.25);
+      color: var(--gold);
+    }
+    .filter-btn .count {
+      font-family: 'Libre Baskerville', serif;
+      font-size: .8rem; opacity: .7;
+    }
+
+    .jardin-legend {
+      display: flex; gap: 1.8rem; flex-wrap: wrap;
+      padding: 1rem 2rem;
+      border-top: 1px solid rgba(245,240,232,.06);
+      border-bottom: 1px solid rgba(245,240,232,.06);
+      margin-bottom: 2.5rem;
+      max-width: 900px; margin-left: auto; margin-right: auto;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: .5rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .6rem; font-weight: 300;
+      letter-spacing: .1em;
+      color: rgba(245,240,232,.3);
+    }
+    .legend-pip {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .jardin-grid-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .jardin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* ── Carte ── */
+    .note-card {
+      position: relative;
+      background: rgba(26,23,20,.55);
+      border: 1px solid rgba(245,240,232,.07);
+      border-radius: 4px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      backdrop-filter: blur(4px);
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      animation: rise .4s ease both;
+    }
+    .note-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(232,184,50,.2);
+      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+    }
+    .note-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px; z-index: 2;
+    }
+    .s-graine::before  { background: linear-gradient(180deg, var(--j-seed), transparent); }
+    .s-pousse::before  { background: linear-gradient(180deg, var(--j-sprout), transparent); }
+    .s-arbre::before   { background: linear-gradient(180deg, var(--j-tree), transparent); }
+    .s-dormant::before { background: linear-gradient(180deg, var(--j-dormant), transparent); opacity: .5; }
+
+    .moss-layer {
+      position: absolute; inset: 0;
+      pointer-events: none; z-index: 1;
+    }
+    .moss-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+    }
+
+    .card-inner {
+      position: relative; z-index: 2;
+      padding: 1.3rem 1.4rem 1.5rem 1.6rem;
+    }
+
+    .card-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: .7rem; gap: .6rem;
+    }
+
+    .stade-badge {
+      display: flex; align-items: center; gap: .3rem;
+      font-family: 'Mulish', sans-serif;
+      font-size: .58rem; font-weight: 300;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .18rem .55rem;
+      border-radius: 2px; border: 1px solid; flex-shrink: 0;
+    }
+    .s-graine  .stade-badge { color: var(--j-seed);    border-color: rgba(154,122,32,.3);  background: rgba(154,122,32,.06); }
+    .s-pousse  .stade-badge { color: var(--j-sprout);  border-color: rgba(74,138,48,.3);   background: rgba(74,138,48,.06); }
+    .s-arbre   .stade-badge { color: var(--j-tree);    border-color: rgba(42,104,32,.35);  background: rgba(42,104,32,.07); }
+    .s-dormant .stade-badge { color: var(--j-dormant); border-color: rgba(106,90,64,.3);   background: rgba(106,90,64,.06); }
+
+    .card-meta { text-align: right; flex-shrink: 0; }
+    .card-date {
+      font-family: 'Mulish', sans-serif;
+      font-size: .58rem; font-weight: 300;
+      letter-spacing: .06em;
+      color: rgba(245,240,232,.25); display: block;
+    }
+    .card-age {
+      font-family: 'Mulish', sans-serif;
+      font-size: .56rem;
+      color: rgba(245,240,232,.18);
+      display: block; margin-top: .1rem; font-style: italic;
+    }
+
+    .card-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem; font-weight: 400;
+      line-height: 1.4;
+      color: rgba(245,240,232,.82);
+      margin-bottom: .5rem;
+      transition: color .2s;
+    }
+    .note-card:hover .card-title { color: #f5f0e8; }
+    .s-dormant .card-title { color: rgba(245,240,232,.45); }
+
+    .card-excerpt {
+      font-family: 'Mulish', sans-serif;
+      font-size: .8rem; font-weight: 300;
+      line-height: 1.6;
+      color: rgba(245,240,232,.35);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .s-dormant .card-excerpt { color: rgba(245,240,232,.22); }
+    .note-card:hover .card-excerpt { color: rgba(245,240,232,.5); }
+
+    .card-tags {
+      display: flex; flex-wrap: wrap; gap: .3rem;
+      margin-top: .9rem;
+    }
+    .tag {
+      font-family: 'Mulish', sans-serif;
+      font-size: .56rem; font-weight: 300; letter-spacing: .08em;
+      padding: .15rem .45rem; border-radius: 2px;
+      background: rgba(245,240,232,.04);
+      color: rgba(245,240,232,.3);
+      border: 1px solid rgba(245,240,232,.07);
+    }
+
+    .age-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: rgba(245,240,232,.04); z-index: 3;
+    }
+    .age-bar-fill { height: 100%; opacity: .5; }
+    .s-graine  .age-bar-fill { background: var(--j-seed); }
+    .s-pousse  .age-bar-fill { background: var(--j-sprout); }
+    .s-arbre   .age-bar-fill { background: var(--j-tree); }
+    .s-dormant .age-bar-fill { background: var(--j-dormant); }
+
+    .empty-state {
+      grid-column: 1/-1; padding: 5rem 2rem; text-align: center;
+      border: 1px dashed rgba(245,240,232,.08); border-radius: 4px;
+    }
+    .empty-state p {
+      font-family: 'Libre Baskerville', serif; font-style: italic;
+      font-size: 1rem; color: rgba(245,240,232,.3); margin-bottom: .5rem;
+    }
+    .empty-state small {
+      font-family: 'Mulish', sans-serif; font-size: .62rem;
+      font-weight: 300; letter-spacing: .1em; color: rgba(245,240,232,.15);
+    }
+
+    .note-card.is-hidden { display: none; }
+
+    @media (max-width: 600px) {
+      .jardin-header, .jardin-grid-wrap { padding-left: 1.2rem; padding-right: 1.2rem; }
+      .jardin-grid { grid-template-columns: 1fr; }
+      .jardin-legend { padding-left: 1.2rem; padding-right: 1.2rem; }
+    }
+  </style>
+
+  <div class="jardin-header">
+    <div class="jardin-eyebrow">Bac à sable · Jardin numérique</div>
+    <h1 class="jardin-title">Le <em>Jardin</em></h1>
+    <p class="jardin-desc">
+      Un espace vivant. Chaque note pousse à son rythme —
+      de la graine brute à l'arbre enraciné.
+      Les idées oubliées se couvrent doucement de mousse.
+    </p>
+
+    {notes.length > 0 && (
+      <div class="jardin-filters">
+        <button class="filter-btn active" data-filter="all" onclick="filterJardin('all',this)">
+          Toutes <span class="count">{stats.total}</span>
+        </button>
+        <button class="filter-btn" data-filter="graine" onclick="filterJardin('graine',this)">
+          🌱 Graines <span class="count">{stats.graine}</span>
+        </button>
+        <button class="filter-btn" data-filter="pousse" onclick="filterJardin('pousse',this)">
+          🌿 Pousses <span class="count">{stats.pousse}</span>
+        </button>
+        <button class="filter-btn" data-filter="arbre" onclick="filterJardin('arbre',this)">
+          🌳 Arbres <span class="count">{stats.arbre}</span>
+        </button>
+        <button class="filter-btn" data-filter="dormant" onclick="filterJardin('dormant',this)">
+          💤 Dormants <span class="count">{stats.dormant}</span>
+        </button>
+      </div>
+    )}
+  </div>
+
+  <div class="jardin-legend">
+    <div class="legend-item">
+      <div class="legend-pip" style="background:var(--j-seed)"></div>
+      <span>Graine · &lt; 7 jours</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-pip" style="background:var(--j-sprout)"></div>
+      <span>Pousse · 7–30 jours</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-pip" style="background:var(--j-tree)"></div>
+      <span>Arbre · 30–90 jours</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-pip" style="background:var(--j-dormant)"></div>
+      <span>Dormant · &gt; 90 jours · mousse numérique</span>
+    </div>
+  </div>
+
+  <div class="jardin-grid-wrap">
+    <div class="jardin-grid" id="jardinGrid">
+      {notes.length === 0 ? (
+        <div class="empty-state">
+          <p>Le jardin attend ses premières graines.</p>
+          <small>DÉPOSER DES FICHIERS .MD DANS src/content/jardin/</small>
+        </div>
+      ) : (
+        notes.map((note, i) => {
+          const meta = STADE_META[note.stade];
+          const agePct = Math.min(100, (note.ageDays / 90) * 100);
+          const dateStr = note.date
+            ? note.date.toLocaleDateString('fr-FR', { day:'numeric', month:'short', year:'numeric' })
+            : '';
+          return (
+            <a
+              href={`/jardin/${note.slug}`}
+              class={`note-card s-${note.stade}`}
+              data-stade={note.stade}
+              style={`animation-delay:${i * .055}s`}
+            >
+              <div class="moss-layer" set:html={mossSVG(note.mossIntensity, note._seed)} />
+              <div class="card-inner">
+                <div class="card-top">
+                  <div class="stade-badge">
+                    <span>{meta.icon}</span>
+                    <span>{meta.label}</span>
+                  </div>
+                  <div class="card-meta">
+                    {dateStr && <span class="card-date">{dateStr}</span>}
+                    <span class="card-age">{ageText(note.date)}</span>
+                  </div>
+                </div>
+                <div class="card-title">{note.title}</div>
+                {note.description && (
+                  <div class="card-excerpt">{note.description}</div>
+                )}
+                {note.tags.length > 0 && (
+                  <div class="card-tags">
+                    {note.tags.map(tag => <span class="tag">{tag}</span>)}
+                  </div>
+                )}
+              </div>
+              <div class="age-bar">
+                <div class="age-bar-fill" style={`width:${agePct}%`}></div>
+              </div>
+            </a>
+          );
+        })
+      )}
+    </div>
+  </div>
+
+  <script>
+    function filterJardin(stade: string, btn: HTMLElement) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.note-card').forEach((card: Element) => {
+        const c = card as HTMLElement;
+        if (stade === 'all' || c.dataset.stade === stade) {
+          c.classList.remove('is-hidden');
+        } else {
+          c.classList.add('is-hidden');
+        }
+      });
+    }
+  </script>
+
+</Base>

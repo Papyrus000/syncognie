@@ -40,6 +40,12 @@ const currentPath = Astro.url.pathname;
         </svg>
         Outils
       </a>
+      <a href="/atelier" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+        Atelier
+      </a>
       <a href="/apropos" class={`topbar-link topbar-link--secondary ${currentPath === '/apropos' ? 'active' : ''}`}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -91,6 +97,12 @@ const currentPath = Astro.url.pathname;
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
       </svg>
       Outils
+    </a>
+    <a href="/atelier" class={`mobile-link ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+      Atelier
     </a>
     <a href="/apropos" class={`mobile-link ${currentPath === '/apropos' ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -173,6 +185,8 @@ const currentPath = Astro.url.pathname;
   .topbar-link:hover, .topbar-link.active { color: #e8b832; }
   .topbar-link svg { opacity: .6; flex-shrink: 0; transition: opacity .2s; }
   .topbar-link:hover svg, .topbar-link.active svg { opacity: 1; }
+
+
 
   /* HAMBURGER */
   .hamburger {

@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+
+// Charge toutes les entrées de l'atelier
+const tout = await getCollection('atelier');
+
+// Sépare le fichier maître des entrées
+const master = tout.find(e => e.id === 'index.md' || e.slug === 'index');
+const entrees = tout
+  .filter(e => e.id !== 'index.md' && e.slug !== 'index' && e.data.draft !== true)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+if (!master) throw new Error('Fichier src/content/atelier/index.md introuvable');
+const { Content } = await master.render();
+
+// Formatage de la date
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+---
+
+<AtelierLayout title={master.data.title} filename={master.data.title}>
+
+  <!-- Contenu du fichier maître -->
+  <Content />
+
+  <!-- Liste automatique des entrées -->
+  {entrees.length > 0 && (
+    <div class="atelier-entrees">
+      <div class="entrees-sep"></div>
+      <h2>Exploration</h2>
+      <ul class="entrees-list">
+        {entrees.map((entree) => (
+          <li class="entree-item">
+            <a href={`/atelier/${entree.slug}`} class="entree-link">
+              <span class="entree-arrow">→</span>
+              <span class="entree-title">{entree.data.title}</span>
+              {entree.data.extrait && (
+                <span class="entree-extrait">{entree.data.extrait}</span>
+              )}
+              <span class="entree-date">{formatDate(entree.data.date)}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+</AtelierLayout>
+
+<style>
+  .atelier-entrees {
+    margin-top: 2.5rem;
+  }
+
+  .entrees-sep {
+    border-top: 1px solid rgba(255,150,80,0.12);
+    margin-bottom: 1.8rem;
+  }
+
+  .atelier-entrees h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #c87830;
+    margin-bottom: 1.2rem;
+  }
+
+  .entrees-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .entree-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    text-decoration: none;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .entree-link:hover {
+  }
+
+  .entree-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #7a5a3a;
+    flex-shrink: 0;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .entree-link:hover .entree-arrow {
+    color: #7abd6e;
+    transform: translateX(3px);
+  }
+
+  .entree-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: #d4a878;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+  .entree-link:hover .entree-title {
+    color: #7abd6e;
+  }
+
+  .entree-extrait {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #7a5a3a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .entree-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #5a3a1a;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+</style>

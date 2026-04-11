@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+
+export async function getStaticPaths() {
+  const entrees = await getCollection('atelier', ({ id }) => id !== 'index');
+  return entrees.map((entree) => ({
+    params: { slug: entree.slug },
+    props:  { entree },
+  }));
+}
+
+const { entree } = Astro.props;
+const { Content } = await entree.render();
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+
+<AtelierLayout title={entree.data.title} filename={entree.data.title}>
+
+  <!-- En-tête de l'entrée -->
+  <div class="entree-header">
+    <p class="entree-date">{formatDate(entree.data.date)}</p>
+    {entree.data.description && (
+      <p class="entree-description">{entree.data.description}</p>
+    )}
+  </div>
+
+  <!-- Contenu MD -->
+  <Content />
+
+  <!-- Retour à l'index -->
+  <div class="entree-footer">
+    <div class="footer-sep"></div>
+    <a href="/atelier" class="retour-link">← retour à l'atelier</a>
+  </div>
+
+</AtelierLayout>
+
+<style>
+  .entree-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(255,150,80,0.1);
+  }
+
+  .entree-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #5a3a1a;
+    margin-bottom: 0.5rem;
+  }
+
+  .entree-description {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #8a6040;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .entree-footer {
+    margin-top: 3rem;
+  }
+
+  .footer-sep {
+    border-top: 1px solid rgba(255,150,80,0.1);
+    margin-bottom: 1.2rem;
+  }
+
+  .retour-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #7a5a3a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .retour-link:hover { color: #f0a050; }
+</style>
