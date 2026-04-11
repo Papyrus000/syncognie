@@ -1,8 +1,8 @@
 ---
-title: introduction
+title: "L'atelier : l'espace des concepts, des idées et des penseurs"
 date: 2026-04-11
-description: Section atelier.
+description: Espace où sont rassemblés les concepts, les idées, les penseurs... tels des outils pour éclairer les situations, les problèmes, les obstacles...
 ---
-# atelier
+# L'atelier
 
-Expression du jardin numérique. Espace en croissance... 
+Espace où sont rassemblés les concepts, les idées, les penseurs... tels des outils pour éclairer les situations, les problèmes, les obstacles...

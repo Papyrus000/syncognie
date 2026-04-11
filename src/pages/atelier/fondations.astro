@@ -17,9 +17,21 @@ const parDomaine = (Object.entries(DOMAINES) as [Domaine, { label: string; coule
   }));
 
 const niveaux = [
-  { num: 1, label: 'Soi',           desc: 'Comment je fonctionne, comment je me relie, pourquoi je fais ce que je fais' },
-  { num: 2, label: 'Le monde',      desc: 'Comment fonctionnent les systèmes, le pouvoir, la complexité' },
-  { num: 3, label: 'Comment vivre', desc: 'Les fondations philosophiques qui tiennent depuis des siècles' },
+  {
+    num: 1,
+    label: 'Soi',
+    desc: 'Ce qu\'il faut comprendre avant tout le reste — comment je fonctionne, comment je me construis, comment je me relie aux autres, pourquoi je fais ce que je fais.',
+  },
+  {
+    num: 2,
+    label: 'Le monde',
+    desc: 'Comment fonctionnent les systèmes, le pouvoir, la complexité — voir au-delà de l\'individu.',
+  },
+  {
+    num: 3,
+    label: 'Comment vivre',
+    desc: 'Les fondations philosophiques qui tiennent depuis des siècles. Vieilles de siècles, empiriquement robustes.',
+  },
 ] as const;
 
 const total    = PENSEURS.length;
@@ -29,12 +41,10 @@ const pct      = Math.round((explores / total) * 100);
 
 <AtelierLayout title="Fondations" filename="fondations">
 
-  <!-- En-tête -->
   <div class="f-header">
     <h1>Fondations</h1>
-    <p class="f-sub">Les idées et penseurs essentiels pour comprendre le réel et naviguer sa vie.</p>
+    <p class="f-sub">Les briques : idées, concepts, penseurs essentiels pour se comprendre, comprendre les autres et naviguer dans la vie.</p>
     <p class="f-sub">Sélectionnés sur trois critères : solidité empirique, pouvoir structurant, applicabilité concrète.</p>
-
     <div class="f-prog">
       <div class="f-prog-bar">
         <div class="f-prog-fill" style={`width:${pct}%`}></div>
@@ -45,7 +55,6 @@ const pct      = Math.round((explores / total) * 100);
 
   <hr class="f-hr" />
 
-  <!-- Niveaux -->
   {niveaux.map(niv => {
     const domaines = parDomaine.filter(d =>
       d.penseurs.some(p => p.niveau === niv.num)
@@ -93,7 +102,6 @@ const pct      = Math.round((explores / total) * 100);
     );
   })}
 
-  <!-- Retour -->
   <div class="f-retour">
     <div class="f-retour-sep"></div>
     <a href="/atelier" class="f-retour-link">← retour à l'atelier</a>
@@ -102,16 +110,21 @@ const pct      = Math.round((explores / total) * 100);
 </AtelierLayout>
 
 <style>
-  /* En-tête */
+  /* Padding légèrement augmenté */
+  :global(.atelier-content) {
+    padding-left: 3.5rem !important;
+    padding-right: 3.5rem !important;
+  }
+
   .f-header { margin-bottom: 2rem; }
 
   .f-header h1 {
-    color: #e8a050;
+    font-family: 'Libre Baskerville', serif;
     font-size: 1.35rem;
     font-weight: 400;
     font-style: italic;
+    color: #e8a050;
     margin-bottom: 1rem;
-    font-family: 'Libre Baskerville', serif;
   }
 
   .f-sub {
@@ -123,7 +136,6 @@ const pct      = Math.round((explores / total) * 100);
     margin-bottom: 0.3rem;
   }
 
-  /* Progression */
   .f-prog {
     display: flex;
     align-items: center;
@@ -151,62 +163,67 @@ const pct      = Math.round((explores / total) * 100);
 
   .f-hr {
     border: none;
-    border-top: 1px solid rgba(255,150,80,0.1);
+    border-top: 1px solid rgba(255,150,80,0.12);
     margin: 0 0 2.5rem;
   }
 
-  /* Niveau */
-  .f-niveau { margin-bottom: 3rem; }
+  /* Niveau — structurant et lisible */
+  .f-niveau {
+    margin-bottom: 3.5rem;
+  }
 
-  .f-niv-head { margin-bottom: 1.6rem; }
+  .f-niv-head { margin-bottom: 1.8rem; }
 
   .f-niv-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.2);
+    color: #e8a050;
+    opacity: 0.8;
     display: block;
     margin-bottom: 0.3rem;
   }
+
   .f-niv-titre {
     font-family: 'Libre Baskerville', serif;
-    font-size: 1.05rem;
-    font-weight: 400;
-    font-style: italic;
-    color: #c88840;
-    margin-bottom: 0.35rem;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #f0d0a0;
+    margin-bottom: 0.5rem;
   }
+
   .f-niv-desc {
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
-    font-size: 0.9rem;
-    color: #9a7858;
-    line-height: 1.6;
+    font-size: 1rem;
+    color: #d4a878;
+    line-height: 1.7;
+    max-width: 580px;
   }
 
   /* Domaine */
-  .f-dom { margin-bottom: 2rem; }
+  .f-dom { margin-bottom: 2.2rem; }
 
   .f-dom-titre {
     display: flex;
     align-items: center;
     gap: 0.55rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 500;
     color: var(--c);
     letter-spacing: 0.04em;
-    margin-bottom: 0.9rem;
+    margin-bottom: 1rem;
   }
   .f-dom-dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--c);
     flex-shrink: 0;
   }
 
-  /* Grille */
   .f-grille {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -217,7 +234,7 @@ const pct      = Math.round((explores / total) * 100);
   .f-carte {
     border-radius: 8px;
     padding: 1.1rem 1.2rem 1rem;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
     position: relative;
     overflow: hidden;
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
@@ -231,41 +248,38 @@ const pct      = Math.round((explores / total) * 100);
     opacity: 0;
     transition: opacity 0.2s;
   }
-
-  /* Carte explorée */
   .f-carte--on {
-    background: rgba(255,255,255,0.03);
-    border-color: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.09);
   }
-  .f-carte--on::before { opacity: 0.5; }
+  .f-carte--on::before { opacity: 0.6; }
   .f-carte--on:hover {
     transform: translateY(-2px);
-    border-color: rgba(255,255,255,0.13);
+    border-color: rgba(255,255,255,0.15);
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
   .f-carte--on:hover::before { opacity: 1; }
-
-  /* Carte à venir */
   .f-carte--off {
-    background: rgba(255,255,255,0.015);
+    background: rgba(255,255,255,0.02);
     border-color: rgba(255,255,255,0.04);
   }
 
-  /* Contenu */
   .f-c-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.45rem;
   }
+
+  /* Concept — couleur fixe claire, toujours lisible */
   .f-c-concept {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--c);
+    font-size: 0.8rem;
+    color: #f0c878;
     line-height: 1.4;
     flex: 1;
   }
-  .f-carte--off .f-c-concept { opacity: 0.5; }
+  .f-carte--off .f-c-concept { color: #a08858; }
 
   .f-c-lien {
     font-family: 'JetBrains Mono', monospace;
@@ -283,15 +297,15 @@ const pct      = Math.round((explores / total) * 100);
     font-family: 'Libre Baskerville', serif;
     font-size: 1rem;
     font-weight: 700;
-    color: #d4a878;
+    color: #e8c090;
     margin-bottom: 0.1rem;
   }
-  .f-carte--off .f-c-nom { color: #a07858; }
+  .f-carte--off .f-c-nom { color: #b08860; }
 
   .f-c-dates {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.65rem;
-    color: rgba(255,255,255,0.28);
+    color: rgba(255,255,255,0.32);
     display: block;
     margin-bottom: 0.6rem;
   }
@@ -300,33 +314,39 @@ const pct      = Math.round((explores / total) * 100);
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
     font-size: 0.9rem;
-    color: #c4986a;
+    color: #d4a878;
     line-height: 1.7;
     margin-top: 0.5rem;
     margin-bottom: 0.85rem;
   }
-  .f-carte--off .f-c-desc { color: #8a6848; }
+  .f-carte--off .f-c-desc { color: #9a7858; }
 
   .f-c-foot {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: auto;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
   }
   .f-c-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    color: rgba(255,255,255,0.22);
-    letter-spacing: 0.03em;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.02em;
+  }
+  .f-c-val::before {
+    content: 'validité · ';
+    color: rgba(255,255,255,0.25);
   }
   .f-c-avenir {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.2);
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  /* Retour */
   .f-retour { margin-top: 3rem; }
   .f-retour-sep {
     border-top: 1px solid rgba(255,150,80,0.1);
@@ -342,6 +362,10 @@ const pct      = Math.round((explores / total) * 100);
   .f-retour-link:hover { color: #f0a050; }
 
   @media (max-width: 640px) {
+    :global(.atelier-content) {
+      padding-left: 1.8rem !important;
+      padding-right: 1.8rem !important;
+    }
     .f-grille { grid-template-columns: 1fr; }
   }
 </style>
