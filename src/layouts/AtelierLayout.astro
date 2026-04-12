@@ -10,7 +10,7 @@ interface BreadcrumbParent {
 const {
   title    = "Atelier",
   filename = "atelier",
-  parent,          // optionnel : { label: "fondations", href: "/atelier/fondations" }
+  parent,
 } = Astro.props as {
   title?:    string;
   filename?: string;
@@ -36,6 +36,13 @@ const {
         --frame-bg:       #3d2510;
         --frame-titlebar: #331e0a;
       }
+      /* Reset liens sommaire — neutralise tout style global extérieur */
+      .sommaire-liste a,
+      .sommaire-liste a:link,
+      .sommaire-liste a:visited {
+        color: #7a5a3a !important;
+        text-decoration: none !important;
+      }
     </style>
   </head>
   <body class="atelier-body">
@@ -59,34 +66,205 @@ const {
           <span class="atelier-hint">jardin numérique</span>
         </nav>
 
-        <!-- Cadre style éditeur -->
+        <!-- Cadre style éditeur — sticky -->
         <div class="atelier-frame">
-          <div class="atelier-titlebar">
-            <span class="atelier-filename">syncognie · atelier</span>
+
+          <!-- Barre de titre : devient sommaire au scroll -->
+          <div class="atelier-titlebar" id="atelierTitlebar" role="button" aria-expanded="false" aria-haspopup="true" tabindex="0">
+            <span class="atelier-filename" id="titlebarLabel">syncognie · atelier</span>
+            <span class="titlebar-chevron" id="titlebarChevron" aria-hidden="true">›</span>
           </div>
-          <div class="atelier-content">
+
+          <!-- Dropdown sommaire — dans le flux, se referme au scroll -->
+          <div class="sommaire-dropdown" id="sommaireDropdown" role="menu" aria-label="Sommaire">
+            <ul class="sommaire-liste" id="sommaireList"></ul>
+          </div>
+
+          <!-- Contenu scrollable -->
+          <div class="atelier-content" id="atelierContent">
             <slot />
           </div>
+
         </div>
 
       </div>
     </main>
     <Footer />
 
-    <!-- Bouton scroll-to-top -->
     <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
   </body>
 </html>
 
 <script>
+  // ── Scroll-to-top ────────────────────────────────────────────────────────────
   const btn = document.getElementById('scrollTop');
-  if (btn) {
-    window.addEventListener('scroll', () => {
-      btn.classList.toggle('scroll-top--visible', window.scrollY > 400);
+  const contentEl = document.getElementById('atelierContent');
+
+  if (btn && contentEl) {
+    contentEl.addEventListener('scroll', () => {
+      btn.classList.toggle('scroll-top--visible', contentEl.scrollTop > 400);
+      // Fermer le sommaire si ouvert pendant le scroll
+      const dd = document.getElementById('sommaireDropdown');
+      if (dd && dd.classList.contains('sommaire-dropdown--open')) {
+        dd.classList.remove('sommaire-dropdown--open');
+        document.getElementById('atelierTitlebar')?.setAttribute('aria-expanded', 'false');
+        document.getElementById('titlebarChevron')?.classList.remove('titlebar-chevron--open');
+      }
     }, { passive: true });
     btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      contentEl.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  }
+
+  // ── Sommaire contextuel ──────────────────────────────────────────────────────
+  const titlebar   = document.getElementById('atelierTitlebar') as HTMLElement | null;
+  const label      = document.getElementById('titlebarLabel') as HTMLElement | null;
+  const chevron    = document.getElementById('titlebarChevron') as HTMLElement | null;
+  const dropdown   = document.getElementById('sommaireDropdown') as HTMLElement | null;
+  const liste      = document.getElementById('sommaireList') as HTMLElement | null;
+  const content    = document.getElementById('atelierContent') as HTMLElement | null;
+
+  if (!titlebar || !label || !dropdown || !liste || !content) {
+    // Rien à faire si les éléments sont absents
+  } else {
+    // 1. Collecter les headings dans le contenu
+    //    On prend les h2 (et h3 en article), on ignore le h1
+    const headings = Array.from(
+      content.querySelectorAll<HTMLElement>('h2, h3')
+    );
+
+    if (headings.length === 0) {
+      // Pas de sommaire possible — titlebar reste décorative
+      titlebar.style.cursor = 'default';
+    } else {
+      // 2. S'assurer que chaque heading a un id
+      headings.forEach((h, i) => {
+        if (!h.id) {
+          h.id = `section-${i}`;
+        }
+      });
+
+      // 3. Construire le label de la titlebar = titre de la section active
+      //    Par défaut : nom du fichier / page courant
+      const pageLabel = label.textContent ?? 'sommaire';
+
+      // 4. Construire les items du dropdown
+      liste.innerHTML = '';
+      let h2Counter = 0;
+      let h3Counter = 0;
+
+      headings.forEach(h => {
+        const isH2 = h.tagName === 'H2';
+        if (isH2) { h2Counter++; h3Counter = 0; }
+        else       { h3Counter++; }
+
+        const li = document.createElement('li');
+        li.className = `sommaire-item sommaire-item--${h.tagName.toLowerCase()}`;
+        li.dataset.headingId = h.id;
+
+        // Numéro de section
+        const num = document.createElement('span');
+        num.className = 'sommaire-num';
+        num.textContent = isH2
+          ? String(h2Counter).padStart(2, '0')
+          : `${h2Counter}.${h3Counter}`;
+        num.setAttribute('aria-hidden', 'true');
+
+        const a = document.createElement('a');
+        a.href = `#${h.id}`;
+        a.className = 'sommaire-lien';
+        // Nettoyer le texte (retirer les numéros si déjà présents dans les h)
+        a.textContent = (h.textContent ?? '').replace(/^[\d.]+\s*/, '').trim();
+        a.setAttribute('role', 'menuitem');
+
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          fermerDropdown();
+          const target = document.getElementById(h.id);
+          if (target && content) {
+            // Calcul précis relatif au conteneur scrollable
+            const containerRect = content.getBoundingClientRect();
+            const targetRect    = target.getBoundingClientRect();
+            const offset        = targetRect.top - containerRect.top + content.scrollTop - 20;
+            content.scrollTo({ top: offset, behavior: 'smooth' });
+          }
+        });
+
+        li.appendChild(num);
+        li.appendChild(a);
+        liste.appendChild(li);
+      });
+
+      // 5. Observer quel heading est actif pendant le scroll
+      let activeId = '';
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              activeId = entry.target.id;
+              // Mettre à jour le label de la titlebar
+              const activeHeading = document.getElementById(activeId);
+              if (activeHeading && label) {
+                label.textContent = (activeHeading.textContent ?? pageLabel)
+                  .replace(/^[\d.]+\s*/, '').trim();
+              }
+              // Marquer l'item actif sur le <li>
+              liste.querySelectorAll('.sommaire-item').forEach(item => {
+                const el = item as HTMLElement;
+                el.classList.toggle(
+                  'sommaire-item--active',
+                  el.dataset.headingId === activeId
+                );
+              });
+            }
+          });
+        },
+        {
+          root: content,
+          rootMargin: '-10% 0px -70% 0px',
+          threshold: 0,
+        }
+      );
+
+      headings.forEach(h => observer.observe(h));
+
+      // 6. Ouvrir / fermer le dropdown
+      let isOpen = false;
+
+      function ouvrirDropdown() {
+        isOpen = true;
+        dropdown!.classList.add('sommaire-dropdown--open');
+        titlebar!.setAttribute('aria-expanded', 'true');
+        chevron!.classList.add('titlebar-chevron--open');
+      }
+
+      function fermerDropdown() {
+        isOpen = false;
+        dropdown!.classList.remove('sommaire-dropdown--open');
+        titlebar!.setAttribute('aria-expanded', 'false');
+        chevron!.classList.remove('titlebar-chevron--open');
+      }
+
+      titlebar.addEventListener('click', () => {
+        isOpen ? fermerDropdown() : ouvrirDropdown();
+      });
+
+      titlebar.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          isOpen ? fermerDropdown() : ouvrirDropdown();
+        }
+        if (e.key === 'Escape') fermerDropdown();
+      });
+
+      // Fermer si clic en dehors
+      document.addEventListener('click', (e) => {
+        if (isOpen && !titlebar!.contains(e.target as Node) && !dropdown!.contains(e.target as Node)) {
+          fermerDropdown();
+        }
+      });
+    }
   }
 </script>
 
@@ -110,6 +288,8 @@ const {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    /* Hauteur : on colle au viewport pour que le cadre soit sticky */
+    height: calc(100vh - 5rem); /* 5rem = approx header height */
   }
 
   /* ── Fil d'Ariane ── */
@@ -118,6 +298,7 @@ const {
     align-items: center;
     gap: 0.5rem;
     padding: 0 0.25rem;
+    flex-shrink: 0;
   }
   .crumb {
     font-family: 'JetBrains Mono', monospace;
@@ -153,12 +334,11 @@ const {
     letter-spacing: 0.04em;
   }
 
-  /* ── Cadre ── */
+  /* ── Cadre — prend le reste de la hauteur ── */
   .atelier-frame {
     background: var(--frame-bg);
     border-radius: 12px;
     border-top: 1px solid rgba(232, 150, 60, 0.10);
-    transform: translateY(-2px);
     box-shadow:
       0 2px 4px   rgba(20, 6, 0, 0.40),
       0 12px 24px  rgba(40, 12, 0, 0.45),
@@ -166,6 +346,14 @@ const {
       0 80px 120px rgba(180, 70, 10, 0.20);
     width: 100%;
     overflow: hidden;
+    /* Flex pour que le contenu prenne toute la hauteur restante */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    /* Sticky : le cadre ne bouge pas, le contenu intérieur défile */
+    position: sticky;
+    top: 1.5rem;
   }
 
   /* ── Barre de titre ── */
@@ -175,21 +363,244 @@ const {
     padding: 12px 20px;
     background: var(--frame-titlebar);
     border-bottom: 1px solid rgba(255,255,255,0.04);
+    flex-shrink: 0;
+    position: relative;
+    /* Devient cliquable quand il y a un sommaire (JS ajoute cursor:pointer) */
+    cursor: default;
+    user-select: none;
+    transition: background 0.2s;
   }
+
+  /* Hover subtil uniquement si cliquable (géré par JS via cursor) */
+  .atelier-titlebar:has(.titlebar-chevron--open),
+  .atelier-titlebar:hover:not([style*="cursor: default"]) {
+    background: #3a2410;
+  }
+
   .atelier-filename {
     margin: 0 auto;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.78rem;
     color: #8a6a4a;
     letter-spacing: 0.05em;
+    /* Truncate si le titre de section est long */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 2rem);
+    text-align: center;
+    transition: color 0.25s ease;
   }
 
-  /* ── Contenu ── */
+  /* Quand un heading est actif, le label devient légèrement plus lumineux */
+  .atelier-titlebar:not([style*="cursor: default"]) .atelier-filename {
+    color: #a07858;
+    cursor: pointer;
+  }
+
+  /* Chevron — indicateur discret que la barre est cliquable */
+  .titlebar-chevron {
+    position: absolute;
+    right: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: rgba(138, 106, 74, 0.4);
+    transition: transform 0.22s ease, color 0.22s ease, opacity 0.22s ease;
+    opacity: 0;
+    transform: rotate(90deg);
+  }
+
+  /* Afficher le chevron seulement quand la titlebar est interactive */
+  .atelier-titlebar:not([style*="cursor: default"]) .titlebar-chevron {
+    opacity: 1;
+  }
+
+  .titlebar-chevron--open {
+    transform: rotate(270deg) !important;
+    color: rgba(232, 160, 80, 0.7) !important;
+  }
+
+  /* ── Dropdown sommaire — dans le flux ── */
+  .sommaire-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    opacity: 0;
+    flex-shrink: 0;
+    /* Fond : même brun que le cadre, légèrement plus sombre, pas noir */
+    background: linear-gradient(180deg, #2a1608 0%, #321c0c 100%);
+    border-bottom: 1px solid rgba(232, 150, 60, 0.08);
+  }
+
+  .sommaire-dropdown--open {
+    max-height: 280px;
+    overflow-y: auto;
+    opacity: 1;
+  }
+
+  /* Scrollbar */
+  .sommaire-dropdown::-webkit-scrollbar { width: 2px; }
+  .sommaire-dropdown::-webkit-scrollbar-track { background: transparent; }
+  .sommaire-dropdown::-webkit-scrollbar-thumb { background: rgba(232,160,80,0.15); border-radius: 2px; }
+
+  /* Ligne déco en haut du dropdown */
+  .sommaire-dropdown::before {
+    content: '';
+    display: block;
+    height: 1px;
+    margin: 0 2.5rem;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(232,150,60,0.2) 30%,
+      rgba(245,180,50,0.3) 50%,
+      rgba(232,150,60,0.2) 70%,
+      transparent
+    );
+  }
+
+  .sommaire-liste {
+    list-style: none;
+    padding: 0.7rem 0 0.9rem;
+    margin: 0;
+  }
+
+  /* ── Chaque item ── */
+  .sommaire-item {
+    display: grid;
+    grid-template-columns: 2.8rem 1fr;
+    align-items: center;
+    position: relative;
+    transition: background 0.15s;
+  }
+
+  .sommaire-item:hover {
+    background: rgba(255, 150, 60, 0.05);
+  }
+
+  /* Repère actif — barre latérale orange */
+  .sommaire-item--active {
+    background: rgba(232, 160, 80, 0.06);
+  }
+
+  .sommaire-item--active::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 10%; bottom: 10%;
+    width: 2px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(180deg, #e85d20, #f5a623);
+  }
+
+  /* ── Numéro de section ── */
+  .sommaire-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(138, 100, 55, 0.28);
+    letter-spacing: 0.06em;
+    text-align: right;
+    padding-right: 0.8rem;
+    user-select: none;
+    transition: color 0.18s;
+  }
+
+  .sommaire-item--active .sommaire-num {
+    color: rgba(232, 160, 80, 0.5);
+  }
+
+  /* ── Lien h2 — Baskerville italic, chaleureux ── */
+  .sommaire-lien,
+  .sommaire-lien:link,
+  .sommaire-lien:visited {
+    display: block;
+    font-family: 'Libre Baskerville', serif !important;
+    font-size: 0.85rem !important;
+    font-style: italic;
+    color: #8a6640 !important;
+    text-decoration: none !important;
+    letter-spacing: 0.01em;
+    line-height: 1.35;
+    padding: 0.48rem 2rem 0.48rem 0;
+    transition: color 0.18s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
+  .sommaire-lien:hover {
+    color: #d4904a !important;
+    text-decoration: none !important;
+  }
+
+  .sommaire-item--active .sommaire-lien,
+  .sommaire-item--active .sommaire-lien:link,
+  .sommaire-item--active .sommaire-lien:visited {
+    color: #e8a050 !important;
+  }
+
+  /* ── Item h3 ── */
+  .sommaire-item--h3 {
+    grid-template-columns: 3.4rem 1fr;
+  }
+
+  .sommaire-item--h3 .sommaire-num {
+    font-size: 0.52rem;
+    color: rgba(100, 70, 38, 0.22);
+  }
+
+  .sommaire-item--h3.sommaire-item--active .sommaire-num {
+    color: rgba(200, 130, 50, 0.38);
+  }
+
+  .sommaire-item--h3 .sommaire-lien,
+  .sommaire-item--h3 .sommaire-lien:link,
+  .sommaire-item--h3 .sommaire-lien:visited {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.68rem !important;
+    font-style: normal;
+    color: #6a4828 !important;
+    padding-top: 0.32rem;
+    padding-bottom: 0.32rem;
+    letter-spacing: 0.025em;
+  }
+
+  .sommaire-item--h3 .sommaire-lien:hover {
+    color: #a87038 !important;
+  }
+
+  .sommaire-item--h3.sommaire-item--active .sommaire-lien {
+    color: #c88040 !important;
+  }
+
+  /* Séparateur subtil entre sections h2 */
+  .sommaire-item--h2 ~ .sommaire-item--h2 {
+    border-top: 1px solid rgba(255, 150, 60, 0.05);
+    margin-top: 0.1rem;
+  }
+
+  /* ── Contenu scrollable ── */
   .atelier-content {
     padding: 2.5rem 4rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.95rem;
     line-height: 1.9;
+    /* C'est ici que le scroll se passe */
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    /* Scrollbar discrète */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(232,160,80,0.15) transparent;
+  }
+
+  .atelier-content::-webkit-scrollbar { width: 4px; }
+  .atelier-content::-webkit-scrollbar-track { background: transparent; }
+  .atelier-content::-webkit-scrollbar-thumb {
+    background: rgba(232,160,80,0.15);
+    border-radius: 2px;
+  }
+  .atelier-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(232,160,80,0.3);
   }
 
   .atelier-content :global(p),
@@ -220,6 +631,8 @@ const {
     margin: 2rem 0 0.8rem;
     font-family: 'Libre Baskerville', serif;
     letter-spacing: 0.01em;
+    /* Offset pour que le scroll ne cache pas le heading sous la titlebar */
+    scroll-margin-top: 1.5rem;
   }
   .atelier-content :global(h3) {
     color: #b07030;
@@ -227,6 +640,7 @@ const {
     font-weight: 700;
     margin: 1.5rem 0 0.6rem;
     font-family: 'Libre Baskerville', serif;
+    scroll-margin-top: 1.5rem;
   }
 
   .atelier-content :global(code) {
@@ -312,8 +726,6 @@ const {
   }
   .atelier-content :global(th) {
     border-bottom: 2px solid rgba(232, 144, 80, 0.25);
-  }
-  .atelier-content :global(th) {
     color: #e8a050;
     font-weight: 700;
     text-align: left;
@@ -381,7 +793,13 @@ const {
   }
 
   @media (max-width: 640px) {
-    .atelier-content { padding: 1.8rem 2rem; }
+    .atelier-wrap { height: auto; }
+    .atelier-frame { position: relative; top: 0; }
+    .atelier-content {
+      padding: 1.8rem 2rem;
+      overflow-y: visible;
+      max-height: none;
+    }
     .atelier-hint { display: none; }
     .atelier-content :global(table) { font-size: 0.82rem; }
     .atelier-content :global(th),
