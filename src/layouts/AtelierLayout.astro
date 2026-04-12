@@ -36,12 +36,124 @@ const {
         --frame-bg:       #3d2510;
         --frame-titlebar: #331e0a;
       }
-      /* Reset liens sommaire — neutralise tout style global extérieur */
-      .sommaire-liste a,
-      .sommaire-liste a:link,
-      .sommaire-liste a:visited {
-        color: #7a5a3a !important;
+
+      /* ── Sommaire drawer — styles is:global car éléments créés par JS ── */
+
+      /* Liste scrollable */
+      .sommaire-liste {
+        list-style: none;
+        padding: 0.6rem 0 1rem;
+        margin: 0;
+        overflow-y: auto;
+        flex: 1;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(232,160,80,0.12) transparent;
+      }
+      .sommaire-liste::-webkit-scrollbar { width: 2px; }
+      .sommaire-liste::-webkit-scrollbar-track { background: transparent; }
+      .sommaire-liste::-webkit-scrollbar-thumb {
+        background: rgba(232,160,80,0.15);
+        border-radius: 2px;
+      }
+
+      /* Items */
+      .sommaire-item {
+        display: grid;
+        grid-template-columns: 2.8rem 1fr;
+        align-items: center;
+        position: relative;
+        transition: background 0.15s;
+      }
+      .sommaire-item:hover {
+        background: rgba(255,150,60,0.06);
+      }
+      .sommaire-item--sep {
+        border-top: 1px solid rgba(232,150,60,0.07);
+        margin-top: 2px;
+      }
+      .sommaire-item--active {
+        background: rgba(232,160,80,0.07);
+      }
+      .sommaire-item--active::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 10%; bottom: 10%;
+        width: 2px;
+        border-radius: 0 2px 2px 0;
+        background: linear-gradient(180deg, #e85d20, #f5a623);
+      }
+
+      /* Numéro */
+      .sommaire-num {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.56rem;
+        color: rgba(138,100,55,0.28);
+        letter-spacing: 0.06em;
+        text-align: right;
+        padding-right: 0.8rem;
+        user-select: none;
+        transition: color 0.18s;
+      }
+      .sommaire-item--active .sommaire-num {
+        color: rgba(232,160,80,0.5);
+      }
+
+      /* Lien h2 */
+      .sommaire-lien,
+      .sommaire-lien:link,
+      .sommaire-lien:visited {
+        display: block;
+        font-family: 'Libre Baskerville', serif !important;
+        font-size: 0.83rem !important;
+        font-style: italic;
+        color: #8a6640 !important;
         text-decoration: none !important;
+        letter-spacing: 0.01em;
+        line-height: 1.35;
+        padding: 0.5rem 1rem 0.5rem 0;
+        transition: color 0.18s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+      }
+      .sommaire-lien:hover {
+        color: #d4904a !important;
+        text-decoration: none !important;
+      }
+      .sommaire-item--active .sommaire-lien,
+      .sommaire-item--active .sommaire-lien:link,
+      .sommaire-item--active .sommaire-lien:visited {
+        color: #e8a050 !important;
+      }
+
+      /* Item h3 */
+      .sommaire-item--h3 {
+        grid-template-columns: 3.4rem 1fr;
+      }
+      .sommaire-item--h3 .sommaire-num {
+        font-size: 0.50rem;
+        color: rgba(100,70,38,0.22);
+      }
+      .sommaire-item--h3.sommaire-item--active .sommaire-num {
+        color: rgba(200,130,50,0.38);
+      }
+      .sommaire-item--h3 .sommaire-lien,
+      .sommaire-item--h3 .sommaire-lien:link,
+      .sommaire-item--h3 .sommaire-lien:visited {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 0.66rem !important;
+        font-style: normal;
+        color: #6a4828 !important;
+        padding-top: 0.32rem;
+        padding-bottom: 0.32rem;
+        letter-spacing: 0.025em;
+      }
+      .sommaire-item--h3 .sommaire-lien:hover {
+        color: #a87038 !important;
+      }
+      .sommaire-item--h3.sommaire-item--active .sommaire-lien {
+        color: #c88040 !important;
       }
     </style>
   </head>
@@ -67,16 +179,23 @@ const {
         </nav>
 
         <!-- Cadre style éditeur — sticky -->
-        <div class="atelier-frame">
+        <div class="atelier-frame" id="atelierFrame">
 
-          <!-- Barre de titre : devient sommaire au scroll -->
+          <!-- Barre de titre cliquable -->
           <div class="atelier-titlebar" id="atelierTitlebar" role="button" aria-expanded="false" aria-haspopup="true" tabindex="0">
             <span class="atelier-filename" id="titlebarLabel">syncognie · atelier</span>
-            <span class="titlebar-chevron" id="titlebarChevron" aria-hidden="true">›</span>
+            <span class="titlebar-icon" id="titlebarIcon" aria-hidden="true">☰</span>
           </div>
 
-          <!-- Dropdown sommaire — dans le flux, se referme au scroll -->
-          <div class="sommaire-dropdown" id="sommaireDropdown" role="menu" aria-label="Sommaire">
+          <!-- Voile — overlay semi-transparent sur le contenu quand le drawer est ouvert -->
+          <div class="sommaire-veil" id="sommaireVeil" aria-hidden="true"></div>
+
+          <!-- Drawer sommaire — tiroir latéral -->
+          <div class="sommaire-drawer" id="sommaireDrawer" role="menu" aria-label="Sommaire">
+            <div class="sommaire-drawer-header">
+              <span class="sommaire-drawer-title">sommaire</span>
+              <button class="sommaire-drawer-close" id="sommaireClose" aria-label="Fermer le sommaire">✕</button>
+            </div>
             <ul class="sommaire-liste" id="sommaireList"></ul>
           </div>
 
@@ -97,61 +216,54 @@ const {
 
 <script>
   // ── Scroll-to-top ────────────────────────────────────────────────────────────
-  const btn = document.getElementById('scrollTop');
+  const btn       = document.getElementById('scrollTop');
   const contentEl = document.getElementById('atelierContent');
 
   if (btn && contentEl) {
     contentEl.addEventListener('scroll', () => {
       btn.classList.toggle('scroll-top--visible', contentEl.scrollTop > 400);
-      // Fermer le sommaire si ouvert pendant le scroll
-      const dd = document.getElementById('sommaireDropdown');
-      if (dd && dd.classList.contains('sommaire-dropdown--open')) {
-        dd.classList.remove('sommaire-dropdown--open');
-        document.getElementById('atelierTitlebar')?.setAttribute('aria-expanded', 'false');
-        document.getElementById('titlebarChevron')?.classList.remove('titlebar-chevron--open');
-      }
     }, { passive: true });
     btn.addEventListener('click', () => {
       contentEl.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 
-  // ── Sommaire contextuel ──────────────────────────────────────────────────────
-  const titlebar   = document.getElementById('atelierTitlebar') as HTMLElement | null;
-  const label      = document.getElementById('titlebarLabel') as HTMLElement | null;
-  const chevron    = document.getElementById('titlebarChevron') as HTMLElement | null;
-  const dropdown   = document.getElementById('sommaireDropdown') as HTMLElement | null;
-  const liste      = document.getElementById('sommaireList') as HTMLElement | null;
-  const content    = document.getElementById('atelierContent') as HTMLElement | null;
+  // ── Sommaire — tiroir latéral ─────────────────────────────────────────────
+  const titlebar = document.getElementById('atelierTitlebar') as HTMLElement | null;
+  const label    = document.getElementById('titlebarLabel')   as HTMLElement | null;
+  const icon     = document.getElementById('titlebarIcon')    as HTMLElement | null;
+  const drawer   = document.getElementById('sommaireDrawer')  as HTMLElement | null;
+  const veil     = document.getElementById('sommaireVeil')    as HTMLElement | null;
+  const closeBtn = document.getElementById('sommaireClose')   as HTMLElement | null;
+  const liste    = document.getElementById('sommaireList')    as HTMLElement | null;
+  const content  = document.getElementById('atelierContent')  as HTMLElement | null;
 
-  if (!titlebar || !label || !dropdown || !liste || !content) {
-    // Rien à faire si les éléments sont absents
+  if (!titlebar || !label || !drawer || !veil || !liste || !content) {
+    // éléments absents — rien à faire
   } else {
-    // 1. Collecter les headings dans le contenu
-    //    On prend les h2 (et h3 en article), on ignore le h1
+    // 1. Collecter les headings h2 / h3 dans le contenu
     const headings = Array.from(
       content.querySelectorAll<HTMLElement>('h2, h3')
     );
 
     if (headings.length === 0) {
-      // Pas de sommaire possible — titlebar reste décorative
+      // Pas de sommaire — titlebar décorative uniquement
       titlebar.style.cursor = 'default';
+      if (icon) icon.style.opacity = '0';
     } else {
       // 2. S'assurer que chaque heading a un id
       headings.forEach((h, i) => {
-        if (!h.id) {
-          h.id = `section-${i}`;
-        }
+        if (!h.id) h.id = `section-${i}`;
       });
 
-      // 3. Construire le label de la titlebar = titre de la section active
-      //    Par défaut : nom du fichier / page courant
+      // 3. Label par défaut = titre de page
       const pageLabel = label.textContent ?? 'sommaire';
 
-      // 4. Construire les items du dropdown
+      // 4. Construire les items du drawer
       liste.innerHTML = '';
       let h2Counter = 0;
       let h3Counter = 0;
+      let prevWasH2  = false;
 
       headings.forEach(h => {
         const isH2 = h.tagName === 'H2';
@@ -160,9 +272,10 @@ const {
 
         const li = document.createElement('li');
         li.className = `sommaire-item sommaire-item--${h.tagName.toLowerCase()}`;
+        // Séparateur visuel entre blocs h2
+        if (isH2 && prevWasH2) li.classList.add('sommaire-item--sep');
         li.dataset.headingId = h.id;
 
-        // Numéro de section
         const num = document.createElement('span');
         num.className = 'sommaire-num';
         num.textContent = isH2
@@ -173,19 +286,17 @@ const {
         const a = document.createElement('a');
         a.href = `#${h.id}`;
         a.className = 'sommaire-lien';
-        // Nettoyer le texte (retirer les numéros si déjà présents dans les h)
         a.textContent = (h.textContent ?? '').replace(/^[\d.]+\s*/, '').trim();
         a.setAttribute('role', 'menuitem');
 
         a.addEventListener('click', (e) => {
           e.preventDefault();
-          fermerDropdown();
+          fermerDrawer();
           const target = document.getElementById(h.id);
           if (target && content) {
-            // Calcul précis relatif au conteneur scrollable
             const containerRect = content.getBoundingClientRect();
             const targetRect    = target.getBoundingClientRect();
-            const offset        = targetRect.top - containerRect.top + content.scrollTop - 20;
+            const offset = targetRect.top - containerRect.top + content.scrollTop - 20;
             content.scrollTo({ top: offset, behavior: 'smooth' });
           }
         });
@@ -193,9 +304,10 @@ const {
         li.appendChild(num);
         li.appendChild(a);
         liste.appendChild(li);
+        prevWasH2 = isH2;
       });
 
-      // 5. Observer quel heading est actif pendant le scroll
+      // 5. IntersectionObserver — heading actif
       let activeId = '';
 
       const observer = new IntersectionObserver(
@@ -203,13 +315,11 @@ const {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               activeId = entry.target.id;
-              // Mettre à jour le label de la titlebar
               const activeHeading = document.getElementById(activeId);
               if (activeHeading && label) {
                 label.textContent = (activeHeading.textContent ?? pageLabel)
                   .replace(/^[\d.]+\s*/, '').trim();
               }
-              // Marquer l'item actif sur le <li>
               liste.querySelectorAll('.sommaire-item').forEach(item => {
                 const el = item as HTMLElement;
                 el.classList.toggle(
@@ -229,40 +339,55 @@ const {
 
       headings.forEach(h => observer.observe(h));
 
-      // 6. Ouvrir / fermer le dropdown
+      // 6. Ouvrir / fermer le drawer
       let isOpen = false;
 
-      function ouvrirDropdown() {
+      function ouvrirDrawer() {
         isOpen = true;
-        dropdown!.classList.add('sommaire-dropdown--open');
+        drawer!.classList.add('sommaire-drawer--open');
+        veil!.classList.add('sommaire-veil--visible');
         titlebar!.setAttribute('aria-expanded', 'true');
-        chevron!.classList.add('titlebar-chevron--open');
+        if (icon) icon.textContent = '✕';
+        // Scroll-lock du contenu pendant que le drawer est ouvert
+        content!.style.overflow = 'hidden';
+        // Focus premier item pour accessibilité clavier
+        const first = drawer!.querySelector<HTMLElement>('.sommaire-lien');
+        if (first) first.focus();
       }
 
-      function fermerDropdown() {
+      function fermerDrawer() {
         isOpen = false;
-        dropdown!.classList.remove('sommaire-dropdown--open');
+        drawer!.classList.remove('sommaire-drawer--open');
+        veil!.classList.remove('sommaire-veil--visible');
         titlebar!.setAttribute('aria-expanded', 'false');
-        chevron!.classList.remove('titlebar-chevron--open');
+        if (icon) icon.textContent = '☰';
+        content!.style.overflow = '';
       }
 
       titlebar.addEventListener('click', () => {
-        isOpen ? fermerDropdown() : ouvrirDropdown();
+        isOpen ? fermerDrawer() : ouvrirDrawer();
       });
 
       titlebar.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          isOpen ? fermerDropdown() : ouvrirDropdown();
+          isOpen ? fermerDrawer() : ouvrirDrawer();
         }
-        if (e.key === 'Escape') fermerDropdown();
+        if (e.key === 'Escape') fermerDrawer();
       });
 
-      // Fermer si clic en dehors
-      document.addEventListener('click', (e) => {
-        if (isOpen && !titlebar!.contains(e.target as Node) && !dropdown!.contains(e.target as Node)) {
-          fermerDropdown();
-        }
+      // Fermer via le bouton ✕ dans le drawer
+      closeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fermerDrawer();
+      });
+
+      // Fermer en cliquant sur le voile
+      veil.addEventListener('click', () => fermerDrawer());
+
+      // Fermer avec Échap depuis n'importe où
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) fermerDrawer();
       });
     }
   }
@@ -288,8 +413,7 @@ const {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    /* Hauteur : on colle au viewport pour que le cadre soit sticky */
-    height: calc(100vh - 5rem); /* 5rem = approx header height */
+    height: calc(100vh - 5rem);
   }
 
   /* ── Fil d'Ariane ── */
@@ -334,11 +458,11 @@ const {
     letter-spacing: 0.04em;
   }
 
-  /* ── Cadre — prend le reste de la hauteur ── */
+  /* ── Cadre principal ── */
   .atelier-frame {
     background: var(--frame-bg);
     border-radius: 12px;
-    border-top: 1px solid rgba(232, 150, 60, 0.10);
+    border-top: 1px solid rgba(232,150,60,0.10);
     box-shadow:
       0 2px 4px   rgba(20, 6, 0, 0.40),
       0 12px 24px  rgba(40, 12, 0, 0.45),
@@ -346,14 +470,14 @@ const {
       0 80px 120px rgba(180, 70, 10, 0.20);
     width: 100%;
     overflow: hidden;
-    /* Flex pour que le contenu prenne toute la hauteur restante */
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
-    /* Sticky : le cadre ne bouge pas, le contenu intérieur défile */
     position: sticky;
     top: 1.5rem;
+    /* Nécessaire pour que le drawer soit positionné par rapport au frame */
+    isolation: isolate;
   }
 
   /* ── Barre de titre ── */
@@ -365,14 +489,12 @@ const {
     border-bottom: 1px solid rgba(255,255,255,0.04);
     flex-shrink: 0;
     position: relative;
-    /* Devient cliquable quand il y a un sommaire (JS ajoute cursor:pointer) */
+    z-index: 10; /* au-dessus du voile et du drawer */
     cursor: default;
     user-select: none;
     transition: background 0.2s;
   }
 
-  /* Hover subtil uniquement si cliquable (géré par JS via cursor) */
-  .atelier-titlebar:has(.titlebar-chevron--open),
   .atelier-titlebar:hover:not([style*="cursor: default"]) {
     background: #3a2410;
   }
@@ -383,200 +505,114 @@ const {
     font-size: 0.78rem;
     color: #8a6a4a;
     letter-spacing: 0.05em;
-    /* Truncate si le titre de section est long */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: calc(100% - 2rem);
+    max-width: calc(100% - 3rem);
     text-align: center;
     transition: color 0.25s ease;
   }
 
-  /* Quand un heading est actif, le label devient légèrement plus lumineux */
   .atelier-titlebar:not([style*="cursor: default"]) .atelier-filename {
     color: #a07858;
     cursor: pointer;
   }
 
-  /* Chevron — indicateur discret que la barre est cliquable */
-  .titlebar-chevron {
+  /* Icône hamburger / fermeture */
+  .titlebar-icon {
     position: absolute;
     right: 16px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: rgba(138, 106, 74, 0.4);
-    transition: transform 0.22s ease, color 0.22s ease, opacity 0.22s ease;
+    font-size: 0.85rem;
+    color: rgba(138,106,74,0.5);
+    transition: color 0.22s ease, opacity 0.22s ease;
     opacity: 0;
-    transform: rotate(90deg);
+    line-height: 1;
   }
 
-  /* Afficher le chevron seulement quand la titlebar est interactive */
-  .atelier-titlebar:not([style*="cursor: default"]) .titlebar-chevron {
+  .atelier-titlebar:not([style*="cursor: default"]) .titlebar-icon {
     opacity: 1;
   }
 
-  .titlebar-chevron--open {
-    transform: rotate(270deg) !important;
-    color: rgba(232, 160, 80, 0.7) !important;
-  }
-
-  /* ── Dropdown sommaire — dans le flux ── */
-  .sommaire-dropdown {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
-    opacity: 0;
-    flex-shrink: 0;
-    /* Fond : même brun que le cadre, légèrement plus sombre, pas noir */
-    background: linear-gradient(180deg, #2a1608 0%, #321c0c 100%);
-    border-bottom: 1px solid rgba(232, 150, 60, 0.08);
-  }
-
-  .sommaire-dropdown--open {
-    max-height: 280px;
-    overflow-y: auto;
-    opacity: 1;
-  }
-
-  /* Scrollbar */
-  .sommaire-dropdown::-webkit-scrollbar { width: 2px; }
-  .sommaire-dropdown::-webkit-scrollbar-track { background: transparent; }
-  .sommaire-dropdown::-webkit-scrollbar-thumb { background: rgba(232,160,80,0.15); border-radius: 2px; }
-
-  /* Ligne déco en haut du dropdown */
-  .sommaire-dropdown::before {
-    content: '';
-    display: block;
-    height: 1px;
-    margin: 0 2.5rem;
-    background: linear-gradient(90deg,
-      transparent,
-      rgba(232,150,60,0.2) 30%,
-      rgba(245,180,50,0.3) 50%,
-      rgba(232,150,60,0.2) 70%,
-      transparent
-    );
-  }
-
-  .sommaire-liste {
-    list-style: none;
-    padding: 0.7rem 0 0.9rem;
-    margin: 0;
-  }
-
-  /* ── Chaque item ── */
-  .sommaire-item {
-    display: grid;
-    grid-template-columns: 2.8rem 1fr;
-    align-items: center;
-    position: relative;
-    transition: background 0.15s;
-  }
-
-  .sommaire-item:hover {
-    background: rgba(255, 150, 60, 0.05);
-  }
-
-  /* Repère actif — barre latérale orange */
-  .sommaire-item--active {
-    background: rgba(232, 160, 80, 0.06);
-  }
-
-  .sommaire-item--active::before {
-    content: '';
+  /* ── Voile ── */
+  .sommaire-veil {
     position: absolute;
-    left: 0; top: 10%; bottom: 10%;
-    width: 2px;
-    border-radius: 0 2px 2px 0;
-    background: linear-gradient(180deg, #e85d20, #f5a623);
+    /* commence juste sous la titlebar (hauteur de 41px) */
+    top: 41px;
+    left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    border-radius: 0 0 12px 12px;
   }
 
-  /* ── Numéro de section ── */
-  .sommaire-num {
+  .sommaire-veil--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Drawer ── */
+  .sommaire-drawer {
+    position: absolute;
+    top: 41px;    /* sous la titlebar */
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(160deg, #1e0c04 0%, #2d1609 60%, #321c0c 100%);
+    border-right: 1px solid rgba(232,150,60,0.12);
+    border-radius: 0 0 0 12px;
+    z-index: 8;   /* au-dessus du voile */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 8px 0 32px rgba(0,0,0,0.6), 2px 0 8px rgba(0,0,0,0.4);
+    /* État fermé : hors écran à gauche */
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .sommaire-drawer--open {
+    transform: translateX(0);
+  }
+
+  /* En-tête du drawer */
+  .sommaire-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.1rem 0.7rem;
+    border-bottom: 1px solid rgba(232,150,60,0.08);
+    flex-shrink: 0;
+  }
+
+  .sommaire-drawer-title {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.58rem;
-    color: rgba(138, 100, 55, 0.28);
-    letter-spacing: 0.06em;
-    text-align: right;
-    padding-right: 0.8rem;
-    user-select: none;
-    transition: color 0.18s;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(232,160,80,0.38);
   }
 
-  .sommaire-item--active .sommaire-num {
-    color: rgba(232, 160, 80, 0.5);
+  /* Ligne déco sous le titre du drawer */
+  .sommaire-drawer-header::after {
+    display: none; /* géré par border-bottom */
   }
 
-  /* ── Lien h2 — Baskerville italic, chaleureux ── */
-  .sommaire-lien,
-  .sommaire-lien:link,
-  .sommaire-lien:visited {
-    display: block;
-    font-family: 'Libre Baskerville', serif !important;
-    font-size: 0.85rem !important;
-    font-style: italic;
-    color: #8a6640 !important;
-    text-decoration: none !important;
-    letter-spacing: 0.01em;
-    line-height: 1.35;
-    padding: 0.48rem 2rem 0.48rem 0;
-    transition: color 0.18s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .sommaire-drawer-close {
+    background: none;
+    border: none;
+    color: rgba(138,106,74,0.4);
+    font-size: 0.68rem;
     cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+    transition: color 0.18s;
+    font-family: 'JetBrains Mono', monospace;
   }
-
-  .sommaire-lien:hover {
-    color: #d4904a !important;
-    text-decoration: none !important;
-  }
-
-  .sommaire-item--active .sommaire-lien,
-  .sommaire-item--active .sommaire-lien:link,
-  .sommaire-item--active .sommaire-lien:visited {
-    color: #e8a050 !important;
-  }
-
-  /* ── Item h3 ── */
-  .sommaire-item--h3 {
-    grid-template-columns: 3.4rem 1fr;
-  }
-
-  .sommaire-item--h3 .sommaire-num {
-    font-size: 0.52rem;
-    color: rgba(100, 70, 38, 0.22);
-  }
-
-  .sommaire-item--h3.sommaire-item--active .sommaire-num {
-    color: rgba(200, 130, 50, 0.38);
-  }
-
-  .sommaire-item--h3 .sommaire-lien,
-  .sommaire-item--h3 .sommaire-lien:link,
-  .sommaire-item--h3 .sommaire-lien:visited {
-    font-family: 'JetBrains Mono', monospace !important;
-    font-size: 0.68rem !important;
-    font-style: normal;
-    color: #6a4828 !important;
-    padding-top: 0.32rem;
-    padding-bottom: 0.32rem;
-    letter-spacing: 0.025em;
-  }
-
-  .sommaire-item--h3 .sommaire-lien:hover {
-    color: #a87038 !important;
-  }
-
-  .sommaire-item--h3.sommaire-item--active .sommaire-lien {
-    color: #c88040 !important;
-  }
-
-  /* Séparateur subtil entre sections h2 */
-  .sommaire-item--h2 ~ .sommaire-item--h2 {
-    border-top: 1px solid rgba(255, 150, 60, 0.05);
-    margin-top: 0.1rem;
-  }
+  .sommaire-drawer-close:hover { color: rgba(232,160,80,0.7); }
 
   /* ── Contenu scrollable ── */
   .atelier-content {
@@ -584,13 +620,13 @@ const {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.95rem;
     line-height: 1.9;
-    /* C'est ici que le scroll se passe */
     overflow-y: auto;
     flex: 1;
     min-height: 0;
-    /* Scrollbar discrète */
     scrollbar-width: thin;
     scrollbar-color: rgba(232,160,80,0.15) transparent;
+    /* Transition douce lors du scroll-lock */
+    transition: overflow 0s;
   }
 
   .atelier-content::-webkit-scrollbar { width: 4px; }
@@ -631,7 +667,6 @@ const {
     margin: 2rem 0 0.8rem;
     font-family: 'Libre Baskerville', serif;
     letter-spacing: 0.01em;
-    /* Offset pour que le scroll ne cache pas le heading sous la titlebar */
     scroll-margin-top: 1.5rem;
   }
   .atelier-content :global(h3) {
@@ -654,8 +689,8 @@ const {
 
   .atelier-content :global(pre) {
     background: #edebeb !important;
-    border: 0px solid rgba(255, 150, 80, 0.12) !important;
-    border-left: 3px solid rgba(200, 136, 64, 0.35) !important;
+    border: 0px solid rgba(255,150,80,0.12) !important;
+    border-left: 3px solid rgba(200,136,64,0.35) !important;
     padding: 1.4rem 1.8rem !important;
     border-radius: 8px !important;
     overflow-x: auto;
@@ -717,15 +752,15 @@ const {
     margin: 1.8rem 0;
     font-family: 'Mulish', sans-serif;
     font-size: 0.92rem;
-    border: 1px solid rgba(255, 150, 80, 0.1);
+    border: 1px solid rgba(255,150,80,0.1);
     border-radius: 8px;
     overflow: hidden;
   }
   .atelier-content :global(thead tr) {
-    border-bottom: 2px solid rgba(232, 144, 80, 0.25);
+    border-bottom: 2px solid rgba(232,144,80,0.25);
   }
   .atelier-content :global(th) {
-    border-bottom: 2px solid rgba(232, 144, 80, 0.25);
+    border-bottom: 2px solid rgba(232,144,80,0.25);
     color: #e8a050;
     font-weight: 700;
     text-align: left;
@@ -734,7 +769,7 @@ const {
     font-size: 0.8rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    background: rgba(255, 150, 80, 0.06);
+    background: rgba(255,150,80,0.06);
   }
   .atelier-content :global(th:first-child) { border-radius: 7px 0 0 0; }
   .atelier-content :global(th:last-child)  { border-radius: 0 7px 0 0; }
@@ -743,7 +778,7 @@ const {
   .atelier-content :global(td) {
     color: #d4a878;
     padding: 0.55rem 1.1rem;
-    border-bottom: 1px solid rgba(255, 150, 80, 0.07);
+    border-bottom: 1px solid rgba(255,150,80,0.07);
     font-weight: 300;
     line-height: 1.7;
   }
@@ -751,10 +786,10 @@ const {
     border-bottom: none;
   }
   .atelier-content :global(tbody tr:nth-child(even)) {
-    background: rgba(255, 150, 80, 0.04);
+    background: rgba(255,150,80,0.04);
   }
   .atelier-content :global(tbody tr:hover) {
-    background: rgba(180, 120, 200, 0.12);
+    background: rgba(180,120,200,0.12);
     transition: background 0.18s ease;
   }
 
@@ -767,7 +802,7 @@ const {
     height: 38px;
     border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(61, 37, 16, 0.85);
+    background: rgba(61,37,16,0.85);
     backdrop-filter: blur(8px);
     color: #a07850;
     font-family: 'JetBrains Mono', monospace;
@@ -789,9 +824,10 @@ const {
   }
   .scroll-top:hover {
     color: #e8a050;
-    border-color: rgba(232, 160, 80, 0.4);
+    border-color: rgba(232,160,80,0.4);
   }
 
+  /* ── Mobile ── */
   @media (max-width: 640px) {
     .atelier-wrap { height: auto; }
     .atelier-frame { position: relative; top: 0; }
@@ -805,5 +841,19 @@ const {
     .atelier-content :global(th),
     .atelier-content :global(td) { padding: 0.5rem 0.7rem; }
     .scroll-top { bottom: 1.2rem; right: 1.2rem; }
+
+    /* Drawer full-width sur mobile */
+    .sommaire-drawer {
+      width: 100%;
+      border-right: none;
+      border-radius: 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    /* Sur mobile le frame est en position relative (pas sticky),
+       donc le drawer s'ancre correctement dans le flux */
+    .atelier-frame {
+      position: relative;
+    }
   }
 </style>
