@@ -20,12 +20,12 @@ const niveaux = [
   {
     num: 1,
     label: 'Soi',
-    desc: 'Ce qu\'il faut comprendre avant tout le reste — comment je fonctionne, comment je me construis, comment je me relie aux autres, pourquoi je fais ce que je fais.',
+    desc: "Ce qu'il faut comprendre avant tout le reste — comment je fonctionne, comment je me construis, comment je me relie aux autres, pourquoi je fais ce que je fais.",
   },
   {
     num: 2,
     label: 'Le monde',
-    desc: 'Comment fonctionnent les systèmes, le pouvoir, la complexité — voir au-delà de l\'individu.',
+    desc: "Comment fonctionnent les systèmes, le pouvoir, la complexité — voir au-delà de l'individu.",
   },
   {
     num: 3,
@@ -55,54 +55,74 @@ const pct      = Math.round((explores / total) * 100);
 
   <hr class="f-hr" />
 
-  {niveaux.map(niv => {
-    const domaines = parDomaine.filter(d =>
-      d.penseurs.some(p => p.niveau === niv.num)
-    );
-    return (
-      <section class="f-niveau">
-        <div class="f-niv-head">
-          <span class="f-niv-badge">niveau {niv.num}</span>
-          <h2 class="f-niv-titre">{niv.label}</h2>
-          <p class="f-niv-desc">{niv.desc}</p>
-        </div>
+  <!-- Barre de filtres chips -->
+  <div class="f-filtres">
+    <div class="f-chips-groupe">
+      <button class="f-chip f-chip--active" data-niveau="tout">Tout</button>
+      <button class="f-chip" data-niveau="1">Niveau 1 · Soi</button>
+      <button class="f-chip" data-niveau="2">Niveau 2 · Le monde</button>
+      <button class="f-chip" data-niveau="3">Niveau 3 · Vivre</button>
+    </div>
+    <span class="f-chips-sep">·</span>
+    <button class="f-chip f-chip--rediges" id="chip-rediges">✦ Rédigées</button>
+  </div>
 
-        {domaines.map(dom => {
-          const list = dom.penseurs.filter(p => p.niveau === niv.num);
-          return (
-            <div class="f-dom">
-              <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
-                <span class="f-dom-dot"></span>
-                {dom.label}
-              </h3>
-              <div class="f-grille">
-                {list.map(p => {
-                  const on = exploresIds.has(p.id);
-                  const Tag = on ? 'a' : 'div';
-                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
-                  return (
-                    <Tag class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`} style={`--c:${dom.couleur}`} {...linkProps}>
-                      <div class="f-c-top">
-                        <span class="f-c-concept">{p.concept}</span>
-                        {on && <span class="f-c-lien">→</span>}
-                      </div>
-                      <p class="f-c-nom">{p.nom}</p>
-                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
-                      <p class="f-c-desc">{p.description}</p>
-                      <div class="f-c-foot">
-                        <span class="f-c-val">{p.validite}</span>
-                        {!on && <span class="f-c-avenir">à venir</span>}
-                      </div>
-                    </Tag>
-                  );
-                })}
+  <!-- Contenu filtrable -->
+  <div id="f-contenu">
+    {niveaux.map(niv => {
+      const domaines = parDomaine.filter(d =>
+        d.penseurs.some(p => p.niveau === niv.num)
+      );
+      return (
+        <section class="f-niveau" data-niveau={String(niv.num)}>
+          <div class="f-niv-head">
+            <span class="f-niv-badge">niveau {niv.num}</span>
+            <h2 class="f-niv-titre">{niv.label}</h2>
+            <p class="f-niv-desc">{niv.desc}</p>
+          </div>
+
+          {domaines.map(dom => {
+            const list = dom.penseurs.filter(p => p.niveau === niv.num);
+            return (
+              <div class="f-dom">
+                <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
+                  <span class="f-dom-dot"></span>
+                  {dom.label}
+                </h3>
+                <div class="f-grille">
+                  {list.map(p => {
+                    const on = exploresIds.has(p.id);
+                    const Tag = on ? 'a' : 'div';
+                    const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                    return (
+                      <Tag
+                        class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                        style={`--c:${dom.couleur}`}
+                        data-redige={on ? 'true' : 'false'}
+                        {...linkProps}
+                      >
+                        <div class="f-c-top">
+                          <span class="f-c-concept">{p.concept}</span>
+                          {on && <span class="f-c-lien">→</span>}
+                        </div>
+                        <p class="f-c-nom">{p.nom}</p>
+                        {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                        <p class="f-c-desc">{p.description}</p>
+                        <div class="f-c-foot">
+                          <span class="f-c-val">{p.validite}</span>
+                          {!on && <span class="f-c-avenir">à venir</span>}
+                        </div>
+                      </Tag>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </section>
-    );
-  })}
+            );
+          })}
+        </section>
+      );
+    })}
+  </div>
 
   <div class="f-retour">
     <div class="f-retour-sep"></div>
@@ -110,6 +130,60 @@ const pct      = Math.round((explores / total) * 100);
   </div>
 
 </AtelierLayout>
+
+<script>
+  const niveauChips = document.querySelectorAll<HTMLButtonElement>('.f-chip[data-niveau]');
+  const chipRediges = document.getElementById('chip-rediges') as HTMLButtonElement | null;
+  const sections    = document.querySelectorAll<HTMLElement>('.f-niveau');
+  const cartes      = document.querySelectorAll<HTMLElement>('.f-carte');
+
+  let niveauActif = 'tout';
+  let redigesOnly = false;
+
+  function appliquerFiltres() {
+    // 1. Niveaux
+    sections.forEach(sec => {
+      const match = niveauActif === 'tout' || sec.dataset.niveau === niveauActif;
+      sec.style.display = match ? '' : 'none';
+    });
+
+    // 2. Cartes rédigées
+    cartes.forEach(carte => {
+      if (!redigesOnly) {
+        carte.style.display = '';
+        return;
+      }
+      carte.style.display = carte.dataset.redige === 'true' ? '' : 'none';
+    });
+
+    // 3. Masquer les domaines entièrement vides
+    document.querySelectorAll<HTMLElement>('.f-dom').forEach(dom => {
+      const grille = dom.querySelector<HTMLElement>('.f-grille');
+      if (!grille) return;
+      const visibles = Array.from(grille.children).filter(
+        c => (c as HTMLElement).style.display !== 'none'
+      );
+      dom.style.display = visibles.length === 0 ? 'none' : '';
+    });
+  }
+
+  // Chips niveau
+  niveauChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      niveauChips.forEach(c => c.classList.remove('f-chip--active'));
+      chip.classList.add('f-chip--active');
+      niveauActif = chip.dataset.niveau ?? 'tout';
+      appliquerFiltres();
+    });
+  });
+
+  // Chip rédigées — toggle
+  chipRediges?.addEventListener('click', () => {
+    redigesOnly = !redigesOnly;
+    chipRediges.classList.toggle('f-chip--rediges-on', redigesOnly);
+    appliquerFiltres();
+  });
+</script>
 
 <style>
   .f-header { margin-bottom: 2rem; }
@@ -161,14 +235,82 @@ const pct      = Math.round((explores / total) * 100);
   .f-hr {
     border: none;
     border-top: 1px solid rgba(255,150,80,0.12);
-    margin: 0 0 2.5rem;
+    margin: 0 0 1.8rem;
   }
 
-  /* Niveau — structurant et lisible */
-  .f-niveau {
-    margin-bottom: 3.5rem;
+  /* ── Filtres ── */
+  .f-filtres {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .f-chips-groupe {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .f-chips-sep {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    padding: 0 0.15rem;
+    user-select: none;
   }
 
+  .f-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    padding: 4px 13px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+  }
+  .f-chip:hover {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.7);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  /* Chip niveau actif */
+  .f-chip--active {
+    background: rgba(232, 160, 80, 0.15);
+    border-color: rgba(232, 160, 80, 0.45);
+    color: #e8a050;
+  }
+  .f-chip--active:hover {
+    background: rgba(232, 160, 80, 0.22);
+    color: #f0b060;
+  }
+
+  /* Chip rédigées — état off */
+  .f-chip--rediges {
+    border-color: rgba(255,230,100,0.2);
+    color: rgba(255,230,100,0.45);
+  }
+  .f-chip--rediges:hover {
+    border-color: rgba(255,230,100,0.4);
+    color: rgba(255,230,100,0.8);
+    background: rgba(255,230,100,0.06);
+  }
+
+  /* Chip rédigées — état on */
+  .f-chip--rediges-on {
+    background: rgba(255,230,100,0.13);
+    border-color: rgba(255,230,100,0.55);
+    color: #ffe066;
+  }
+  .f-chip--rediges-on:hover {
+    background: rgba(255,230,100,0.2);
+  }
+
+  /* ── Niveaux ── */
+  .f-niveau { margin-bottom: 3.5rem; }
   .f-niv-head { margin-bottom: 1.8rem; }
 
   .f-niv-badge {
@@ -181,7 +323,6 @@ const pct      = Math.round((explores / total) * 100);
     display: block;
     margin-bottom: 0.3rem;
   }
-
   .f-niv-titre {
     font-family: 'Libre Baskerville', serif;
     font-size: 1.9rem;
@@ -189,7 +330,6 @@ const pct      = Math.round((explores / total) * 100);
     color: #f0d0a0;
     margin-bottom: 0.5rem;
   }
-
   .f-niv-desc {
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
@@ -199,9 +339,8 @@ const pct      = Math.round((explores / total) * 100);
     max-width: 580px;
   }
 
-  /* Domaine */
+  /* ── Domaines ── */
   .f-dom { margin-bottom: 2.2rem; }
-
   .f-dom-titre {
     display: flex;
     align-items: center;
@@ -214,8 +353,7 @@ const pct      = Math.round((explores / total) * 100);
     margin-bottom: 1rem;
   }
   .f-dom-dot {
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--c);
     flex-shrink: 0;
@@ -227,7 +365,7 @@ const pct      = Math.round((explores / total) * 100);
     gap: 0.85rem;
   }
 
-  /* Carte */
+  /* ── Cartes ── */
   .f-carte {
     border-radius: 8px;
     padding: 1.1rem 1.2rem 1rem;
@@ -259,7 +397,7 @@ const pct      = Math.round((explores / total) * 100);
     border-color: rgba(255,255,255,0.28);
     box-shadow: 0 10px 28px rgba(0,0,0,0.4);
   }
-  .f-carte--on:hover::before { opacity: 1; filter: brightness(1.2); }
+  .f-carte--on:hover::before { filter: brightness(1.2); }
   .f-carte--off {
     background: rgba(0,0,0,0.15);
     border-color: rgba(255,255,255,0.04);
@@ -272,8 +410,6 @@ const pct      = Math.round((explores / total) * 100);
     align-items: flex-start;
     margin-bottom: 0.45rem;
   }
-
-  /* Concept — couleur fixe claire, toujours lisible */
   .f-c-concept {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.8rem;
@@ -310,7 +446,6 @@ const pct      = Math.round((explores / total) * 100);
     display: block;
     margin-bottom: 0.6rem;
   }
-
   .f-c-desc {
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
@@ -348,6 +483,7 @@ const pct      = Math.round((explores / total) * 100);
     text-transform: uppercase;
   }
 
+  /* ── Retour ── */
   .f-retour { margin-top: 3rem; }
   .f-retour-sep {
     border-top: 1px solid rgba(255,150,80,0.1);
@@ -364,5 +500,6 @@ const pct      = Math.round((explores / total) * 100);
 
   @media (max-width: 640px) {
     .f-grille { grid-template-columns: 1fr; }
+    .f-chips-sep { display: none; }
   }
 </style>
