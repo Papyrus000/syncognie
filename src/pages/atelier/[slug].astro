@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
+import { PENSEURS } from '../../data/penseurs';
 
 export async function getStaticPaths() {
   const entrees = await getCollection('atelier', ({ id }) => id !== 'index');
@@ -16,9 +17,57 @@ const { Content } = await entree.render();
 function formatDate(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 }
+
+// ── Contexte : article de fondations ? ──────────────────────────────────────
+const penseurId   = entree.data.penseur as string | undefined;
+const penseurInfo = penseurId ? PENSEURS.find(p => p.id === penseurId) : undefined;
+const estFondation = !!penseurInfo;
+
+// Fil d'Ariane : parent intermédiaire si article de fondations
+const breadcrumbParent = estFondation
+  ? { label: 'fondations', href: '/atelier/fondations' }
+  : undefined;
+
+// Nom affiché dans le fil d'Ariane (dernière miette)
+const breadcrumbFilename = penseurInfo?.nom ?? entree.data.title;
+
+// ── Navigation précédent / suivant (même niveau, rédigés seulement) ─────────
+let prevArticle: { href: string; label: string } | null = null;
+let nextArticle: { href: string; label: string } | null = null;
+
+if (estFondation && penseurInfo) {
+  // Tous les articles rédigés du même niveau, dans l'ordre PENSEURS
+  const toutesEntrees = await getCollection('atelier', ({ id }) => id !== 'index');
+  const redigesIds = new Set(
+    toutesEntrees.filter(e => e.data.penseur).map(e => e.data.penseur as string)
+  );
+
+  const memeNiveau = PENSEURS.filter(
+    p => p.niveau === penseurInfo.niveau && redigesIds.has(p.id)
+  );
+
+  const idx = memeNiveau.findIndex(p => p.id === penseurId);
+
+  if (idx > 0) {
+    const p = memeNiveau[idx - 1];
+    prevArticle = { href: `/atelier/${p.id}`, label: p.nom };
+  }
+  if (idx < memeNiveau.length - 1) {
+    const p = memeNiveau[idx + 1];
+    nextArticle = { href: `/atelier/${p.id}`, label: p.nom };
+  }
+}
+
+// ── Lien retour contextuel ───────────────────────────────────────────────────
+const retourHref  = estFondation ? '/atelier/fondations' : '/atelier';
+const retourLabel = estFondation ? '← retour à fondations' : '← retour à l\'atelier';
 ---
 
-<AtelierLayout title={entree.data.title} filename={entree.data.title}>
+<AtelierLayout
+  title={entree.data.title}
+  filename={breadcrumbFilename}
+  parent={breadcrumbParent}
+>
 
   <!-- En-tête de l'entrée -->
   <div class="entree-header">
@@ -31,10 +80,34 @@ function formatDate(date: Date) {
   <!-- Contenu MD -->
   <Content />
 
-  <!-- Retour à l'index -->
+  <!-- Footer : retour + navigation -->
   <div class="entree-footer">
     <div class="footer-sep"></div>
-    <a href="/atelier" class="retour-link">← retour à l'atelier</a>
+
+    <div class="footer-nav">
+      <!-- Lien retour contextuel -->
+      <a href={retourHref} class="retour-link">{retourLabel}</a>
+
+      <!-- Navigation précédent / suivant (fondations uniquement) -->
+      {(prevArticle || nextArticle) && (
+        <nav class="article-nav" aria-label="Articles du même niveau">
+          {prevArticle
+            ? <a href={prevArticle.href} class="nav-lien nav-lien--prev">
+                <span class="nav-dir">← précédent</span>
+                <span class="nav-titre">{prevArticle.label}</span>
+              </a>
+            : <span class="nav-vide"></span>
+          }
+          {nextArticle
+            ? <a href={nextArticle.href} class="nav-lien nav-lien--next">
+                <span class="nav-dir">suivant →</span>
+                <span class="nav-titre">{nextArticle.label}</span>
+              </a>
+            : <span class="nav-vide"></span>
+          }
+        </nav>
+      )}
+    </div>
   </div>
 
 </AtelierLayout>
@@ -61,13 +134,18 @@ function formatDate(date: Date) {
     margin: 0;
   }
 
-  .entree-footer {
-    margin-top: 3rem;
-  }
+  /* ── Footer ── */
+  .entree-footer { margin-top: 3rem; }
 
   .footer-sep {
     border-top: 1px solid rgba(255,150,80,0.1);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
   }
 
   .retour-link {
@@ -78,4 +156,60 @@ function formatDate(date: Date) {
     transition: color 0.2s;
   }
   .retour-link:hover { color: #f0a050; }
+
+  /* ── Navigation précédent / suivant ── */
+  .article-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  .nav-lien {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.03);
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .nav-lien:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(232, 160, 80, 0.25);
+  }
+
+  .nav-lien--next {
+    text-align: right;
+  }
+
+  .nav-dir {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: #6a4a2a;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.92rem;
+    font-style: italic;
+    color: #c8905a;
+    transition: color 0.2s;
+  }
+  .nav-lien:hover .nav-titre { color: #e8a050; }
+
+  .nav-vide {
+    /* espace réservé si un côté est absent */
+    display: block;
+  }
+
+  @media (max-width: 520px) {
+    .article-nav {
+      grid-template-columns: 1fr;
+    }
+    .nav-lien--next { text-align: left; }
+  }
 </style>
