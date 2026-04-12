@@ -3,6 +3,9 @@ export type Domaine =
   | 'construction'
   | 'relations'
   | 'sens'
+  | 'corps-sommeil'
+  | 'corps-mouvement'
+  | 'corps-metabolisme'
   | 'systemes'
   | 'pouvoir'
   | 'philosophie';
@@ -15,21 +18,26 @@ export interface Penseur {
   description: string;
   domaine: Domaine;
   niveau: 1 | 2 | 3;
+  sousNiveau?: '1b';
   validite: 'très haute' | 'haute' | 'bonne' | 'philosophique' | 'clinique';
 }
 
 export const DOMAINES: Record<Domaine, { label: string; couleur: string }> = {
-  cerveau:      { label: 'Cerveau & pensée',     couleur: '#c07040' },
-  construction: { label: 'Se construire',         couleur: '#7a9e6e' },
-  relations:    { label: 'Relations',             couleur: '#8a70b0' },
-  sens:         { label: 'Sens & motivation',     couleur: '#c09040' },
-  systemes:     { label: 'Systèmes & complexité', couleur: '#5090a0' },
-  pouvoir:      { label: 'Pouvoir & société',     couleur: '#a06060' },
-  philosophie:  { label: 'Philosophie pratique',  couleur: '#708060' },
+  cerveau:             { label: 'Cerveau & pensée',     couleur: '#f5a623' },
+  construction:        { label: 'Se construire',         couleur: '#e85d20' },
+  relations:           { label: 'Relations',             couleur: '#d45a8a' },
+  sens:                { label: 'Sens & motivation',     couleur: '#ffe066' },
+  'corps-sommeil':     { label: 'Sommeil',               couleur: '#7b9fd4' },
+  'corps-mouvement':   { label: 'Activité physique',     couleur: '#5dbe8a' },
+  'corps-metabolisme': { label: 'Métabolisme',           couleur: '#d4884a' },
+  systemes:            { label: 'Systèmes & complexité', couleur: '#5090a8' },
+  pouvoir:             { label: 'Pouvoir & société',     couleur: '#a06878' },
+  philosophie:         { label: 'Philosophie pratique',  couleur: '#8a9e5a' },
 };
 
 export const PENSEURS: Penseur[] = [
-  // ── Niveau 1 · Cerveau ──
+
+  // ── Niveau 1 · Cerveau ──────────────────────────────────────────────────────
   {
     id: 'kahneman',
     nom: 'Daniel Kahneman',
@@ -77,7 +85,7 @@ export const PENSEURS: Penseur[] = [
     validite: 'haute',
   },
 
-  // ── Niveau 1 · Construction ──
+  // ── Niveau 1 · Construction ─────────────────────────────────────────────────
   {
     id: 'bowlby-ainsworth',
     nom: 'Bowlby & Ainsworth',
@@ -116,7 +124,7 @@ export const PENSEURS: Penseur[] = [
     validite: 'très haute',
   },
 
-  // ── Niveau 1 · Relations ──
+  // ── Niveau 1 · Relations ────────────────────────────────────────────────────
   {
     id: 'gottman',
     nom: 'John Gottman',
@@ -166,7 +174,7 @@ export const PENSEURS: Penseur[] = [
     validite: 'philosophique',
   },
 
-  // ── Niveau 1 · Sens ──
+  // ── Niveau 1 · Sens ─────────────────────────────────────────────────────────
   {
     id: 'frankl',
     nom: 'Viktor Frankl',
@@ -206,7 +214,63 @@ export const PENSEURS: Penseur[] = [
     validite: 'haute',
   },
 
-  // ── Niveau 2 · Systèmes ──
+  // ── Niveau 1b · Corps · Sommeil ─────────────────────────────────────────────
+  {
+    id: 'walker',
+    nom: 'Matthew Walker',
+    concept: 'La science du sommeil',
+    description: 'Le sommeil consolide la mémoire, régule les émotions et élimine les déchets neurotoxiques. La privation chronique altère jugement et décision — exactement les systèmes que Kahneman et Barrett décrivent.',
+    domaine: 'corps-sommeil',
+    niveau: 1,
+    sousNiveau: '1b',
+    validite: 'très haute',
+  },
+
+  // ── Niveau 1b · Corps · Mouvement ───────────────────────────────────────────
+  {
+    id: 'attia',
+    nom: 'Peter Attia',
+    concept: 'Longévité & capacité physique',
+    description: 'Les deux meilleurs prédicteurs de longévité en bonne santé : VO2max et force musculaire. Trois systèmes à maintenir : capacité cardiorespiratoire, force musculaire, mobilité.',
+    domaine: 'corps-mouvement',
+    niveau: 1,
+    sousNiveau: '1b',
+    validite: 'très haute',
+  },
+  {
+    id: 'sapolsky-stress',
+    nom: 'Sapolsky — Stress & mouvement',
+    concept: 'Décharge physique du stress',
+    description: 'Le stress mobilise le corps pour l\'action physique. Sans action, les hormones de stress restent en circulation et deviennent destructrices. L\'activité physique est la conclusion biologique attendue du cycle de stress.',
+    domaine: 'corps-mouvement',
+    niveau: 1,
+    sousNiveau: '1b',
+    validite: 'très haute',
+  },
+
+  // ── Niveau 1b · Corps · Métabolisme ─────────────────────────────────────────
+  {
+    id: 'lustig',
+    nom: 'Robert Lustig',
+    concept: 'Insuline, métabolisme & comportement',
+    description: 'L\'insuline comme signal de stockage qui régule l\'accès aux carburants — son dérèglement affecte directement l\'humeur, l\'énergie et la cognition. Pont entre biochimie et psychologie.',
+    domaine: 'corps-metabolisme',
+    niveau: 1,
+    sousNiveau: '1b',
+    validite: 'haute',
+  },
+  {
+    id: 'longo',
+    nom: 'Valter Longo',
+    concept: 'Autophagie & cycles de restriction',
+    description: 'Les mécanismes de réparation cellulaire déclenchés par l\'absence de nourriture. L\'autophagie (Nobel 2016) : comprendre le métabolisme comme système cyclique, pas comme prescription de jeûne.',
+    domaine: 'corps-metabolisme',
+    niveau: 1,
+    sousNiveau: '1b',
+    validite: 'haute',
+  },
+
+  // ── Niveau 2 · Systèmes ─────────────────────────────────────────────────────
   {
     id: 'bateson',
     nom: 'Gregory Bateson',
@@ -256,8 +320,26 @@ export const PENSEURS: Penseur[] = [
     niveau: 2,
     validite: 'haute',
   },
+  {
+    id: 'tetlock',
+    nom: 'Philip Tetlock',
+    concept: 'La prévision calibrée',
+    description: 'La capacité à avoir des croyances bien calibrées — ni trop confiantes, ni trop hésitantes — s\'apprend. La plupart des gens ont des croyances à 0% ou 100%, sans incertitude graduée. La calibration est une compétence.',
+    domaine: 'systemes',
+    niveau: 2,
+    validite: 'très haute',
+  },
+  {
+    id: 'housel',
+    nom: 'Morgan Housel',
+    concept: 'La psychologie de l\'argent',
+    description: 'Pas un livre sur la richesse — sur les comportements irrationnels face à l\'argent, la durée, le risque. Les ressources matérielles sont un système comme les autres, avec ses points de levier et ses pièges cognitifs.',
+    domaine: 'systemes',
+    niveau: 2,
+    validite: 'haute',
+  },
 
-  // ── Niveau 2 · Pouvoir ──
+  // ── Niveau 2 · Pouvoir ──────────────────────────────────────────────────────
   {
     id: 'arendt',
     nom: 'Hannah Arendt',
@@ -289,7 +371,7 @@ export const PENSEURS: Penseur[] = [
     validite: 'philosophique',
   },
 
-  // ── Niveau 3 · Philosophie ──
+  // ── Niveau 3 · Philosophie ──────────────────────────────────────────────────
   {
     id: 'stoiciens',
     nom: 'Les Stoïciens',

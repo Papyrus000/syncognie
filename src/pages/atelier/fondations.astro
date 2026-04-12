@@ -16,27 +16,28 @@ const parDomaine = (Object.entries(DOMAINES) as [Domaine, { label: string; coule
     penseurs: PENSEURS.filter(p => p.domaine === id),
   }));
 
-const niveaux = [
-  {
-    num: 1,
-    label: 'Soi',
-    desc: "Ce qu'il faut comprendre avant tout le reste — comment je fonctionne, comment je me construis, comment je me relie aux autres, pourquoi je fais ce que je fais.",
-  },
-  {
-    num: 2,
-    label: 'Le monde',
-    desc: "Comment fonctionnent les systèmes, le pouvoir, la complexité — voir au-delà de l'individu.",
-  },
-  {
-    num: 3,
-    label: 'Comment vivre',
-    desc: 'Les fondations philosophiques qui tiennent depuis des siècles. Vieilles de siècles, empiriquement robustes.',
-  },
-] as const;
+// Groupes de domaines par section
+const domainesSoi:   Domaine[] = ['cerveau', 'construction', 'relations', 'sens'];
+const domainesCorps: Domaine[] = ['corps-sommeil', 'corps-mouvement', 'corps-metabolisme'];
+const domainesMonde: Domaine[] = ['systemes', 'pouvoir'];
+const domainesViv:   Domaine[] = ['philosophie'];
 
+// Progression globale
 const total    = PENSEURS.length;
 const explores = PENSEURS.filter(p => exploresIds.has(p.id)).length;
 const pct      = Math.round((explores / total) * 100);
+
+// Progression par section (pour la barre en haut)
+function progSection(domaines: Domaine[]) {
+  const t = PENSEURS.filter(p => domaines.includes(p.domaine)).length;
+  const e = PENSEURS.filter(p => domaines.includes(p.domaine) && exploresIds.has(p.id)).length;
+  return { total: t, explores: e, pct: t > 0 ? Math.round((e / t) * 100) : 0 };
+}
+
+const progSoi   = progSection(domainesSoi);
+const progCorps = progSection(domainesCorps);
+const progMonde = progSection(domainesMonde);
+const progViv   = progSection(domainesViv);
 ---
 
 <AtelierLayout title="Fondations" filename="fondations">
@@ -45,11 +46,31 @@ const pct      = Math.round((explores / total) * 100);
     <h1>Fondations</h1>
     <p class="f-sub">Les briques : idées, concepts, penseurs essentiels pour se comprendre, comprendre les autres et naviguer dans la vie.</p>
     <p class="f-sub">Sélectionnés sur trois critères : solidité empirique, pouvoir structurant, applicabilité concrète.</p>
+
+    <!-- Barre globale -->
     <div class="f-prog">
       <div class="f-prog-bar">
         <div class="f-prog-fill" style={`width:${pct}%`}></div>
       </div>
       <span class="f-prog-label">{explores} / {total} explorés</span>
+    </div>
+
+    <!-- Mini-barres par section -->
+    <div class="f-prog-sections">
+      {[
+        { label: 'Soi',    prog: progSoi,   couleur: '#f5a623' },
+        { label: 'Corps',  prog: progCorps, couleur: '#5dbe8a' },
+        { label: 'Monde',  prog: progMonde, couleur: '#5090a8' },
+        { label: 'Vivre',  prog: progViv,   couleur: '#8a9e5a' },
+      ].map(s => (
+        <div class="f-prog-sec">
+          <span class="f-prog-sec-label" style={`color:${s.couleur}`}>{s.label}</span>
+          <div class="f-prog-sec-bar">
+            <div class="f-prog-sec-fill" style={`width:${s.prog.pct}%; background:${s.couleur}`}></div>
+          </div>
+          <span class="f-prog-sec-compte" style={`color:${s.couleur}`}>{s.prog.explores}/{s.prog.total}</span>
+        </div>
+      ))}
     </div>
   </div>
 
@@ -58,10 +79,11 @@ const pct      = Math.round((explores / total) * 100);
   <!-- Barre de filtres chips -->
   <div class="f-filtres">
     <div class="f-chips-groupe">
-      <button class="f-chip f-chip--active" data-niveau="tout">Tout</button>
-      <button class="f-chip" data-niveau="1">Niveau 1 · Soi</button>
-      <button class="f-chip" data-niveau="2">Niveau 2 · Le monde</button>
-      <button class="f-chip" data-niveau="3">Niveau 3 · Vivre</button>
+      <button class="f-chip f-chip--active" data-filtre="tout">Tout</button>
+      <button class="f-chip" data-filtre="soi">Niveau 1 · Soi</button>
+      <button class="f-chip f-chip--corps" data-filtre="corps">Niveau 1 · Corps</button>
+      <button class="f-chip" data-filtre="monde">Niveau 2 · Le monde</button>
+      <button class="f-chip" data-filtre="vivre">Niveau 3 · Vivre</button>
     </div>
     <span class="f-chips-sep">·</span>
     <button class="f-chip f-chip--rediges" id="chip-rediges">✦ Rédigées</button>
@@ -69,59 +91,215 @@ const pct      = Math.round((explores / total) * 100);
 
   <!-- Contenu filtrable -->
   <div id="f-contenu">
-    {niveaux.map(niv => {
-      const domaines = parDomaine.filter(d =>
-        d.penseurs.some(p => p.niveau === niv.num)
-      );
-      return (
-        <section class="f-niveau" data-niveau={String(niv.num)}>
-          <div class="f-niv-head">
-            <span class="f-niv-badge">niveau {niv.num}</span>
-            <h2 class="f-niv-titre">{niv.label}</h2>
-            <p class="f-niv-desc">{niv.desc}</p>
-          </div>
 
-          {domaines.map(dom => {
-            const list = dom.penseurs.filter(p => p.niveau === niv.num);
-            return (
-              <div class="f-dom">
-                <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
-                  <span class="f-dom-dot"></span>
-                  {dom.label}
-                </h3>
-                <div class="f-grille">
-                  {list.map(p => {
-                    const on = exploresIds.has(p.id);
-                    const Tag = on ? 'a' : 'div';
-                    const linkProps = on ? { href: `/atelier/${p.id}` } : {};
-                    return (
-                      <Tag
-                        class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
-                        style={`--c:${dom.couleur}`}
-                        data-redige={on ? 'true' : 'false'}
-                        {...linkProps}
-                      >
-                        <div class="f-c-top">
-                          <span class="f-c-concept">{p.concept}</span>
-                          {on && <span class="f-c-lien">→</span>}
-                        </div>
-                        <p class="f-c-nom">{p.nom}</p>
-                        {p.dates && <span class="f-c-dates">{p.dates}</span>}
-                        <p class="f-c-desc">{p.description}</p>
-                        <div class="f-c-foot">
-                          <span class="f-c-val">{p.validite}</span>
-                          {!on && <span class="f-c-avenir">à venir</span>}
-                        </div>
-                      </Tag>
-                    );
-                  })}
-                </div>
+    <!-- ── NIVEAU 1 · Soi ── -->
+    <section class="f-niveau" data-filtre="soi">
+      <div class="f-niv-head">
+        <span class="f-niv-badge f-niv-badge--soi">niveau 1</span>
+        <h2 class="f-niv-titre f-niv-titre--soi">Soi</h2>
+        <p class="f-niv-desc">Ce qu'il faut comprendre avant tout le reste — comment je fonctionne, comment je me construis, comment je me relie aux autres, pourquoi je fais ce que je fais.</p>
+      </div>
+
+      {parDomaine
+        .filter(d => domainesSoi.includes(d.id as Domaine))
+        .map(dom => {
+          const list = dom.penseurs;
+          if (list.length === 0) return null;
+          return (
+            <div class="f-dom">
+              <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
+                <span class="f-dom-dot"></span>
+                {dom.label}
+              </h3>
+              <div class="f-grille">
+                {list.map(p => {
+                  const on = exploresIds.has(p.id);
+                  const Tag = on ? 'a' : 'div';
+                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  return (
+                    <Tag
+                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      style={`--c:${dom.couleur}`}
+                      data-redige={on ? 'true' : 'false'}
+                      {...linkProps}
+                    >
+                      <div class="f-c-top">
+                        <span class="f-c-concept">{p.concept}</span>
+                        {on && <span class="f-c-lien">→</span>}
+                      </div>
+                      <p class="f-c-nom">{p.nom}</p>
+                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                      <p class="f-c-desc">{p.description}</p>
+                      <div class="f-c-foot">
+                        <span class="f-c-val">{p.validite}</span>
+                        {!on && <span class="f-c-avenir">à venir</span>}
+                      </div>
+                    </Tag>
+                  );
+                })}
               </div>
-            );
-          })}
-        </section>
-      );
-    })}
+            </div>
+          );
+        })
+      }
+    </section>
+
+    <!-- ── NIVEAU 1b · Corps ── -->
+    <section class="f-niveau f-niveau--corps" data-filtre="corps">
+      <div class="f-niv-head">
+        <span class="f-niv-badge f-niv-badge--corps">niveau 1 · corps</span>
+        <h2 class="f-niv-titre f-niv-titre--corps">Le corps</h2>
+        <p class="f-niv-desc">Le fondement physique de tout le reste. Le corps n'est pas séparé du mental — il en est le substrat biologique. Sommeil, mouvement, métabolisme forment un système interdépendant.</p>
+      </div>
+
+      {parDomaine
+        .filter(d => domainesCorps.includes(d.id as Domaine))
+        .map(dom => {
+          const list = dom.penseurs;
+          if (list.length === 0) return null;
+          return (
+            <div class="f-dom">
+              <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
+                <span class="f-dom-dot"></span>
+                {dom.label}
+              </h3>
+              <div class="f-grille">
+                {list.map(p => {
+                  const on = exploresIds.has(p.id);
+                  const Tag = on ? 'a' : 'div';
+                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  return (
+                    <Tag
+                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      style={`--c:${dom.couleur}`}
+                      data-redige={on ? 'true' : 'false'}
+                      {...linkProps}
+                    >
+                      <div class="f-c-top">
+                        <span class="f-c-concept">{p.concept}</span>
+                        {on && <span class="f-c-lien">→</span>}
+                      </div>
+                      <p class="f-c-nom">{p.nom}</p>
+                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                      <p class="f-c-desc">{p.description}</p>
+                      <div class="f-c-foot">
+                        <span class="f-c-val">{p.validite}</span>
+                        {!on && <span class="f-c-avenir">à venir</span>}
+                      </div>
+                    </Tag>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      }
+    </section>
+
+    <!-- ── NIVEAU 2 · Le monde ── -->
+    <section class="f-niveau" data-filtre="monde">
+      <div class="f-niv-head">
+        <span class="f-niv-badge f-niv-badge--monde">niveau 2</span>
+        <h2 class="f-niv-titre f-niv-titre--monde">Le monde</h2>
+        <p class="f-niv-desc">Comment fonctionnent les systèmes, le pouvoir, la complexité — voir au-delà de l'individu. Et comment naviguer dans l'information sans se perdre.</p>
+      </div>
+
+      {parDomaine
+        .filter(d => domainesMonde.includes(d.id as Domaine))
+        .map(dom => {
+          const list = dom.penseurs;
+          if (list.length === 0) return null;
+          return (
+            <div class="f-dom">
+              <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
+                <span class="f-dom-dot"></span>
+                {dom.label}
+              </h3>
+              <div class="f-grille">
+                {list.map(p => {
+                  const on = exploresIds.has(p.id);
+                  const Tag = on ? 'a' : 'div';
+                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  return (
+                    <Tag
+                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      style={`--c:${dom.couleur}`}
+                      data-redige={on ? 'true' : 'false'}
+                      {...linkProps}
+                    >
+                      <div class="f-c-top">
+                        <span class="f-c-concept">{p.concept}</span>
+                        {on && <span class="f-c-lien">→</span>}
+                      </div>
+                      <p class="f-c-nom">{p.nom}</p>
+                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                      <p class="f-c-desc">{p.description}</p>
+                      <div class="f-c-foot">
+                        <span class="f-c-val">{p.validite}</span>
+                        {!on && <span class="f-c-avenir">à venir</span>}
+                      </div>
+                    </Tag>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      }
+    </section>
+
+    <!-- ── NIVEAU 3 · Comment vivre ── -->
+    <section class="f-niveau" data-filtre="vivre">
+      <div class="f-niv-head">
+        <span class="f-niv-badge f-niv-badge--vivre">niveau 3</span>
+        <h2 class="f-niv-titre f-niv-titre--vivre">Comment vivre</h2>
+        <p class="f-niv-desc">Les fondations philosophiques qui tiennent depuis des siècles. Vieilles de siècles, empiriquement robustes.</p>
+      </div>
+
+      {parDomaine
+        .filter(d => domainesViv.includes(d.id as Domaine))
+        .map(dom => {
+          const list = dom.penseurs;
+          if (list.length === 0) return null;
+          return (
+            <div class="f-dom">
+              <h3 class="f-dom-titre" style={`--c:${dom.couleur}`}>
+                <span class="f-dom-dot"></span>
+                {dom.label}
+              </h3>
+              <div class="f-grille">
+                {list.map(p => {
+                  const on = exploresIds.has(p.id);
+                  const Tag = on ? 'a' : 'div';
+                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  return (
+                    <Tag
+                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      style={`--c:${dom.couleur}`}
+                      data-redige={on ? 'true' : 'false'}
+                      {...linkProps}
+                    >
+                      <div class="f-c-top">
+                        <span class="f-c-concept">{p.concept}</span>
+                        {on && <span class="f-c-lien">→</span>}
+                      </div>
+                      <p class="f-c-nom">{p.nom}</p>
+                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                      <p class="f-c-desc">{p.description}</p>
+                      <div class="f-c-foot">
+                        <span class="f-c-val">{p.validite}</span>
+                        {!on && <span class="f-c-avenir">à venir</span>}
+                      </div>
+                    </Tag>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      }
+    </section>
+
   </div>
 
   <div class="f-retour">
@@ -132,31 +310,28 @@ const pct      = Math.round((explores / total) * 100);
 </AtelierLayout>
 
 <script>
-  const niveauChips = document.querySelectorAll<HTMLButtonElement>('.f-chip[data-niveau]');
-  const chipRediges = document.getElementById('chip-rediges') as HTMLButtonElement | null;
-  const sections    = document.querySelectorAll<HTMLElement>('.f-niveau');
-  const cartes      = document.querySelectorAll<HTMLElement>('.f-carte');
+  const chips    = document.querySelectorAll<HTMLButtonElement>('.f-chip[data-filtre]');
+  const chipRed  = document.getElementById('chip-rediges') as HTMLButtonElement | null;
+  const sections = document.querySelectorAll<HTMLElement>('.f-niveau');
+  const cartes   = document.querySelectorAll<HTMLElement>('.f-carte');
 
-  let niveauActif = 'tout';
+  let filtreActif = 'tout';
   let redigesOnly = false;
 
   function appliquerFiltres() {
-    // 1. Niveaux
+    // 1. Sections
     sections.forEach(sec => {
-      const match = niveauActif === 'tout' || sec.dataset.niveau === niveauActif;
-      sec.style.display = match ? '' : 'none';
+      const f = sec.dataset.filtre ?? '';
+      sec.style.display = (filtreActif === 'tout' || filtreActif === f) ? '' : 'none';
     });
 
     // 2. Cartes rédigées
     cartes.forEach(carte => {
-      if (!redigesOnly) {
-        carte.style.display = '';
-        return;
-      }
+      if (!redigesOnly) { carte.style.display = ''; return; }
       carte.style.display = carte.dataset.redige === 'true' ? '' : 'none';
     });
 
-    // 3. Masquer les domaines entièrement vides
+    // 3. Masquer les domaines vides
     document.querySelectorAll<HTMLElement>('.f-dom').forEach(dom => {
       const grille = dom.querySelector<HTMLElement>('.f-grille');
       if (!grille) return;
@@ -167,25 +342,24 @@ const pct      = Math.round((explores / total) * 100);
     });
   }
 
-  // Chips niveau
-  niveauChips.forEach(chip => {
+  chips.forEach(chip => {
     chip.addEventListener('click', () => {
-      niveauChips.forEach(c => c.classList.remove('f-chip--active'));
+      chips.forEach(c => c.classList.remove('f-chip--active'));
       chip.classList.add('f-chip--active');
-      niveauActif = chip.dataset.niveau ?? 'tout';
+      filtreActif = chip.dataset.filtre ?? 'tout';
       appliquerFiltres();
     });
   });
 
-  // Chip rédigées — toggle
-  chipRediges?.addEventListener('click', () => {
+  chipRed?.addEventListener('click', () => {
     redigesOnly = !redigesOnly;
-    chipRediges.classList.toggle('f-chip--rediges-on', redigesOnly);
+    chipRed.classList.toggle('f-chip--rediges-on', redigesOnly);
     appliquerFiltres();
   });
 </script>
 
 <style>
+  /* ── Header ── */
   .f-header { margin-bottom: 2rem; }
 
   .f-header h1 {
@@ -206,15 +380,17 @@ const pct      = Math.round((explores / total) * 100);
     margin-bottom: 0.3rem;
   }
 
+  /* Barre globale */
   .f-prog {
     display: flex;
     align-items: center;
     gap: 1rem;
     margin-top: 1.4rem;
+    margin-bottom: 0.9rem;
   }
   .f-prog-bar {
     flex: 1;
-    height: 2px;
+    height: 3px;
     background: rgba(255,255,255,0.07);
     border-radius: 2px;
     overflow: hidden;
@@ -223,13 +399,57 @@ const pct      = Math.round((explores / total) * 100);
     height: 100%;
     background: linear-gradient(90deg, #e85d20, #f5a623, #ffe066);
     border-radius: 2px;
-    box-shadow: 0 0 8px rgba(245, 166, 35, 0.5);
+    box-shadow: 0 0 8px rgba(245,166,35,0.5);
   }
   .f-prog-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
     color: #f5a623;
     white-space: nowrap;
+  }
+
+  /* Mini-barres par section */
+  .f-prog-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+  }
+  .f-prog-sec {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .f-prog-sec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 3.2rem;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+  .f-prog-sec-bar {
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .f-prog-sec-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+  .f-prog-sec-compte {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    white-space: nowrap;
+    width: 2.5rem;
+    text-align: right;
+    flex-shrink: 0;
+    opacity: 0.7;
   }
 
   .f-hr {
@@ -276,19 +496,29 @@ const pct      = Math.round((explores / total) * 100);
     color: rgba(255,255,255,0.7);
     border-color: rgba(255,255,255,0.2);
   }
-
-  /* Chip niveau actif */
   .f-chip--active {
-    background: rgba(232, 160, 80, 0.15);
-    border-color: rgba(232, 160, 80, 0.45);
+    background: rgba(232,160,80,0.15);
+    border-color: rgba(232,160,80,0.45);
     color: #e8a050;
   }
   .f-chip--active:hover {
-    background: rgba(232, 160, 80, 0.22);
+    background: rgba(232,160,80,0.22);
     color: #f0b060;
   }
-
-  /* Chip rédigées — état off */
+  .f-chip--corps {
+    border-color: rgba(93,190,138,0.2);
+    color: rgba(93,190,138,0.55);
+  }
+  .f-chip--corps:hover {
+    border-color: rgba(93,190,138,0.4);
+    color: rgba(93,190,138,0.9);
+    background: rgba(93,190,138,0.06);
+  }
+  .f-chip--corps.f-chip--active {
+    background: rgba(93,190,138,0.13);
+    border-color: rgba(93,190,138,0.5);
+    color: #5dbe8a;
+  }
   .f-chip--rediges {
     border-color: rgba(255,230,100,0.2);
     color: rgba(255,230,100,0.45);
@@ -298,19 +528,21 @@ const pct      = Math.round((explores / total) * 100);
     color: rgba(255,230,100,0.8);
     background: rgba(255,230,100,0.06);
   }
-
-  /* Chip rédigées — état on */
   .f-chip--rediges-on {
     background: rgba(255,230,100,0.13);
     border-color: rgba(255,230,100,0.55);
     color: #ffe066;
   }
-  .f-chip--rediges-on:hover {
-    background: rgba(255,230,100,0.2);
-  }
 
   /* ── Niveaux ── */
   .f-niveau { margin-bottom: 3.5rem; }
+  .f-niveau--corps {
+    padding: 1.4rem 1.4rem 0.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(93,190,138,0.1);
+    background: rgba(93,190,138,0.03);
+  }
+
   .f-niv-head { margin-bottom: 1.8rem; }
 
   .f-niv-badge {
@@ -318,11 +550,23 @@ const pct      = Math.round((explores / total) * 100);
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #e8a050;
-    opacity: 0.8;
-    display: block;
-    margin-bottom: 0.3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.45rem;
+    opacity: 0.9;
   }
+  .f-niv-badge::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Base titre — avant les variantes pour que les couleurs s'appliquent */
   .f-niv-titre {
     font-family: 'Libre Baskerville', serif;
     font-size: 1.9rem;
@@ -330,6 +574,18 @@ const pct      = Math.round((explores / total) * 100);
     color: #f0d0a0;
     margin-bottom: 0.5rem;
   }
+
+  /* Couleurs par niveau */
+  .f-niv-badge--soi   { color: #f5a623; }
+  .f-niv-badge--corps { color: #5dbe8a; }
+  .f-niv-badge--monde { color: #5090a8; }
+  .f-niv-badge--vivre { color: #8a9e5a; }
+
+  .f-niv-titre--soi   { color: #f5d090; }
+  .f-niv-titre--corps { color: #b0e8cc; }
+  .f-niv-titre--monde { color: #a8d0e0; }
+  .f-niv-titre--vivre { color: #c8d8a0; }
+
   .f-niv-desc {
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
@@ -501,5 +757,7 @@ const pct      = Math.round((explores / total) * 100);
   @media (max-width: 640px) {
     .f-grille { grid-template-columns: 1fr; }
     .f-chips-sep { display: none; }
+    .f-niveau--corps { padding: 1rem 0.8rem 0.2rem; }
+    .f-prog-sections { gap: 0.28rem; }
   }
 </style>

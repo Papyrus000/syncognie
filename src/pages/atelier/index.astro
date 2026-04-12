@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
-import { PENSEURS } from '../../data/penseurs';
+import { PENSEURS, DOMAINES } from '../../data/penseurs';
+import type { Domaine } from '../../data/penseurs';
 
 const tout = await getCollection('atelier');
 
@@ -19,18 +20,42 @@ const total    = PENSEURS.length;
 const explores = PENSEURS.filter(p => exploresIds.has(p.id)).length;
 const pct      = Math.round((explores / total) * 100);
 
-// Progression par niveau
-const niveaux = [
-  { num: 1, label: 'Soi',           couleur: '#f5c842', couleurBg: 'rgba(245,200,66,0.10)',  couleurBorder: 'rgba(245,200,66,0.28)'  },
-  { num: 2, label: 'Le monde',      couleur: '#d4824a', couleurBg: 'rgba(212,130,74,0.10)',  couleurBorder: 'rgba(212,130,74,0.28)'  },
-  { num: 3, label: 'Comment vivre', couleur: '#c47a8a', couleurBg: 'rgba(196,122,138,0.10)', couleurBorder: 'rgba(196,122,138,0.28)' },
+// ── Niveau 1 · Soi — détail par domaine ─────────────────────────────────────
+const domainesSoi: Domaine[] = ['cerveau', 'construction', 'relations', 'sens'];
+
+const niv1Domaines = domainesSoi.map(id => {
+  const { label, couleur } = DOMAINES[id];
+  const liste    = PENSEURS.filter(p => p.domaine === id);
+  const explored = liste.filter(p => exploresIds.has(p.id)).length;
+  return { id, label, couleur, explored, total: liste.length };
+});
+
+const niv1Total    = niv1Domaines.reduce((s, d) => s + d.total, 0);
+const niv1Explored = niv1Domaines.reduce((s, d) => s + d.explored, 0);
+
+// ── Niveau 1b · Corps — détail par domaine ───────────────────────────────────
+const domainesCorps: Domaine[] = ['corps-sommeil', 'corps-mouvement', 'corps-metabolisme'];
+
+const niv1bDomaines = domainesCorps.map(id => {
+  const { label, couleur } = DOMAINES[id];
+  const liste    = PENSEURS.filter(p => p.domaine === id);
+  const explored = liste.filter(p => exploresIds.has(p.id)).length;
+  return { id, label, couleur, explored, total: liste.length };
+});
+
+const niv1bTotal    = niv1bDomaines.reduce((s, d) => s + d.total, 0);
+const niv1bExplored = niv1bDomaines.reduce((s, d) => s + d.explored, 0);
+
+// ── Niveaux 2 & 3 — barre simple ─────────────────────────────────────────────
+const niveauxSimples = [
+  { num: 2, label: 'Le monde',      couleur: '#5090a8', couleurBorder: 'rgba(80,144,168,0.35)' },
+  { num: 3, label: 'Comment vivre', couleur: '#8a9e5a', couleurBorder: 'rgba(138,158,90,0.35)' },
 ];
 
-const niveauxData = niveaux.map(niv => {
-  const penseursDuNiveau = PENSEURS.filter(p => p.niveau === niv.num);
-  const exploredDuNiveau = penseursDuNiveau.filter(p => exploresIds.has(p.id)).length;
-  const totalDuNiveau    = penseursDuNiveau.length;
-  return { ...niv, explored: exploredDuNiveau, total: totalDuNiveau };
+const niveauxSimplesData = niveauxSimples.map(niv => {
+  const liste    = PENSEURS.filter(p => p.niveau === niv.num);
+  const explored = liste.filter(p => exploresIds.has(p.id)).length;
+  return { ...niv, explored, total: liste.length };
 });
 
 function formatDate(date: Date) {
@@ -60,10 +85,55 @@ function formatDate(date: Date) {
       <span class="fondations-compte">{explores} / {total}</span>
     </div>
 
-    <!-- Barres des 3 niveaux avec cases -->
+    <!-- ── Niveau 1 · Soi — avec sous-domaines ── -->
+    <div class="fniv-bloc">
+      <div class="fniv-bloc-head">
+        <span class="fniv-bloc-badge">niveau 1</span>
+        <span class="fniv-bloc-titre">Soi</span>
+        <span class="fniv-bloc-compte">{niv1Explored}/{niv1Total}</span>
+      </div>
+      <div class="fniv-sous-liste">
+        {niv1Domaines.map(d => (
+          <div class="fniv-sous" style={`--c: ${d.couleur}`}>
+            <span class="fniv-sous-label">{d.label}</span>
+            <div class="fniv-cases">
+              {Array.from({ length: d.total }, (_, i) => (
+                <span class={`fniv-case ${i < d.explored ? 'fniv-case--on' : ''}`}></span>
+              ))}
+            </div>
+            <span class="fniv-sous-compte">{d.explored}/{d.total}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── Niveau 1b · Corps — avec sous-domaines ── -->
+    <div class="fniv-bloc fniv-bloc--corps">
+      <div class="fniv-bloc-head">
+        <span class="fniv-bloc-badge fniv-bloc-badge--corps">niveau 1 · corps</span>
+        <span class="fniv-bloc-titre">Le corps</span>
+        <span class="fniv-bloc-compte fniv-bloc-compte--corps">{niv1bExplored}/{niv1bTotal}</span>
+      </div>
+      <div class="fniv-sous-liste">
+        {niv1bDomaines.map(d => (
+          <div class="fniv-sous" style={`--c: ${d.couleur}`}>
+            <span class="fniv-sous-label">{d.label}</span>
+            <div class="fniv-cases">
+              {Array.from({ length: d.total }, (_, i) => (
+                <span class={`fniv-case ${i < d.explored ? 'fniv-case--on' : ''}`}></span>
+              ))}
+            </div>
+            <span class="fniv-sous-compte">{d.explored}/{d.total}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── Niveaux 2 & 3 — barres simples ── -->
     <div class="fondations-niveaux">
-      {niveauxData.map(niv => (
-        <div class="fniv" style={`--c: ${niv.couleur}; --bg: ${niv.couleurBg}; --border: ${niv.couleurBorder}`}>
+      {niveauxSimplesData.map(niv => (
+        <div class="fniv" style={`--c: ${niv.couleur}; --border: ${niv.couleurBorder}`}>
+          <span class="fniv-badge-num">niveau {niv.num}</span>
           <span class="fniv-label">{niv.label}</span>
           <div class="fniv-cases">
             {Array.from({ length: niv.total }, (_, i) => (
@@ -109,7 +179,7 @@ function formatDate(date: Date) {
     border: 1px solid rgba(232, 160, 80, 0.18);
     background: rgba(40, 24, 10, 0.55);
     border-radius: 12px;
-    padding: 1.2rem 1.5rem 1.3rem;
+    padding: 1.2rem 1.5rem 1.4rem;
     margin: 1.8rem 0 0;
     position: relative;
     overflow: hidden;
@@ -171,7 +241,7 @@ function formatDate(date: Date) {
     display: flex;
     align-items: center;
     gap: 0.9rem;
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.4rem;
   }
   .fondations-bar {
     flex: 1;
@@ -193,38 +263,98 @@ function formatDate(date: Date) {
     white-space: nowrap;
   }
 
-  /* ── Niveaux ── */
-  .fondations-niveaux {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+  /* ── Blocs niveaux avec sous-domaines (Soi & Corps) ── */
+  .fniv-bloc {
+    margin-bottom: 1.1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
   }
-  .fniv {
+  .fniv-bloc--corps {
+    background: rgba(123,159,212,0.04);
+    border-color: rgba(123,159,212,0.12);
+  }
+
+  .fniv-bloc-head {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
   }
-  .fniv-label {
+  .fniv-bloc-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--c);
-    opacity: 0.85;
-    white-space: nowrap;
-    width: 7.5rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,166,35,0.55);
     flex-shrink: 0;
-    letter-spacing: 0.03em;
   }
+  .fniv-bloc-badge--corps {
+    color: rgba(123,159,212,0.6);
+  }
+  .fniv-bloc-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.82rem;
+    font-style: italic;
+    font-weight: 700;
+    color: rgba(240,210,160,0.75);
+    flex: 1;
+  }
+  .fniv-bloc-compte {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(245,166,35,0.5);
+    white-space: nowrap;
+  }
+  .fniv-bloc-compte--corps {
+    color: rgba(123,159,212,0.55);
+  }
+
+  /* Lignes de sous-domaines */
+  .fniv-sous-liste {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .fniv-sous {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .fniv-sous-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--c);
+    opacity: 0.9;
+    white-space: nowrap;
+    width: 8.5rem;
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+  }
+  .fniv-sous-compte {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--c);
+    opacity: 0.5;
+    white-space: nowrap;
+    width: 2.2rem;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Cases */
   .fniv-cases {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 3px;
     flex: 1;
   }
   .fniv-case {
-    width: 11px;
-    height: 11px;
+    width: 10px;
+    height: 10px;
     border-radius: 2px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255,255,255,0.12);
     background: transparent;
     transition: background 0.25s, box-shadow 0.25s;
     flex-shrink: 0;
@@ -233,6 +363,40 @@ function formatDate(date: Date) {
     background: var(--c);
     border-color: var(--c);
     box-shadow: 0 0 5px var(--c);
+  }
+
+  /* ── Niveaux 2 & 3 — barres simples ── */
+  .fondations-niveaux {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.2rem;
+  }
+  .fniv {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .fniv-badge-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c);
+    opacity: 0.5;
+    white-space: nowrap;
+    width: 4rem;
+    flex-shrink: 0;
+  }
+  .fniv-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--c);
+    opacity: 0.85;
+    white-space: nowrap;
+    width: 7rem;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
   }
   .fniv-compte {
     font-family: 'JetBrains Mono', monospace;
@@ -308,7 +472,9 @@ function formatDate(date: Date) {
   }
 
   @media (max-width: 640px) {
-    .fniv-label { width: 5rem; }
-    .fniv-case { width: 8px; height: 8px; }
+    .fniv-sous-label { width: 5.5rem; }
+    .fniv-label      { width: 5rem;   }
+    .fniv-badge-num  { display: none; }
+    .fniv-case       { width: 8px; height: 8px; }
   }
 </style>
