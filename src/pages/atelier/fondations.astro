@@ -78,11 +78,13 @@ const pct      = Math.round((explores / total) * 100);
               <div class="f-grille">
                 {list.map(p => {
                   const on = exploresIds.has(p.id);
+                  const Tag = on ? 'a' : 'div';
+                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
                   return (
-                    <div class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`} style={`--c:${dom.couleur}`}>
+                    <Tag class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`} style={`--c:${dom.couleur}`} {...linkProps}>
                       <div class="f-c-top">
                         <span class="f-c-concept">{p.concept}</span>
-                        {on && <a href={`/atelier/${p.id}`} class="f-c-lien">→</a>}
+                        {on && <span class="f-c-lien">→</span>}
                       </div>
                       <p class="f-c-nom">{p.nom}</p>
                       {p.dates && <span class="f-c-dates">{p.dates}</span>}
@@ -91,7 +93,7 @@ const pct      = Math.round((explores / total) * 100);
                         <span class="f-c-val">{p.validite}</span>
                         {!on && <span class="f-c-avenir">à venir</span>}
                       </div>
-                    </div>
+                    </Tag>
                   );
                 })}
               </div>
@@ -110,12 +112,6 @@ const pct      = Math.round((explores / total) * 100);
 </AtelierLayout>
 
 <style>
-  /* Padding légèrement augmenté */
-  :global(.atelier-content) {
-    padding-left: 3.5rem !important;
-    padding-right: 3.5rem !important;
-  }
-
   .f-header { margin-bottom: 2rem; }
 
   .f-header h1 {
@@ -151,13 +147,14 @@ const pct      = Math.round((explores / total) * 100);
   }
   .f-prog-fill {
     height: 100%;
-    background: linear-gradient(90deg, #c07040, #e8a050);
+    background: linear-gradient(90deg, #e85d20, #f5a623, #ffe066);
     border-radius: 2px;
+    box-shadow: 0 0 8px rgba(245, 166, 35, 0.5);
   }
   .f-prog-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
-    color: #8a6a4a;
+    color: #f5a623;
     white-space: nowrap;
   }
 
@@ -238,30 +235,35 @@ const pct      = Math.round((explores / total) * 100);
     position: relative;
     overflow: hidden;
     transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: block;
   }
   .f-carte::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
+    height: 3px;
     background: var(--c);
     opacity: 0;
     transition: opacity 0.2s;
   }
   .f-carte--on {
-    background: rgba(255,255,255,0.04);
-    border-color: rgba(255,255,255,0.09);
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.18);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    cursor: pointer;
   }
-  .f-carte--on::before { opacity: 0.6; }
+  .f-carte--on::before { opacity: 1; }
   .f-carte--on:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255,255,255,0.15);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,0.28);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.4);
   }
-  .f-carte--on:hover::before { opacity: 1; }
+  .f-carte--on:hover::before { opacity: 1; filter: brightness(1.2); }
   .f-carte--off {
-    background: rgba(255,255,255,0.02);
+    background: rgba(0,0,0,0.15);
     border-color: rgba(255,255,255,0.04);
+    opacity: 0.55;
   }
 
   .f-c-top {
@@ -285,13 +287,12 @@ const pct      = Math.round((explores / total) * 100);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     color: var(--c);
-    text-decoration: none;
-    opacity: 0.6;
+    opacity: 0.7;
     margin-left: 0.4rem;
     flex-shrink: 0;
     transition: opacity 0.2s, transform 0.2s;
   }
-  .f-c-lien:hover { opacity: 1; transform: translateX(2px); }
+  .f-carte--on:hover .f-c-lien { opacity: 1; transform: translateX(3px); }
 
   .f-c-nom {
     font-family: 'Libre Baskerville', serif;
@@ -362,10 +363,6 @@ const pct      = Math.round((explores / total) * 100);
   .f-retour-link:hover { color: #f0a050; }
 
   @media (max-width: 640px) {
-    :global(.atelier-content) {
-      padding-left: 1.8rem !important;
-      padding-right: 1.8rem !important;
-    }
     .f-grille { grid-template-columns: 1fr; }
   }
 </style>
