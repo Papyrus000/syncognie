@@ -27,7 +27,13 @@ const niv1Domaines = domainesSoi.map(id => {
   const { label, couleur } = DOMAINES[id];
   const liste    = PENSEURS.filter(p => p.domaine === id);
   const explored = liste.filter(p => exploresIds.has(p.id)).length;
-  return { id, label, couleur, explored, total: liste.length };
+  const penseurs = liste.map(p => ({
+    id: p.id,
+    titre: `${p.nom} — ${p.concept}`,
+    explored: exploresIds.has(p.id),
+    slug: p.id,
+  }));
+  return { id, label, couleur, explored, total: liste.length, penseurs };
 });
 
 const niv1Total    = niv1Domaines.reduce((s, d) => s + d.total, 0);
@@ -40,7 +46,13 @@ const niv1bDomaines = domainesCorps.map(id => {
   const { label, couleur } = DOMAINES[id];
   const liste    = PENSEURS.filter(p => p.domaine === id);
   const explored = liste.filter(p => exploresIds.has(p.id)).length;
-  return { id, label, couleur, explored, total: liste.length };
+  const penseurs = liste.map(p => ({
+    id: p.id,
+    titre: `${p.nom} — ${p.concept}`,
+    explored: exploresIds.has(p.id),
+    slug: p.id,
+  }));
+  return { id, label, couleur, explored, total: liste.length, penseurs };
 });
 
 const niv1bTotal    = niv1bDomaines.reduce((s, d) => s + d.total, 0);
@@ -55,7 +67,13 @@ const niveauxSimples = [
 const niveauxSimplesData = niveauxSimples.map(niv => {
   const liste    = PENSEURS.filter(p => p.niveau === niv.num);
   const explored = liste.filter(p => exploresIds.has(p.id)).length;
-  return { ...niv, explored, total: liste.length };
+  const penseurs = liste.map(p => ({
+    id: p.id,
+    titre: `${p.nom} — ${p.concept}`,
+    explored: exploresIds.has(p.id),
+    slug: p.id,
+  }));
+  return { ...niv, explored, total: liste.length, penseurs };
 });
 
 function formatDate(date: Date) {
@@ -68,14 +86,17 @@ function formatDate(date: Date) {
   <Content />
 
   <!-- ── Bloc Fondations ── -->
-  <a href="/atelier/fondations" class="fondations-bloc">
+  <div class="fondations-bloc" id="fondationsBloc">
 
-    <!-- Ligne principale : titre + label + flèche -->
-    <div class="fondations-main">
+    <!-- Ligne principale : titre + label + flèche vers page complète -->
+    <a href="/atelier/fondations" class="fondations-main" aria-label="Voir la page Fondations complete">
       <span class="fondations-titre">Fondations</span>
-      <span class="fondations-label">référence permanente</span>
-      <span class="fondations-arrow">→</span>
-    </div>
+      <span class="fondations-label">reference permanente</span>
+      <span class="fondations-cta">
+        <span class="fondations-cta-text">voir la page</span>
+        <span class="fondations-arrow">&#x2192;</span>
+      </span>
+    </a>
 
     <!-- Barre de progression globale -->
     <div class="fondations-meta">
@@ -97,8 +118,24 @@ function formatDate(date: Date) {
           <div class="fniv-sous" style={`--c: ${d.couleur}`}>
             <span class="fniv-sous-label">{d.label}</span>
             <div class="fniv-cases">
-              {Array.from({ length: d.total }, (_, i) => (
-                <span class={`fniv-case ${i < d.explored ? 'fniv-case--on' : ''}`}></span>
+              {d.penseurs.map((p) => (
+                p.explored
+                  ? (
+                    <a
+                      href={`/atelier/${p.slug}`}
+                      class="fniv-case fniv-case--on fniv-case--link"
+                      data-title={p.titre}
+                      aria-label={p.titre}
+                      onClick="event.stopPropagation()"
+                    ></a>
+                  )
+                  : (
+                    <span
+                      class="fniv-case"
+                      data-title="Article a venir"
+                      aria-label="Non explore"
+                    ></span>
+                  )
               ))}
             </div>
             <span class="fniv-sous-compte">{d.explored}/{d.total}</span>
@@ -110,7 +147,7 @@ function formatDate(date: Date) {
     <!-- ── Niveau 1b · Corps — avec sous-domaines ── -->
     <div class="fniv-bloc fniv-bloc--corps">
       <div class="fniv-bloc-head">
-        <span class="fniv-bloc-badge fniv-bloc-badge--corps">niveau 1 · corps</span>
+        <span class="fniv-bloc-badge fniv-bloc-badge--corps">niveau 1 corps</span>
         <span class="fniv-bloc-titre">Le corps</span>
         <span class="fniv-bloc-compte fniv-bloc-compte--corps">{niv1bExplored}/{niv1bTotal}</span>
       </div>
@@ -119,8 +156,24 @@ function formatDate(date: Date) {
           <div class="fniv-sous" style={`--c: ${d.couleur}`}>
             <span class="fniv-sous-label">{d.label}</span>
             <div class="fniv-cases">
-              {Array.from({ length: d.total }, (_, i) => (
-                <span class={`fniv-case ${i < d.explored ? 'fniv-case--on' : ''}`}></span>
+              {d.penseurs.map((p) => (
+                p.explored
+                  ? (
+                    <a
+                      href={`/atelier/${p.slug}`}
+                      class="fniv-case fniv-case--on fniv-case--link"
+                      data-title={p.titre}
+                      aria-label={p.titre}
+                      onClick="event.stopPropagation()"
+                    ></a>
+                  )
+                  : (
+                    <span
+                      class="fniv-case"
+                      data-title="Article a venir"
+                      aria-label="Non explore"
+                    ></span>
+                  )
               ))}
             </div>
             <span class="fniv-sous-compte">{d.explored}/{d.total}</span>
@@ -136,8 +189,24 @@ function formatDate(date: Date) {
           <span class="fniv-badge-num">niveau {niv.num}</span>
           <span class="fniv-label">{niv.label}</span>
           <div class="fniv-cases">
-            {Array.from({ length: niv.total }, (_, i) => (
-              <span class={`fniv-case ${i < niv.explored ? 'fniv-case--on' : ''}`}></span>
+            {niv.penseurs.map((p) => (
+              p.explored
+                ? (
+                  <a
+                    href={`/atelier/${p.slug}`}
+                    class="fniv-case fniv-case--on fniv-case--link"
+                    data-title={p.titre}
+                    aria-label={p.titre}
+                    onClick="event.stopPropagation()"
+                  ></a>
+                )
+                : (
+                  <span
+                    class="fniv-case"
+                    data-title="Article a venir"
+                    aria-label="Non explore"
+                  ></span>
+                )
             ))}
           </div>
           <span class="fniv-compte">{niv.explored}/{niv.total}</span>
@@ -145,7 +214,10 @@ function formatDate(date: Date) {
       ))}
     </div>
 
-  </a>
+  </div>
+
+  <!-- Tooltip global -->
+  <div class="fniv-tooltip" id="fnivTooltip" aria-hidden="true"></div>
 
   <!-- ── Articles ── -->
   {entrees.length > 0 && (
@@ -156,7 +228,7 @@ function formatDate(date: Date) {
         {entrees.map((entree) => (
           <li>
             <a href={`/atelier/${entree.slug}`} class="entree-link">
-              <span class="entree-arrow">→</span>
+              <span class="entree-arrow">&#x2192;</span>
               <span class="entree-title">{entree.data.title}</span>
               {entree.data.extrait && (
                 <span class="entree-extrait">{entree.data.extrait}</span>
@@ -171,13 +243,41 @@ function formatDate(date: Date) {
 
 </AtelierLayout>
 
+<script>
+  const tooltip = document.getElementById('fnivTooltip');
+  const cases   = document.querySelectorAll<HTMLElement>('.fniv-case[data-title]');
+
+  if (tooltip) {
+    let hideTimer: ReturnType<typeof setTimeout> | null = null;
+
+    cases.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        const title = el.dataset.title;
+        if (!title) return;
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+        tooltip.textContent = title;
+        tooltip.classList.add('fniv-tooltip--visible');
+        tooltip.classList.toggle('fniv-tooltip--venir', title === 'Article a venir');
+        const rect = el.getBoundingClientRect();
+        tooltip.style.left = `${rect.left + rect.width / 2}px`;
+        tooltip.style.top  = `${rect.top - 8}px`;
+      });
+      el.addEventListener('mouseleave', () => {
+        hideTimer = setTimeout(() => {
+          tooltip.classList.remove('fniv-tooltip--visible');
+        }, 120);
+      });
+    });
+  }
+</script>
+
 <style>
   /* ── Bloc Fondations ── */
   .fondations-bloc {
     display: block;
     text-decoration: none;
     border: 1px solid rgba(232, 160, 80, 0.18);
-    background: rgba(40, 24, 10, 0.55);
+    background: rgba(62, 38, 16, 0.45);
     border-radius: 12px;
     padding: 1.2rem 1.5rem 1.4rem;
     margin: 1.8rem 0 0;
@@ -196,18 +296,21 @@ function formatDate(date: Date) {
   }
   .fondations-bloc:hover {
     border-color: rgba(232, 160, 80, 0.32);
-    background: rgba(50, 30, 12, 0.70);
+    background: rgba(72, 46, 20, 0.58);
     transform: translateY(-2px);
     box-shadow: 0 8px 28px rgba(20, 8, 0, 0.4);
   }
   .fondations-bloc:hover::before { opacity: 1; }
 
-  /* Ligne principale */
+  /* Ligne titre — lien cliquable */
   .fondations-main {
     display: flex;
     align-items: baseline;
     gap: 0.75rem;
     margin-bottom: 1rem;
+    text-decoration: none;
+    width: 100%;
+    max-width: 100%;
   }
   .fondations-titre {
     font-family: 'Libre Baskerville', serif;
@@ -226,15 +329,32 @@ function formatDate(date: Date) {
     color: rgba(255,255,255,0.16);
     flex: 1;
   }
+  .fondations-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-shrink: 0;
+  }
+  .fondations-cta-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.70rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(232, 160, 80, 0.55);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s, transform 0.2s;
+  }
   .fondations-arrow {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
+    font-size: 1.4rem;
     color: #e8a050;
     opacity: 0.45;
     flex-shrink: 0;
     transition: opacity 0.2s, transform 0.2s;
   }
-  .fondations-bloc:hover .fondations-arrow { opacity: 1; transform: translateX(3px); }
+  .fondations-main:hover .fondations-cta-text { opacity: 1; transform: translateX(0); }
+  .fondations-main:hover .fondations-arrow    { opacity: 1; transform: translateX(3px); }
 
   /* Barre globale */
   .fondations-meta {
@@ -263,7 +383,7 @@ function formatDate(date: Date) {
     white-space: nowrap;
   }
 
-  /* ── Blocs niveaux avec sous-domaines (Soi & Corps) ── */
+  /* Blocs niveaux */
   .fniv-bloc {
     margin-bottom: 1.1rem;
     padding: 0.85rem 1rem;
@@ -275,7 +395,6 @@ function formatDate(date: Date) {
     background: rgba(123,159,212,0.04);
     border-color: rgba(123,159,212,0.12);
   }
-
   .fniv-bloc-head {
     display: flex;
     align-items: center;
@@ -290,9 +409,7 @@ function formatDate(date: Date) {
     color: rgba(245,166,35,0.55);
     flex-shrink: 0;
   }
-  .fniv-bloc-badge--corps {
-    color: rgba(123,159,212,0.6);
-  }
+  .fniv-bloc-badge--corps { color: rgba(123,159,212,0.6); }
   .fniv-bloc-titre {
     font-family: 'Libre Baskerville', serif;
     font-size: 0.82rem;
@@ -307,21 +424,11 @@ function formatDate(date: Date) {
     color: rgba(245,166,35,0.5);
     white-space: nowrap;
   }
-  .fniv-bloc-compte--corps {
-    color: rgba(123,159,212,0.55);
-  }
+  .fniv-bloc-compte--corps { color: rgba(123,159,212,0.55); }
 
-  /* Lignes de sous-domaines */
-  .fniv-sous-liste {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-  .fniv-sous {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
+  /* Sous-domaines */
+  .fniv-sous-liste { display: flex; flex-direction: column; gap: 0.45rem; }
+  .fniv-sous { display: flex; align-items: center; gap: 0.65rem; }
   .fniv-sous-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.6rem;
@@ -344,39 +451,37 @@ function formatDate(date: Date) {
   }
 
   /* Cases */
-  .fniv-cases {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3px;
-    flex: 1;
-  }
+  .fniv-cases { display: flex; flex-wrap: wrap; gap: 3px; flex: 1; }
   .fniv-case {
     width: 10px;
     height: 10px;
     border-radius: 2px;
     border: 1px solid rgba(255,255,255,0.12);
     background: transparent;
-    transition: background 0.25s, box-shadow 0.25s;
+    transition: background 0.25s, box-shadow 0.25s, transform 0.15s;
     flex-shrink: 0;
+    cursor: default;
   }
   .fniv-case--on {
     background: var(--c);
     border-color: var(--c);
     box-shadow: 0 0 5px var(--c);
   }
+  .fniv-case--link {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+  }
+  .fniv-case--link:hover {
+    transform: scale(1.35);
+    box-shadow: 0 0 9px var(--c), 0 0 18px rgba(255,255,255,0.15);
+    z-index: 2;
+  }
 
-  /* ── Niveaux 2 & 3 — barres simples ── */
-  .fondations-niveaux {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 0.2rem;
-  }
-  .fniv {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
+  /* Niveaux 2 & 3 */
+  .fondations-niveaux { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.2rem; }
+  .fniv { display: flex; align-items: center; gap: 0.65rem; }
   .fniv-badge-num {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.52rem;
@@ -409,12 +514,44 @@ function formatDate(date: Date) {
     flex-shrink: 0;
   }
 
-  /* ── Articles ── */
-  .atelier-entrees { margin-top: 2.5rem; }
-  .entrees-sep {
-    border-top: 1px solid rgba(255,150,80,0.12);
-    margin-bottom: 1.8rem;
+  /* Tooltip */
+  .fniv-tooltip {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -100%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+    background: rgba(30, 14, 4, 0.94);
+    color: #f0c880;
+    border: 1px solid rgba(232, 160, 60, 0.28);
+    border-radius: 6px;
+    padding: 5px 10px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: opacity 0.15s ease;
   }
+  .fniv-tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: rgba(30, 14, 4, 0.94);
+    border-right: 1px solid rgba(232, 160, 60, 0.28);
+    border-bottom: 1px solid rgba(232, 160, 60, 0.28);
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .fniv-tooltip--visible { opacity: 1; }
+  .fniv-tooltip--venir { color: rgba(180, 140, 90, 0.55); font-style: italic; }
+
+  /* Articles */
+  .atelier-entrees { margin-top: 2.5rem; }
+  .entrees-sep { border-top: 1px solid rgba(255,150,80,0.12); margin-bottom: 1.8rem; }
   .atelier-entrees h2 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.95rem;
@@ -422,13 +559,7 @@ function formatDate(date: Date) {
     color: #c87830;
     margin-bottom: 1.2rem;
   }
-  .entrees-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
+  .entrees-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
   .entree-link {
     display: flex;
     align-items: baseline;
@@ -473,8 +604,9 @@ function formatDate(date: Date) {
 
   @media (max-width: 640px) {
     .fniv-sous-label { width: 5.5rem; }
-    .fniv-label      { width: 5rem;   }
+    .fniv-label      { width: 5rem; }
     .fniv-badge-num  { display: none; }
     .fniv-case       { width: 8px; height: 8px; }
+    .fondations-cta-text { display: none; }
   }
 </style>
