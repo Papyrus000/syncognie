@@ -43,12 +43,27 @@ const progViv   = progSection(domainesViv);
 <AtelierLayout title="Fondations" filename="fondations">
 
   <div class="f-header">
-    <h1>Fondations</h1>
-    <p class="f-sub">Les briques : idées, concepts, penseurs essentiels pour se comprendre, comprendre les autres et naviguer dans la vie.</p>
-    <p class="f-sub">Sélectionnés sur trois critères : solidité empirique, pouvoir structurant, applicabilité concrète.</p>
+
+    <!-- Titre terminal -->
+    <div class="f-titre-terminal">
+      <span class="f-titre-prefix">//</span>
+      <h1 class="f-titre-main">fondations</h1>
+    </div>
+
+    <!-- Lignes terminal -->
+    <div class="f-terminal-bloc" id="fTerminal" aria-live="polite">
+      <div class="f-term-line">
+        <span class="f-term-prompt">&gt;</span>
+        <span class="f-term-text" id="fLine1"></span><span class="f-term-cursor" id="fCursor1">_</span>
+      </div>
+      <div class="f-term-line f-term-line--hidden" id="fLine2Wrap">
+        <span class="f-term-prompt">&gt;</span>
+        <span class="f-term-text" id="fLine2"></span><span class="f-term-cursor" id="fCursor2">_</span>
+      </div>
+    </div>
 
     <!-- Barre globale -->
-    <div class="f-prog">
+    <div class="f-prog f-prog--hidden" id="fProg">
       <div class="f-prog-bar">
         <div class="f-prog-fill" style={`width:${pct}%`}></div>
       </div>
@@ -56,7 +71,7 @@ const progViv   = progSection(domainesViv);
     </div>
 
     <!-- Mini-barres par section -->
-    <div class="f-prog-sections">
+    <div class="f-prog-sections f-prog--hidden" id="fProgSections">
       {[
         { label: 'Soi',    prog: progSoi,   couleur: '#f5a623' },
         { label: 'Corps',  prog: progCorps, couleur: '#5dbe8a' },
@@ -308,6 +323,62 @@ const progViv   = progSection(domainesViv);
   </div>
 
 </AtelierLayout>
+
+<script>
+  // ── Boot sequence fondations ─────────────────────────────────────────────
+  const line1El   = document.getElementById('fLine1');
+  const cursor1El = document.getElementById('fCursor1');
+  const line2Wrap = document.getElementById('fLine2Wrap');
+  const line2El   = document.getElementById('fLine2');
+  const cursor2El = document.getElementById('fCursor2');
+  const progEl    = document.getElementById('fProg');
+  const progSecEl = document.getElementById('fProgSections');
+
+  const phrase1 = "chargement des briques fondamentales...";
+  const phrase2 = "critères · solidité empirique · pouvoir structurant · applicabilité";
+
+  function typePhrase(
+    textEl: HTMLElement | null,
+    cursorEl: HTMLElement | null,
+    phrase: string,
+    delay: number,
+    onDone?: () => void
+  ) {
+    if (!textEl || !cursorEl) return;
+    let i = 0;
+    cursorEl.style.opacity = '0';
+    setTimeout(() => {
+      const tick = () => {
+        if (i < phrase.length) {
+          textEl.textContent += phrase[i];
+          i++;
+          setTimeout(tick, 24 + Math.random() * 22);
+        } else {
+          cursorEl.style.opacity = '1';
+          if (onDone) setTimeout(onDone, 320);
+        }
+      };
+      tick();
+    }, delay);
+  }
+
+  // Séquence : ligne 1 → ligne 2 → barres
+  typePhrase(line1El, cursor1El, phrase1, 400, () => {
+    // Curseur 1 s'arrête, ligne 2 apparaît
+    if (cursor1El) cursor1El.style.animation = 'none', cursor1El.style.opacity = '0.3';
+    if (line2Wrap) line2Wrap.style.opacity = '1';
+
+    typePhrase(line2El, cursor2El, phrase2, 0, () => {
+      // Barres apparaissent en fondu
+      [progEl, progSecEl].forEach(el => {
+        if (el) {
+          el.classList.remove('f-prog--hidden');
+          el.classList.add('f-prog--visible');
+        }
+      });
+    });
+  });
+</script>
 
 <script>
   const chips    = document.querySelectorAll<HTMLButtonElement>('.f-chip[data-filtre]');
@@ -754,10 +825,84 @@ const progViv   = progSection(domainesViv);
   }
   .f-retour-link:hover { color: #f0a050; }
 
+  /* ── Header terminal ── */
+  .f-titre-terminal {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .f-titre-prefix {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    color: #7abd6e;
+    opacity: 0.7;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .f-titre-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: #f0c878;
+    letter-spacing: 0.04em;
+  }
+  .f-terminal-bloc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1.6rem;
+  }
+  .f-term-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+  .f-term-line--hidden { opacity: 0; }
+  .f-term-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #7abd6e;
+    flex-shrink: 0;
+    user-select: none;
+    opacity: 0.75;
+  }
+  .f-term-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(212, 168, 100, 0.78);
+    letter-spacing: 0.02em;
+    font-style: italic;
+  }
+  .f-term-cursor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #7abd6e;
+    opacity: 0;
+    animation: fBlink 1.1s step-end infinite;
+  }
+  @keyframes fBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  /* Barres cachées avant animation */
+  .f-prog--hidden {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .f-prog--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   @media (max-width: 640px) {
     .f-grille { grid-template-columns: 1fr; }
     .f-chips-sep { display: none; }
     .f-niveau--corps { padding: 1rem 0.8rem 0.2rem; }
     .f-prog-sections { gap: 0.28rem; }
+    .f-titre-main { font-size: 1.15rem; }
+    .f-titre-prefix { font-size: 1rem; }
+    .f-term-text, .f-term-cursor { font-size: 0.74rem; }
   }
 </style>
