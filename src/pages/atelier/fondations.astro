@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
 import { PENSEURS, DOMAINES } from '../../data/penseurs';
+// Note: penseurs.ts now includes a `detail` field for mode 2
 import type { Domaine } from '../../data/penseurs';
 
 const entrees = await getCollection('atelier');
@@ -129,27 +130,55 @@ const progViv   = progSection(domainesViv);
               <div class="f-grille">
                 {list.map(p => {
                   const on = exploresIds.has(p.id);
-                  const Tag = on ? 'a' : 'div';
-                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  const hasDetail = !!(p as any).detail;
                   return (
-                    <Tag
+                    <div
                       class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
-                      {...linkProps}
+                      data-id={p.id}
+                      data-has-detail={hasDetail ? 'true' : 'false'}
+                      role={on || hasDetail ? 'button' : undefined}
+                      tabindex={on || hasDetail ? 0 : undefined}
                     >
-                      <div class="f-c-top">
-                        <span class="f-c-concept">{p.concept}</span>
-                        {on && <span class="f-c-lien">→</span>}
+                      {/* Mode 1 — fermé */}
+                      <div class="f-c-mode1">
+                        <div class="f-c-top">
+                          <span class="f-c-concept">{p.concept}</span>
+                          {(on || hasDetail) && (
+                            <span class="f-c-toggle" aria-label="Développer">▾</span>
+                          )}
+                        </div>
+                        <p class="f-c-nom">{p.nom}</p>
+                        {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                        <p class="f-c-desc">{p.description}</p>
+                        <div class="f-c-foot">
+                          <span class="f-c-val">{p.validite}</span>
+                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                        </div>
                       </div>
-                      <p class="f-c-nom">{p.nom}</p>
-                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
-                      <p class="f-c-desc">{p.description}</p>
-                      <div class="f-c-foot">
-                        <span class="f-c-val">{p.validite}</span>
-                        {!on && <span class="f-c-avenir">à venir</span>}
-                      </div>
-                    </Tag>
+
+                      {/* Mode 2 — développé */}
+                      {hasDetail && (
+                        <div class="f-c-mode2" hidden>
+                          <div class="f-c-detail-body">
+                            {((p as any).detail as string).split('\n\n').map((para: string) => (
+                              <p class="f-c-detail-para">{para}</p>
+                            ))}
+                          </div>
+                          {/* Mode 3 — lien article si rédigé, notice si à venir */}
+                          {on ? (
+                            <a href={`/atelier/${p.id}`} class="f-c-article-link">
+                              <span class="f-c-article-arrow">→</span>
+                              <span>lire l'article complet</span>
+                            </a>
+                          ) : (
+                            <span class="f-c-avenir-notice">// article en cours de rédaction</span>
+                          )}
+                          <button class="f-c-fermer" aria-label="Fermer">✕ fermer</button>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
@@ -181,27 +210,55 @@ const progViv   = progSection(domainesViv);
               <div class="f-grille">
                 {list.map(p => {
                   const on = exploresIds.has(p.id);
-                  const Tag = on ? 'a' : 'div';
-                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  const hasDetail = !!(p as any).detail;
                   return (
-                    <Tag
+                    <div
                       class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
-                      {...linkProps}
+                      data-id={p.id}
+                      data-has-detail={hasDetail ? 'true' : 'false'}
+                      role={on || hasDetail ? 'button' : undefined}
+                      tabindex={on || hasDetail ? 0 : undefined}
                     >
-                      <div class="f-c-top">
-                        <span class="f-c-concept">{p.concept}</span>
-                        {on && <span class="f-c-lien">→</span>}
+                      {/* Mode 1 — fermé */}
+                      <div class="f-c-mode1">
+                        <div class="f-c-top">
+                          <span class="f-c-concept">{p.concept}</span>
+                          {(on || hasDetail) && (
+                            <span class="f-c-toggle" aria-label="Développer">▾</span>
+                          )}
+                        </div>
+                        <p class="f-c-nom">{p.nom}</p>
+                        {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                        <p class="f-c-desc">{p.description}</p>
+                        <div class="f-c-foot">
+                          <span class="f-c-val">{p.validite}</span>
+                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                        </div>
                       </div>
-                      <p class="f-c-nom">{p.nom}</p>
-                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
-                      <p class="f-c-desc">{p.description}</p>
-                      <div class="f-c-foot">
-                        <span class="f-c-val">{p.validite}</span>
-                        {!on && <span class="f-c-avenir">à venir</span>}
-                      </div>
-                    </Tag>
+
+                      {/* Mode 2 — développé */}
+                      {hasDetail && (
+                        <div class="f-c-mode2" hidden>
+                          <div class="f-c-detail-body">
+                            {((p as any).detail as string).split('\n\n').map((para: string) => (
+                              <p class="f-c-detail-para">{para}</p>
+                            ))}
+                          </div>
+                          {/* Mode 3 — lien article si rédigé, notice si à venir */}
+                          {on ? (
+                            <a href={`/atelier/${p.id}`} class="f-c-article-link">
+                              <span class="f-c-article-arrow">→</span>
+                              <span>lire l'article complet</span>
+                            </a>
+                          ) : (
+                            <span class="f-c-avenir-notice">// article en cours de rédaction</span>
+                          )}
+                          <button class="f-c-fermer" aria-label="Fermer">✕ fermer</button>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
@@ -233,27 +290,55 @@ const progViv   = progSection(domainesViv);
               <div class="f-grille">
                 {list.map(p => {
                   const on = exploresIds.has(p.id);
-                  const Tag = on ? 'a' : 'div';
-                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  const hasDetail = !!(p as any).detail;
                   return (
-                    <Tag
+                    <div
                       class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
-                      {...linkProps}
+                      data-id={p.id}
+                      data-has-detail={hasDetail ? 'true' : 'false'}
+                      role={on || hasDetail ? 'button' : undefined}
+                      tabindex={on || hasDetail ? 0 : undefined}
                     >
-                      <div class="f-c-top">
-                        <span class="f-c-concept">{p.concept}</span>
-                        {on && <span class="f-c-lien">→</span>}
+                      {/* Mode 1 — fermé */}
+                      <div class="f-c-mode1">
+                        <div class="f-c-top">
+                          <span class="f-c-concept">{p.concept}</span>
+                          {(on || hasDetail) && (
+                            <span class="f-c-toggle" aria-label="Développer">▾</span>
+                          )}
+                        </div>
+                        <p class="f-c-nom">{p.nom}</p>
+                        {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                        <p class="f-c-desc">{p.description}</p>
+                        <div class="f-c-foot">
+                          <span class="f-c-val">{p.validite}</span>
+                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                        </div>
                       </div>
-                      <p class="f-c-nom">{p.nom}</p>
-                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
-                      <p class="f-c-desc">{p.description}</p>
-                      <div class="f-c-foot">
-                        <span class="f-c-val">{p.validite}</span>
-                        {!on && <span class="f-c-avenir">à venir</span>}
-                      </div>
-                    </Tag>
+
+                      {/* Mode 2 — développé */}
+                      {hasDetail && (
+                        <div class="f-c-mode2" hidden>
+                          <div class="f-c-detail-body">
+                            {((p as any).detail as string).split('\n\n').map((para: string) => (
+                              <p class="f-c-detail-para">{para}</p>
+                            ))}
+                          </div>
+                          {/* Mode 3 — lien article si rédigé, notice si à venir */}
+                          {on ? (
+                            <a href={`/atelier/${p.id}`} class="f-c-article-link">
+                              <span class="f-c-article-arrow">→</span>
+                              <span>lire l'article complet</span>
+                            </a>
+                          ) : (
+                            <span class="f-c-avenir-notice">// article en cours de rédaction</span>
+                          )}
+                          <button class="f-c-fermer" aria-label="Fermer">✕ fermer</button>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
@@ -285,27 +370,55 @@ const progViv   = progSection(domainesViv);
               <div class="f-grille">
                 {list.map(p => {
                   const on = exploresIds.has(p.id);
-                  const Tag = on ? 'a' : 'div';
-                  const linkProps = on ? { href: `/atelier/${p.id}` } : {};
+                  const hasDetail = !!(p as any).detail;
                   return (
-                    <Tag
+                    <div
                       class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
-                      {...linkProps}
+                      data-id={p.id}
+                      data-has-detail={hasDetail ? 'true' : 'false'}
+                      role={on || hasDetail ? 'button' : undefined}
+                      tabindex={on || hasDetail ? 0 : undefined}
                     >
-                      <div class="f-c-top">
-                        <span class="f-c-concept">{p.concept}</span>
-                        {on && <span class="f-c-lien">→</span>}
+                      {/* Mode 1 — fermé */}
+                      <div class="f-c-mode1">
+                        <div class="f-c-top">
+                          <span class="f-c-concept">{p.concept}</span>
+                          {(on || hasDetail) && (
+                            <span class="f-c-toggle" aria-label="Développer">▾</span>
+                          )}
+                        </div>
+                        <p class="f-c-nom">{p.nom}</p>
+                        {p.dates && <span class="f-c-dates">{p.dates}</span>}
+                        <p class="f-c-desc">{p.description}</p>
+                        <div class="f-c-foot">
+                          <span class="f-c-val">{p.validite}</span>
+                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                        </div>
                       </div>
-                      <p class="f-c-nom">{p.nom}</p>
-                      {p.dates && <span class="f-c-dates">{p.dates}</span>}
-                      <p class="f-c-desc">{p.description}</p>
-                      <div class="f-c-foot">
-                        <span class="f-c-val">{p.validite}</span>
-                        {!on && <span class="f-c-avenir">à venir</span>}
-                      </div>
-                    </Tag>
+
+                      {/* Mode 2 — développé */}
+                      {hasDetail && (
+                        <div class="f-c-mode2" hidden>
+                          <div class="f-c-detail-body">
+                            {((p as any).detail as string).split('\n\n').map((para: string) => (
+                              <p class="f-c-detail-para">{para}</p>
+                            ))}
+                          </div>
+                          {/* Mode 3 — lien article si rédigé, notice si à venir */}
+                          {on ? (
+                            <a href={`/atelier/${p.id}`} class="f-c-article-link">
+                              <span class="f-c-article-arrow">→</span>
+                              <span>lire l'article complet</span>
+                            </a>
+                          ) : (
+                            <span class="f-c-avenir-notice">// article en cours de rédaction</span>
+                          )}
+                          <button class="f-c-fermer" aria-label="Fermer">✕ fermer</button>
+                        </div>
+                      )}
+                    </div>
                   );
                 })}
               </div>
@@ -325,6 +438,67 @@ const progViv   = progSection(domainesViv);
 </AtelierLayout>
 
 <script>
+  // ── Cartes 3 modes ───────────────────────────────────────────────────────────
+  let carteOuverte: HTMLElement | null = null;
+
+  function ouvrirCarte(carte: HTMLElement) {
+    // Fermer la précédente
+    if (carteOuverte && carteOuverte !== carte) {
+      fermerCarte(carteOuverte);
+    }
+
+    const mode2 = carte.querySelector<HTMLElement>('.f-c-mode2');
+    if (!mode2) return;
+
+    carte.classList.add('f-carte--open');
+    mode2.hidden = false;
+    carteOuverte = carte;
+
+    // Scroll doux pour amener la carte en vue
+    setTimeout(() => {
+      carte.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 60);
+  }
+
+  function fermerCarte(carte: HTMLElement) {
+    const mode2 = carte.querySelector<HTMLElement>('.f-c-mode2');
+    carte.classList.remove('f-carte--open');
+    if (mode2) mode2.hidden = true;
+    if (carteOuverte === carte) carteOuverte = null;
+  }
+
+  document.querySelectorAll<HTMLElement>('.f-carte[data-has-detail="true"]').forEach(carte => {
+    carte.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      // Ne pas déclencher si on clique sur le lien article ou le bouton fermer
+      if (target.closest('.f-c-article-link') || target.closest('.f-c-fermer')) return;
+
+      if (carte.classList.contains('f-carte--open')) {
+        fermerCarte(carte);
+      } else {
+        ouvrirCarte(carte);
+      }
+    });
+
+    carte.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        carte.click();
+      }
+      if (e.key === 'Escape' && carte.classList.contains('f-carte--open')) {
+        fermerCarte(carte);
+      }
+    });
+  });
+
+  // Boutons fermer
+  document.querySelectorAll<HTMLElement>('.f-c-fermer').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const carte = btn.closest<HTMLElement>('.f-carte');
+      if (carte) fermerCarte(carte);
+    });
+  });
+
   // ── Boot sequence fondations ─────────────────────────────────────────────
   const line1El   = document.getElementById('fLine1');
   const cursor1El = document.getElementById('fCursor1');
@@ -692,122 +866,319 @@ const progViv   = progSection(domainesViv);
     gap: 0.85rem;
   }
 
+  /* ── Grille : quand une carte est ouverte, elle passe en pleine largeur ── */
+  .f-grille { position: relative; }
+
   /* ── Cartes ── */
   .f-carte {
-    border-radius: 8px;
-    padding: 1.1rem 1.2rem 1rem;
+    border-radius: 12px;
+    padding: 1rem 1.1rem 0.9rem;
     border: 1px solid rgba(255,255,255,0.06);
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    text-decoration: none;
-    display: block;
+    transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s, background 0.22s;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
   }
   .f-carte::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 3px;
+    height: 2px;
     background: var(--c);
     opacity: 0;
     transition: opacity 0.2s;
   }
-  .f-carte--on {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(255,255,255,0.18);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  .f-carte--on,
+  .f-carte[data-has-detail="true"] {
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     cursor: pointer;
   }
-  .f-carte--on::before { opacity: 1; }
-  .f-carte--on:hover {
+  .f-carte--on::before,
+  .f-carte[data-has-detail="true"]::before { opacity: 1; }
+
+  .f-carte--on:not(.f-carte--open):hover,
+  .f-carte[data-has-detail="true"]:not(.f-carte--open):hover {
     transform: translateY(-3px);
-    border-color: rgba(255,255,255,0.28);
-    box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+    border-color: color-mix(in srgb, var(--c) 42%, transparent);
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.4),
+      0 0 28px 4px color-mix(in srgb, var(--c) 14%, transparent),
+      0 0 55px 10px color-mix(in srgb, var(--c) 7%, transparent);
   }
-  .f-carte--on:hover::before { filter: brightness(1.2); }
+
+  /* Carte ouverte — pleine largeur dans la grille */
+  .f-carte--open {
+    grid-column: 1 / -1;
+    cursor: default;
+    transform: none !important;
+    padding: 2rem 2.8rem 2.2rem 3rem;
+    border-radius: 14px !important;
+    border-color: color-mix(in srgb, var(--c) 28%, transparent) !important;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--c) 9%, rgba(255,255,255,0.07)) 0%,
+      color-mix(in srgb, var(--c) 4%, rgba(255,255,255,0.07)) 25%,
+      rgba(255,255,255,0.06) 60%,
+      rgba(255,255,255,0.05) 100%
+    ) !important;
+    box-shadow:
+      inset 3px 0 0 var(--c),
+      0 0 0 1px color-mix(in srgb, var(--c) 18%, transparent),
+      0 4px 24px rgba(0,0,0,0.35),
+      0 0 40px 0px color-mix(in srgb, var(--c) 10%, transparent),
+      0 0 80px 20px color-mix(in srgb, var(--c) 7%, transparent),
+      0 0 140px 40px color-mix(in srgb, var(--c) 4%, transparent) !important;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease !important;
+  }
+  .f-carte--open:hover {
+    border-color: color-mix(in srgb, var(--c) 42%, transparent) !important;
+    box-shadow:
+      inset 4px 0 0 var(--c),
+      inset 4px 0 12px color-mix(in srgb, var(--c) 22%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent),
+      0 4px 24px rgba(0,0,0,0.35),
+      0 0 55px 2px color-mix(in srgb, var(--c) 16%, transparent),
+      0 0 110px 35px color-mix(in srgb, var(--c) 9%, transparent),
+      0 0 190px 65px color-mix(in srgb, var(--c) 5%, transparent) !important;
+  }
+  .f-carte--open::before {
+    filter: brightness(1.5);
+    box-shadow: 0 0 10px var(--c);
+    transition: filter 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  }
+  .f-carte--open:hover::before {
+    filter: brightness(1.85);
+    box-shadow:
+      0 0 16px var(--c),
+      0 0 36px color-mix(in srgb, var(--c) 38%, transparent),
+      0 0 60px color-mix(in srgb, var(--c) 16%, transparent);
+  }
+
+  /* Cartes à venir — même traitement que les rédigées */
   .f-carte--off {
-    background: rgba(0,0,0,0.15);
-    border-color: rgba(255,255,255,0.04);
-    opacity: 0.55;
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    opacity: 1;
   }
+  .f-carte--off::before { opacity: 1; }
+  .f-carte--off:not(.f-carte--open):hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--c) 40%, transparent);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  }
+
+  /* ── Mode 1 — fermé ── */
+  .f-c-mode1 { display: flex; flex-direction: column; }
 
   .f-c-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.3rem;
   }
   .f-c-concept {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #f0c878;
-    line-height: 1.4;
-    flex: 1;
-  }
-  .f-carte--off .f-c-concept { color: #a08858; }
-
-  .f-c-lien {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     color: var(--c);
-    opacity: 0.7;
-    margin-left: 0.4rem;
-    flex-shrink: 0;
-    transition: opacity 0.2s, transform 0.2s;
+    opacity: 0.85;
+    line-height: 1.35;
+    flex: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: font-size 0.25s ease, opacity 0.25s ease, letter-spacing 0.25s ease;
   }
-  .f-carte--on:hover .f-c-lien { opacity: 1; transform: translateX(3px); }
+  .f-carte--open .f-c-concept {
+    font-size: 1rem;
+    opacity: 1;
+    letter-spacing: 0.08em;
+    display: inline-block;
+    transform-origin: left center;
+    transition: font-size 0.25s ease, opacity 0.25s ease, letter-spacing 0.25s ease, transform 0.2s ease;
+  }
+  .f-carte--open .f-c-concept:hover {
+    transform: scale(1.04);
+    opacity: 1;
+    text-shadow: 0 0 20px color-mix(in srgb, var(--c) 60%, transparent);
+  }
+  .f-c-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--c);
+    opacity: 0.45;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.25s;
+    user-select: none;
+  }
+  .f-carte--open .f-c-toggle {
+    transform: rotate(180deg);
+    opacity: 0.7;
+  }
+  .f-carte:not(.f-carte--off):hover .f-c-toggle { opacity: 0.8; }
 
   .f-c-nom {
     font-family: 'Libre Baskerville', serif;
     font-size: 1rem;
     font-weight: 700;
-    color: #e8c090;
-    margin-bottom: 0.1rem;
+    color: #f0d0a0;
+    line-height: 1.25;
+    margin-bottom: 0.15rem;
   }
-  .f-carte--off .f-c-nom { color: #b08860; }
+  .f-carte--off .f-c-nom { color: #9a7848; }
 
   .f-c-dates {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.32);
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.22);
     display: block;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.03em;
   }
   .f-c-desc {
     font-family: 'Mulish', sans-serif;
     font-weight: 300;
-    font-size: 0.9rem;
-    color: #d4a878;
-    line-height: 1.7;
-    margin-top: 0.5rem;
-    margin-bottom: 0.85rem;
+    font-size: 0.84rem;
+    color: rgba(212, 168, 120, 0.72);
+    line-height: 1.6;
+    margin-top: 0.4rem;
+    margin-bottom: 0.65rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .f-carte--off .f-c-desc { color: #9a7858; }
-
+  .f-carte--open .f-c-desc {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
   .f-c-foot {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-    padding-top: 0.4rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
   }
   .f-c-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.02em;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--c);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--c) 18%, transparent);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--c) 20%, transparent);
+    display: inline-block;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   }
-  .f-c-val::before {
-    content: 'validité · ';
-    color: rgba(255,255,255,0.25);
+  .f-carte--open .f-c-val:hover {
+    transform: scale(1.06);
+    background: color-mix(in srgb, var(--c) 28%, transparent);
+    border-color: color-mix(in srgb, var(--c) 70%, transparent);
+    box-shadow:
+      0 0 14px color-mix(in srgb, var(--c) 35%, transparent),
+      0 0 28px color-mix(in srgb, var(--c) 15%, transparent);
   }
+  .f-c-val::before { content: none; }
   .f-c-avenir {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 0.08em;
+    font-size: 0.56rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+
+  /* ── Mode 2 — développé ── */
+  .f-c-mode2 {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
+    animation: expandIn 0.3s ease;
+  }
+  @keyframes expandIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .f-c-detail-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.2rem 3rem;
+    margin-bottom: 2rem;
+  }
+  .f-c-detail-para {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.92rem;
+    color: rgba(220, 180, 130, 0.82);
+    line-height: 1.85;
+    margin: 0;
+  }
+  .f-c-detail-para:first-child {
+    font-size: 0.97rem;
+    color: rgba(245, 210, 160, 0.95);
+    line-height: 1.8;
+  }
+
+  /* Mode 3 — lien article */
+  .f-c-article-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--c);
+    opacity: 0.75;
+    text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    background: color-mix(in srgb, var(--c) 8%, transparent);
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+    transition: opacity 0.2s, background 0.2s;
+    margin-bottom: 1rem;
+  }
+  .f-c-article-link:hover {
+    opacity: 1;
+    background: color-mix(in srgb, var(--c) 16%, transparent);
+  }
+  .f-c-article-arrow {
+    transition: transform 0.2s;
+  }
+  .f-c-article-link:hover .f-c-article-arrow { transform: translateX(3px); }
+
+  /* Bouton fermer */
+  .f-c-fermer {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.22);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0;
+    transition: color 0.2s;
+    margin-top: 0.4rem;
+  }
+  .f-c-fermer:hover { color: rgba(255,255,255,0.5); }
+
+  /* Notice article à venir dans mode 2 */
+  .f-c-avenir-notice {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.22);
+    font-style: italic;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.8rem;
   }
 
   /* ── Retour ── */
