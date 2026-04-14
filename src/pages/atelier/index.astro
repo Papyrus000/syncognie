@@ -85,6 +85,28 @@ function formatDate(date: Date) {
 
   <Content />
 
+  <!-- ── Illustration hero ── -->
+  <div class="atelier-hero-sep"></div>
+  <div class="atelier-hero-wrap">
+    <picture>
+      <source
+        srcset="/images/atelier-hero-900.webp"
+        media="(max-width: 720px)"
+        type="image/webp"
+      />
+      <source srcset="/images/atelier-hero.webp" type="image/webp" />
+      <img
+        src="/images/atelier-hero-fallback.jpg"
+        alt="Syncognie — l'Atelier des Idées, illustration pixel art"
+        width="1400"
+        height="764"
+        loading="eager"
+        decoding="async"
+        class="atelier-hero-img"
+      />
+    </picture>
+  </div>
+
   <!-- ── Bloc Fondations ── -->
   <div class="fondations-bloc" id="fondationsBloc">
 
@@ -548,6 +570,29 @@ function formatDate(date: Date) {
   }
   .fniv-tooltip--visible { opacity: 1; }
   .fniv-tooltip--venir { color: rgba(180, 140, 90, 0.55); font-style: italic; }
+
+  /* ── Hero illustration ── */
+  .atelier-hero-sep {
+    border-top: 1px solid rgba(255, 150, 80, 0.1);
+    margin-bottom: 2rem;
+  }
+  .atelier-hero-wrap {
+    margin: 0 0 2.4rem;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(232, 160, 60, 0.15);
+    box-shadow:
+      0 2px 24px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 200, 100, 0.06);
+    width: 100%;
+  }
+  .atelier-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
 
   /* Articles */
   .atelier-entrees { margin-top: 2.5rem; }
