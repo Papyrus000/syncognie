@@ -14,10 +14,10 @@ const entrees = tout
 if (!master) throw new Error('Fichier src/content/atelier/index.md introuvable');
 const { Content } = await master.render();
 
-// Progression globale
+// Progression globale — basée sur mode 2 (detail), pas sur article rédigé
 const exploresIds = new Set(tout.filter(e => e.data.penseur).map(e => e.data.penseur));
 const total    = PENSEURS.length;
-const explores = PENSEURS.filter(p => exploresIds.has(p.id)).length;
+const explores = PENSEURS.filter(p => !!p.detail).length;
 const pct      = Math.round((explores / total) * 100);
 
 // ── Niveau 1 · Soi — détail par domaine ─────────────────────────────────────
@@ -26,11 +26,11 @@ const domainesSoi: Domaine[] = ['cerveau', 'construction', 'relations', 'sens'];
 const niv1Domaines = domainesSoi.map(id => {
   const { label, couleur } = DOMAINES[id];
   const liste    = PENSEURS.filter(p => p.domaine === id);
-  const explored = liste.filter(p => exploresIds.has(p.id)).length;
+  const explored = liste.filter(p => !!p.detail).length;
   const penseurs = liste.map(p => ({
     id: p.id,
     titre: `${p.nom} — ${p.concept}`,
-    explored: exploresIds.has(p.id),
+    explored: !!p.detail,
     slug: p.id,
   }));
   return { id, label, couleur, explored, total: liste.length, penseurs };
@@ -45,11 +45,11 @@ const domainesCorps: Domaine[] = ['corps-sommeil', 'corps-mouvement', 'corps-met
 const niv1bDomaines = domainesCorps.map(id => {
   const { label, couleur } = DOMAINES[id];
   const liste    = PENSEURS.filter(p => p.domaine === id);
-  const explored = liste.filter(p => exploresIds.has(p.id)).length;
+  const explored = liste.filter(p => !!p.detail).length;
   const penseurs = liste.map(p => ({
     id: p.id,
     titre: `${p.nom} — ${p.concept}`,
-    explored: exploresIds.has(p.id),
+    explored: !!p.detail,
     slug: p.id,
   }));
   return { id, label, couleur, explored, total: liste.length, penseurs };
@@ -66,11 +66,11 @@ const niveauxSimples = [
 
 const niveauxSimplesData = niveauxSimples.map(niv => {
   const liste    = PENSEURS.filter(p => p.niveau === niv.num);
-  const explored = liste.filter(p => exploresIds.has(p.id)).length;
+  const explored = liste.filter(p => !!p.detail).length;
   const penseurs = liste.map(p => ({
     id: p.id,
     titre: `${p.nom} — ${p.concept}`,
-    explored: exploresIds.has(p.id),
+    explored: !!p.detail,
     slug: p.id,
   }));
   return { ...niv, explored, total: liste.length, penseurs };
@@ -126,12 +126,12 @@ function formatDate(date: Date) {
     </a>
 
     <!-- Barre de progression globale -->
-    <div class="fondations-meta">
+    <a href="/atelier/fondations" class="fondations-meta" aria-label="Voir toutes les fondations">
       <div class="fondations-bar">
         <div class="fondations-fill" style={`width: ${pct}%`}></div>
       </div>
       <span class="fondations-compte">{explores} / {total}</span>
-    </div>
+    </a>
 
     <!-- ── Niveau 1 · Soi — avec sous-domaines ── -->
     <div class="fniv-bloc">
@@ -146,23 +146,13 @@ function formatDate(date: Date) {
             <span class="fniv-sous-label">{d.label}</span>
             <div class="fniv-cases">
               {d.penseurs.map((p) => (
-                p.explored
-                  ? (
-                    <a
-                      href={`/atelier/${p.slug}`}
-                      class="fniv-case fniv-case--on fniv-case--link"
-                      data-title={p.titre}
-                      aria-label={p.titre}
-                      onClick="event.stopPropagation()"
-                    ></a>
-                  )
-                  : (
-                    <span
-                      class="fniv-case"
-                      data-title="Article a venir"
-                      aria-label="Non explore"
-                    ></span>
-                  )
+                <a
+                  href={`/atelier/fondations#open=${p.id}`}
+                  class={`fniv-case fniv-case--link${p.explored ? ' fniv-case--on' : ''}`}
+                  data-title={p.explored ? p.titre : 'Article à venir'}
+                  aria-label={p.explored ? p.titre : 'À venir'}
+                  onClick="event.stopPropagation()"
+                ></a>
               ))}
             </div>
             <span class="fniv-sous-compte">{d.explored}/{d.total}</span>
@@ -184,23 +174,13 @@ function formatDate(date: Date) {
             <span class="fniv-sous-label">{d.label}</span>
             <div class="fniv-cases">
               {d.penseurs.map((p) => (
-                p.explored
-                  ? (
-                    <a
-                      href={`/atelier/${p.slug}`}
-                      class="fniv-case fniv-case--on fniv-case--link"
-                      data-title={p.titre}
-                      aria-label={p.titre}
-                      onClick="event.stopPropagation()"
-                    ></a>
-                  )
-                  : (
-                    <span
-                      class="fniv-case"
-                      data-title="Article a venir"
-                      aria-label="Non explore"
-                    ></span>
-                  )
+                <a
+                  href={`/atelier/fondations#open=${p.id}`}
+                  class={`fniv-case fniv-case--link${p.explored ? ' fniv-case--on' : ''}`}
+                  data-title={p.explored ? p.titre : 'Article à venir'}
+                  aria-label={p.explored ? p.titre : 'À venir'}
+                  onClick="event.stopPropagation()"
+                ></a>
               ))}
             </div>
             <span class="fniv-sous-compte">{d.explored}/{d.total}</span>
@@ -217,23 +197,13 @@ function formatDate(date: Date) {
           <span class="fniv-label">{niv.label}</span>
           <div class="fniv-cases">
             {niv.penseurs.map((p) => (
-              p.explored
-                ? (
-                  <a
-                    href={`/atelier/${p.slug}`}
-                    class="fniv-case fniv-case--on fniv-case--link"
-                    data-title={p.titre}
-                    aria-label={p.titre}
-                    onClick="event.stopPropagation()"
-                  ></a>
-                )
-                : (
-                  <span
-                    class="fniv-case"
-                    data-title="Article a venir"
-                    aria-label="Non explore"
-                  ></span>
-                )
+              <a
+                href={`/atelier/fondations#open=${p.id}`}
+                class={`fniv-case fniv-case--link${p.explored ? ' fniv-case--on' : ''}`}
+                data-title={p.explored ? p.titre : 'Article à venir'}
+                aria-label={p.explored ? p.titre : 'À venir'}
+                onClick="event.stopPropagation()"
+              ></a>
             ))}
           </div>
           <span class="fniv-compte">{niv.explored}/{niv.total}</span>
@@ -413,6 +383,15 @@ function formatDate(date: Date) {
     align-items: center;
     gap: 0.9rem;
     margin-bottom: 1.4rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .fondations-meta:hover .fondations-fill {
+    box-shadow: 0 0 10px rgba(245,166,35,0.7);
+  }
+  .fondations-meta:hover .fondations-compte {
+    color: #f5a623;
+    opacity: 1;
   }
   .fondations-bar {
     flex: 1;

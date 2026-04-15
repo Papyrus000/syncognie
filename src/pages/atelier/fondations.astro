@@ -23,15 +23,15 @@ const domainesCorps: Domaine[] = ['corps-sommeil', 'corps-mouvement', 'corps-met
 const domainesMonde: Domaine[] = ['systemes', 'pouvoir'];
 const domainesViv:   Domaine[] = ['philosophie'];
 
-// Progression globale
+// Progression globale — basée sur mode 2 (detail)
 const total    = PENSEURS.length;
-const explores = PENSEURS.filter(p => exploresIds.has(p.id)).length;
+const explores = PENSEURS.filter(p => !!p.detail).length;
 const pct      = Math.round((explores / total) * 100);
 
-// Progression par section (pour la barre en haut)
+// Progression par section — basée sur mode 2 (detail)
 function progSection(domaines: Domaine[]) {
   const t = PENSEURS.filter(p => domaines.includes(p.domaine)).length;
-  const e = PENSEURS.filter(p => domaines.includes(p.domaine) && exploresIds.has(p.id)).length;
+  const e = PENSEURS.filter(p => domaines.includes(p.domaine) && !!p.detail).length;
   return { total: t, explores: e, pct: t > 0 ? Math.round((e / t) * 100) : 0 };
 }
 
@@ -133,19 +133,19 @@ const progViv   = progSection(domainesViv);
                   const hasDetail = !!(p as any).detail;
                   return (
                     <div
-                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      class={`f-carte ${hasDetail ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
-                      role={on || hasDetail ? 'button' : undefined}
-                      tabindex={on || hasDetail ? 0 : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabindex={hasDetail ? 0 : undefined}
                     >
                       {/* Mode 1 — fermé */}
                       <div class="f-c-mode1">
                         <div class="f-c-top">
                           <span class="f-c-concept">{p.concept}</span>
-                          {(on || hasDetail) && (
+                          {hasDetail && (
                             <span class="f-c-toggle" aria-label="Développer">▾</span>
                           )}
                         </div>
@@ -154,7 +154,7 @@ const progViv   = progSection(domainesViv);
                         <p class="f-c-desc">{p.description}</p>
                         <div class="f-c-foot">
                           <span class="f-c-val">{p.validite}</span>
-                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                          {!hasDetail && <span class="f-c-avenir">à venir</span>}
                         </div>
                       </div>
 
@@ -213,19 +213,19 @@ const progViv   = progSection(domainesViv);
                   const hasDetail = !!(p as any).detail;
                   return (
                     <div
-                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      class={`f-carte ${hasDetail ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
-                      role={on || hasDetail ? 'button' : undefined}
-                      tabindex={on || hasDetail ? 0 : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabindex={hasDetail ? 0 : undefined}
                     >
                       {/* Mode 1 — fermé */}
                       <div class="f-c-mode1">
                         <div class="f-c-top">
                           <span class="f-c-concept">{p.concept}</span>
-                          {(on || hasDetail) && (
+                          {hasDetail && (
                             <span class="f-c-toggle" aria-label="Développer">▾</span>
                           )}
                         </div>
@@ -234,7 +234,7 @@ const progViv   = progSection(domainesViv);
                         <p class="f-c-desc">{p.description}</p>
                         <div class="f-c-foot">
                           <span class="f-c-val">{p.validite}</span>
-                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                          {!hasDetail && <span class="f-c-avenir">à venir</span>}
                         </div>
                       </div>
 
@@ -293,19 +293,19 @@ const progViv   = progSection(domainesViv);
                   const hasDetail = !!(p as any).detail;
                   return (
                     <div
-                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      class={`f-carte ${hasDetail ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
-                      role={on || hasDetail ? 'button' : undefined}
-                      tabindex={on || hasDetail ? 0 : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabindex={hasDetail ? 0 : undefined}
                     >
                       {/* Mode 1 — fermé */}
                       <div class="f-c-mode1">
                         <div class="f-c-top">
                           <span class="f-c-concept">{p.concept}</span>
-                          {(on || hasDetail) && (
+                          {hasDetail && (
                             <span class="f-c-toggle" aria-label="Développer">▾</span>
                           )}
                         </div>
@@ -314,7 +314,7 @@ const progViv   = progSection(domainesViv);
                         <p class="f-c-desc">{p.description}</p>
                         <div class="f-c-foot">
                           <span class="f-c-val">{p.validite}</span>
-                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                          {!hasDetail && <span class="f-c-avenir">à venir</span>}
                         </div>
                       </div>
 
@@ -373,19 +373,19 @@ const progViv   = progSection(domainesViv);
                   const hasDetail = !!(p as any).detail;
                   return (
                     <div
-                      class={`f-carte ${on ? 'f-carte--on' : 'f-carte--off'}`}
+                      class={`f-carte ${hasDetail ? 'f-carte--on' : 'f-carte--off'}`}
                       style={`--c:${dom.couleur}`}
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
-                      role={on || hasDetail ? 'button' : undefined}
-                      tabindex={on || hasDetail ? 0 : undefined}
+                      role={hasDetail ? 'button' : undefined}
+                      tabindex={hasDetail ? 0 : undefined}
                     >
                       {/* Mode 1 — fermé */}
                       <div class="f-c-mode1">
                         <div class="f-c-top">
                           <span class="f-c-concept">{p.concept}</span>
-                          {(on || hasDetail) && (
+                          {hasDetail && (
                             <span class="f-c-toggle" aria-label="Développer">▾</span>
                           )}
                         </div>
@@ -394,7 +394,7 @@ const progViv   = progSection(domainesViv);
                         <p class="f-c-desc">{p.description}</p>
                         <div class="f-c-foot">
                           <span class="f-c-val">{p.validite}</span>
-                          {!on && !hasDetail && <span class="f-c-avenir">à venir</span>}
+                          {!hasDetail && <span class="f-c-avenir">à venir</span>}
                         </div>
                       </div>
 
@@ -506,6 +506,22 @@ const progViv   = progSection(domainesViv);
       if (carte) fermerCarte(carte);
     });
   });
+
+  // ── Ouverture via hash #open=id (depuis page Accueil) ───────────────────
+  function ouvrirDepuisHash() {
+    const hash = window.location.hash;
+    if (!hash.startsWith('#open=')) return;
+    const id = hash.slice(6);
+    if (!id) return;
+    const carte = document.querySelector('.f-carte[data-id="' + id + '"]');
+    if (carte) ouvrirCarte(carte);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', ouvrirDepuisHash);
+  } else {
+    ouvrirDepuisHash();
+  }
 
   // ── Boot sequence fondations ─────────────────────────────────────────────
   const line1El   = document.getElementById('fLine1');
