@@ -261,6 +261,30 @@ function formatDate(date: Date) {
     <div class="extra-glow extra-glow--agir"></div>
   </a>
 
+  <!-- ── Bloc Synthèse · Boîte à outils ── -->
+  <a href="/atelier/synthese" class="extra-bloc extra-bloc--synthese" aria-label="Voir la synthèse — boîte à outils">
+    <div class="extra-bloc-inner">
+      <div class="extra-titre-ligne">
+        <span class="extra-badge" style="color:#7abd6e;border-color:rgba(122,189,110,0.35)">synthèse</span>
+        <span class="extra-titre" style="color:#b0e090">Boîte à outils</span>
+        <span class="extra-desc">35 penseurs condensés · connexions · index pratique</span>
+        <span class="extra-arrow" style="color:#7abd6e">&#x2192;</span>
+      </div>
+      <div class="extra-domaines">
+        <span class="extra-dom" style="--c:#f5a623">Cerveau</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#e85d20">Construction</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#d45a8a">Relations</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#5090a8">Systèmes</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#8a9e5a">Philosophie</span>
+      </div>
+    </div>
+    <div class="extra-glow extra-glow--synthese"></div>
+  </a>
+
   <!-- Tooltip global -->
   <div class="fniv-tooltip" id="fnivTooltip" aria-hidden="true"></div>
 
@@ -941,4 +965,20 @@ function formatDate(date: Date) {
     .extra-desc { display: none; }
     .extra-titre { font-size: 0.88rem; }
   }
+
+  /* ── Bloc Synthèse ── */
+  .extra-bloc--synthese {
+    background: rgba(20, 38, 18, 0.42);
+    border: 1px solid rgba(122,189,110,0.18);
+  }
+  .extra-bloc--synthese::before {
+    background: linear-gradient(90deg, #7abd6e, #5daa88, #e8b832, #5090a8, #7abd6e);
+  }
+  .extra-bloc--synthese:hover {
+    border-color: rgba(122,189,110,0.4);
+    background: rgba(30, 55, 25, 0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(122,189,110,0.12);
+  }
+  .extra-glow--synthese { background: #7abd6e; }
 </style>

@@ -1,0 +1,2033 @@
+---
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+---
+
+<AtelierLayout
+  title="Synthèse · Boîte à outils"
+  filename="synthese"
+  parent={{ label: 'atelier', href: '/atelier' }}
+>
+
+<div class="syn-page">
+
+  <!-- ══════════════════════════════
+       HERO — style Matrix / terminal
+       ══════════════════════════════ -->
+
+<div class="atelier-terminal">
+    <span class="atelier-terminal-prompt">&gt;</span>
+    <span class="atelier-terminal-text" id="terminalText"></span><span class="atelier-terminal-cursor" id="terminalCursor">_</span>
+  </div>
+
+  <nav class="syn-nav" id="synNav" style="opacity:0">
+    <a href="#cerveau"      class="syn-nav-pill" style="--c:#f5a623">Cerveau</a>
+    <a href="#construction" class="syn-nav-pill" style="--c:#e85d20">Construction</a>
+    <a href="#relations"    class="syn-nav-pill" style="--c:#d45a8a">Relations</a>
+    <a href="#sens"         class="syn-nav-pill" style="--c:#c8b020">Sens</a>
+    <a href="#corps"        class="syn-nav-pill" style="--c:#5dbe8a">Corps</a>
+    <a href="#systemes"     class="syn-nav-pill" style="--c:#5090a8">Systèmes</a>
+    <a href="#pouvoir"      class="syn-nav-pill" style="--c:#a06878">Pouvoir</a>
+    <a href="#philosophie"  class="syn-nav-pill" style="--c:#8a9e5a">Philosophie</a>
+    <a href="#connexions"   class="syn-nav-pill" style="--c:#e8b832">Connexions</a>
+    <a href="#questions"    class="syn-nav-pill" style="--c:#9b6fd4">Questions</a>
+  </nav>
+
+
+  <!-- ══════════════════
+       SECTION CERVEAU
+       ══════════════════ -->
+  <section class="syn-section" id="cerveau">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#f5a623"></span>
+      <h2 class="syn-section-title" style="color:#f5a623">Cerveau &amp; pensée</h2>
+      <span class="syn-section-level">niveau 1</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-kahneman" data-section="cerveau" style="--accent:#f5a623">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="ka-ne-MAN" data-origine="Hébreu / Anglais">Kahneman</span>
+              <span class="syn-card-dates">1934–2024</span>
+            </div>
+            <span class="syn-card-concept">Système 1 / Système 2</span>
+          </div>
+          <p class="syn-card-hook">Le cerveau a deux vitesses : rapide et automatique (S1) — lente et délibérative (S2). S2 valide paresseusement ce que S1 propose. Les biais sont la norme, pas l'exception.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">S1 opère par heuristiques → biais d'ancrage, de disponibilité, de cadrage. S2 est coûteux → rarement activé.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Ralentir avant toute décision à enjeux. Créer des environnements qui compensent les biais plutôt que compter sur la volonté.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">décision</span><span class="syn-tag">biais</span><span class="syn-tag">heuristique</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité scientifique très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-barrett" data-section="cerveau" style="--accent:#f5a623">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="BAR-rit" data-origine="Anglais américain">Lisa Feldman Barrett</span>
+            </div>
+            <span class="syn-card-concept">Les émotions sont construites</span>
+          </div>
+          <p class="syn-card-hook">Les émotions ne nous arrivent pas dessus — le cerveau les fabrique à partir du contexte et du vocabulaire disponible. Plus le vocabulaire est précis, plus les émotions sont modulables.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Construction prédictive → granularité émotionnelle : distinguer "anxieux", "déçu", "honteux" crée 3 états distincts là où "mal" n'en fait qu'un seul.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Enrichir son vocabulaire émotionnel = compétence réelle de régulation, pas de la philosophie.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">émotions</span><span class="syn-tag">vocabulaire</span><span class="syn-tag">prédiction</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité scientifique très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-damasio" data-section="cerveau" style="--accent:#f5a623">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="da-MA-zio" data-origine="Portugais">Damasio</span>
+            </div>
+            <span class="syn-card-concept">Le corps dans la décision</span>
+          </div>
+          <p class="syn-card-hook">Sans marqueurs somatiques, des patients cérébralement intacts ne peuvent plus décider. La raison pure est un mythe — les émotions fondent la décision avant que la logique prenne le relais.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Lésion préfrontale ventromédiane → intelligence intacte, décision impossible. Le corps encode l'expérience passée comme signal d'orientation.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Apprendre à lire ses états corporels est une compétence décisionnelle réelle, pas une faiblesse émotionnelle.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">décision</span><span class="syn-tag">corps</span><span class="syn-tag">intuition</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-sapolsky" data-section="cerveau" style="--accent:#f5a623">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="sa-POL-ski" data-origine="Anglais américain">Sapolsky</span>
+            </div>
+            <span class="syn-card-concept">Biologie du comportement</span>
+          </div>
+          <p class="syn-card-hook">Nos comportements ont des déterminants empilés : seconde (neurotransmetteurs), jours (hormones), enfance, évolution. Le libre-arbitre pur est une fiction — mais connaître ses déterminants permet d'agir dessus.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Multicouches temporelles → accepter le déterminisme réduit la culpabilité improductive et cible les bons leviers de changement.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Remplacer "je manque de volonté" par "quel déterminant est actif ici, et sur quoi puis-je agir ?"</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">biologie</span><span class="syn-tag">hormones</span><span class="syn-tag">déterminisme</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-lembke" data-section="cerveau" style="--accent:#f5a623">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="LEM-kee" data-origine="Anglais américain">Lembke</span>
+            </div>
+            <span class="syn-card-concept">Dopamine &amp; plaisir</span>
+          </div>
+          <p class="syn-card-hook">Plaisir et douleur partagent les mêmes circuits en opposition. Chaque pic de plaisir appelle un creux. Dans un monde saturé de stimuli, le cerveau vit en déficit chronique — l'addiction au sens large.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Balance plaisir/douleur → seuil de base qui s'élève → état normal morne → besoin de restimulation permanente.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Jeûnes dopaminergiques : périodes d'abstinence volontaire de stimuli intenses pour rééquilibrer le seuil de base.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">dopamine</span><span class="syn-tag">addiction</span><span class="syn-tag">régulation</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════
+       SECTION SE CONSTRUIRE
+       ══════════════════════ -->
+  <section class="syn-section" id="construction">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#e85d20"></span>
+      <h2 class="syn-section-title" style="color:#e85d20">Se construire</h2>
+      <span class="syn-section-level">niveau 1</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-bowlby" data-section="construction" style="--accent:#e85d20">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="BOH-lbi / ANZ-worth" data-origine="Anglais">Bowlby &amp; Ainsworth</span>
+              <span class="syn-card-dates">1907–1990 / 1913–1999</span>
+            </div>
+            <span class="syn-card-concept">Théorie de l'attachement</span>
+          </div>
+          <p class="syn-card-hook">Le premier lien forme un Modèle Opérant Interne : suis-je aimable ? l'autre est-il fiable ? Ce modèle filtre tout ce qui vient ensuite — mode sécure, anxieux ou évitant.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Havre de sécurité + base sécure → MOI implicite → styles reproductibles à l'âge adulte. L'attachement est plastique : un lien sécurisant peut modifier le modèle interne.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>"Attachement gagné" : un partenaire ou thérapeute sécurisant peut reconfigurer le modèle interne au fil du temps.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">attachement</span><span class="syn-tag">enfance</span><span class="syn-tag">MOI</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-dweck" data-section="construction" style="--accent:#e85d20">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="DWEK" data-origine="Anglais américain">Dweck</span>
+            </div>
+            <span class="syn-card-concept">Fixed vs Growth Mindset</span>
+          </div>
+          <p class="syn-card-hook">Croire ses capacités données (fixed) ou développables (growth) change tout face à l'échec. L'état d'esprit fixe évite les défis révélateurs. Le growth mindset les cherche.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Éloge de l'effort vs du talent → états d'esprit différents induits. Échec = information sur où on en est dans un processus, pas sur ce qu'on est.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>"Je n'ai pas encore maîtrisé" vs "je ne suis pas doué" — deux réalités radicalement différentes.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">apprentissage</span><span class="syn-tag">échec</span><span class="syn-tag">croyances</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-kegan" data-section="construction" style="--accent:#e85d20">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="KEE-gan" data-origine="Anglais américain">Kegan</span>
+            </div>
+            <span class="syn-card-concept">Développement adulte</span>
+          </div>
+          <p class="syn-card-hook">L'intelligence relationnelle se développe par stades à l'âge adulte. Stade 3 : défini par les autres. Stade 4 : auteur de ses propres valeurs. La souffrance naît souvent de l'écart entre le stade disponible et la complexité demandée.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Le travail moderne requiert le stade 4. La majorité des adultes est entre 3 et 4 → stress chronique diagnostiqué à tort comme manque de compétence.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Identifier si une difficulté est un problème de compétence ou de stade — la réponse n'est pas la même.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">stades</span><span class="syn-tag">identité</span><span class="syn-tag">adulte</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-tcc" data-section="construction" style="--accent:#e85d20">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="EL-is / BEK" data-origine="Anglais américain">Ellis &amp; Beck</span>
+            </div>
+            <span class="syn-card-concept">TCC — Thérapie Cognitive</span>
+          </div>
+          <p class="syn-card-hook">La souffrance ne vient pas des événements mais de ce qu'on en pense. Certaines croyances — exigences absolues, catastrophisation — produisent systématiquement de la détresse. Elles sont repérables et modifiables.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">ABC : Adversité → Croyance → Conséquence. Distorsions cognitives cartographiables : tout-ou-rien, surgénéralisation, personnalisation, filtre mental.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Journal ABC : noter les pensées automatiques qui précèdent la détresse. Approche psychothérapeutique la plus validée empiriquement.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">cognition</span><span class="syn-tag">croyances</span><span class="syn-tag">stoïciens</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════
+       SECTION RELATIONS
+       ══════════════════ -->
+  <section class="syn-section" id="relations">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#d45a8a"></span>
+      <h2 class="syn-section-title" style="color:#d45a8a">Relations</h2>
+      <span class="syn-section-level">niveau 1</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-gottman" data-section="relations" style="--accent:#d45a8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="GOT-man" data-origine="Anglais américain">Gottman</span>
+            </div>
+            <span class="syn-card-concept">Science du conflit</span>
+          </div>
+          <p class="syn-card-hook">4 comportements prédisent la rupture à 90% : mépris, critique (de la personne), défensivité, mur de pierre. Le mépris est le plus destructeur. La relation se joue dans les petits échanges ordinaires, pas dans les grandes crises.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Banque émotionnelle : ratio 5:1 (positif/négatif) dans les échanges ordinaires. Les "bids for connection" et la façon d'y répondre construisent ou défont tout.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Plainte spécifique ("tu as fait X") vs critique globale ("tu es toujours X") — différence fondamentale.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">conflit</span><span class="syn-tag">couple</span><span class="syn-tag">mépris</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-watzlawick" data-section="relations" style="--accent:#d45a8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="VATZ-la-vik" data-origine="Autrichien / Allemand">Watzlawick</span>
+              <span class="syn-card-dates">1921–2007</span>
+            </div>
+            <span class="syn-card-concept">On ne peut pas ne pas communiquer</span>
+          </div>
+          <p class="syn-card-hook">Tout comportement est un message. Tout échange a deux niveaux : contenu (ce qu'on dit) et relation (ce que ça dit sur nous). La plupart des conflits se jouent au niveau relationnel sans qu'on le nomme.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Double bind : injonction paradoxale où toute réponse est perdante ("sois spontané"). Ponctuation : "qui a commencé" est toujours une construction rétrospective.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Métacommuniquer : "je ne parle plus du retard, je parle de me sentir peu important" — débloque ce que le contenu ne peut pas résoudre.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">communication</span><span class="syn-tag">niveaux</span><span class="syn-tag">paradoxe</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-rosenberg" data-section="relations" style="--accent:#d45a8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="ROH-zen-berg" data-origine="Anglais américain">Rosenberg</span>
+              <span class="syn-card-dates">1934–2015</span>
+            </div>
+            <span class="syn-card-concept">Communication NonViolente</span>
+          </div>
+          <p class="syn-card-hook">Derrière chaque comportement difficile, un besoin non satisfait. CNV : passer des jugements aux observations, aux sentiments réels, aux besoins universels, aux demandes concrètes.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">OSBD : Observation → Sentiment → Besoin → Demande. Besoins universels : autonomie, sécurité, connexion, compréhension. Les stratégies diffèrent, les besoins sont communs.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Comprendre qu'un comportement qu'on n'aime pas répond à un besoin légitime change radicalement la qualité de la rencontre.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">besoins</span><span class="syn-tag">empathie</span><span class="syn-tag">CNV</span>
+            </div>
+            <span class="syn-card-validite syn-validite--bonne" title="Bonne validité">●●○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-perel" data-section="relations" style="--accent:#d45a8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="pé-REL" data-origine="Belge / Hébreu">Perel</span>
+            </div>
+            <span class="syn-card-concept">Désir dans la durée</span>
+          </div>
+          <p class="syn-card-hook">Sécurité et désir tirent dans des directions opposées. La proximité nourrit le lien mais peut éteindre le désir. Ce paradoxe est structurel dans les relations longues — il ne se résout pas, il se gère.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Désir = altérité, surprise, distance. Fusion = connaissance totale = perte de l'objet du désir. Les mêmes conflits reviennent car ils naissent de la structure, pas de la mauvaise volonté.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Maintenir des espaces séparés. Se voir dans des contextes sociaux. Cultiver délibérément un peu de mystère.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">désir</span><span class="syn-tag">durée</span><span class="syn-tag">tension</span>
+            </div>
+            <span class="syn-card-validite syn-validite--clinique" title="Validité clinique">●●○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-buber" data-section="relations" style="--accent:#d45a8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="BOU-ber" data-origine="Hébreu / Autrichien">Buber</span>
+              <span class="syn-card-dates">1878–1965</span>
+            </div>
+            <span class="syn-card-concept">Je-Tu / Je-Cela</span>
+          </div>
+          <p class="syn-card-hook">Deux façons d'être en relation : traiter l'autre comme un objet dans mon monde (Je-Cela) ou le rencontrer vraiment comme sujet (Je-Tu). Seule la relation Je-Tu constitue une vraie rencontre — éphémère, non-reproductible.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">La relation Je-Tu ne peut pas se "faire" — elle advient. Elle tombe inévitablement en Je-Cela dès qu'on l'analyse. Influence immense sur Rogers, la psychothérapie humaniste.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Combien d'échanges quotidiens sont purement fonctionnels ? Peut-on être vraiment présent à l'autre comme sujet ?</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">présence</span><span class="syn-tag">rencontre</span><span class="syn-tag">dialogue</span>
+            </div>
+            <span class="syn-card-validite syn-validite--philo" title="Validité philosophique">●○○○</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════
+       SECTION SENS
+       ══════════════ -->
+  <section class="syn-section" id="sens">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#c8b020"></span>
+      <h2 class="syn-section-title" style="color:#c8b020">Sens &amp; motivation</h2>
+      <span class="syn-section-level">niveau 1</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-frankl" data-section="sens" style="--accent:#c8b020">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="FRANK-l" data-origine="Autrichien / Allemand">Frankl</span>
+              <span class="syn-card-dates">1905–1997</span>
+            </div>
+            <span class="syn-card-concept">Volonté de sens</span>
+          </div>
+          <p class="syn-card-hook">L'être humain peut survivre à presque tout s'il a un pourquoi. Trois voies : la création (ce qu'on donne), l'expérience (ce qu'on reçoit), l'attitude (face à ce qu'on ne peut pas changer).</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Motivation fondamentale = sens, pas plaisir (Freud) ni pouvoir (Adler). La souffrance sans sens est insupportable ; avec sens, tenable. Logothérapie.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>La troisième voie (attitude) est la plus précieuse : même sans liberté de choisir ses conditions, on conserve la liberté de choisir sa réponse.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">sens</span><span class="syn-tag">souffrance</span><span class="syn-tag">logothérapie</span>
+            </div>
+            <span class="syn-card-validite syn-validite--clinique" title="Validité clinique">●●○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-deci-ryan" data-section="sens" style="--accent:#c8b020">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="DEH-si / RY-an" data-origine="Anglais américain">Deci &amp; Ryan</span>
+            </div>
+            <span class="syn-card-concept">Self-Determination Theory</span>
+          </div>
+          <p class="syn-card-hook">3 besoins psychologiques fondamentaux : autonomie, compétence, appartenance. Quand ils sont satisfaits → motivation intrinsèque durable. Les systèmes de récompense externe détruisent la motivation sur les tâches intéressantes.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Continuum : amotivation → externe → introjectée → identifiée → intégrée → intrinsèque. Sur-justification : "si tu fais X tu auras Y" détruit l'intérêt spontané.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Concevoir des environnements qui soutiennent l'autonomie plutôt que contrôler — radicalement plus efficace sur le long terme.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">motivation</span><span class="syn-tag">autonomie</span><span class="syn-tag">TAD</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-csikszentmihalyi" data-section="sens" style="--accent:#c8b020">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="CHIK-sent-mi-hai" data-origine="Hongrois">Csikszentmihalyi</span>
+            </div>
+            <span class="syn-card-concept">Le Flow</span>
+          </div>
+          <p class="syn-card-hook">Flow = absorption totale où le défi correspond exactement à la capacité. Ni ennui (trop facile), ni anxiété (trop difficile). Le temps disparaît. Paradoxe : plus de flow au travail qu'en loisir, mais on préfère le loisir.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Conditions : objectif clair + feedback immédiat + défi légèrement supérieur à la compétence. Conscience de soi s'efface. Naît de l'effort actif, pas du confort passif.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Concevoir sa vie pour maximiser les conditions du flow plutôt que du confort. Le bonheur ≠ ce qu'on croit mener au bonheur.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">flow</span><span class="syn-tag">optimal</span><span class="syn-tag">attention</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════
+       SECTION CORPS
+       ══════════════ -->
+  <section class="syn-section" id="corps">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#5dbe8a"></span>
+      <h2 class="syn-section-title" style="color:#5dbe8a">Corps</h2>
+      <span class="syn-section-level">niveau 1b</span>
+    </div>
+
+    <div class="syn-subsection-label" style="--sc:#7b9fd4">sommeil</div>
+    <div class="syn-cards">
+      <div class="syn-card" id="card-walker" data-section="corps" style="--accent:#7b9fd4">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="WO-ker" data-origine="Anglais britannique">Walker</span>
+            </div>
+            <span class="syn-card-concept">Science du sommeil</span>
+          </div>
+          <p class="syn-card-hook">Le sommeil consolide les apprentissages (NREM), régule les émotions (REM = "thérapie nocturne"), élimine les déchets neurotoxiques (système glymphatique). La privation altère précisément les capacités dont on a le plus besoin.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Privation → amplifie biais S1, dégrade granularité émotionnelle, met la dopamine en déficit. Protéines béta-amyloïdes (Alzheimer) éliminées presque exclusivement durant le sommeil profond.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Levier biologique n°1 — transversal à tous les autres. La plupart des adultes sont chroniquement sous-endormis sans le savoir.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">sommeil</span><span class="syn-tag">mémoire</span><span class="syn-tag">glymphatique</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="syn-subsection-label" style="--sc:#5dbe8a">mouvement</div>
+    <div class="syn-cards">
+      <div class="syn-card" id="card-attia" data-section="corps" style="--accent:#5dbe8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="a-TI-a" data-origine="Arabe / Anglais américain">Attia</span>
+            </div>
+            <span class="syn-card-concept">Longévité &amp; capacité physique</span>
+          </div>
+          <p class="syn-card-hook">Les deux meilleurs prédicteurs de longévité : VO2max et force musculaire. Les 25% supérieurs en VO2max ont 45% moins de mortalité — supérieur à l'arrêt du tabac. Vieillir en bonne santé se prépare des décennies avant.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Médecine 3.0 : préventive, optimise la healthspan. Décennie marginale : comment fonctionner à 80 ans, et s'y préparer à 40.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Sarcopénie (perte de muscle avec l'âge) = principale cause de perte d'autonomie. Les muscles sont aussi le principal site d'élimination du glucose.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">VO2max</span><span class="syn-tag">force</span><span class="syn-tag">prévention</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-sapolsky-stress" data-section="corps" style="--accent:#5dbe8a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="sa-POL-ski" data-origine="Anglais américain">Sapolsky — Stress</span>
+            </div>
+            <span class="syn-card-concept">Décharge physique du stress</span>
+          </div>
+          <p class="syn-card-hook">Le stress prépare à l'action physique. Sans cette action, les hormones de stress restent en circulation et deviennent destructrices. Le mouvement est la conclusion biologique attendue du cycle de stress.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Stress moderne = abstrait + chronique, mais mêmes cascades hormonales. Exercice = réponse biologique attendue → BDNF, endorphines, signal "menace gérée".</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Interface directe entre biologie et psychologie : le mouvement n'est pas un outil parmi d'autres, c'est la boucle qui se ferme.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">stress</span><span class="syn-tag">cortisol</span><span class="syn-tag">BDNF</span>
+            </div>
+            <span class="syn-card-validite syn-validite--treshaute" title="Validité très haute">●●●●</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="syn-subsection-label" style="--sc:#d4884a">métabolisme</div>
+    <div class="syn-cards">
+      <div class="syn-card" id="card-lustig" data-section="corps" style="--accent:#d4884a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="LUS-tig" data-origine="Anglais américain">Lustig</span>
+            </div>
+            <span class="syn-card-concept">Insuline, métabolisme &amp; cognition</span>
+          </div>
+          <p class="syn-card-hook">L'insulino-résistance affecte directement l'humeur, l'énergie mentale et la cognition. Ce qu'on mange change l'état dans lequel on pense. Le fructose ajouté est le principal perturbateur — métabolisme hépatique quasi identique à l'alcool.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Insuline haute → stockage + déficit énergétique cellulaire paradoxal. Microbiote → 90% de sérotonine corporelle. Alzheimer parfois étudié comme "diabète de type 3".</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>L'alimentation ultra-transformée maximise la dopamine ET perturbe le métabolisme — double effet addictif (Lembke).</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">insuline</span><span class="syn-tag">glycémie</span><span class="syn-tag">microbiote</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-longo" data-section="corps" style="--accent:#d4884a">
+        <div class="syn-card-glow"></div>
+        <div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="LON-go" data-origine="Italien">Longo</span>
+            </div>
+            <span class="syn-card-concept">Autophagie &amp; cycles</span>
+          </div>
+          <p class="syn-card-hook">En l'absence prolongée de nourriture, les cellules activent leur programme de nettoyage — l'autophagie (Nobel 2016). L'abondance permanente prive le corps de ses cycles de régénération.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Autophagie inhibée par nourriture (mTOR activé), stimulée par jeûne. FMD (5 jours/an) active l'autophagie et les cellules souches sans risques du jeûne prolongé.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Évolutif : les organismes ont évolué avec des cycles abondance/disette. Ce n'est pas de l'ascétisme, c'est de la biologie.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags">
+              <span class="syn-tag">autophagie</span><span class="syn-tag">jeûne</span><span class="syn-tag">mTOR</span>
+            </div>
+            <span class="syn-card-validite syn-validite--haute" title="Validité haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════
+       SECTION SYSTÈMES
+       ════════════════ -->
+  <section class="syn-section" id="systemes">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#5090a8"></span>
+      <h2 class="syn-section-title" style="color:#5090a8">Systèmes &amp; complexité</h2>
+      <span class="syn-section-level">niveau 2</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-bateson" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="BAY-te-son" data-origine="Anglais britannique">Bateson</span>
+              <span class="syn-card-dates">1904–1980</span>
+            </div>
+            <span class="syn-card-concept">Niveaux logiques</span>
+          </div>
+          <p class="syn-card-hook">On confond constamment les niveaux de problèmes — comportement, capacité, croyance, identité. Changer au mauvais niveau produit de l'effort sans transformation.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Les problèmes à un niveau ne se résolvent pas depuis ce même niveau. Double bind : opère à deux niveaux simultanément → toute réponse est perdante.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>"Je n'arrive pas à être organisé" — comportement ? capacité ? croyance ("l'organisation tue la créativité") ? identité ? La réponse change tout.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">niveaux</span><span class="syn-tag">systémique</span><span class="syn-tag">double bind</span></div>
+            <span class="syn-card-validite syn-validite--haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-meadows" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="MEH-doz" data-origine="Anglais américain">Meadows</span>
+              <span class="syn-card-dates">1941–2001</span>
+            </div>
+            <span class="syn-card-concept">Penser en systèmes</span>
+          </div>
+          <p class="syn-card-hook">Les systèmes surprennent ceux qui n'en comprennent pas la structure. On agit presque toujours au mauvais endroit. Les vrais points de levier sont contre-intuitifs — souvent à l'opposé de là où on cherche.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Boucles de rétroaction + délais + stocks → archétypes récurrents. Levier le plus puissant : le paradigme qui génère le système.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Face à un problème persistant : quelle boucle de rétroaction le maintient ? Où est le délai qui crée la sur-correction ?</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">boucles</span><span class="syn-tag">levier</span><span class="syn-tag">complexité</span></div>
+            <span class="syn-card-validite syn-validite--treshaute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-taleb" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="ta-LEB" data-origine="Arabe / Libanais">Taleb</span>
+            </div>
+            <span class="syn-card-concept">Antifragilité &amp; Cygne Noir</span>
+          </div>
+          <p class="syn-card-hook">Fragile (se casse) · Résilient (résiste) · Antifragile (se renforce grâce aux chocs). Les événements rares dominent l'histoire. L'obsession du contrôle rend fragile.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Cygne Noir : hors distributions normales, conséquences massives, rationalisé a posteriori. Stratégie barbell : risque max dans certains domaines, sécurité max dans d'autres.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Exposer les systèmes à de petits chocs pour les rendre antifragiles. Méfier des prédictions précises en domaine complexe.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">risque</span><span class="syn-tag">incertitude</span><span class="syn-tag">choc</span></div>
+            <span class="syn-card-validite syn-validite--haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-kuhn" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="KYOUN" data-origine="Anglais américain">Kuhn</span>
+              <span class="syn-card-dates">1922–1996</span>
+            </div>
+            <span class="syn-card-concept">Les paradigmes</span>
+          </div>
+          <p class="syn-card-hook">La science normale opère dans un paradigme — et ne voit que ce qu'il autorise à voir. Le vrai changement est un changement de paradigme, incommensurable avec le précédent. Vaut pour une vie autant que pour la science.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Accumulation d'anomalies → crise → révolution. Incommensurabilité : deux paradigmes ne voient pas la même chose. Changer de vie = souvent moins une question d'info que de paradigme.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Quelles hypothèses implicites définissent ce qui est visible pour moi en ce moment ?</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">paradigme</span><span class="syn-tag">rupture</span><span class="syn-tag">invisible</span></div>
+            <span class="syn-card-validite syn-validite--treshaute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-argyris" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="ar-GHEE-ris" data-origine="Grec / Anglais américain">Argyris</span>
+              <span class="syn-card-dates">1923–2013</span>
+            </div>
+            <span class="syn-card-concept">Théories déclarées vs d'usage</span>
+          </div>
+          <p class="syn-card-hook">On a deux théories de l'action : celle qu'on affiche et celle qu'on pratique réellement sous pression. L'écart — presque universel et généralement inconscient — est la source principale des dysfonctionnements.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Simple boucle : corrige les erreurs. Double boucle : remet en question les valeurs directrices elles-mêmes. Raisonnement défensif = auto-validant, aucun test possible.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Case Method : écrire un scénario de conversation difficile, analyser colonne par colonne ce qu'on pensait vs ce qu'on a dit.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">défensif</span><span class="syn-tag">apprentissage</span><span class="syn-tag">double boucle</span></div>
+            <span class="syn-card-validite syn-validite--haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-tetlock" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="TET-lok" data-origine="Anglais américain">Tetlock</span>
+            </div>
+            <span class="syn-card-concept">Prévision calibrée</span>
+          </div>
+          <p class="syn-card-hook">La plupart des experts sont moins bons qu'un modèle aléatoire. Mais les "superforecasters" performent systématiquement mieux. Leur secret : pensée probabiliste, mise à jour bayésienne, humilité épistémique sans paralysie.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Calibration : quand on dit "90% sûr", avoir raison 90% du temps. La plupart sont sur-confiants dans les domaines familiers. Chercher activement ce qui contredit sa croyance initiale.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Remplacer les certitudes par des probabilités explicites. "Je pense que c'est probable à 70%" est plus honnête et plus utile que "j'en suis sûr".</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">probabilité</span><span class="syn-tag">calibration</span><span class="syn-tag">bayésien</span></div>
+            <span class="syn-card-validite syn-validite--treshaute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-housel" data-section="systemes" style="--accent:#5090a8">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="HAU-zel" data-origine="Anglais américain">Housel</span>
+            </div>
+            <span class="syn-card-concept">Psychologie de l'argent</span>
+          </div>
+          <p class="syn-card-hook">La gestion de l'argent n'est pas un problème de mathématiques — c'est un problème de comportement. Les mêmes erreurs se répètent indépendamment du niveau de connaissance financière.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Richesse ≠ revenus élevés = actifs liquides = options ouvertes. Concept clé : "suffisant" — les désastres arrivent quand on avait suffisant et voulait plus.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>L'argent comme accès à l'autonomie (Deci-Ryan), pas à la consommation. La relation saine à l'argent est une relation à la liberté d'action.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">argent</span><span class="syn-tag">comportement</span><span class="syn-tag">suffisant</span></div>
+            <span class="syn-card-validite syn-validite--haute">●●●○</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════
+       SECTION POUVOIR
+       ══════════════ -->
+  <section class="syn-section" id="pouvoir">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#a06878"></span>
+      <h2 class="syn-section-title" style="color:#a06878">Pouvoir &amp; société</h2>
+      <span class="syn-section-level">niveau 2</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-arendt" data-section="pouvoir" style="--accent:#a06878">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="A-rendt" data-origine="Allemand">Arendt</span>
+              <span class="syn-card-dates">1906–1975</span>
+            </div>
+            <span class="syn-card-concept">Banalité du mal &amp; pouvoir</span>
+          </div>
+          <p class="syn-card-hook">Des gens ordinaires participent à des systèmes destructeurs non par malveillance mais par absence de pensée. Le pouvoir authentique naît de l'action collective — la violence peut le détruire mais ne peut pas en créer.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Eichmann : bureaucrate, pas monstre. L'absence de jugement indépendant rend le pire possible. Travail / Œuvre / Action — la modernité réduit à l'animal laborans.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Ne jamais "juste exécuter" sans penser. Comprendre comment des systèmes ordinaires produisent des comportements destructeurs.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">mal banal</span><span class="syn-tag">action</span><span class="syn-tag">jugement</span></div>
+            <span class="syn-card-validite syn-validite--philo">●○○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-foucault" data-section="pouvoir" style="--accent:#a06878">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="fou-KOH" data-origine="Français">Foucault</span>
+              <span class="syn-card-dates">1926–1984</span>
+            </div>
+            <span class="syn-card-concept">Le pouvoir comme réseau</span>
+          </div>
+          <p class="syn-card-hook">Le pouvoir n'est pas dans les mains de quelques-uns — il est dans les normes, les discours, les corps. Ce qui est "normal" ou "vrai" est produit et maintenu par des relations de pouvoir qu'on ne nomme pas.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Biopouvoir : gouverne en produisant des normes, pas en réprimant. Panoptique : le regard potentiel suffit — les sujets s'auto-surveillent. Pouvoir le plus efficace = intériorisé.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Outil de déconstruction puissant. À compléter (Arendt, Aristote) : Foucault dit "comment", pas "ce qui est juste".</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">normes</span><span class="syn-tag">discours</span><span class="syn-tag">panoptique</span></div>
+            <span class="syn-card-validite syn-validite--philo">●○○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-girard" data-section="pouvoir" style="--accent:#a06878">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="ji-RAR" data-origine="Français">Girard</span>
+              <span class="syn-card-dates">1923–2015</span>
+            </div>
+            <span class="syn-card-concept">Désir mimétique</span>
+          </div>
+          <p class="syn-card-hook">On ne désire pas les objets pour eux-mêmes — on les désire parce qu'un autre les désire. Désir triangulaire : sujet, médiateur, objet. La rivalité, la jalousie, le bouc émissaire : tout se lit dans ce cadre.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Médiation interne (rival proche) → jalousie violente. Bouc émissaire : la violence collective se focalise sur une victime arbitraire pour restaurer l'unité du groupe.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Question déstabilisante : désire-t-on vraiment ce qu'on croit désirer, ou ce qu'un modèle admire désire ?</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">désir</span><span class="syn-tag">mimétisme</span><span class="syn-tag">bouc émissaire</span></div>
+            <span class="syn-card-validite syn-validite--philo">●○○○</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════
+       SECTION PHILOSOPHIE
+       ════════════════ -->
+  <section class="syn-section" id="philosophie">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#8a9e5a"></span>
+      <h2 class="syn-section-title" style="color:#8a9e5a">Philosophie pratique</h2>
+      <span class="syn-section-level">niveau 3</span>
+    </div>
+    <div class="syn-cards">
+
+      <div class="syn-card" id="card-stoiciens" data-section="philosophie" style="--accent:#8a9e5a">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="stoï-SYEN" data-origine="Grec ancien">Les Stoïciens</span>
+              <span class="syn-card-dates">IIIe s. av. J.-C. – IIe s.</span>
+            </div>
+            <span class="syn-card-concept">Ce qui dépend de nous</span>
+          </div>
+          <p class="syn-card-hook">La distinction fondamentale : ce qui dépend de nous (jugements, intentions) vs ce qui n'en dépend pas (événements, corps, autrui). Concentrer toute l'énergie sur le premier. De là découlent la TCC et 2000 ans de sagesse pratique.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">4 pratiques : préméditation des maux · memento mori · amor fati · réserve. Épictète, Marc Aurèle, Sénèque : 3 vies radicalement différentes, mêmes principes.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Ce ne sont pas les événements qui perturbent — ce sont les jugements qu'on en fait. (Ellis &amp; Beck, 2000 ans plus tard, même principe.)</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">contrôle</span><span class="syn-tag">acceptation</span><span class="syn-tag">TCC</span></div>
+            <span class="syn-card-validite syn-validite--philo">●○○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-aristote" data-section="philosophie" style="--accent:#8a9e5a">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="a-ris-TOT" data-origine="Grec ancien">Aristote</span>
+              <span class="syn-card-dates">384–322 av. J.-C.</span>
+            </div>
+            <span class="syn-card-concept">Éthique de la vertu &amp; eudaimonia</span>
+          </div>
+          <p class="syn-card-hook">L'eudaimonia n'est pas un état émotionnel — c'est une activité. Elle vient de l'exercice de ses capacités propres en direction du bien. Les vertus ne sont pas des règles — ce sont des habitudes cultivées qui deviennent une seconde nature.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Vertu = juste milieu entre deux excès. Phronesis : discerner ce qu'il convient de faire ici et maintenant. Se réalise dans la polis, pas dans la solitude.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>"Nous devenons justes en faisant des actes justes." Contraste : pour Aristote les biens extérieurs contribuent à l'eudaimonia ; pour les stoïciens, seule la vertu compte.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">vertu</span><span class="syn-tag">habitude</span><span class="syn-tag">eudaimonia</span></div>
+            <span class="syn-card-validite syn-validite--philo">●○○○</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="syn-card" id="card-kabat-zinn" data-section="philosophie" style="--accent:#8a9e5a">
+        <div class="syn-card-glow"></div><div class="syn-card-stripe"></div>
+        <div class="syn-card-inner">
+          <div class="syn-card-header">
+            <div class="syn-card-nom-wrap">
+              <span class="syn-card-nom" data-prononc="ka-BAT ZIN" data-origine="Anglais américain / Japonais">Kabat-Zinn</span>
+            </div>
+            <span class="syn-card-concept">Pleine conscience (MBSR)</span>
+          </div>
+          <p class="syn-card-hook">La pleine conscience n'est pas une spiritualité — c'est une compétence d'attention. Observer ses états internes sans s'y identifier change profondément la relation à l'anxiété, à la douleur et aux émotions réactives.</p>
+          <div class="syn-card-mecanique">
+            <span class="syn-meca-label">⚙ mécanisme</span>
+            <p class="syn-meca-text">Désidentification : voir une pensée comme "une pensée qui passe", pas comme "la réalité". Réduit le ruminatif et le catastrophique. MBSR 8 semaines : modifications structurelles de l'amygdale.</p>
+          </div>
+          <div class="syn-card-levier">
+            <span class="syn-levier-icon">↳</span>
+            <span>Connexion directe avec Barrett : observer les états internes est exactement ce que nécessite la granularité émotionnelle. Les deux se renforcent mutuellement.</span>
+          </div>
+          <div class="syn-card-footer">
+            <div class="syn-card-tags"><span class="syn-tag">attention</span><span class="syn-tag">présence</span><span class="syn-tag">MBSR</span></div>
+            <span class="syn-card-validite syn-validite--treshaute">●●●●</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       CONNEXIONS TRANSVERSALES
+       ══════════════════════════════ -->
+  <section class="syn-section syn-connexions" id="connexions">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#e8b832"></span>
+      <h2 class="syn-section-title" style="color:#e8b832">Connexions transversales</h2>
+      <span class="syn-section-level">liens forts</span>
+    </div>
+    <p class="syn-connexions-intro">Les penseurs ne sont pas des îles. Ces connexions traversent les domaines et révèlent les mécaniques communes.</p>
+    <div class="syn-links-grid">
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-tcc" class="syn-link-pill" style="--c:#e85d20">TCC (Ellis/Beck)</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-stoiciens" class="syn-link-pill" style="--c:#8a9e5a">Stoïciens</a>
+        </div>
+        <p class="syn-link-desc">Même principe, 2000 ans d'écart : les événements ne causent pas la détresse — les jugements qu'on en fait, oui.</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-barrett" class="syn-link-pill" style="--c:#f5a623">Barrett</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-kabat-zinn" class="syn-link-pill" style="--c:#8a9e5a">Kabat-Zinn</a>
+        </div>
+        <p class="syn-link-desc">Granularité émotionnelle + observation désidentifiée = régulation émotionnelle réelle. Les deux se renforcent mutuellement.</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-walker" class="syn-link-pill" style="--c:#7b9fd4">Walker</a>
+          <span class="syn-link-arrow">→</span>
+          <a href="#card-kahneman" class="syn-link-pill" style="--c:#f5a623">Kahneman</a>
+          <span class="syn-link-arrow">+</span>
+          <a href="#card-barrett" class="syn-link-pill" style="--c:#f5a623">Barrett</a>
+          <span class="syn-link-arrow">+</span>
+          <a href="#card-lembke" class="syn-link-pill" style="--c:#f5a623">Lembke</a>
+        </div>
+        <p class="syn-link-desc">La privation de sommeil amplifie les biais S1, dégrade la granularité émotionnelle, met la dopamine en déficit. Levier biologique n°1 — transversal à tout.</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-lembke" class="syn-link-pill" style="--c:#f5a623">Lembke</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-lustig" class="syn-link-pill" style="--c:#d4884a">Lustig</a>
+        </div>
+        <p class="syn-link-desc">L'alimentation ultra-transformée est conçue pour maximiser les pics dopaminergiques ET perturber le métabolisme — double effet addictif.</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-bateson" class="syn-link-pill" style="--c:#5090a8">Bateson</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-kuhn" class="syn-link-pill" style="--c:#5090a8">Kuhn</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-kegan" class="syn-link-pill" style="--c:#e85d20">Kegan</a>
+        </div>
+        <p class="syn-link-desc">Trois descriptions du même phénomène : des sauts qualitatifs impossibles depuis l'intérieur du niveau précédent. (Niveaux logiques · Paradigmes · Stades de développement)</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-watzlawick" class="syn-link-pill" style="--c:#d45a8a">Watzlawick</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-bateson" class="syn-link-pill" style="--c:#5090a8">Bateson</a>
+        </div>
+        <p class="syn-link-desc">Bateson a formé Watzlawick. Le double bind de Bateson devient l'injonction paradoxale de Watzlawick — même structure, deux domaines d'application.</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-sapolsky-stress" class="syn-link-pill" style="--c:#5dbe8a">Sapolsky-Stress</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-attia" class="syn-link-pill" style="--c:#5dbe8a">Attia</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-sapolsky" class="syn-link-pill" style="--c:#f5a623">Sapolsky</a>
+        </div>
+        <p class="syn-link-desc">Le mouvement n'est pas un outil parmi d'autres — c'est l'interface directe entre biologie du stress et psychologie. La décharge physique ferme le cycle.</p>
+      </div>
+
+      <div class="syn-link-item">
+        <div class="syn-link-pills">
+          <a href="#card-deci-ryan" class="syn-link-pill" style="--c:#c8b020">Deci-Ryan</a>
+          <span class="syn-link-arrow">↔</span>
+          <a href="#card-housel" class="syn-link-pill" style="--c:#5090a8">Housel</a>
+        </div>
+        <p class="syn-link-desc">L'argent comme accès à l'autonomie — le besoin psychologique fondamental (TAD). La relation saine à l'argent est une relation à la liberté d'action, pas à la consommation.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       INDEX QUESTIONS INTERACTIF
+       ══════════════════════════════ -->
+  <section class="syn-section syn-questions-section" id="questions">
+    <div class="syn-section-head">
+      <span class="syn-dot" style="--dc:#9b6fd4"></span>
+      <h2 class="syn-section-title" style="color:#9b6fd4">Quelle question ? Quel outil ?</h2>
+      <span class="syn-section-level">index pratique</span>
+    </div>
+    <p class="syn-connexions-intro">Cliquez sur une question pour mettre les cartes correspondantes en évidence.</p>
+
+    <div class="syn-q-grid">
+
+      <button class="syn-q-item" data-targets="card-kahneman,card-damasio,card-sapolsky">
+        <span class="syn-q-question">Pourquoi je prends de mauvaises décisions ?</span>
+        <span class="syn-q-penseurs">Kahneman · Damasio · Sapolsky</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-barrett,card-kabat-zinn,card-walker">
+        <span class="syn-q-question">Pourquoi mes émotions débordent ?</span>
+        <span class="syn-q-penseurs">Barrett · Kabat-Zinn · Walker</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-bowlby,card-watzlawick,card-gottman">
+        <span class="syn-q-question">Pourquoi ce pattern relationnel se répète ?</span>
+        <span class="syn-q-penseurs">Bowlby/Ainsworth · Watzlawick · Gottman</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-kegan,card-bateson,card-dweck,card-argyris">
+        <span class="syn-q-question">Pourquoi je ne change pas malgré la volonté ?</span>
+        <span class="syn-q-penseurs">Kegan · Bateson · Dweck · Argyris</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-walker,card-lembke,card-lustig,card-sapolsky">
+        <span class="syn-q-question">Pourquoi je me sens sans énergie chroniquement ?</span>
+        <span class="syn-q-penseurs">Walker · Lembke · Lustig · Sapolsky</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-girard,card-deci-ryan,card-frankl">
+        <span class="syn-q-question">Pourquoi je désire ce que je désire ?</span>
+        <span class="syn-q-penseurs">Girard · Deci-Ryan · Frankl</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-frankl,card-stoiciens,card-taleb">
+        <span class="syn-q-question">Comment traverser une période difficile ?</span>
+        <span class="syn-q-penseurs">Frankl · Stoïciens · Taleb</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-watzlawick,card-rosenberg,card-gottman,card-bateson">
+        <span class="syn-q-question">Pourquoi ce conflit ne se résout pas ?</span>
+        <span class="syn-q-penseurs">Watzlawick · Rosenberg · Gottman · Bateson</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-deci-ryan,card-csikszentmihalyi,card-frankl">
+        <span class="syn-q-question">Comment construire une motivation durable ?</span>
+        <span class="syn-q-penseurs">Deci-Ryan · Csikszentmihalyi · Frankl</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-meadows,card-taleb,card-tetlock,card-kuhn">
+        <span class="syn-q-question">Comment penser dans un système complexe ?</span>
+        <span class="syn-q-penseurs">Meadows · Taleb · Tetlock · Kuhn</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-stoiciens,card-aristote,card-frankl,card-kabat-zinn">
+        <span class="syn-q-question">Comment vivre ce qui ne dépend pas de moi ?</span>
+        <span class="syn-q-penseurs">Stoïciens · Aristote · Frankl · Kabat-Zinn</span>
+      </button>
+      <button class="syn-q-item" data-targets="card-girard,card-arendt,card-foucault,card-meadows">
+        <span class="syn-q-question">Pourquoi le groupe se comporte ainsi ?</span>
+        <span class="syn-q-penseurs">Girard · Arendt · Foucault · Meadows</span>
+      </button>
+
+    </div>
+    <div class="syn-q-reset-wrap" id="qResetWrap" style="display:none">
+      <button class="syn-q-reset" id="qReset">✕ effacer la sélection</button>
+    </div>
+  </section>
+
+  <!-- Pied de page -->
+  <footer class="syn-footer">
+    <div class="syn-footer-inner">
+      <span class="syn-footer-text">synthèse · boîte à outils · atelier syncognie</span>
+      <a href="/atelier" class="syn-footer-back">← retour à l'atelier</a>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ── Tooltip prononciation ── -->
+<div class="syn-prononc-tooltip" id="prononcTooltip" aria-hidden="true">
+  <span class="syn-prononc-phonetique" id="prononcPhon"></span>
+  <span class="syn-prononc-origine" id="prononcOrig"></span>
+</div>
+
+<style>
+  /* ═══════════════════════════════════════════════════════
+     SYNTHÈSE — styles complets v2
+     Palette : gold #e8b832 · frame #3d2510 · JetBrains Mono + Libre Baskerville
+     ═══════════════════════════════════════════════════════ */
+
+  .syn-page {
+    width: 100%;
+    padding-bottom: 4rem;
+  }
+
+  /* ════════════
+     HERO MATRIX
+     ════════════ */
+
+/* ── Terminal (Style Accueil) ── */
+  .atelier-terminal {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 3rem auto 1.5rem;
+    width: 90%;
+    max-width: 800px;
+    padding: 0 0.2rem;
+  }
+  .atelier-terminal-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #7abd6e;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .atelier-terminal-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(212, 168, 100, 0.75);
+    letter-spacing: 0.02em;
+    font-style: italic;
+  }
+  .atelier-terminal-cursor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #7abd6e;
+    animation: blink 1.1s step-end infinite;
+    opacity: 0;
+  }
+  @keyframes blink { 50% { opacity: 1; } }
+
+  .syn-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+    margin: 0 auto 4rem;
+    max-width: 800px;
+    transition: opacity 0.8s ease-out;
+  }
+
+  .syn-hero {
+    position: relative;
+    width: 100%;
+    min-height: 220px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    background: rgba(10, 18, 10, 0.92);
+    border: 1px solid rgba(122,189,110,0.2);
+  }
+  .syn-matrix-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.18;
+  }
+  .syn-hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem 2rem 1.8rem;
+  }
+  .syn-hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+  }
+  .syn-hero-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #7abd6e;
+    border: 1px solid rgba(122,189,110,0.35);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .syn-hero-badge--dim { color: rgba(122,189,110,0.4); border-color: rgba(122,189,110,0.15); }
+  .syn-hero-sep { color: rgba(122,189,110,0.2); font-family: 'JetBrains Mono', monospace; font-size: 0.52rem; }
+
+  .syn-hero-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    font-style: italic;
+    color: #e8b832;
+    margin-bottom: 0.6rem;
+    min-height: 1.2em;
+  }
+  .syn-hero-cursor {
+    color: #7abd6e;
+    animation: blink 1.1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .syn-hero-sub {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.84rem;
+    color: rgba(180,220,160,0.55);
+    max-width: 520px;
+    line-height: 1.65;
+    margin-bottom: 1.3rem;
+    min-height: 1.2em;
+  }
+  .syn-hero-ground {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7abd6e, #e8b832, #f5a623, #d45a8a, #5090a8, #7abd6e);
+    opacity: 0.6;
+  }
+
+  /* ── Nav pills ── */
+  .syn-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .syn-nav-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--c);
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    background: color-mix(in srgb, var(--c) 8%, transparent);
+    padding: 4px 11px;
+    border-radius: 4px;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+  .syn-nav-pill:hover {
+    background: color-mix(in srgb, var(--c) 20%, transparent);
+    border-color: color-mix(in srgb, var(--c) 60%, transparent);
+    transform: translateY(-1px);
+  }
+
+  /* ════════════
+     SECTIONS
+     ════════════ */
+  .syn-section {
+    margin-bottom: 2.8rem;
+    scroll-margin-top: 1.5rem;
+  }
+  .syn-section-head {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .syn-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--dc);
+    box-shadow: 0 0 8px var(--dc);
+    opacity: 0.85;
+  }
+  .syn-section-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    font-style: italic;
+  }
+  .syn-section-level {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    margin-left: auto;
+  }
+
+  /* ── Sous-section corps ── */
+  .syn-subsection-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sc);
+    opacity: 0.65;
+    margin: 1rem 0 0.5rem 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .syn-subsection-label::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--sc);
+    opacity: 0.7;
+  }
+
+  /* ════════
+     CARTES
+     ════════ */
+  .syn-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1rem;
+  }
+
+  .syn-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(75, 55, 40, 0.6);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    cursor: default;
+  }
+  .syn-card:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  /* Barre de couleur en haut */
+  .syn-card-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--accent), transparent 70%);
+    opacity: 0.7;
+    transition: opacity 0.25s;
+  }
+  .syn-card:hover .syn-card-stripe { opacity: 1; }
+
+  /* Glow de fond */
+  .syn-card-glow {
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: var(--accent);
+    filter: blur(50px);
+    opacity: 0;
+    transition: opacity 0.35s;
+    pointer-events: none;
+  }
+  .syn-card:hover .syn-card-glow { opacity: 0.08; }
+
+  /* Carte mise en évidence (questions interactives) */
+  .syn-card--highlight {
+    border-color: color-mix(in srgb, var(--accent) 70%, transparent) !important;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent),
+                0 8px 32px color-mix(in srgb, var(--accent) 20%, transparent) !important;
+    transform: translateY(-2px) !important;
+  }
+  .syn-card--dimmed {
+    opacity: 0.28;
+    filter: saturate(0.3);
+  }
+
+  .syn-card-inner {
+    position: relative;
+    z-index: 1;
+    padding: 1rem 1.1rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  /* En-tête carte */
+  .syn-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .syn-card-nom-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .syn-card-nom {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #e8b832;
+    cursor: help;
+    position: relative;
+    border-bottom: 1px dotted rgba(232,184,50,0.3);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .syn-card-nom:hover {
+    color: #f5d060;
+    border-bottom-color: rgba(232,184,50,0.7);
+  }
+  .syn-card-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.04em;
+  }
+  .syn-card-concept {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: color-mix(in srgb, var(--accent) 60%, rgba(255,255,255,0.3));
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* Accroche */
+  .syn-card-hook {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(255,215,170,0.82);
+    line-height: 1.6;
+  }
+
+  /* Mécanisme */
+  .syn-card-mecanique {
+    background: rgba(0, 0, 0, 0.1);
+    border-left: 2.5px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    padding: 0.55rem 0.75rem;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .syn-meca-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--accent) 55%, rgba(255,255,255,0.2));
+  }
+  .syn-meca-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(255,210,160,0.65);
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* Levier */
+  .syn-card-levier {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.78rem;
+    color: rgba(140,220,140,0.72);
+    line-height: 1.5;
+    padding: 0.4rem 0.6rem;
+    background: rgba(122,189,110,0.05);
+    border-radius: 5px;
+    border: 1px solid rgba(122,189,110,0.1);
+  }
+  .syn-levier-icon {
+    color: rgba(122,189,110,0.6);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* Footer carte */
+  .syn-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: auto;
+  }
+  .syn-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+  .syn-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.05);
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: color 0.2s;
+  }
+  .syn-card:hover .syn-tag { color: rgba(255,255,255,0.35); }
+
+  /* Validité */
+  .syn-card-validite {
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+  .syn-validite--treshaute { color: #7abd6e; }
+  .syn-validite--haute     { color: #f5a623; }
+  .syn-validite--bonne     { color: #e8b832; }
+  .syn-validite--clinique  { color: #5090a8; }
+  .syn-validite--philo     { color: #a06878; }
+
+  /* ════════════════════
+     CONNEXIONS
+     ════════════════════ */
+  .syn-connexions-intro {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255,200,130,0.45);
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .syn-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.75rem;
+  }
+  .syn-link-item {
+    background: rgba(70, 50, 35, 0.45);
+    border: 1px solid rgba(232,184,50,0.12);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .syn-link-item:hover {
+  border-color: rgba(232, 184, 50, 0.6); /* Bordure dorée plus nette */
+  background: rgba(90, 70, 50, 0.5);    /* Fond plus clair au survol */
+  transform: translateY(-2px);           /* Petit soulèvement pour l'interactivité */
+}
+  .syn-link-pills {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .syn-link-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    text-decoration: none;
+    color: var(--c);
+    border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+    background: color-mix(in srgb, var(--c) 9%, transparent);
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .syn-link-pill:hover {
+    background: color-mix(in srgb, var(--c) 20%, transparent);
+    border-color: color-mix(in srgb, var(--c) 60%, transparent);
+  }
+  .syn-link-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.18);
+  }
+  .syn-link-desc {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.76rem;
+    color: rgba(255,200,130,0.52);
+    line-height: 1.55;
+  }
+
+  /* ════════════════════
+     QUESTIONS INTERACTIVES
+     ════════════════════ */
+  .syn-questions-section { scroll-margin-top: 1.5rem; }
+  .syn-q-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.55rem;
+  }
+  .syn-q-item {
+    background: rgba(75, 50, 100, 0.4);
+    border: 1px solid rgba(155,111,212,0.15);
+    border-radius: 7px;
+    padding: 0.75rem 0.95rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  }
+  .syn-q-item:hover {
+    border-color: rgba(155,111,212,0.4);
+    background: rgba(50,28,70,0.55);
+    transform: translateY(-1px);
+  }
+  .syn-q-item--active {
+    border-color: rgba(155,111,212,0.7) !important;
+    background: rgba(60,35,90,0.65) !important;
+    box-shadow: 0 0 0 1px rgba(155,111,212,0.3);
+  }
+  .syn-q-question {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: rgba(230,210,255,0.82);
+    line-height: 1.45;
+  }
+  .syn-q-penseurs {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(155,111,212,0.65);
+    letter-spacing: 0.02em;
+  }
+  .syn-q-reset-wrap {
+    margin-top: 0.8rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .syn-q-reset {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(155,111,212,0.5);
+    background: none;
+    border: 1px solid rgba(155,111,212,0.2);
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .syn-q-reset:hover { color: rgba(155,111,212,0.9); border-color: rgba(155,111,212,0.5); }
+
+  /* ════════════════════
+     TOOLTIP PRONONCIATION
+     ════════════════════ */
+  .syn-prononc-tooltip {
+    position: fixed;
+    z-index: 1000;
+    background: rgba(20, 12, 4, 0.97);
+    border: 1px solid rgba(232,184,50,0.35);
+    border-radius: 7px;
+    padding: 0.5rem 0.85rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.18s, transform 0.18s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    max-width: 220px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+  }
+  .syn-prononc-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .syn-prononc-phonetique {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #e8b832;
+    letter-spacing: 0.04em;
+  }
+  .syn-prononc-phonetique::before {
+    content: '🔊 ';
+    font-size: 0.7rem;
+    opacity: 0.7;
+  }
+  .syn-prononc-origine {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.66rem;
+    color: rgba(255,200,130,0.45);
+    font-style: italic;
+  }
+
+  /* ── Pied de page ── */
+  .syn-footer {
+    margin-top: 3rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255,150,60,0.08);
+  }
+  .syn-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .syn-footer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,150,60,0.25);
+  }
+  .syn-footer-back {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(200,120,48,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .syn-footer-back:hover { color: #c87830; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .syn-cards       { grid-template-columns: 1fr; }
+    .syn-links-grid  { grid-template-columns: 1fr; }
+    .syn-q-grid      { grid-template-columns: 1fr; }
+    .syn-hero-content { padding: 1.4rem 1rem 1.2rem; }
+    .syn-footer-inner { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+  }
+</style>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// HERO : Canvas Matrix + typage séquentiel
+// ═══════════════════════════════════════════════════════
+// ── Terminal Typewriter ──────────────────────────────────────────────────
+  const termText   = document.getElementById('terminalText');
+  const termCursor = document.getElementById('terminalCursor');
+  const synNav     = document.getElementById('synNav');
+  const phrase     = "synthèse : 35 penseurs, 10 domaines, connexions pratiques...";
+
+  if (termText && termCursor) {
+    let i = 0;
+    termCursor.style.opacity = '0';
+
+    const type = () => {
+      if (i < phrase.length) {
+        termText.textContent += phrase[i];
+        i++;
+        setTimeout(type, 30 + Math.random() * 30);
+      } else {
+        termCursor.style.opacity = '1';
+        if (synNav) synNav.style.opacity = '1';
+      }
+    };
+
+    setTimeout(type, 600);
+  }
+
+// ═══════════════════════════════════════════════════════
+// TOOLTIP PRONONCIATION
+// ═══════════════════════════════════════════════════════
+(function() {
+  const tooltip = document.getElementById('prononcTooltip')!;
+  const phonEl  = document.getElementById('prononcPhon')!;
+  const origEl  = document.getElementById('prononcOrig')!;
+  let hideTimer: ReturnType<typeof setTimeout> | null = null;
+
+  document.querySelectorAll<HTMLElement>('.syn-card-nom[data-prononc]').forEach(el => {
+    el.addEventListener('mouseenter', (e) => {
+      if (hideTimer) clearTimeout(hideTimer);
+      phonEl.textContent = el.dataset.prononc || '';
+      origEl.textContent = el.dataset.origine || '';
+
+      const me = e as MouseEvent;
+      const tx = Math.min(me.clientX + 16, window.innerWidth - 240);
+      const ty = me.clientY - 60;
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top  = ty + 'px';
+      tooltip.classList.add('visible');
+    });
+    el.addEventListener('mousemove', (e) => {
+      const me = e as MouseEvent;
+      const tx = Math.min(me.clientX + 16, window.innerWidth - 240);
+      const ty = me.clientY - 60;
+      tooltip.style.left = tx + 'px';
+      tooltip.style.top  = ty + 'px';
+    });
+    el.addEventListener('mouseleave', () => {
+      hideTimer = setTimeout(() => tooltip.classList.remove('visible'), 120);
+    });
+  });
+})();
+
+// ═══════════════════════════════════════════════════════
+// QUESTIONS INTERACTIVES → highlight des cartes
+// ═══════════════════════════════════════════════════════
+(function() {
+  const allCards = Array.from(document.querySelectorAll<HTMLElement>('.syn-card'));
+  const buttons  = Array.from(document.querySelectorAll<HTMLButtonElement>('.syn-q-item'));
+  const resetBtn = document.getElementById('qReset')!;
+  const resetWrap = document.getElementById('qResetWrap')!;
+  let activeBtn: HTMLButtonElement | null = null;
+
+  function clearAll() {
+    allCards.forEach(c => {
+      c.classList.remove('syn-card--highlight', 'syn-card--dimmed');
+    });
+    buttons.forEach(b => b.classList.remove('syn-q-item--active'));
+    resetWrap.style.display = 'none';
+    activeBtn = null;
+  }
+
+  function activate(btn: HTMLButtonElement) {
+    if (activeBtn === btn) { clearAll(); return; }
+    clearAll();
+
+    const targets = (btn.dataset.targets || '').split(',').map(s => s.trim());
+    const targetSet = new Set(targets);
+
+    allCards.forEach(card => {
+      if (targetSet.has(card.id)) {
+        card.classList.add('syn-card--highlight');
+      } else {
+        card.classList.add('syn-card--dimmed');
+      }
+    });
+
+    btn.classList.add('syn-q-item--active');
+    resetWrap.style.display = 'flex';
+    activeBtn = btn;
+
+    // Scroll vers la première carte mise en évidence
+    const firstTarget = document.getElementById(targets[0]);
+    if (firstTarget) {
+      setTimeout(() => {
+        firstTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 80);
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => activate(btn));
+  });
+  resetBtn.addEventListener('click', clearAll);
+})();
+</script>
+
+</AtelierLayout>
