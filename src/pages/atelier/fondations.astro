@@ -454,9 +454,17 @@ const progViv   = progSection(domainesViv);
     mode2.hidden = false;
     carteOuverte = carte;
 
-    // Scroll doux pour amener la carte en vue
+    // Scroll doux dans le conteneur #atelierContent pour amener la carte en haut
     setTimeout(() => {
-      carte.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const scroller = document.getElementById('atelierContent');
+      if (scroller) {
+        const carteTop  = carte.getBoundingClientRect().top;
+        const scrollTop = scroller.getBoundingClientRect().top;
+        const offset    = carteTop - scrollTop + scroller.scrollTop - 24;
+        scroller.scrollTo({ top: offset, behavior: 'smooth' });
+      } else {
+        carte.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }, 60);
   }
 
@@ -832,12 +840,18 @@ const progViv   = progSection(domainesViv);
   .f-niv-titre--vivre { color: #c8d8a0; }
 
   .f-niv-desc {
-    font-family: 'Mulish', sans-serif;
-    font-weight: 300;
-    font-size: 1rem;
-    color: #d4a878;
-    line-height: 1.7;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    font-weight: 400;
+    color: rgba(180, 130, 70, 0.6);
+    line-height: 1.75;
     max-width: 580px;
+    letter-spacing: 0.015em;
+  }
+  .f-niv-desc::before {
+    content: '// ';
+    color: rgba(180, 130, 70, 0.3);
+    user-select: none;
   }
 
   /* ── Domaines ── */
