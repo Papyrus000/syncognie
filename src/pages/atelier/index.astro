@@ -79,6 +79,11 @@ const niveauxSimplesData = niveauxSimples.map(niv => {
 function formatDate(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 }
+
+// ── Sections non finalisées — mettre à true pour réactiver ──────────────────
+const SHOW_NIVEAU_0  = false;  // /atelier/le-reel
+const SHOW_NIVEAU_4  = false;  // /atelier/agir
+const SHOW_SYNTHESE  = false;  // /atelier/synthese
 ---
 
 <AtelierLayout title={master.data.title} filename={master.data.title}>
@@ -116,7 +121,8 @@ function formatDate(date: Date) {
     <span class="atelier-terminal-text" id="terminalText"></span><span class="atelier-terminal-cursor" id="terminalCursor">_</span>
   </div>
 
-  <!-- ── Bloc Niveau 0 · Le Réel ── -->
+  <!-- Niveau 0 : SHOW_NIVEAU_0 = false pour désactiver, true pour réactiver -->
+  {SHOW_NIVEAU_0 && (
   <a href="/atelier/le-reel" class="extra-bloc extra-bloc--reel" id="reelBloc" aria-label="Voir la page Le Réel">
     <div class="extra-bloc-inner">
       <div class="extra-titre-ligne">
@@ -137,6 +143,7 @@ function formatDate(date: Date) {
     </div>
     <div class="extra-glow extra-glow--reel"></div>
   </a>
+  )}
 
   <!-- ── Bloc Fondations ── -->
   <div class="fondations-bloc" id="fondationsBloc">
@@ -239,7 +246,9 @@ function formatDate(date: Date) {
 
   </div>
 
-  <!-- ── Bloc Niveau 4 · Agir ── -->
+
+  <!-- Niveau 4 : SHOW_NIVEAU_4 = false pour désactiver, true pour réactiver -->
+  {SHOW_NIVEAU_4 && (
   <a href="/atelier/agir" class="extra-bloc extra-bloc--agir" id="agirBloc" aria-label="Voir la page Agir">
     <div class="extra-bloc-inner">
       <div class="extra-titre-ligne">
@@ -260,8 +269,10 @@ function formatDate(date: Date) {
     </div>
     <div class="extra-glow extra-glow--agir"></div>
   </a>
+  )}
 
-  <!-- ── Bloc Synthèse · Boîte à outils ── -->
+  <!-- Synthèse : SHOW_SYNTHESE = false pour désactiver, true pour réactiver -->
+  {SHOW_SYNTHESE && (
   <a href="/atelier/synthese" class="extra-bloc extra-bloc--synthese" aria-label="Voir la synthèse — boîte à outils">
     <div class="extra-bloc-inner">
       <div class="extra-titre-ligne">
@@ -284,6 +295,7 @@ function formatDate(date: Date) {
     </div>
     <div class="extra-glow extra-glow--synthese"></div>
   </a>
+  )}
 
   <!-- Tooltip global -->
   <div class="fniv-tooltip" id="fnivTooltip" aria-hidden="true"></div>
@@ -661,16 +673,16 @@ function formatDate(date: Date) {
   }
   /* Ombre sol : ellipse aplatie sous l'image */
   .atelier-hero-ground {
-    width: 80%;
-    height: 18px;
+    width: 70%;
+    height: 12px;
     background: radial-gradient(ellipse at center,
-      rgba(0,0,0,0.55) 0%,
-      rgba(0,0,0,0.25) 45%,
+      rgba(0,0,0,0.28) 0%,
+      rgba(0,0,0,0.10) 45%,
       transparent 75%
     );
     border-radius: 50%;
     margin-top: -4px;
-    filter: blur(4px);
+    filter: blur(3px);
     flex-shrink: 0;
   }
   /* ── Hero unifié ── */
