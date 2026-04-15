@@ -84,6 +84,7 @@ function formatDate(date: Date) {
 <AtelierLayout title={master.data.title} filename={master.data.title}>
 
   <!-- ── Hero unifié : image + texte overlay ── -->
+  <div class="atelier-hero-stage">
   <div class="atelier-hero-wrap">
     <picture>
       <source
@@ -104,6 +105,9 @@ function formatDate(date: Date) {
     </picture>
     <!-- Texte superposé -->
 
+  </div>
+  <!-- Ombre sol -->
+  <div class="atelier-hero-ground"></div>
   </div>
 
   <!-- ── Terminal line ── -->
@@ -579,17 +583,41 @@ function formatDate(date: Date) {
   .fniv-tooltip--visible { opacity: 1; }
   .fniv-tooltip--venir { color: rgba(180, 140, 90, 0.55); font-style: italic; }
 
+  /* ── Hero stage (conteneur perspective) ── */
+  .atelier-hero-stage {
+    margin: 0 auto 0.8rem;
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  /* Ombre sol : ellipse aplatie sous l'image */
+  .atelier-hero-ground {
+    width: 80%;
+    height: 18px;
+    background: radial-gradient(ellipse at center,
+      rgba(0,0,0,0.55) 0%,
+      rgba(0,0,0,0.25) 45%,
+      transparent 75%
+    );
+    border-radius: 50%;
+    margin-top: -4px;
+    filter: blur(4px);
+    flex-shrink: 0;
+  }
   /* ── Hero unifié ── */
   .atelier-hero-wrap {
-    margin: 0 auto 2.4rem;
+    margin: 0;
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid rgba(232, 160, 60, 0.18);
     box-shadow:
       0 4px 32px rgba(0, 0, 0, 0.55),
       inset 0 1px 0 rgba(255, 200, 100, 0.07);
-    width: 85%;
+    width: 100%;
     position: relative;
+    /* ── Surélevé statique ── */
+    transform: translateY(-4px);
   }
   /* Vignette 4 bords */
   .atelier-hero-wrap::before {
