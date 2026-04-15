@@ -302,6 +302,16 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   <!-- Tooltip global -->
   <div class="fniv-tooltip" id="fnivTooltip" aria-hidden="true"></div>
 
+  <!-- ── Lien discret : Le Salon des Idées ── -->
+  <div class="salon-lien-wrap">
+    <a href="/atelier/dialogue" class="salon-lien">
+      <span class="salon-lien-dot"></span>
+      <span class="salon-lien-label">Le Salon des Idées</span>
+      <span class="salon-lien-sub">dialogues entre penseurs · prochainement</span>
+      <span class="salon-lien-arrow">&#x2192;</span>
+    </a>
+  </div>
+
   <!-- ── Articles ── -->
   {entrees.length > 0 && (
     <div class="atelier-entrees">
@@ -994,5 +1004,47 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     transform: translateY(-2px);
     box-shadow: 0 6px 24px rgba(122,189,110,0.12);
   }
-  .extra-glow--synthese { background: #7abd6e; }
+  /* ── Lien discret Salon des Idées ── */
+  .salon-lien-wrap {
+    padding: 1.6rem 0 0.4rem;
+  }
+  .salon-lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    text-decoration: none;
+    opacity: 0.45;
+    transition: opacity 0.25s;
+  }
+  .salon-lien:hover { opacity: 0.85; }
+  .salon-lien-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #9b6fd4;
+    flex-shrink: 0;
+  }
+  .salon-lien-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #c8b4f0;
+    letter-spacing: 0.02em;
+  }
+  .salon-lien-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(200,180,240,0.45);
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  .salon-lien-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #9b6fd4;
+    transition: transform 0.2s;
+  }
+  .salon-lien:hover .salon-lien-arrow { transform: translateX(3px); }
+
+  @media (max-width: 640px) {
+    .salon-lien-sub { display: none; }
+  }
 </style>

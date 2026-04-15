@@ -1,0 +1,271 @@
+---
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+---
+
+<AtelierLayout title="Le Salon des Idées">
+
+  <!-- ── Hero ── -->
+  <div class="atelier-hero-stage">
+    <div class="atelier-hero-wrap">
+      <picture>
+        <source srcset="/images/salon-des-idees.webp" type="image/webp" />
+        <source srcset="/images/salon-des-idees.jpg" type="image/jpeg" />
+        <img
+          src="/images/salon-des-idees.jpg"
+          alt="Le Salon des Idées — pixel art"
+          width="1400"
+          height="764"
+          loading="eager"
+          decoding="async"
+          class="atelier-hero-img"
+        />
+      </picture>
+    </div>
+    <div class="atelier-hero-ground"></div>
+  </div>
+
+  <!-- ── Terminal ── -->
+  <div class="atelier-terminal">
+    <span class="atelier-terminal-prompt">&gt;</span>
+    <span class="atelier-terminal-text" id="terminalText"></span><span class="atelier-terminal-cursor" id="terminalCursor">_</span>
+  </div>
+
+  <!-- ── Bloc "Prochainement" ── -->
+ 
+
+      <div class="salon-status">
+        <span class="salon-status-dot"></span>
+        <span class="salon-status-text" id="statusText"></span><span class="salon-status-cursor">_</span>
+      </div>
+
+    </div>
+    <div class="salon-glow"></div>
+  </div>
+
+</AtelierLayout>
+
+<script>
+  // Terminal principal
+  const termText   = document.getElementById('terminalText');
+  const termCursor = document.getElementById('terminalCursor');
+  const phrase     = "ici se tiendront des dialogues entre les siècles";
+
+  if (termText && termCursor) {
+    let i = 0;
+    termCursor.style.opacity = '0';
+    const type = () => {
+      if (i < phrase.length) {
+        termText.textContent += phrase[i++];
+        setTimeout(type, 28 + Math.random() * 22);
+      } else {
+        termCursor.style.opacity = '1';
+      }
+    };
+    setTimeout(type, 600);
+  }
+
+  // Status ligne
+  const statusEl = document.getElementById('statusText');
+  const statusPhrase = "premier dialogue en préparation...";
+  if (statusEl) {
+    let j = 0;
+    const typeStatus = () => {
+      if (j < statusPhrase.length) {
+        statusEl.textContent += statusPhrase[j++];
+        setTimeout(typeStatus, 35 + Math.random() * 25);
+      }
+    };
+    setTimeout(typeStatus, 2200);
+  }
+</script>
+
+<style>
+  /* ── Hero (réutilise les classes de l'atelier) ── */
+  .atelier-hero-stage {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0;
+  }
+  .atelier-hero-wrap {
+    width: 100%;
+    aspect-ratio: 1400 / 764;
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+    position: relative;
+  }
+  .atelier-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+  }
+  .atelier-hero-ground {
+    height: 18px;
+    background: linear-gradient(to bottom, rgba(18,12,6,0.85), transparent);
+    margin-top: -1px;
+  }
+
+  /* ── Terminal ── */
+  .atelier-terminal {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.2rem;
+    margin-bottom: 1.6rem;
+  }
+  .atelier-terminal-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #7abd6e;
+  }
+  .atelier-terminal-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(212, 168, 100, 0.75);
+    letter-spacing: 0.02em;
+    font-style: italic;
+  }
+  .atelier-terminal-cursor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #7abd6e;
+    animation: blink 1.1s step-end infinite;
+    opacity: 0;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── Bloc principal ── */
+  .salon-coming {
+    position: relative;
+    border: 1px solid rgba(155, 111, 212, 0.22);
+    background: rgba(32, 20, 50, 0.52);
+    border-radius: 12px;
+    padding: 1.8rem 2rem 2rem;
+    overflow: hidden;
+  }
+  .salon-coming::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #9b6fd4, #5090a8, #7abd6e, #e8b832, #d45a8a, #9b6fd4);
+    opacity: 0.7;
+  }
+  .salon-coming-inner { position: relative; z-index: 1; }
+
+  .salon-glow {
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: #9b6fd4;
+    filter: blur(60px);
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* ── Header ── */
+  .salon-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .salon-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid rgba(155,111,212,0.4);
+    color: rgba(155,111,212,0.8);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .salon-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #c8b4f0;
+    margin: 0;
+  }
+
+  /* ── Description ── */
+  .salon-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(212, 190, 160, 0.65);
+    line-height: 1.7;
+    margin-bottom: 1.6rem;
+    max-width: 55ch;
+  }
+
+  /* ── Personnages ── */
+  .salon-personnages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1.8rem;
+  }
+  .salon-perso {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .salon-perso-nom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--c);
+    letter-spacing: 0.02em;
+  }
+  .salon-perso-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.22);
+    letter-spacing: 0.03em;
+    font-style: italic;
+  }
+
+  /* ── Status ── */
+  .salon-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .salon-status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #9b6fd4;
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.85); }
+  }
+  .salon-status-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(155,111,212,0.6);
+    font-style: italic;
+  }
+  .salon-status-cursor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #9b6fd4;
+    animation: blink 1.1s step-end infinite;
+  }
+
+  @media (max-width: 640px) {
+    .salon-coming { padding: 1.2rem 1rem 1.4rem; }
+    .salon-titre  { font-size: 1.05rem; }
+    .salon-personnages { gap: 0.4rem 0.8rem; }
+  }
+</style>
