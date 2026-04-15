@@ -1,0 +1,899 @@
+---
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+
+// ── Données intégrées — Niveau 4 · Agir ─────────────────────────────────────
+
+interface ConceptAgir {
+  id: string;
+  concept: string;
+  auteurs: string;
+  dates?: string;
+  description: string;
+  detail: string;
+  domaine: 'decision' | 'jeu' | 'strategie' | 'cooperation';
+  validite: 'fondamentale' | 'très haute' | 'haute' | 'philosophique';
+  tension?: string; // ce que ce concept met en tension
+}
+
+const DOMAINES_AGIR = {
+  decision:    { label: 'Décision sous incertitude', couleur: '#c87d3c' },
+  jeu:         { label: 'Théorie des jeux',          couleur: '#b85a4a' },
+  strategie:   { label: 'Stratégie & conflit',       couleur: '#8a6840' },
+  cooperation: { label: 'Coopération & coordination', couleur: '#6a9860' },
+};
+
+const CONCEPTS: ConceptAgir[] = [
+
+  // ── Décision ───────────────────────────────────────────────────────────────
+  {
+    id: 'bayes',
+    concept: 'Raisonnement bayésien',
+    auteurs: 'Thomas Bayes · Pierre-Simon Laplace',
+    dates: '1763–présent',
+    description: 'La décision rationnelle n\'est pas une déduction — c\'est une mise à jour. On part d\'une croyance a priori, on observe des données, on révise. Ce cadre transforme l\'incertitude d\'un problème en un calcul. Et révèle pourquoi nous mettons à jour trop peu, trop vite, ou sur les mauvaises choses.',
+    detail: 'Le théorème de Bayes : P(H|E) = P(E|H) × P(H) / P(E). La probabilité que l\'hypothèse H soit vraie étant donné l\'évidence E dépend (1) de la probabilité a priori de H, (2) de la vraisemblance de E si H était vraie, et (3) de la probabilité de E toutes causes confondues.\n\nLa contribution conceptuelle majeure : les croyances sont des probabilités, pas des certitudes ou des ignorances. Toute croyance a un degré, et ce degré doit se mettre à jour en proportion de l\'évidence — ni plus, ni moins. Un croyant parfaitement bayésien change d\'avis exactement autant que le justifie l\'évidence.\n\nLes erreurs humaines de mise à jour : le "biais de confirmation" (pondérer excessivement les évidences favorables), le "biais d\'ancrage" (rester trop proche de l\'a priori), la "négligence du taux de base" (ignorer P(H) et sur-réagir à P(E|H)). Ces erreurs ont des noms précis en termes bayésiens — ce qui permet de les corriger plutôt que de les subir.\n\nApplication pratique : avant toute décision importante, formuler explicitement ses croyances préalables avec des probabilités ("je pense à 70% que ce projet réussira"), identifier quelles observations devraient les modifier, et calibrer l\'amplitude du changement. Cette discipline seule réduit considérablement le niveau de bullshit dans l\'analyse.\n\nLien avec la science : la philosophie de la science bayésienne (Howson & Urbach) propose que la science n\'est pas la recherche de vérités certaines mais le processus de mise à jour collective des croyances en fonction des preuves. La réfutabilité de Popper est une approximation bayésienne.',
+    domaine: 'decision',
+    validite: 'fondamentale',
+    tension: 'certitude vs mise à jour',
+  },
+  {
+    id: 'kahneman-decision',
+    concept: 'Décision & prévisibilité des erreurs',
+    auteurs: 'Kahneman · Thaler · Sunstein',
+    dates: '1974–présent',
+    description: 'Les erreurs de jugement ne sont pas aléatoires — elles sont systématiques et prévisibles. Aversion aux pertes, comptabilité mentale, biais du présent. Comprendre ces patterns ne les élimine pas, mais permet de concevoir des environnements qui les compensent — c\'est l\'architecture du choix.',
+    detail: 'L\'aversion aux pertes (Kahneman & Tversky, 1979) : la douleur d\'une perte est environ deux fois plus intense que le plaisir d\'un gain équivalent. Conséquence : on prend des risques irrationnels pour éviter des pertes certaines, et on est trop prudent quand il s\'agit de gains potentiels. Ce biais est câblé — connaître son nom ne le supprime pas.\n\nLa comptabilité mentale (Thaler) : les gens traitent l\'argent différemment selon son origine ou sa destination mentale. Dépenser un "bonus inattendu" en luxe qu\'on n\'aurait jamais acheté avec un salaire est économiquement irrationnel mais psychologiquement cohérent. Ce cadre explique une quantité énorme de comportements financiers "irrationnels".\n\nLe biais du présent (hyperbolic discounting) : la valeur accordée aux récompenses futures décroît de façon hyperbolique, pas exponentielle. Résultat : on préfère 100€ aujourd\'hui à 110€ dans un mois, mais on est indifférent entre 100€ dans un an et 110€ dans 13 mois — alors que les deux paires impliquent le même écart. Ce biais explique la procrastination, l\'épargne insuffisante, et les addictions.\n\nL\'architecture du choix (Thaler & Sunstein, "Nudge") : si les biais sont prévisibles, on peut concevoir les environnements de décision pour que les options par défaut soient les meilleures. Le don d\'organes opt-out (présumé favorable) vs opt-in produit des taux radicalement différents — sans changer aucune règle, seulement le défaut. Le "nudge" est une technologie de décision qui respecte la liberté en exploitant les biais.\n\nLimite fondamentale : connaître les biais aide, mais les études de "debiasing" montrent des effets faibles. L\'environnement et les systèmes sont plus puissants que la "résolution de penser mieux".',
+    domaine: 'decision',
+    validite: 'très haute',
+    tension: 'rationalité vs biais structurels',
+  },
+  {
+    id: 'incertitude',
+    concept: 'Incertitude knightienne & prise de décision',
+    auteurs: 'Frank Knight · Nassim Taleb',
+    dates: '1921–présent',
+    description: 'Il existe une différence fondamentale entre le risque (probabilités connues) et l\'incertitude vraie (probabilités inconnues). La plupart des décisions importantes se passent dans le deuxième domaine. Les stratégies optimales sont radicalement différentes selon dans lequel on est.',
+    detail: 'Frank Knight (1921) : le "risque" est une incertitude mesurable (lancer un dé — on connaît les probabilités). L\'"incertitude" est une incertitude non mesurable (lancer une start-up — on ne sait pas quelles probabilités assigner). Cette distinction change tout dans le raisonnement décisionnel.\n\nEn situation de risque, l\'optimisation probabiliste est la bonne stratégie. En situation d\'incertitude knightienne, les stratégies robustes valent mieux que les stratégies optimales : elles performent correctement dans un large éventail de scénarios plutôt qu\'excellemment dans le scénario prévu.\n\nTaleb ("Le Cygne Noir", 2007) étend cette intuition : les événements à faible probabilité et fort impact (Cygnes Noirs) dominent l\'histoire et les trajectoires individuelles — mais les modèles probabilistes standard les ignorent ou les sous-estiment systématiquement parce qu\'ils dépendent de distributions normales (gaussiennes) dans des domaines qui suivent des distributions à queues épaisses (Pareto).\n\nLa stratégie "haltère" de Taleb : en situation d\'incertitude forte, allouer une partie des ressources à des positions très sûres (bonds d\'état) et une partie à des paris à très fort potentiel (options, expérimentations) — et éviter le "milieu" qui concentre les risques sans les récompenses. Cette structure capture le bénéfice des Cygnes Noirs positifs tout en limitant l\'exposition aux négatifs.\n\nAnti-fragilité : certains systèmes bénéficient de la variabilité et des chocs — ils sont anti-fragiles (Taleb, 2012). Le système immunitaire est anti-fragile. Un monopole protégé est fragile. Concevoir ses systèmes pour être anti-fragiles plutôt que "robustes" est une stratégie radicalement différente.',
+    domaine: 'decision',
+    validite: 'très haute',
+    tension: 'optimisation vs robustesse',
+  },
+
+  // ── Théorie des jeux ───────────────────────────────────────────────────────
+  {
+    id: 'nash',
+    concept: 'Équilibre de Nash & dilemme du prisonnier',
+    auteurs: 'John Nash · Merrill Flood · Melvin Dresher',
+    dates: '1950–présent',
+    description: 'Dans une interaction stratégique, un équilibre de Nash est une configuration où personne n\'a intérêt à changer unilatéralement de stratégie. Ce n\'est pas nécessairement l\'optimum collectif — c\'est souvent le contraire. Le dilemme du prisonnier en est le cas paradigmatique : chacun choisit la trahison, et tous perdent.',
+    detail: 'Un équilibre de Nash : un profil de stratégies où chaque joueur choisit sa meilleure réponse aux choix des autres. Si tous les joueurs jouent leur meilleure réponse mutuelle, personne n\'a incitation à dévier. Nash (1950) prouve que tout jeu fini a au moins un tel équilibre (en stratégies mixtes).\n\nLe dilemme du prisonnier en version simple : deux individus peuvent coopérer ou trahir. Si les deux coopèrent : gain modeste pour chacun. Si l\'un trahit l\'autre : le traître gagne beaucoup, la victime perd. Si les deux trahissent : les deux perdent peu mais davantage que la coopération mutuelle. La stratégie dominante est toujours de trahir — mais si les deux le font, le résultat est pire que la coopération mutuelle. C\'est la structure formelle de la tragédie des communs, de la course aux armements, des guerres de prix.\n\nApplications omniprésentes : la tragédie des communs (Hardin, 1968), la surpêche, les émissions de CO₂, les guerres commerciales, la surenchère sur les réseaux sociaux. Chaque acteur maximise son intérêt individuel, l\'issue collective est désastreuse.\n\nLa coordination dans les jeux : tous les "jeux" ne sont pas des dilemmes du prisonnier. Certains sont des "jeux de coordination" où l\'équilibre de Nash coïncide avec l\'optimum — mais le problème est de converger vers le bon équilibre (Schelling).',
+    domaine: 'jeu',
+    validite: 'fondamentale',
+    tension: 'intérêt individuel vs optimum collectif',
+  },
+  {
+    id: 'schelling',
+    concept: 'Points focaux & coordination tacite',
+    auteurs: 'Thomas Schelling',
+    dates: '1921–2016',
+    description: 'Comment deux personnes se retrouvent-elles à Times Square sans s\'être donné rendez-vous ? Par les "points focaux" — solutions naturellement saillantes qui émergent sans communication. Schelling révèle que la coordination n\'est pas qu\'un problème de calcul : c\'est un problème de signification partagée.',
+    detail: 'Schelling (Nobel 2005, "The Strategy of Conflict", 1960) : dans les jeux de coordination pure, les joueurs cherchent à converger sur la même solution sans communication. La solution trouvée n\'est pas celle qui est "logiquement unique" mais celle qui est "culturellement saillante" — le point focal ou "point de Schelling".\n\nL\'expérience originale : demandez à des New-Yorkais "Si vous deviez retrouver quelqu\'un à New York demain à midi sans aucune communication préalable, où iriez-vous ?" La majorité répond "Grand Central Terminal, sous l\'horloge, à midi." Ce n\'est pas un calcul — c\'est une coordination par saillance culturelle.\n\nConséquences pour la stratégie : les menaces crédibles doivent être inconditionnelles (un engagement conditionnel n\'est pas crédible — il invite la négociation). Les armistices sont souvent dictés par des frontières géographiques naturelles plutôt qu\'optimales. Les prix ronds (100€, 1000€) sont des points focaux de négociation.\n\nLa théorie des "lignes rouges" : Schelling montre que dans la dissuasion nucléaire, l\'efficacité dépend de la capacité à faire des engagements crédibles et visibles. Ce qui fait qu\'une menace est crue n\'est pas sa rationalité mais son caractère public et irrévocable.\n\nApplication à la négociation ordinaire : les négociateurs efficaces recherchent les points focaux naturels (partager à 50/50, arrondir à un chiffre "rond") parce qu\'ils réduisent la friction cognitive de l\'accord. Proposer un partage à 47,3% est moins efficace que 50%, même si les deux parties "préféreraient" 47,3%.',
+    domaine: 'jeu',
+    validite: 'très haute',
+    tension: 'calcul rationnel vs saillance culturelle',
+  },
+  {
+    id: 'axelrod',
+    concept: 'Évolution de la coopération — Tit-for-Tat',
+    auteurs: 'Robert Axelrod',
+    dates: '1984',
+    description: 'Comment la coopération peut-elle émerger entre des acteurs égoïstes qui ne se font pas confiance ? Axelrod organise un tournoi de dilemme du prisonnier répété. La stratégie gagnante est déconcertante de simplicité : coopérer d\'abord, puis copier le dernier geste de l\'adversaire. Quatre propriétés expliquent tout.',
+    detail: 'Axelrod organise en 1980 un tournoi informatique : des stratégies de dilemme du prisonnier itéré s\'affrontent. Tit-for-Tat (soumise par Anatol Rapoport) gagne : (1) coopère au premier tour, (2) imite ensuite exactement le geste précédent de l\'adversaire.\n\nLes quatre propriétés qui expliquent sa robustesse : gentillesse (ne trahit jamais en premier), vindicativité (punit immédiatement la trahison), clémence (revient à la coopération dès que l\'adversaire coopère), clarté (son comportement est simple à comprendre et à prévoir).\n\nUne version légèrement améliorée — "Generous Tit-for-Tat" (coopère parfois même après une trahison) — est encore plus robuste dans les environnements bruités où les trahisons peuvent être accidentelles. Elle évite les spirales de représailles mutuelles issues d\'erreurs.\n\nConséquence évolutive : dans les populations où les acteurs interagissent de façon répétée, la coopération peut émerger spontanément — sans altruisme, sans autorité centrale, seulement avec la réciprocité. C\'est une des découvertes les plus importantes de la théorie des jeux pour comprendre comment les sociétés et les institutions fonctionnent.\n\nApplication directe : les relations à long terme (partenariats, mariages, alliances politiques) créent les conditions du Tit-for-Tat. La réputation est le mécanisme qui permet la réciprocité différée. Comprendre cela change la façon d\'investir dans les relations et de gérer les conflits.',
+    domaine: 'cooperation',
+    validite: 'fondamentale',
+    tension: 'égoïsme vs coopération émergente',
+  },
+
+  // ── Stratégie ──────────────────────────────────────────────────────────────
+  {
+    id: 'clausewitz',
+    concept: 'La guerre comme continuation de la politique',
+    auteurs: 'Carl von Clausewitz · Colin Gray · Hew Strachan',
+    dates: '1832–présent',
+    description: '"La guerre est la continuation de la politique par d\'autres moyens." Clausewitz n\'est pas un manuel militaire — c\'est une théorie de la force et de la friction dans tout système d\'action humaine. Le brouillard de la guerre, la friction, le centre de gravité : des outils conceptuels pour naviguer dans l\'adversité.',
+    detail: 'Clausewitz ("Vom Kriege", 1832, publié posthumément) développe la première théorie rigoureuse de la guerre comme phénomène politique et social. Sa formule centrale : la guerre n\'est pas autonome — elle est un instrument politique, et ses objectifs doivent être définis politiquement.\n\nLe "brouillard de la guerre" : toute action se déroule dans une incertitude fondamentale sur l\'état du monde, les intentions adverses, et les effets de ses propres actions. Les décisions doivent être prises malgré cette incertitude, pas après sa résolution. Ce concept dépasse largement le militaire — il s\'applique à toute action compétitive dans un environnement complexe.\n\nLa friction : l\'écart entre les opérations planifiées et les opérations réelles. Dans la réalité, chaque action rencontre des résistances imprévues — coordination défaillante, équipement qui tombe en panne, erreurs humaines, hasard. La friction est irréductible et croît exponentiellement avec la complexité de l\'opération. Le plan simple est presque toujours supérieur au plan élaboré.\n\nLe centre de gravité : chaque adversaire a un "centre de gravité" — la source de sa force, la destruction ou la neutralisation duquel entraîne son effondrement. Identifier correctement le centre de gravité est le problème stratégique fondamental. Se tromper (attaquer les symptômes plutôt que la source) est la cause principale des défaites stratégiques.\n\nLecture contemporaine (Gray, Strachan) : Clausewitz reste le cadre le plus puissant pour penser la stratégie parce qu\'il intègre politique, psychologie, friction, et hasard dans un seul modèle cohérent. Les théoriciens du business strategy (Porter, Rumelt) en sont des cousins.',
+    domaine: 'strategie',
+    validite: 'philosophique',
+    tension: 'plan vs friction réelle',
+  },
+  {
+    id: 'options',
+    concept: 'Pensée par options & valeur de l\'irréversibilité',
+    auteurs: 'Robert Trivers · Fisher Black · Jeff Bezos',
+    dates: '1973–présent',
+    description: 'Une option est le droit (non l\'obligation) d\'agir. Les options ont une valeur — la valeur de la flexibilité future. Les décisions irréversibles coûtent cher, souvent plus qu\'on ne le calcule. Penser en termes d\'options change fondamentalement comment on évalue les choix, les expérimentations, et les engagements.',
+    detail: 'La finance des options (Black-Scholes-Merton, 1973) formalise ce que les négociants savaient intuitivement : la flexibilité future a une valeur. Une option d\'achat (call) sur une action vaut quelque chose même si elle est "hors de la monnaie" — parce que le futur est incertain et que la flexibilité de choisir a de la valeur.\n\nTransposition stratégique : toute décision peut être analysée en termes d\'options créées, préservées, ou détruites. Une décision irréversible détruit des options. Une expérimentation crée des options. Une acquisition en "earn-out" conserve des options.\n\nLa "valeur d\'option réelle" (Myers, 1977) : les projets d\'investissement ont souvent une valeur d\'option sous-estimée par les calculs de VAN classiques — la valeur de pouvoir abandonner, d\'étendre, ou de retarder.\n\nJeff Bezos sur les "décisions de type 1 et type 2" : les décisions de type 1 sont irréversibles et à forts enjeux (doivent être prises avec soin). Les décisions de type 2 sont réversibles (doivent être prises rapidement). La plupart des organisations traitent les décisions de type 2 comme des type 1 — d\'où la paralysie.\n\nConséquence pratique : avant toute décision importante, identifier explicitement (1) quelles options cette décision crée, (2) quelles options elle détruit, (3) si le coût de préservation des options vaut leur valeur de flexibilité. Cette analyse change souvent la décision — surtout dans l\'incertitude élevée.',
+    domaine: 'decision',
+    validite: 'très haute',
+    tension: 'engagement vs flexibilité',
+  },
+  {
+    id: 'ostrom',
+    concept: 'La gestion des communs — au-delà du marché et de l\'État',
+    auteurs: 'Elinor Ostrom',
+    dates: '1933–2012',
+    description: 'La tragédie des communs n\'est pas inévitable. Ostrom démontre empiriquement que les communautés développent spontanément des règles de gestion des ressources communes qui fonctionnent — sans privatisation ni centralisation étatique. Ses principes de design décrivent les conditions de la coopération résiliente.',
+    detail: 'Elinor Ostrom (Nobel 2009) réfute empiriquement la thèse d\'Hardin (1968) selon laquelle les communs sont condamnés à la surexploitation sauf privatisation ou contrôle étatique. À travers des études de cas dans le monde entier (pêcheries, forêts, systèmes d\'irrigation), elle montre que des communautés gèrent durablement des ressources communes depuis des siècles.\n\nSes 8 principes de conception pour la gouvernance résiliente des communs : (1) limites clairement définies, (2) règles adaptées au contexte local, (3) participation des utilisateurs à la modification des règles, (4) surveillance effective, (5) sanctions graduées, (6) mécanismes de résolution des conflits, (7) reconnaissance du droit d\'organisation, (8) institutions emboîtées pour les communs plus grands.\n\nApplication au-delà des ressources naturelles : ces principes s\'appliquent à toute situation de gestion collective — open source (Linux, Wikipedia), gouvernance d\'organisations, gestion des connaissances, règles de civilité en ligne. Les "communs numériques" sont un champ d\'application direct.\n\nLa contribution épistémique : Ostrom montre que la complexité institutionnelle ne s\'explique pas par un modèle simple (le marché, l\'État) mais par une pluralité de formes hybrides adaptées à leurs contextes. Le "polycentrisme" — plusieurs centres de décision à différentes échelles — est souvent plus efficace que la centralisation.\n\nLien avec Axelrod : les conditions de la coopération dans le Tit-for-Tat (interactions répétées, identifiabilité des acteurs, sanctions crédibles) correspondent précisément aux conditions qu\'Ostrom identifie empiriquement dans les communs résilients.',
+    domaine: 'cooperation',
+    validite: 'très haute',
+    tension: 'communs vs privatisation / centralisation',
+  },
+
+];
+
+const DOMAINES_AGIR_KEYS = Object.keys(DOMAINES_AGIR) as (keyof typeof DOMAINES_AGIR)[];
+
+const groupes = DOMAINES_AGIR_KEYS.map(id => ({
+  id,
+  ...DOMAINES_AGIR[id],
+  concepts: CONCEPTS.filter(c => c.domaine === id),
+})).filter(g => g.concepts.length > 0);
+
+const total = CONCEPTS.length;
+---
+
+<AtelierLayout title="Agir" filename="agir">
+
+  <div class="a-header">
+
+    <!-- Titre terminal -->
+    <div class="a-titre-terminal">
+      <span class="a-titre-prefix">//</span>
+      <h1 class="a-titre-main">niveau 4 · agir</h1>
+    </div>
+
+    <!-- Lignes terminal -->
+    <div class="a-terminal-bloc" id="aTerminal" aria-live="polite">
+      <div class="a-term-line">
+        <span class="a-term-prompt">&gt;</span>
+        <span class="a-term-text" id="aLine1"></span><span class="a-term-cursor" id="aCursor1">_</span>
+      </div>
+      <div class="a-term-line a-term-line--hidden" id="aLine2Wrap">
+        <span class="a-term-prompt">&gt;</span>
+        <span class="a-term-text" id="aLine2"></span><span class="a-term-cursor" id="aCursor2">_</span>
+      </div>
+    </div>
+
+    <!-- Cartouche introductif -->
+    <div class="a-intro a-intro--hidden" id="aIntro">
+      <div class="a-intro-ligne">
+        <span class="a-intro-glyph">◆</span>
+        <p class="a-intro-texte">Après la compréhension : l\'action. Comment décider sous incertitude, comment coopérer avec des adversaires, comment naviguer dans la complexité sans plan parfait. Le passage de la carte au terrain.</p>
+      </div>
+      <div class="a-intro-tensions">
+        <span class="a-tension-label">tensions centrales ·</span>
+        <span class="a-tension-item">intérêt individuel / optimum collectif</span>
+        <span class="a-tension-sep">·</span>
+        <span class="a-tension-item">plan / friction</span>
+        <span class="a-tension-sep">·</span>
+        <span class="a-tension-item">engagement / flexibilité</span>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="a-hr" />
+
+  <!-- Chips filtres -->
+  <div class="a-filtres">
+    <div class="a-chips-groupe">
+      <button class="a-chip a-chip--active" data-filtre="tout">Tout</button>
+      <button class="a-chip" data-filtre="decision">Décision</button>
+      <button class="a-chip" data-filtre="jeu">Jeux</button>
+      <button class="a-chip" data-filtre="strategie">Stratégie</button>
+      <button class="a-chip" data-filtre="cooperation">Coopération</button>
+    </div>
+  </div>
+
+  <!-- Contenu -->
+  <div id="a-contenu">
+
+    {groupes.map(groupe => (
+      <section class="a-section" data-filtre={groupe.id}>
+        <div class="a-sec-head">
+          <div class="a-sec-head-inner">
+            <span class="a-sec-dot" style={`background:${groupe.couleur}; box-shadow:0 0 8px ${groupe.couleur}60`}></span>
+            <h2 class="a-sec-titre" style={`color:${groupe.couleur}`}>{groupe.label}</h2>
+          </div>
+          <div class="a-sec-line" style={`background: linear-gradient(to right, ${groupe.couleur}40, transparent)`}></div>
+        </div>
+
+        <div class="a-grille">
+          {groupe.concepts.map(c => (
+            <div
+              class="a-carte a-carte--on"
+              style={`--c:${groupe.couleur}`}
+              data-id={c.id}
+              data-has-detail="true"
+              role="button"
+              tabindex="0"
+            >
+              <!-- Mode 1 — fermé -->
+              <div class="a-c-mode1">
+                <div class="a-c-top">
+                  <span class="a-c-concept">{c.concept}</span>
+                  <span class="a-c-toggle" aria-label="Développer">▾</span>
+                </div>
+                <p class="a-c-auteurs">{c.auteurs}</p>
+                {c.dates && <span class="a-c-dates">{c.dates}</span>}
+                <p class="a-c-desc">{c.description}</p>
+                <div class="a-c-foot">
+                  <span class="a-c-val">{c.validite}</span>
+                  {c.tension && <span class="a-c-tension">⇌ {c.tension}</span>}
+                </div>
+              </div>
+
+              <!-- Mode 2 — développé -->
+              <div class="a-c-mode2" hidden>
+                <div class="a-c-detail-body">
+                  {c.detail.split('\n\n').map((para: string) => (
+                    <p class="a-c-detail-para">{para}</p>
+                  ))}
+                </div>
+                <button class="a-c-fermer" aria-label="Fermer">✕ fermer</button>
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+  </div>
+
+  <!-- Diagramme flux décoratif -->
+  <div class="a-flux" aria-hidden="true">
+    <svg width="100%" height="80" viewBox="0 0 800 80" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="arrowA" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(200,125,60,0.8)"/>
+        </marker>
+        <marker id="arrowB" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(184,90,74,0.8)"/>
+        </marker>
+        <marker id="arrowC" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(138,104,64,0.8)"/>
+        </marker>
+        <marker id="arrowD" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(106,152,96,0.8)"/>
+        </marker>
+      </defs>
+      <text x="50" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(200,125,60,0.85)" letter-spacing="1">comprendre</text>
+      <line x1="50" y1="42" x2="195" y2="42" stroke="rgba(200,125,60,0.6)" stroke-width="1.5" marker-end="url(#arrowA)"/>
+      <text x="215" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(184,90,74,0.85)" letter-spacing="1">décider</text>
+      <line x1="215" y1="42" x2="365" y2="42" stroke="rgba(184,90,74,0.6)" stroke-width="1.5" marker-end="url(#arrowB)"/>
+      <text x="385" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(200,125,60,0.85)" letter-spacing="1">agir</text>
+      <line x1="385" y1="42" x2="535" y2="42" stroke="rgba(138,104,64,0.6)" stroke-width="1.5" marker-end="url(#arrowC)"/>
+      <text x="555" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(106,152,96,0.85)" letter-spacing="1">coopérer</text>
+      <line x1="555" y1="42" x2="750" y2="42" stroke="rgba(106,152,96,0.6)" stroke-width="1.5" marker-end="url(#arrowD)"/>
+    </svg>
+  </div>
+
+  <div class="a-retour">
+    <div class="a-retour-sep"></div>
+    <div class="a-retour-nav">
+      <a href="/atelier/fondations" class="a-retour-link">← fondations</a>
+      <a href="/atelier" class="a-retour-link">atelier →</a>
+    </div>
+  </div>
+
+</AtelierLayout>
+
+<script>
+  // ── Cartes 3 modes ────────────────────────────────────────────────────────
+  let carteOuverte: HTMLElement | null = null;
+
+  function ouvrirCarte(carte: HTMLElement) {
+    if (carteOuverte && carteOuverte !== carte) fermerCarte(carteOuverte);
+    const mode2 = carte.querySelector<HTMLElement>('.a-c-mode2');
+    if (!mode2) return;
+    carte.classList.add('a-carte--open');
+    mode2.hidden = false;
+    carteOuverte = carte;
+    setTimeout(() => {
+      const scroller = document.getElementById('atelierContent');
+      if (scroller) {
+        const top = carte.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 24;
+        scroller.scrollTo({ top, behavior: 'smooth' });
+      } else {
+        carte.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 60);
+  }
+
+  function fermerCarte(carte: HTMLElement) {
+    const mode2 = carte.querySelector<HTMLElement>('.a-c-mode2');
+    carte.classList.remove('a-carte--open');
+    if (mode2) mode2.hidden = true;
+    if (carteOuverte === carte) carteOuverte = null;
+  }
+
+  document.querySelectorAll<HTMLElement>('.a-carte[data-has-detail="true"]').forEach(carte => {
+    carte.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.a-c-fermer')) return;
+      carte.classList.contains('a-carte--open') ? fermerCarte(carte) : ouvrirCarte(carte);
+    });
+    carte.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); carte.click(); }
+      if (e.key === 'Escape' && carte.classList.contains('a-carte--open')) fermerCarte(carte);
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>('.a-c-fermer').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const carte = btn.closest<HTMLElement>('.a-carte');
+      if (carte) fermerCarte(carte);
+    });
+  });
+
+  // ── Filtres chips ─────────────────────────────────────────────────────────
+  const chips    = document.querySelectorAll<HTMLButtonElement>('.a-chip[data-filtre]');
+  const sections = document.querySelectorAll<HTMLElement>('.a-section');
+  let filtreActif = 'tout';
+
+  function appliquerFiltres() {
+    sections.forEach(sec => {
+      const f = sec.dataset.filtre ?? '';
+      sec.style.display = (filtreActif === 'tout' || filtreActif === f) ? '' : 'none';
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filtreActif = chip.dataset.filtre ?? 'tout';
+      chips.forEach(c => c.classList.toggle('a-chip--active', c === chip));
+      appliquerFiltres();
+    });
+  });
+
+  // ── Boot sequence ─────────────────────────────────────────────────────────
+  const line1El   = document.getElementById('aLine1');
+  const cursor1El = document.getElementById('aCursor1');
+  const line2Wrap = document.getElementById('aLine2Wrap');
+  const line2El   = document.getElementById('aLine2');
+  const cursor2El = document.getElementById('aCursor2');
+  const introEl   = document.getElementById('aIntro');
+
+  const phrase1 = "chargement des outils d'action...";
+  const phrase2 = "décision · jeu · stratégie · coopération";
+
+  function typePhrase(
+    textEl: HTMLElement | null,
+    cursorEl: HTMLElement | null,
+    phrase: string,
+    delay: number,
+    onDone?: () => void
+  ) {
+    if (!textEl || !cursorEl) return;
+    let i = 0;
+    cursorEl.style.opacity = '0';
+    setTimeout(() => {
+      const tick = () => {
+        if (i < phrase.length) {
+          textEl.textContent += phrase[i];
+          i++;
+          setTimeout(tick, 22 + Math.random() * 20);
+        } else {
+          cursorEl.style.opacity = '1';
+          if (onDone) setTimeout(onDone, 320);
+        }
+      };
+      tick();
+    }, delay);
+  }
+
+  typePhrase(line1El, cursor1El, phrase1, 400, () => {
+    if (cursor1El) { cursor1El.style.animation = 'none'; cursor1El.style.opacity = '0.3'; }
+    if (line2Wrap) line2Wrap.style.opacity = '1';
+    typePhrase(line2El, cursor2El, phrase2, 0, () => {
+      if (introEl) {
+        introEl.classList.remove('a-intro--hidden');
+        introEl.classList.add('a-intro--visible');
+      }
+    });
+  });
+</script>
+
+<style>
+  /* ── Variables ── */
+  :root {
+    --a-accent: #c87d3c;
+  }
+
+  .a-header { margin-bottom: 1.5rem; }
+
+  /* ── Titre terminal ── */
+  .a-titre-terminal {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .a-titre-prefix {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    color: #c87d3c;
+    opacity: 0.7;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .a-titre-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: #f0b870;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Terminal boot ── */
+  .a-terminal-bloc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1.6rem;
+  }
+  .a-term-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+  .a-term-line--hidden { opacity: 0; }
+  .a-term-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #c87d3c;
+    flex-shrink: 0;
+    user-select: none;
+    opacity: 0.75;
+  }
+  .a-term-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(230, 168, 100, 0.78);
+    letter-spacing: 0.02em;
+    font-style: italic;
+  }
+  .a-term-cursor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #c87d3c;
+    opacity: 0;
+    animation: aBlink 1.1s step-end infinite;
+  }
+  @keyframes aBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── Intro cartouche ── */
+  .a-intro--hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .a-intro--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .a-intro {
+    background: rgba(200,125,60,0.05);
+    border: 1px solid rgba(200,125,60,0.2);
+    border-left: 3px solid rgba(200,125,60,0.5);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .a-intro-ligne {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+  }
+  .a-intro-glyph {
+    font-size: 0.85rem;
+    color: #c87d3c;
+    opacity: 0.6;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .a-intro-texte {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.88rem;
+    color: rgba(235, 190, 130, 0.75);
+    line-height: 1.75;
+    margin: 0;
+  }
+  .a-intro-tensions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-left: 1.7rem;
+  }
+  .a-tension-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(200,125,60,0.45);
+  }
+  .a-tension-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(200,125,60,0.65);
+    letter-spacing: 0.04em;
+  }
+  .a-tension-sep {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(200,125,60,0.25);
+  }
+
+  /* ── Séparateur ── */
+  .a-hr {
+    border: none;
+    border-top: 1px solid rgba(200,125,60,0.12);
+    margin: 1.5rem 0 1.2rem;
+  }
+
+  /* ── Chips ── */
+  .a-filtres { margin-bottom: 2rem; }
+  .a-chips-groupe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .a-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(200,125,60,0.25);
+    background: transparent;
+    color: rgba(200,125,60,0.55);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .a-chip:hover {
+    color: rgba(200,125,60,0.9);
+    border-color: rgba(200,125,60,0.45);
+    background: rgba(200,125,60,0.08);
+  }
+  .a-chip--active {
+    color: #f0b870;
+    border-color: rgba(200,125,60,0.5);
+    background: rgba(200,125,60,0.12);
+  }
+
+  /* ── Sections ── */
+  .a-section { margin-bottom: 3rem; }
+  .a-sec-head { margin-bottom: 1.2rem; }
+  .a-sec-head-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .a-sec-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .a-sec-titre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .a-sec-line {
+    height: 1px;
+    width: 100%;
+    border-radius: 1px;
+  }
+
+  /* ── Grille ── */
+  .a-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    position: relative;
+  }
+
+  /* ── Carte ── */
+  .a-carte {
+    border-radius: 12px;
+    padding: 1rem 1.1rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s, background 0.22s;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+  }
+  .a-carte::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .a-carte--on {
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+  .a-carte--on::before { opacity: 1; }
+
+  .a-carte--on:not(.a-carte--open):hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--c) 42%, transparent);
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.4),
+      0 0 28px 4px color-mix(in srgb, var(--c) 14%, transparent),
+      0 0 55px 10px color-mix(in srgb, var(--c) 7%, transparent);
+  }
+
+  /* Carte ouverte — pleine largeur */
+  .a-carte--open {
+    grid-column: 1 / -1;
+    cursor: default;
+    transform: none !important;
+    padding: 2rem 2.8rem 2.2rem 3rem;
+    border-radius: 14px !important;
+    border-color: color-mix(in srgb, var(--c) 28%, transparent) !important;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--c) 9%, rgba(255,255,255,0.07)) 0%,
+      color-mix(in srgb, var(--c) 4%, rgba(255,255,255,0.07)) 25%,
+      rgba(255,255,255,0.06) 60%,
+      rgba(255,255,255,0.05) 100%
+    ) !important;
+    box-shadow:
+      inset 3px 0 0 var(--c),
+      0 0 0 1px color-mix(in srgb, var(--c) 18%, transparent),
+      0 4px 24px rgba(0,0,0,0.35),
+      0 0 40px 0px color-mix(in srgb, var(--c) 10%, transparent),
+      0 0 80px 20px color-mix(in srgb, var(--c) 7%, transparent),
+      0 0 140px 40px color-mix(in srgb, var(--c) 4%, transparent) !important;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease !important;
+  }
+  .a-carte--open:hover {
+    border-color: color-mix(in srgb, var(--c) 42%, transparent) !important;
+    box-shadow:
+      inset 4px 0 0 var(--c),
+      inset 4px 0 12px color-mix(in srgb, var(--c) 22%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent),
+      0 4px 24px rgba(0,0,0,0.35),
+      0 0 55px 2px color-mix(in srgb, var(--c) 16%, transparent),
+      0 0 110px 35px color-mix(in srgb, var(--c) 9%, transparent),
+      0 0 190px 65px color-mix(in srgb, var(--c) 5%, transparent) !important;
+  }
+  .a-carte--open::before {
+    filter: brightness(1.5);
+    box-shadow: 0 0 10px var(--c);
+    transition: filter 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  }
+  .a-carte--open:hover::before {
+    filter: brightness(1.85);
+    box-shadow:
+      0 0 16px var(--c),
+      0 0 36px color-mix(in srgb, var(--c) 38%, transparent),
+      0 0 60px color-mix(in srgb, var(--c) 16%, transparent);
+  }
+
+  .a-c-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .a-c-concept {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(240, 190, 130, 0.9);
+    line-height: 1.35;
+    flex: 1;
+    transition: font-size 0.25s ease, opacity 0.25s ease;
+  }
+  .a-carte--open .a-c-concept {
+    font-size: 1.05rem;
+    opacity: 1;
+    color: var(--c);
+    text-shadow: 0 0 20px color-mix(in srgb, var(--c) 60%, transparent);
+    display: inline-block;
+    transform-origin: left center;
+  }
+  .a-carte--open .a-c-concept:hover {
+    transform: scale(1.03);
+    text-shadow: 0 0 24px color-mix(in srgb, var(--c) 70%, transparent);
+  }
+  .a-c-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--c);
+    opacity: 0.45;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.25s;
+    user-select: none;
+  }
+  .a-carte--open .a-c-toggle {
+    transform: rotate(180deg);
+    opacity: 0.7;
+  }
+  .a-carte--on:not(.a-carte--open):hover .a-c-toggle { opacity: 0.8; }
+
+  .a-c-auteurs {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--c) 80%, transparent);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.2rem;
+    margin-top: 0;
+  }
+  .a-c-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .a-c-desc {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.84rem;
+    color: rgba(225, 185, 135, 0.7);
+    line-height: 1.7;
+    margin: 0 0 auto;
+    margin-top: 0.4rem;
+    margin-bottom: 0.65rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .a-carte--open .a-c-desc {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+  .a-c-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    gap: 0.5rem;
+  }
+  .a-c-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--c);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--c) 18%, transparent);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--c) 20%, transparent);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .a-c-tension {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.04em;
+    font-style: italic;
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  /* ── Mode 2 développé ── */
+  .a-c-mode2 {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
+    animation: aExpandIn 0.3s ease;
+  }
+  @keyframes aExpandIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .a-c-detail-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.2rem 3rem;
+    margin-bottom: 2rem;
+  }
+  .a-c-detail-para {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.92rem;
+    color: rgba(225, 185, 135, 0.82);
+    line-height: 1.85;
+    margin: 0;
+  }
+  .a-c-detail-para:first-child {
+    font-size: 0.97rem;
+    color: rgba(245, 210, 160, 0.95);
+    line-height: 1.8;
+  }
+
+  .a-c-fermer {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.22);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0;
+    transition: color 0.2s;
+    margin-top: 0.4rem;
+  }
+  .a-c-fermer:hover { color: rgba(255,255,255,0.5); }
+
+  /* ── Flux décoratif ── */
+  .a-flux {
+    margin: 0.5rem 0;
+    opacity: 0.7;
+  }
+
+  /* ── Retour ── */
+  .a-retour {
+    margin-top: 3rem;
+  }
+  .a-retour-sep {
+    border-top: 1px solid rgba(200,125,60,0.1);
+    margin-bottom: 1.2rem;
+  }
+  .a-retour-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .a-retour-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #7a5a3a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .a-retour-link:hover { color: #c87d3c; }
+
+  @media (max-width: 640px) {
+    .a-grille { grid-template-columns: 1fr; }
+    .a-titre-main { font-size: 1.15rem; }
+    .a-titre-prefix { font-size: 1rem; }
+    .a-term-text, .a-term-cursor { font-size: 0.74rem; }
+    .a-intro-tensions { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+    .a-tension-sep { display: none; }
+  }
+</style>

@@ -1,0 +1,863 @@
+---
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+
+// ── Données intégrées — Niveau 0 · Le Réel ──────────────────────────────────
+// Structure autonome, hors penseurs.ts
+
+interface ConceptReel {
+  id: string;
+  concept: string;
+  auteurs: string;
+  dates?: string;
+  description: string;
+  detail: string;
+  domaine: 'thermodynamique' | 'evolution' | 'information' | 'complexite';
+  validite: 'fondamentale' | 'très haute' | 'haute';
+  lien?: string;
+}
+
+const DOMAINES_REEL = {
+  thermodynamique: { label: 'Thermodynamique & entropie', couleur: '#9b6fd4' },
+  evolution:       { label: 'Logique évolutive',           couleur: '#5daa88' },
+  information:     { label: 'Théorie de l\'information',   couleur: '#5d9ed4' },
+  complexite:      { label: 'Émergence & complexité',      couleur: '#c47b40' },
+};
+
+const CONCEPTS: ConceptReel[] = [
+
+  // ── Thermodynamique ────────────────────────────────────────────────────────
+  {
+    id: 'entropie',
+    concept: 'Entropie & les lois de la thermodynamique',
+    auteurs: 'Carnot · Clausius · Boltzmann',
+    dates: '1824–1906',
+    description: 'Tout se défait spontanément. L\'ordre coûte de l\'énergie, le désordre est gratuit. Ce n\'est pas une métaphore — c\'est la structure mathématique de la réalité physique. Comprendre l\'entropie change la façon de voir l\'effort, la discipline, et tout ce qui résiste au temps.',
+    detail: 'Le deuxième principe de la thermodynamique : dans un système isolé, l\'entropie ne peut qu\'augmenter. L\'entropie mesure le nombre de microétats compatibles avec un macroétat observable — un verre cassé a infiniment plus de configurations possibles qu\'un verre intact. C\'est pourquoi les verres se cassent spontanément et ne se reconstituent jamais.\n\nBoltzmann formule cela statistiquement : S = k·ln(W). L\'entropie est une mesure du désordre probabiliste. Un état ordonné est rare — un état désordonné est la norme statistique. Rien d\'autre.\n\nConséquence pour la vie : tout système organisé — un corps, une relation, une compétence, une institution — est un îlot d\'ordre local qui résiste à la tendance globale au désordre. Maintenir cet ordre exige un flux d\'énergie constant. C\'est pour ça que tout ce qui compte dans une vie demande un effort continu : non par malchance, mais par nécessité physique.\n\nLien direct avec la discipline et les habitudes : l\'absence d\'effort n\'est pas neutre — c\'est une dérive active vers le désordre. "Se reposer sur ses acquis" est une formule physiquement fausse : les acquis se dégradent sans maintenance. Ce cadre élimine la culpabilité morale de la décroissance (ce n\'est pas un échec personnel) tout en rendant l\'effort nécessaire absolument clair.\n\nNotion connexe — néguentropie (Schrödinger, 1944) : les organismes vivants se maintiennent en prélevant de l\'ordre dans leur environnement (nourriture, information) pour compenser leur entropie interne. La vie est une résistance organisée au deuxième principe.',
+    domaine: 'thermodynamique',
+    validite: 'fondamentale',
+  },
+  {
+    id: 'dissipation',
+    concept: 'Structures dissipatives',
+    auteurs: 'Ilya Prigogine',
+    dates: '1917–2003',
+    description: 'L\'ordre peut émerger spontanément loin de l\'équilibre thermodynamique — mais seulement si de l\'énergie traverse le système. Un tourbillon, un neurone, une ville : des structures qui se maintiennent en dissiipant de l\'énergie. Le flux est la condition de la forme.',
+    detail: 'Prigogine (Nobel 1977) montre que le deuxième principe autorise l\'émergence locale d\'ordre complexe — à condition que le système soit ouvert et éloigné de l\'équilibre. Les "structures dissipatives" sont des patterns stables maintenus par un flux d\'énergie continu.\n\nExemples concrets : une flamme (structure stable qui consomme et dissipe), les tourbillons de Bénard (rouleaux de convection réguliers dans un fluide chauffé), le cerveau humain (structure d\'une complexité extraordinaire maintenue par une consommation d\'énergie constante — 20% du métabolisme pour 2% de la masse).\n\nConséquence conceptuelle majeure : la complexité et l\'ordre ne violent pas le deuxième principe — ils en sont une conséquence dans les systèmes ouverts. L\'évolution biologique, la croissance culturelle, l\'apprentissage — rien de tout cela ne contredit la thermodynamique. Ils requièrent seulement un flux continu d\'énergie et d\'information.\n\nCe cadre réconcilie deux intuitions apparemment contradictoires : "tout se défait" (vrai pour les systèmes fermés) et "la vie crée de la complexité" (vrai pour les systèmes ouverts en déséquilibre). La tension entre ces deux pôles est la structure même de tout ce qui vit.',
+    domaine: 'thermodynamique',
+    validite: 'fondamentale',
+  },
+
+  // ── Évolution ──────────────────────────────────────────────────────────────
+  {
+    id: 'selection',
+    concept: 'Sélection naturelle & logique darwinienne',
+    auteurs: 'Darwin · Dawkins · Trivers',
+    dates: '1859–présent',
+    description: 'La sélection naturelle n\'est pas une théorie biologique — c\'est un algorithme. Variation, hérédité, sélection différentielle : tout ce qui remplit ces conditions "évolue". Les comportements, les institutions, les idées. Comprendre cette logique déverrouille énormément de ce qu\'on observe.',
+    detail: 'L\'algorithme darwinien : (1) des variants existent, (2) ces variants se reproduisent avec hérédité, (3) certains variants survivent/se reproduisent mieux que d\'autres. Résultat : les variants bien adaptés s\'accumulent. Aucune intention, aucun plan, aucune finalité — seulement la mécanique du différentiel de reproduction.\n\nDawkins (1976, "Le gène égoïste") opère un déplacement conceptuel crucial : l\'unité de sélection n\'est pas l\'individu mais le gène. Les organismes sont des "machines à survie" construites par des gènes qui maximisent leur propre propagation. Cela explique l\'altruisme génétique (parentèle), les comportements coopératifs conditionnels, et surtout le "meme" — l\'unité culturelle qui se réplique de cerveau en cerveau par imitation.\n\nTrivers (altruisme réciproque, 1971 ; théorie des conflits parentaux, 1974) : les comportements sociaux complexes — coopération, tromperie, négociation — peuvent être expliqués par les intérêts génétiques divergents des individus. La jalousie sexuelle, les conflits entre parents et enfants, les coalitions — tout s\'analyse comme stratégies évolutives.\n\nRobert Wright ("The Moral Animal", 1994) : applique la psychologie évolutive aux comportements humains avec rigueur. Statut social, désir, altruisme, moralité — lus comme adaptations. Non pour les réduire, mais pour comprendre d\'où ils viennent et comment ils se déforment dans les contextes modernes.\n\nApplication directe : nos cerveaux ont été façonnés pour l\'environnement paléolithique, pas pour le monde actuel. Comprendre ces désajustements — addiction aux sucres, biais de statut, tribalism, court-termisme — est une condition pour ne pas y être simplement soumis.',
+    domaine: 'evolution',
+    validite: 'fondamentale',
+  },
+  {
+    id: 'coevolution',
+    concept: 'Coévolution & course aux armements',
+    auteurs: 'Van Valen · Maynard Smith',
+    dates: '1973–présent',
+    description: 'Les organismes n\'évoluent pas dans le vide — ils coévoluent. Chaque adaptation d\'un prédateur sélectionne pour la résistance dans la proie. Ce "Red Queen effect" s\'applique aux marchés, aux stratégies militaires, aux plateformes numériques. Rester en place exige de courir.',
+    detail: 'La "Reine Rouge" (Van Valen, 1973, inspiré de Lewis Carroll) : dans Alice au Pays des Merveilles, il faut courir aussi vite qu\'on peut pour rester au même endroit. En biologie coévolutive : les organismes doivent s\'adapter en permanence simplement pour maintenir leur fitness relative face aux partenaires coévolutifs (prédateurs, parasites, compétiteurs).\n\nLa théorie des jeux évolutifs (Maynard Smith) formalise cela : les stratégies n\'ont pas de valeur absolue — leur succès dépend de la fréquence des autres stratégies dans la population. C\'est la logique d\'une stratégie évolutivement stable (ESS) : une stratégie qui, si adoptée par la majorité, ne peut pas être envahie par une mutante.\n\nApplications non biologiques : la course aux armements technologiques (Huawei vs Apple vs Qualcomm), la concurrence dans les plateformes, les marchés financiers algorithmiques, les réseaux sociaux — tous suivent une logique coévolutive où ce qui est "bon" dépend de ce que font les autres acteurs.\n\nConséquence pour la compréhension des institutions : elles ne sont pas figées — elles sont le résultat de coévolutions historiques entre acteurs aux intérêts divergents. Comprendre une institution, c\'est retracer sa coévolution avec les pressions qui l\'ont façonnée.',
+    domaine: 'evolution',
+    validite: 'très haute',
+  },
+
+  // ── Théorie de l'information ───────────────────────────────────────────────
+  {
+    id: 'shannon',
+    concept: 'Entropie informationnelle & signal/bruit',
+    auteurs: 'Claude Shannon',
+    dates: '1916–2001',
+    description: 'Shannon crée en 1948 la théorie mathématique de la communication. L\'information est définie comme surprise : ce qu\'on savait déjà n\'apporte rien. Toute communication est une lutte contre le bruit. Et l\'entropie de Shannon et l\'entropie de Boltzmann sont la même chose — ce n\'est pas une coïncidence.',
+    detail: 'La définition de Shannon : l\'information d\'un message est proportionnelle à sa probabilité inverse. Un événement certain (il pleut en novembre à Londres) apporte zéro information. Un événement improbable (il neige en juillet à Paris) apporte beaucoup. Formellement : I(x) = -log₂(P(x)) bits.\n\nL\'entropie de Shannon d\'une source est la moyenne de l\'information de ses messages — une mesure de l\'imprévisibilité maximale. Une source parfaitement aléatoire a une entropie maximale. Une source déterministe a une entropie nulle.\n\nLe théorème de Shannon sur la capacité des canaux : toute communication sur un canal bruité peut être rendue aussi fiable qu\'on veut, à condition de ne pas dépasser la "capacité du canal". Ce résultat est non intuitif et fondateur : l\'erreur de transmission n\'est pas inévitable, elle a une borne précise.\n\nLe lien avec Boltzmann : la formule mathématique est identique. Ce n\'est pas une analogie — c\'est la même structure. John von Neumann dit à Shannon : "Appelle ça entropie — personne ne sait vraiment ce que c\'est, et tu auras toujours l\'avantage dans un débat." L\'unification profonde entre information physique et information au sens Shannon reste un des fronts actifs de la physique fondamentale.\n\nApplications quotidiennes : compression (zip, mp3, jpeg — exploiter la redondance pour éliminer l\'entropie inutile), cryptographie (maximiser l\'entropie du signal chiffré), apprentissage automatique (les décisions d\'un arbre sont mesurées en gain d\'entropie), et — philosophiquement — comprendre ce que signifie "apprendre quelque chose de nouveau".',
+    domaine: 'information',
+    validite: 'fondamentale',
+  },
+  {
+    id: 'kolmogorov',
+    concept: 'Complexité algorithmique',
+    auteurs: 'Kolmogorov · Chaitin · Solomonoff',
+    dates: '1963–présent',
+    description: 'La complexité d\'un objet est la longueur du plus court programme qui le génère. Une suite aléatoire est maximalement complexe — elle ne peut pas être compressée. Une loi physique est une compression extrême du réel. Cette définition relie la simplicité, la compréhension, et la prédictibilité.',
+    detail: 'La complexité de Kolmogorov K(x) d\'une chaîne x est la longueur du plus court programme capable de la produire. Une chaîne "000000000..." a une complexité très faible — elle se décrit en quelques symboles. Une chaîne de bits aléatoire a une complexité égale à sa longueur — on ne peut pas la compresser.\n\nUne conséquence profonde : "comprendre" quelque chose, c\'est trouver une description plus courte que l\'objet lui-même. Une théorie scientifique est une compression du monde observé. La physique newtonienne compresse les trajectoires de millions de planètes en quelques équations. Le fait que le réel soit compressible — que des lois existent — n\'est pas évident a priori : c\'est une propriété empirique de l\'univers.\n\nChaitin et l\'incalculabilité : K(x) n\'est pas calculable (théorème de Rice). On peut calculer des bornes supérieures (toute compression valide fournit une borne), mais pas la valeur exacte. Cela implique que la "complexité vraie" des objets est hors d\'atteinte — nous travaillons toujours avec des approximations.\n\nRasoir d\'Occam formalisé : la complexité algorithmique donne une base mathématique au principe de parcimonie. Entre deux théories qui expliquent les mêmes données, la plus courte est probabilistiquement plus vraisemblable (AIXI de Hutter, induction universelle de Solomonoff).\n\nApplications : détection d\'anomalies (ce qui est difficile à compresser = inattendu), intelligence artificielle (les grands modèles de langage sont des compresseurs de texte), philosophie de la science (qu\'est-ce qu\'une explication ?).',
+    domaine: 'information',
+    validite: 'très haute',
+  },
+
+  // ── Complexité ─────────────────────────────────────────────────────────────
+  {
+    id: 'emergence',
+    concept: 'Émergence & propriétés de niveau',
+    auteurs: 'Anderson · Kauffman · Simon',
+    dates: '1972–présent',
+    description: '"More is different" (Anderson, 1972). À chaque niveau d\'organisation, des propriétés nouvelles apparaissent qui n\'existent pas au niveau inférieur. La conscience n\'est pas dans les neurones. La liquidité n\'est pas dans les molécules. Le réductionnisme est vrai mais insuffisant.',
+    detail: 'Philip Anderson (Nobel physique, 1972) énonce le principe fondamental dans "More is Different" : la capacité à réduire tout phénomène à des lois fondamentales ne signifie pas qu\'on peut reconstruire l\'univers à partir de ces lois. À chaque niveau d\'organisation émergent des lois nouvelles, irréductibles au niveau inférieur.\n\nExemples : la supraconductivité (propriété collective d\'électrons, inexistante dans un électron isolé), la viscosité d\'un fluide (propriété statistique de milliards de molécules), la conscience (propriété de l\'organisation neuronale, absent dans un neurone), la valeur marchande (propriété d\'un réseau d\'échanges).\n\nKauffman (biologie des systèmes) : l\'évolution n\'est pas seulement sélection — l\'autocatalytisation et l\'auto-organisation créent des formes qui "s\'offrent" spontanément à la sélection. La complexité biologique n\'est pas entièrement contingente — certaines structures sont "inévitables" par des raisons combinatoires.\n\nHerbert Simon ("L\'architecture de la complexité", 1962) : les systèmes complexes stables sont presque toujours hiérarchiques et modulaires — décomposables en sous-systèmes relativement indépendants. Cette structure n\'est pas un choix de design : c\'est la seule façon pour la complexité d\'émerger et de persister évolutivement.\n\nConséquence épistémique : le réductionnisme (tout expliquer par le niveau inférieur) est vrai mais stratégiquement inutile pour la plupart des questions importantes. Comprendre une organisation nécessite des outils propres à son niveau. Le cerveau est mieux compris en neurosciences que en physique des quarks — non parce que la physique est fausse, mais parce que l\'émergence crée des lois propres à chaque niveau.',
+    domaine: 'complexite',
+    validite: 'très haute',
+  },
+  {
+    id: 'feedback',
+    concept: 'Boucles de rétroaction & attracteurs',
+    auteurs: 'Wiener · Lorenz · Poincaré',
+    dates: '1948–présent',
+    description: 'Les systèmes avec boucles de rétroaction se comportent de façon radicalement différente des systèmes linéaires. La dépendance aux conditions initiales (chaos de Lorenz), les cycles, les bifurcations : les intuitions linéaires échouent. Comprendre les feedbacks change la façon de lire les crises, les effondrements et les cycles.',
+    detail: 'Norbert Wiener (cybernétique, 1948) : toute régulation nécessite de la rétroaction — l\'action dépend de l\'état actuel, l\'état est modifié par l\'action. Un thermostat est la version la plus simple. Un système immunitaire, une économie, un écosystème — tous des systèmes de régulation par rétroaction.\n\nRétroaction positive (amplificatrice) vs négative (stabilisatrice) : les feedbacks négatifs tendent vers l\'équilibre, les feedbacks positifs tendent vers l\'explosion ou l\'effondrement. La panique bancaire est un feedback positif pur — les retraits provoquent des doutes qui provoquent des retraits.\n\nLorenz (1963) : même des systèmes déterministes simples avec rétroaction peuvent être chaotiques — sensibles aux conditions initiales de façon exponentielle. "L\'effet papillon" n\'est pas une métaphore romantique : c\'est le nom technique d\'une propriété mathématique. La prédiction à long terme de ces systèmes est fondamentalement impossible, même avec une connaissance parfaite des lois.\n\nAttracteurs et bifurcations : les systèmes dynamiques tendent vers des "attracteurs" — états ou cycles stables. Une petite perturbation peut parfois faire basculer un système d\'un attracteur à un autre (bifurcation). Ces basculements sont souvent abrupts et peu prédictibles. C\'est la structure mathématique des crises, des révolutions et des changements de régime.\n\nImplication pour la prise de décision : dans les systèmes avec feedbacks forts, les intuitions causales linéaires ("plus de X cause plus de Y") échouent systématiquement. Les effets secondaires, les délais, les seuils critiques sont plus importants que les causes directes.',
+    domaine: 'complexite',
+    validite: 'très haute',
+  },
+
+];
+
+// Groupes par domaine
+const groupes = Object.entries(DOMAINES_REEL).map(([id, meta]) => ({
+  id,
+  ...meta,
+  concepts: CONCEPTS.filter(c => c.domaine === id),
+}));
+
+const total = CONCEPTS.length;
+const pct = 100; // page statique, tout est "présent"
+---
+
+<AtelierLayout title="Le Réel" filename="le-réel">
+
+  <div class="r-header">
+
+    <!-- Titre terminal -->
+    <div class="r-titre-terminal">
+      <span class="r-titre-prefix">//</span>
+      <h1 class="r-titre-main">niveau 0 · le réel</h1>
+    </div>
+
+    <!-- Lignes terminal -->
+    <div class="r-terminal-bloc" id="rTerminal" aria-live="polite">
+      <div class="r-term-line">
+        <span class="r-term-prompt">&gt;</span>
+        <span class="r-term-text" id="rLine1"></span><span class="r-term-cursor" id="rCursor1">_</span>
+      </div>
+      <div class="r-term-line r-term-line--hidden" id="rLine2Wrap">
+        <span class="r-term-prompt">&gt;</span>
+        <span class="r-term-text" id="rLine2"></span><span class="r-term-cursor" id="rCursor2">_</span>
+      </div>
+    </div>
+
+    <!-- Cartouche introductif -->
+    <div class="r-intro r-intro--hidden" id="rIntro">
+      <div class="r-intro-ligne">
+        <span class="r-intro-glyph">◈</span>
+        <p class="r-intro-texte">Ce qui précède tout le reste. Pas de la physique pour faire chic — mais les principes fondamentaux qui expliquent <em>pourquoi</em> les choses sont comme elles sont. L'effort est nécessaire. La complexité est inévitable. L'information a une forme.</p>
+      </div>
+      <div class="r-intro-tags">
+        <span class="r-tag">entropie</span>
+        <span class="r-tag">évolution</span>
+        <span class="r-tag">information</span>
+        <span class="r-tag">émergence</span>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="r-hr" />
+
+  <!-- Chips filtres -->
+  <div class="r-filtres">
+    <div class="r-chips-groupe">
+      <button class="r-chip r-chip--active" data-filtre="tout">Tout</button>
+      <button class="r-chip" data-filtre="thermodynamique">Thermodynamique</button>
+      <button class="r-chip" data-filtre="evolution">Évolution</button>
+      <button class="r-chip" data-filtre="information">Information</button>
+      <button class="r-chip" data-filtre="complexite">Complexité</button>
+    </div>
+  </div>
+
+  <!-- Contenu -->
+  <div id="r-contenu">
+
+    {groupes.map(groupe => (
+      <section class="r-section" data-filtre={groupe.id}>
+        <div class="r-sec-head">
+          <div class="r-sec-head-inner">
+            <span class="r-sec-dot" style={`background:${groupe.couleur}; box-shadow:0 0 8px ${groupe.couleur}60`}></span>
+            <h2 class="r-sec-titre" style={`color:${groupe.couleur}`}>{groupe.label}</h2>
+          </div>
+          <div class="r-sec-line" style={`background: linear-gradient(to right, ${groupe.couleur}40, transparent)`}></div>
+        </div>
+
+        <div class="r-grille">
+          {groupe.concepts.map(c => (
+            <div
+              class="r-carte r-carte--on"
+              style={`--c:${groupe.couleur}`}
+              data-id={c.id}
+              data-has-detail="true"
+              role="button"
+              tabindex="0"
+            >
+              <!-- Mode 1 — fermé -->
+              <div class="r-c-mode1">
+                <div class="r-c-top">
+                  <span class="r-c-concept">{c.concept}</span>
+                  <span class="r-c-toggle" aria-label="Développer">▾</span>
+                </div>
+                <p class="r-c-auteurs">{c.auteurs}</p>
+                {c.dates && <span class="r-c-dates">{c.dates}</span>}
+                <p class="r-c-desc">{c.description}</p>
+                <div class="r-c-foot">
+                  <span class="r-c-val">{c.validite}</span>
+                </div>
+              </div>
+
+              <!-- Mode 2 — développé -->
+              <div class="r-c-mode2" hidden>
+                <div class="r-c-detail-body">
+                  {c.detail.split('\n\n').map((para: string) => (
+                    <p class="r-c-detail-para">{para}</p>
+                  ))}
+                </div>
+                <button class="r-c-fermer" aria-label="Fermer">✕ fermer</button>
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+  </div>
+
+  <!-- Constellation décorative -->
+  <div class="r-constellation" aria-hidden="true">
+    <svg width="100%" height="80" viewBox="0 0 800 80" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="arrowR1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(155,111,212,0.8)"/>
+        </marker>
+        <marker id="arrowR2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(93,170,136,0.8)"/>
+        </marker>
+        <marker id="arrowR3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(93,158,212,0.8)"/>
+        </marker>
+        <marker id="arrowR4" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L0,8 L8,4 z" fill="rgba(196,123,64,0.8)"/>
+        </marker>
+      </defs>
+      <text x="50" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(155,111,212,0.85)" letter-spacing="1">entropie</text>
+      <line x1="50" y1="42" x2="175" y2="42" stroke="rgba(155,111,212,0.6)" stroke-width="1.5" marker-end="url(#arrowR1)"/>
+      <text x="195" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(93,170,136,0.85)" letter-spacing="1">évolution</text>
+      <line x1="195" y1="42" x2="370" y2="42" stroke="rgba(93,170,136,0.6)" stroke-width="1.5" marker-end="url(#arrowR2)"/>
+      <text x="390" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(93,158,212,0.85)" letter-spacing="1">information</text>
+      <line x1="390" y1="42" x2="570" y2="42" stroke="rgba(93,158,212,0.6)" stroke-width="1.5" marker-end="url(#arrowR3)"/>
+      <text x="590" y="28" font-family="JetBrains Mono, monospace" font-size="13" fill="rgba(196,123,64,0.85)" letter-spacing="1">émergence</text>
+      <line x1="590" y1="42" x2="755" y2="42" stroke="rgba(196,123,64,0.6)" stroke-width="1.5" marker-end="url(#arrowR4)"/>
+    </svg>
+  </div>
+
+  <div class="r-retour">
+    <div class="r-retour-sep"></div>
+    <div class="r-retour-nav">
+      <a href="/atelier" class="r-retour-link">← retour à l'atelier</a>
+      <a href="/atelier/fondations" class="r-retour-link">fondations →</a>
+    </div>
+  </div>
+
+</AtelierLayout>
+
+<script>
+  // ── Cartes 3 modes ────────────────────────────────────────────────────────
+  let carteOuverte: HTMLElement | null = null;
+
+  function ouvrirCarte(carte: HTMLElement) {
+    if (carteOuverte && carteOuverte !== carte) fermerCarte(carteOuverte);
+    const mode2 = carte.querySelector<HTMLElement>('.r-c-mode2');
+    if (!mode2) return;
+    carte.classList.add('r-carte--open');
+    mode2.hidden = false;
+    carteOuverte = carte;
+    setTimeout(() => {
+      const scroller = document.getElementById('atelierContent');
+      if (scroller) {
+        const top = carte.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 24;
+        scroller.scrollTo({ top, behavior: 'smooth' });
+      } else {
+        carte.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 60);
+  }
+
+  function fermerCarte(carte: HTMLElement) {
+    const mode2 = carte.querySelector<HTMLElement>('.r-c-mode2');
+    carte.classList.remove('r-carte--open');
+    if (mode2) mode2.hidden = true;
+    if (carteOuverte === carte) carteOuverte = null;
+  }
+
+  document.querySelectorAll<HTMLElement>('.r-carte[data-has-detail="true"]').forEach(carte => {
+    carte.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.r-c-fermer')) return;
+      carte.classList.contains('r-carte--open') ? fermerCarte(carte) : ouvrirCarte(carte);
+    });
+    carte.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); carte.click(); }
+      if (e.key === 'Escape' && carte.classList.contains('r-carte--open')) fermerCarte(carte);
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>('.r-c-fermer').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const carte = btn.closest<HTMLElement>('.r-carte');
+      if (carte) fermerCarte(carte);
+    });
+  });
+
+  // ── Filtres chips ─────────────────────────────────────────────────────────
+  const chips    = document.querySelectorAll<HTMLButtonElement>('.r-chip[data-filtre]');
+  const sections = document.querySelectorAll<HTMLElement>('.r-section');
+  let filtreActif = 'tout';
+
+  function appliquerFiltres() {
+    sections.forEach(sec => {
+      const f = sec.dataset.filtre ?? '';
+      sec.style.display = (filtreActif === 'tout' || filtreActif === f) ? '' : 'none';
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filtreActif = chip.dataset.filtre ?? 'tout';
+      chips.forEach(c => c.classList.toggle('r-chip--active', c === chip));
+      appliquerFiltres();
+    });
+  });
+
+  // ── Boot sequence ─────────────────────────────────────────────────────────
+  const line1El   = document.getElementById('rLine1');
+  const cursor1El = document.getElementById('rCursor1');
+  const line2Wrap = document.getElementById('rLine2Wrap');
+  const line2El   = document.getElementById('rLine2');
+  const cursor2El = document.getElementById('rCursor2');
+  const introEl   = document.getElementById('rIntro');
+
+  const phrase1 = "initialisation du substrat physique...";
+  const phrase2 = "thermodynamique · évolution · information · complexité";
+
+  function typePhrase(
+    textEl: HTMLElement | null,
+    cursorEl: HTMLElement | null,
+    phrase: string,
+    delay: number,
+    onDone?: () => void
+  ) {
+    if (!textEl || !cursorEl) return;
+    let i = 0;
+    cursorEl.style.opacity = '0';
+    setTimeout(() => {
+      const tick = () => {
+        if (i < phrase.length) {
+          textEl.textContent += phrase[i];
+          i++;
+          setTimeout(tick, 22 + Math.random() * 20);
+        } else {
+          cursorEl.style.opacity = '1';
+          if (onDone) setTimeout(onDone, 320);
+        }
+      };
+      tick();
+    }, delay);
+  }
+
+  typePhrase(line1El, cursor1El, phrase1, 400, () => {
+    if (cursor1El) { cursor1El.style.animation = 'none'; cursor1El.style.opacity = '0.3'; }
+    if (line2Wrap) line2Wrap.style.opacity = '1';
+    typePhrase(line2El, cursor2El, phrase2, 0, () => {
+      if (introEl) {
+        introEl.classList.remove('r-intro--hidden');
+        introEl.classList.add('r-intro--visible');
+      }
+    });
+  });
+</script>
+
+<style>
+  /* ── Variables ── */
+  :root {
+    --r-accent: #9b6fd4;
+    --r-accent2: #7b5ab4;
+  }
+
+  .r-header { margin-bottom: 1.5rem; }
+
+  /* ── Titre terminal ── */
+  .r-titre-terminal {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .r-titre-prefix {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    color: #9b6fd4;
+    opacity: 0.7;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .r-titre-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 1.6rem;
+    color: #c8b4f0;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Terminal boot ── */
+  .r-terminal-bloc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1.6rem;
+  }
+  .r-term-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+  .r-term-line--hidden { opacity: 0; }
+  .r-term-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #9b6fd4;
+    flex-shrink: 0;
+    user-select: none;
+    opacity: 0.75;
+  }
+  .r-term-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(180, 150, 230, 0.78);
+    letter-spacing: 0.02em;
+    font-style: italic;
+  }
+  .r-term-cursor {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #9b6fd4;
+    opacity: 0;
+    animation: rBlink 1.1s step-end infinite;
+  }
+  @keyframes rBlink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── Intro cartouche ── */
+  .r-intro--hidden {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .r-intro--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .r-intro {
+    background: rgba(155,111,212,0.06);
+    border: 1px solid rgba(155,111,212,0.2);
+    border-left: 3px solid rgba(155,111,212,0.5);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+  }
+  .r-intro-ligne {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+  }
+  .r-intro-glyph {
+    font-size: 0.9rem;
+    color: #9b6fd4;
+    opacity: 0.6;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .r-intro-texte {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.88rem;
+    color: rgba(200, 175, 240, 0.75);
+    line-height: 1.75;
+    margin: 0;
+  }
+  .r-intro-texte em { font-style: italic; color: rgba(200, 175, 240, 0.95); }
+  .r-intro-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-left: 1.7rem;
+  }
+  .r-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(155,111,212,0.7);
+    background: rgba(155,111,212,0.08);
+    border: 1px solid rgba(155,111,212,0.2);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  /* ── Séparateur ── */
+  .r-hr {
+    border: none;
+    border-top: 1px solid rgba(155,111,212,0.12);
+    margin: 1.5rem 0 1.2rem;
+  }
+
+  /* ── Chips filtres ── */
+  .r-filtres {
+    margin-bottom: 2rem;
+  }
+  .r-chips-groupe {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .r-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(155,111,212,0.25);
+    background: transparent;
+    color: rgba(155,111,212,0.55);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .r-chip:hover {
+    color: rgba(155,111,212,0.9);
+    border-color: rgba(155,111,212,0.45);
+    background: rgba(155,111,212,0.08);
+  }
+  .r-chip--active {
+    color: #c8b4f0;
+    border-color: rgba(155,111,212,0.5);
+    background: rgba(155,111,212,0.12);
+  }
+
+  /* ── Sections ── */
+  .r-section { margin-bottom: 3rem; }
+  .r-sec-head { margin-bottom: 1.2rem; }
+  .r-sec-head-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .r-sec-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .r-sec-titre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  .r-sec-line {
+    height: 1px;
+    width: 100%;
+    border-radius: 1px;
+  }
+
+  /* ── Grille ── */
+  .r-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+    position: relative;
+  }
+
+  /* ── Carte ── */
+  .r-carte {
+    border-radius: 12px;
+    padding: 1rem 1.1rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s, background 0.22s;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+  }
+  .r-carte::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--c);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .r-carte--on {
+    background: rgba(255,255,255,0.055);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+  .r-carte--on::before { opacity: 1; }
+
+  .r-carte--on:not(.r-carte--open):hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--c) 42%, transparent);
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.4),
+      0 0 28px 4px color-mix(in srgb, var(--c) 14%, transparent),
+      0 0 55px 10px color-mix(in srgb, var(--c) 7%, transparent);
+  }
+
+  /* Carte ouverte — pleine largeur */
+  .r-carte--open {
+    grid-column: 1 / -1;
+    cursor: default;
+    transform: none !important;
+    padding: 2rem 2.8rem 2.2rem 3rem;
+    border-radius: 14px !important;
+    border-color: color-mix(in srgb, var(--c) 28%, transparent) !important;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--c) 9%, rgba(255,255,255,0.07)) 0%,
+      color-mix(in srgb, var(--c) 4%, rgba(255,255,255,0.07)) 25%,
+      rgba(255,255,255,0.06) 60%,
+      rgba(255,255,255,0.05) 100%
+    ) !important;
+    box-shadow:
+      inset 3px 0 0 var(--c),
+      0 0 0 1px color-mix(in srgb, var(--c) 18%, transparent),
+      0 4px 24px rgba(0,0,0,0.35),
+      0 0 40px 0px color-mix(in srgb, var(--c) 10%, transparent),
+      0 0 80px 20px color-mix(in srgb, var(--c) 7%, transparent),
+      0 0 140px 40px color-mix(in srgb, var(--c) 4%, transparent) !important;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease !important;
+  }
+  .r-carte--open:hover {
+    border-color: color-mix(in srgb, var(--c) 42%, transparent) !important;
+    box-shadow:
+      inset 4px 0 0 var(--c),
+      inset 4px 0 12px color-mix(in srgb, var(--c) 22%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--c) 30%, transparent),
+      0 4px 24px rgba(0,0,0,0.35),
+      0 0 55px 2px color-mix(in srgb, var(--c) 16%, transparent),
+      0 0 110px 35px color-mix(in srgb, var(--c) 9%, transparent),
+      0 0 190px 65px color-mix(in srgb, var(--c) 5%, transparent) !important;
+  }
+  .r-carte--open::before {
+    filter: brightness(1.5);
+    box-shadow: 0 0 10px var(--c);
+    transition: filter 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+  }
+  .r-carte--open:hover::before {
+    filter: brightness(1.85);
+    box-shadow:
+      0 0 16px var(--c),
+      0 0 36px color-mix(in srgb, var(--c) 38%, transparent),
+      0 0 60px color-mix(in srgb, var(--c) 16%, transparent);
+  }
+
+  .r-c-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .r-c-concept {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(220, 190, 255, 0.9);
+    line-height: 1.35;
+    flex: 1;
+    transition: font-size 0.25s ease, opacity 0.25s ease;
+  }
+  .r-carte--open .r-c-concept {
+    font-size: 1.05rem;
+    opacity: 1;
+    color: var(--c);
+    text-shadow: 0 0 20px color-mix(in srgb, var(--c) 60%, transparent);
+    display: inline-block;
+    transform-origin: left center;
+  }
+  .r-carte--open .r-c-concept:hover {
+    transform: scale(1.03);
+    text-shadow: 0 0 24px color-mix(in srgb, var(--c) 70%, transparent);
+  }
+  .r-c-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--c);
+    opacity: 0.45;
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.25s;
+    user-select: none;
+  }
+  .r-carte--open .r-c-toggle {
+    transform: rotate(180deg);
+    opacity: 0.7;
+  }
+  .r-carte--on:not(.r-carte--open):hover .r-c-toggle { opacity: 0.8; }
+
+  .r-c-auteurs {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: color-mix(in srgb, var(--c) 80%, transparent);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.2rem;
+    margin-top: 0;
+  }
+  .r-c-dates {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .r-c-desc {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.84rem;
+    color: rgba(200, 175, 220, 0.7);
+    line-height: 1.7;
+    margin: 0 0 auto;
+    margin-top: 0.4rem;
+    margin-bottom: 0.65rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .r-carte--open .r-c-desc {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+  .r-c-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .r-c-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: var(--c);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    background: color-mix(in srgb, var(--c) 18%, transparent);
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--c) 20%, transparent);
+    display: inline-block;
+  }
+
+  /* ── Mode 2 développé ── */
+  .r-c-mode2 {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
+    animation: rExpandIn 0.3s ease;
+  }
+  @keyframes rExpandIn {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .r-c-detail-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.2rem 3rem;
+    margin-bottom: 2rem;
+  }
+  .r-c-detail-para {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.92rem;
+    color: rgba(200, 170, 240, 0.82);
+    line-height: 1.85;
+    margin: 0;
+  }
+  .r-c-detail-para:first-child {
+    font-size: 0.97rem;
+    color: rgba(220, 195, 255, 0.95);
+    line-height: 1.8;
+  }
+
+  .r-c-fermer {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.22);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0;
+    transition: color 0.2s;
+    margin-top: 0.4rem;
+  }
+  .r-c-fermer:hover { color: rgba(255,255,255,0.5); }
+
+  /* ── Constellation ── */
+  .r-constellation {
+    margin: 1rem 0 0;
+    opacity: 0.6;
+  }
+
+  /* ── Retour ── */
+  .r-retour {
+    margin-top: 3rem;
+  }
+  .r-retour-sep {
+    border-top: 1px solid rgba(155,111,212,0.1);
+    margin-bottom: 1.2rem;
+  }
+  .r-retour-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .r-retour-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #5a3a7a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .r-retour-link:hover { color: #9b6fd4; }
+
+  @media (max-width: 640px) {
+    .r-grille { grid-template-columns: 1fr; }
+    .r-titre-main { font-size: 1.15rem; }
+    .r-titre-prefix { font-size: 1rem; }
+    .r-term-text, .r-term-cursor { font-size: 0.74rem; }
+  }
+</style>

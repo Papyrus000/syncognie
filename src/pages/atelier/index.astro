@@ -116,6 +116,28 @@ function formatDate(date: Date) {
     <span class="atelier-terminal-text" id="terminalText"></span><span class="atelier-terminal-cursor" id="terminalCursor">_</span>
   </div>
 
+  <!-- ── Bloc Niveau 0 · Le Réel ── -->
+  <a href="/atelier/le-reel" class="extra-bloc extra-bloc--reel" id="reelBloc" aria-label="Voir la page Le Réel">
+    <div class="extra-bloc-inner">
+      <div class="extra-titre-ligne">
+        <span class="extra-badge" style="color:#9b6fd4;border-color:rgba(155,111,212,0.35)">niveau 0</span>
+        <span class="extra-titre" style="color:#c8b4f0">Le Réel</span>
+        <span class="extra-desc">substrat physique · thermodynamique · évolution · information</span>
+        <span class="extra-arrow" style="color:#9b6fd4">&#x2192;</span>
+      </div>
+      <div class="extra-domaines">
+        <span class="extra-dom" style="--c:#9b6fd4">entropie</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#5daa88">évolution darwinienne</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#5d9ed4">Shannon &amp; Kolmogorov</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#c47b40">émergence</span>
+      </div>
+    </div>
+    <div class="extra-glow extra-glow--reel"></div>
+  </a>
+
   <!-- ── Bloc Fondations ── -->
   <div class="fondations-bloc" id="fondationsBloc">
 
@@ -217,6 +239,28 @@ function formatDate(date: Date) {
 
   </div>
 
+  <!-- ── Bloc Niveau 4 · Agir ── -->
+  <a href="/atelier/agir" class="extra-bloc extra-bloc--agir" id="agirBloc" aria-label="Voir la page Agir">
+    <div class="extra-bloc-inner">
+      <div class="extra-titre-ligne">
+        <span class="extra-badge" style="color:#c87d3c;border-color:rgba(200,125,60,0.35)">niveau 4</span>
+        <span class="extra-titre" style="color:#f0b870">Agir</span>
+        <span class="extra-desc">décision · jeu · stratégie · coopération</span>
+        <span class="extra-arrow" style="color:#c87d3c">&#x2192;</span>
+      </div>
+      <div class="extra-domaines">
+        <span class="extra-dom" style="--c:#c87d3c">Bayes · Kahneman · Taleb</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#b85a4a">Nash · Schelling</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#8a6840">Clausewitz</span>
+        <span class="extra-dom-sep">·</span>
+        <span class="extra-dom" style="--c:#6a9860">Axelrod · Ostrom</span>
+      </div>
+    </div>
+    <div class="extra-glow extra-glow--agir"></div>
+  </a>
+
   <!-- Tooltip global -->
   <div class="fniv-tooltip" id="fnivTooltip" aria-hidden="true"></div>
 
@@ -305,7 +349,7 @@ function formatDate(date: Date) {
     background: rgba(62, 38, 16, 0.45);
     border-radius: 12px;
     padding: 1.2rem 1.5rem 1.4rem;
-    margin: 1.8rem 0 0;
+    margin: 1.8rem 0 1.8rem;
     position: relative;
     overflow: hidden;
     transition: border-color 0.25s, background 0.25s, transform 0.2s, box-shadow 0.25s;
@@ -754,5 +798,147 @@ function formatDate(date: Date) {
     .fniv-badge-num  { display: none; }
     .fniv-case       { width: 8px; height: 8px; }
     .fondations-cta-text { display: none; }
+  }
+
+  /* ── Blocs Niveau 0 et Niveau 4 ── */
+  .extra-bloc {
+    display: block;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 0.85rem 1.2rem;
+    margin: 0.7rem 0;
+    position: relative;
+    overflow: hidden;
+    transition:
+      border-color 0.25s,
+      background 0.25s,
+      transform 0.2s,
+      box-shadow 0.25s;
+  }
+  .extra-bloc--reel {
+    background: rgba(50, 32, 72, 0.42);
+    border: 1px solid rgba(155,111,212,0.22);
+  }
+  .extra-bloc--agir {
+    background: rgba(62, 36, 14, 0.48);
+    border: 1px solid rgba(200,125,60,0.2);
+  }
+  .extra-bloc::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    opacity: 0.55;
+    transition: opacity 0.25s;
+  }
+  .extra-bloc--reel::before {
+    background: linear-gradient(90deg, #9b6fd4, #5d9ed4, #5daa88, #9b6fd4);
+  }
+  .extra-bloc--agir::before {
+    background: linear-gradient(90deg, #c87d3c, #b85a4a, #8a6840, #6a9860, #c87d3c);
+  }
+  .extra-bloc--reel:hover {
+    border-color: rgba(155,111,212,0.45);
+    background: rgba(70, 44, 100, 0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(155,111,212,0.15);
+  }
+  .extra-bloc--agir:hover {
+    border-color: rgba(200,125,60,0.42);
+    background: rgba(80, 50, 18, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(200,125,60,0.13);
+  }
+  .extra-bloc:hover::before { opacity: 0.9; }
+
+  .extra-glow {
+    position: absolute;
+    bottom: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    filter: blur(35px);
+  }
+  .extra-glow--reel  { background: #9b6fd4; }
+  .extra-glow--agir  { background: #c87d3c; }
+  .extra-bloc:hover .extra-glow { opacity: 0.15; }
+
+  .extra-bloc-inner { position: relative; z-index: 1; }
+
+  .extra-titre-ligne {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .extra-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid;
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+  .extra-titre {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.01em;
+    flex-shrink: 0;
+  }
+  .extra-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.15);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .extra-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    opacity: 0.35;
+    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .extra-bloc:hover .extra-arrow {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .extra-domaines {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .extra-dom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--c);
+    opacity: 0.7;
+    letter-spacing: 0.03em;
+  }
+  .extra-dom-sep {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.12);
+  }
+
+  @media (max-width: 640px) {
+    .extra-desc { display: none; }
+    .extra-titre { font-size: 0.88rem; }
   }
 </style>
