@@ -86,7 +86,13 @@ const SHOW_NIVEAU_4  = false;  // /atelier/agir
 const SHOW_SYNTHESE  = false;  // /atelier/synthese
 ---
 
-<AtelierLayout title={master.data.title} filename={master.data.title}>
+<AtelierLayout
+  title={`${master.data.title} — L'Atelier des Idées`}
+  description="L'Atelier des Idées : explorations de philosophie, psychologie, neurosciences et systèmes complexes. Des articles de fond sur les penseurs qui comptent vraiment."
+  ogTitle="L'Atelier des Idées — Syncognie"
+  ogDescription="Philosophie, psychologie, neurosciences, systèmes : des explorations de fond sur les penseurs et idées qui éclairent comment fonctionne le monde — et comment y vivre."
+  filename={master.data.title}
+>
 
   <!-- ── Hero unifié : image + texte overlay ── -->
   <div class="atelier-hero-stage">

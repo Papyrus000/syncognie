@@ -8,13 +8,19 @@ interface BreadcrumbParent {
 }
 
 const {
-  title    = "Atelier",
-  filename = "atelier",
+  title         = "Atelier",
+  filename      = "atelier",
   parent,
+  description,
+  ogTitle,
+  ogDescription,
 } = Astro.props as {
-  title?:    string;
-  filename?: string;
-  parent?:   BreadcrumbParent;
+  title?:         string;
+  filename?:      string;
+  parent?:        BreadcrumbParent;
+  description?:   string;
+  ogTitle?:       string;
+  ogDescription?: string;
 };
 ---
 <!DOCTYPE html>
@@ -23,7 +29,18 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} — Syncognie</title>
-    <meta name="robots" content="noindex" />
+    <meta name="robots" content="index, follow" />
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title" content={ogTitle ?? title} />
+    {(ogDescription ?? description) && (
+      <meta property="og:description" content={ogDescription ?? description} />
+    )}
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle ?? title} />
+    {(ogDescription ?? description) && (
+      <meta name="twitter:description" content={ogDescription ?? description} />
+    )}
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
