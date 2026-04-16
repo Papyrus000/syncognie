@@ -454,10 +454,12 @@ const progViv   = progSection(domainesViv);
     mode2.hidden = false;
     carteOuverte = carte;
 
-    // Scroll doux dans le conteneur #atelierContent pour amener la carte en haut
+    // Scroll doux pour amener la carte en vue
     setTimeout(() => {
       const scroller = document.getElementById('atelierContent');
-      if (scroller) {
+      // Sur mobile, atelierContent n'a plus overflow scroll — on utilise window
+      const hasScroll = scroller && scroller.scrollHeight > scroller.clientHeight;
+      if (scroller && hasScroll) {
         const carteTop  = carte.getBoundingClientRect().top;
         const scrollTop = scroller.getBoundingClientRect().top;
         const offset    = carteTop - scrollTop + scroller.scrollTop - 24;
@@ -1297,7 +1299,8 @@ const progViv   = progSection(domainesViv);
     transform: translateY(0);
   }
 
-  @media (max-width: 640px) {
+  /* ── Mobile portrait (≤ 480px) ── */
+  @media (max-width: 480px) {
     .f-grille { grid-template-columns: 1fr; }
     .f-chips-sep { display: none; }
     .f-niveau--corps { padding: 1rem 0.8rem 0.2rem; }
@@ -1305,5 +1308,41 @@ const progViv   = progSection(domainesViv);
     .f-titre-main { font-size: 1.15rem; }
     .f-titre-prefix { font-size: 1rem; }
     .f-term-text, .f-term-cursor { font-size: 0.74rem; }
+
+    /* Carte ouverte : padding réduit pour éviter le débordement */
+    .f-carte--open {
+      padding: 1.2rem 1rem 1.2rem 1.2rem !important;
+    }
+
+    /* Détail : une seule colonne sur mobile */
+    .f-c-detail-body {
+      grid-template-columns: 1fr !important;
+      gap: 0.9rem !important;
+    }
+
+    /* Filtres chips : plus petits */
+    .f-chip {
+      font-size: 0.64rem;
+      padding: 3px 9px;
+    }
+
+    /* Titre niveau */
+    .f-niv-titre { font-size: 1.45rem; }
+  }
+
+  /* ── Mobile paysage + tablettes (481px – 768px) ── */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .f-grille { grid-template-columns: 1fr 1fr; }
+    .f-chips-sep { display: none; }
+
+    /* Carte ouverte : padding confortable */
+    .f-carte--open {
+      padding: 1.6rem 1.8rem 1.6rem 2rem !important;
+    }
+
+    /* Détail : une seule colonne */
+    .f-c-detail-body {
+      grid-template-columns: 1fr !important;
+    }
   }
 </style>

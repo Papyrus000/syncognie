@@ -843,33 +843,91 @@ const {
     border-color: rgba(232,160,80,0.4);
   }
 
-  /* ── Mobile ── */
-  @media (max-width: 640px) {
-    .atelier-wrap { height: auto; }
-    .atelier-frame { position: relative; top: 0; }
+  /* ── Mobile portrait (≤ 480px) ── */
+  @media (max-width: 480px) {
+    .atelier-main {
+      padding: 1rem 0.75rem 2rem;
+    }
+    .atelier-wrap {
+      height: auto;
+      min-height: 0;
+      gap: 0.65rem;
+    }
+    .atelier-frame {
+      position: relative;
+      top: 0;
+      flex: none;
+      min-height: 0;
+      /* Laisse le contenu s'étirer naturellement */
+      display: block;
+      overflow: visible;
+    }
     .atelier-content {
-      padding: 1.8rem 2rem;
+      padding: 1.4rem 1.1rem;
       overflow-y: visible;
       max-height: none;
+      flex: none;
+    }
+    .atelier-content :global(pre) {
+      padding: 1rem 1rem !important;
+      overflow-x: auto;
     }
     .atelier-hint { display: none; }
-    .atelier-content :global(table) { font-size: 0.82rem; }
+    .atelier-content :global(table) {
+      font-size: 0.78rem;
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
     .atelier-content :global(th),
-    .atelier-content :global(td) { padding: 0.5rem 0.7rem; }
-    .scroll-top { bottom: 1.2rem; right: 1.2rem; }
+    .atelier-content :global(td) { padding: 0.45rem 0.6rem; }
+    .scroll-top { bottom: 1rem; right: 1rem; }
+    /* Breadcrumb compact */
+    .crumb { padding: 2px 8px; font-size: 0.65rem; }
+    .atelier-titlebar { padding: 10px 14px; }
 
-    /* Drawer full-width sur mobile */
+    /* Drawer pleine largeur sur mobile portrait */
     .sommaire-drawer {
-      width: 100%;
+      width: 88%;
       border-right: none;
       border-radius: 0;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     }
+  }
 
-    /* Sur mobile le frame est en position relative (pas sticky),
-       donc le drawer s'ancre correctement dans le flux */
+  /* ── Mobile paysage + petites tablettes (481px – 768px) ── */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .atelier-main {
+      padding: 1.5rem 1rem 2.5rem;
+    }
+    .atelier-wrap {
+      height: auto;
+      min-height: 0;
+    }
     .atelier-frame {
       position: relative;
+      top: 0;
+      flex: none;
+      display: block;
+      overflow: visible;
+    }
+    .atelier-content {
+      padding: 2rem 2rem;
+      overflow-y: visible;
+      max-height: none;
+      flex: none;
+    }
+    .atelier-hint { display: none; }
+    .atelier-content :global(table) {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .scroll-top { bottom: 1.2rem; right: 1.2rem; }
+
+    /* Drawer 60% en paysage */
+    .sommaire-drawer {
+      width: 55%;
     }
   }
 </style>

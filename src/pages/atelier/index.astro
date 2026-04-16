@@ -780,11 +780,43 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     0%, 100% { opacity: 1; }
     50%       { opacity: 0; }
   }
-  @media (max-width: 640px) {
+  /* ── Mobile portrait (≤ 480px) ── */
+  @media (max-width: 480px) {
     .atelier-terminal { width: 100%; padding: 0; }
     .atelier-terminal-text,
     .atelier-terminal-prompt,
-    .atelier-terminal-cursor { font-size: 0.72rem; }
+    .atelier-terminal-cursor { font-size: 0.68rem; }
+    /* Hero plus grand en portrait */
+    .atelier-hero-stage { width: 100%; }
+    .atelier-terminal   { width: 100%; }
+    /* Fondations : labels plus courts */
+    .fniv-sous-label { width: 5rem; font-size: 0.55rem; }
+    .fniv-label      { width: 4.5rem; font-size: 0.55rem; }
+    .fniv-badge-num  { display: none; }
+    .fniv-case       { width: 8px; height: 8px; }
+    .fondations-cta-text { display: none; }
+    /* Listes d'articles : extrait tronqué */
+    .entree-extrait  { display: none; }
+    .entree-link     { flex-wrap: wrap; gap: 0.4rem; }
+    .entree-date     { margin-left: 0; font-size: 0.65rem; }
+    .entree-title    { font-size: 0.82rem; }
+    /* Bloc fondations : padding réduit */
+    .fondations-bloc { padding: 1rem 0.9rem 1.1rem; }
+  }
+
+  /* ── Mobile paysage + petites tablettes (481px – 768px) ── */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .atelier-terminal { width: 100%; padding: 0; }
+    .atelier-terminal-text,
+    .atelier-terminal-prompt,
+    .atelier-terminal-cursor { font-size: 0.75rem; }
+    .atelier-hero-stage { width: 92%; }
+    .fniv-sous-label { width: 7rem; }
+    .fniv-label      { width: 5.5rem; }
+    .fniv-badge-num  { display: none; }
+    .fniv-case       { width: 9px; height: 9px; }
+    .fondations-cta-text { display: none; }
+    .entree-extrait  { max-width: 140px; }
   }
 
   /* Articles */
@@ -840,7 +872,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     margin-left: auto;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 480px) {
     .fniv-sous-label { width: 5.5rem; }
     .fniv-label      { width: 5rem; }
     .fniv-badge-num  { display: none; }
@@ -985,7 +1017,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     color: rgba(255,255,255,0.12);
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 480px) {
     .extra-desc { display: none; }
     .extra-titre { font-size: 0.88rem; }
   }
@@ -1044,7 +1076,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   }
   .salon-lien:hover .salon-lien-arrow { transform: translateX(3px); }
 
-  @media (max-width: 640px) {
+  @media (max-width: 480px) {
     .salon-lien-sub { display: none; }
   }
 </style>
