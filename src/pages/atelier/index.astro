@@ -341,7 +341,12 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
       <div class="outil-duo-step">01 · évaluer</div>
       <div class="outil-duo-titre">Granularité Émotionnelle</div>
       <p class="outil-duo-desc">Nommez précisément ce que vous ressentez. Stoppe le piratage de l'amygdale en 5 étapes.</p>
-      <span class="outil-duo-arrow">&#x2192;</span>
+      <div class="outil-duo-footer">
+        <div class="outil-duo-thumb" aria-hidden="true">
+          <img src="/images/nuancier-scene.webp" alt="" loading="lazy" decoding="async" />
+        </div>
+        <span class="outil-duo-arrow">&#x2192;</span>
+      </div>
       <div class="outil-duo-glow outil-duo-glow--evaluer"></div>
     </a>
 
@@ -357,7 +362,12 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
       <div class="outil-duo-step">02 · entraîner</div>
       <div class="outil-duo-titre">Le Nuancier Émotionnel</div>
       <p class="outil-duo-desc">10 scénarios, 4 mots, 1 nuance juste. Entraînez votre cerveau à différencier des émotions très proches.</p>
-      <span class="outil-duo-arrow">&#x2192;</span>
+      <div class="outil-duo-footer">
+        <div class="outil-duo-thumb" aria-hidden="true">
+          <img src="/images/nuemot1.webp" alt="" loading="lazy" decoding="async" />
+        </div>
+        <span class="outil-duo-arrow">&#x2192;</span>
+      </div>
       <div class="outil-duo-glow outil-duo-glow--entrainer"></div>
     </a>
 
@@ -1344,12 +1354,50 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   flex: 1;
   margin: 0 0 0.75rem;
 }
+/* ── Ligne de bas : vignette + flèche ── */
+.outil-duo-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+/* Vignette image */
+.outil-duo-thumb {
+  width: 220px;
+  height: 138px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+}
+.outil-duo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+/* Fondu bas pour fusion avec le fond */
+.outil-duo-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,
+    rgba(30, 16, 4, 0.72) 100%
+  );
+  pointer-events: none;
+}
+
 .outil-duo-arrow {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.9rem;
   opacity: 0.35;
-  align-self: flex-end;
   transition: opacity 0.2s, transform 0.2s;
+  flex-shrink: 0;
 }
 .outil-duo-bloc:hover .outil-duo-arrow {
   opacity: 1;
