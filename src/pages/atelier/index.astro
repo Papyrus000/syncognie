@@ -319,6 +319,9 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     <span class="socle-fondations-cta-text">voir la page</span>
     <span class="socle-fondations-arrow">&#x2192;</span>
   </span>
+  <div class="socle-fondations-thumb" aria-hidden="true">
+    <img src="/images/fondations2.webp" alt="" loading="lazy" decoding="async" />
+  </div>
 </a>
 
 
@@ -1162,14 +1165,15 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
 .socle-fondations-bloc {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.75rem;
   text-decoration: none;
   border: 1px solid rgba(232, 160, 80, 0.18);
   background: rgba(62, 38, 16, 0.45);
   border-radius: 12px;
-  padding: 1.0rem 1.5rem;
+  padding: 1.6rem 1.5rem;
   margin: 0 0 1.8rem;
+  min-height: 130px;
   position: relative;
   overflow: hidden;
   transition: border-color 0.25s, background 0.25s, transform 0.2s, box-shadow 0.25s;
@@ -1182,6 +1186,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   background: linear-gradient(90deg, #e85d20, #f5a623, #ffe066, #f5a623, #e85d20);
   opacity: 0.55;
   transition: opacity 0.25s;
+  z-index: 4;
 }
 .socle-fondations-bloc:hover {
   border-color: rgba(232, 160, 80, 0.32);
@@ -1190,6 +1195,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   box-shadow: 0 8px 28px rgba(20, 8, 0, 0.4);
 }
 .socle-fondations-bloc:hover::before { opacity: 1; }
+
 .socle-fondations-titre {
   font-family: 'Libre Baskerville', serif;
   font-size: 1.1rem;
@@ -1198,6 +1204,8 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   color: #e8a050;
   letter-spacing: 0.01em;
   flex-shrink: 0;
+  position: relative;
+  z-index: 3;
 }
 .socle-fondations-label {
   font-family: 'JetBrains Mono', monospace;
@@ -1206,12 +1214,16 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   text-transform: uppercase;
   color: rgba(255,255,255,0.16);
   flex: 1;
+  position: relative;
+  z-index: 3;
 }
 .socle-fondations-cta {
   display: flex;
   align-items: center;
   gap: 0.3rem;
   flex-shrink: 0;
+  position: relative;
+  z-index: 3;
 }
 .socle-fondations-cta-text {
   font-family: 'JetBrains Mono', monospace;
@@ -1237,6 +1249,51 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 .socle-fondations-bloc:hover .socle-fondations-arrow {
   opacity: 1;
   transform: translateX(3px);
+}
+
+/* ── Vignette fondations2 ── */
+.socle-fondations-thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52%;
+  overflow: hidden;
+  border-radius: 0 11px 11px 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.socle-fondations-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  display: block;
+}
+/* Fondu gauche : opaque → transparent */
+.socle-fondations-thumb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    rgba(52, 28, 8, 1)    0%,
+    rgba(52, 28, 8, 0.9)  14%,
+    rgba(52, 28, 8, 0.55) 32%,
+    rgba(52, 28, 8, 0.12) 55%,
+    transparent           72%
+  );
+}
+/* Fondus haut et bas */
+.socle-fondations-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(to bottom, rgba(42, 20, 4, 0.65) 0%, transparent 25%),
+    linear-gradient(to top,    rgba(42, 20, 4, 0.65) 0%, transparent 25%);
 }
 
 
