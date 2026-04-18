@@ -89,6 +89,23 @@ const ogImage = new URL(image, Astro.site).toString();
     margin: 1.5rem auto; border-radius: 8px;
   }
 
+  /* ── Image de scène (récits, dialogues) ── */
+  img.scene-img {
+    width: 100%;
+    border-radius: 10px;
+    margin: 0.25rem 0 2.5rem;
+    border: 1px solid rgba(26, 23, 20, 0.08);
+    box-shadow:
+      0 2px 8px  rgba(0, 0, 0, 0.10),
+      0 8px 32px rgba(0, 0, 0, 0.14);
+    animation: fadeInScene 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes fadeInScene {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0);   }
+  }
+
   blockquote {
     border-left: 3px solid var(--pop-orange);
     padding-left: 1.5rem; margin: 2rem 0;
