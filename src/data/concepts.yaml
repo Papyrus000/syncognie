@@ -1,0 +1,2597 @@
+# ============================================================
+# SOCLE DE LA CONNAISSANCE UTILE
+# ============================================================
+# Filtre appliqué : une connaissance passe si elle
+# (1) change une décision concrète
+# (2) explique un pattern observable
+# (3) immunise contre une erreur coûteuse
+# (4) est réfutable et testée
+#
+# Statuts épistémiques :
+#   solide    → réfutable, répliqué, consensus scientifique
+#   nuance    → outils pratiques, fondements discutables
+#   emergent  → prometteur, encore en consolidation
+#
+# Structure de chaque concept :
+#   titre           → nom du concept
+#   vocabulaire     → mots clés précis du penseur / domaine
+#   question        → question de vie à laquelle il répond
+#   domaine         → origine académique
+#   penseur         → auteur(s) de référence
+#   statut          → solide | nuance | emergent
+#   definition_courte → une phrase, la plus précise possible
+#   definition      → développement complet
+#   utilite         → pourquoi ça change quelque chose concrètement
+#   pattern         → ce que tu reconnais dans ta vie
+#   concepts_lies   → ponts vers d'autres entrées
+# ============================================================
+
+meta:
+  version: "1.0"
+  questions:
+    - id: comportement
+      label: "Pourquoi je me comporte comme ça ?"
+    - id: emotions
+      label: "Pourquoi je ressens ça ?"
+    - id: changement
+      label: "Pourquoi je n'arrive pas à changer ?"
+    - id: relations
+      label: "Pourquoi mes relations fonctionnent ou échouent ?"
+    - id: influence
+      label: "Comment les autres m'influencent sans que je le voie ?"
+    - id: conflits
+      label: "Comment naviguer les conflits ?"
+    - id: corps
+      label: "Comment mon corps influence mon esprit ?"
+    - id: sante
+      label: "Comment optimiser mon énergie et ma santé ?"
+    - id: decisions
+      label: "Pourquoi je prends de mauvaises décisions ?"
+    - id: clarte
+      label: "Comment penser plus clairement ?"
+
+concepts:
+
+  # ============================================================
+  # Q1 — POURQUOI JE ME COMPORTE COMME ÇA ?
+  # ============================================================
+
+  - titre: "Théorie de l'attachement"
+    vocabulaire:
+      - "style d'attachement"
+      - "base sécure"
+      - "modèle interne opérant"
+      - "attachement sécure / anxieux / évitant / désorganisé"
+      - "hyperactivation / désactivation du système d'attachement"
+    question: comportement
+    domaine: "psychologie du développement"
+    penseur: "John Bowlby, Mary Ainsworth, Mary Main"
+    statut: solide
+    definition_courte: "Les premières relations forment un modèle interne qui structure toutes les relations adultes."
+    definition: |
+      Bowlby a montré que l'enfant développe un système d'attachement biologique —
+      un besoin de proximité avec une figure protectrice. Selon la réponse de cette
+      figure (disponible, imprévisible, absente, effrayante), l'enfant construit un
+      modèle interne opérant : une représentation de lui-même et des autres qui
+      devient le filtre de toutes ses relations futures. Ainsworth a identifié trois
+      styles, Main en a ajouté un quatrième. Ces styles ne sont pas des condamnations
+      — ils sont des adaptations à un environnement précoce.
+    utilite: |
+      Comprendre son style d'attachement explique des patterns relationnels qui
+      semblaient mystérieux : pourquoi on s'éloigne quand quelqu'un se rapproche,
+      pourquoi on devient anxieux quand l'autre ne répond pas, pourquoi certaines
+      relations reproduisent toujours le même scénario.
+    pattern: "Je refais toujours les mêmes erreurs en relation. Je choisis les mêmes types de personnes."
+    concepts_lies:
+      - "la-danse-anxieux-evitant"
+      - "dissociation-et-trauma-complexe"
+      - "regulation-emotionnelle"
+      - "tcc-therapies-cognitivo-comportementales"
+
+  - titre: "Styles d'attachement adulte"
+    vocabulaire:
+      - "sécure"
+      - "anxieux-préoccupé"
+      - "évitant-détaché"
+      - "désorganisé-craintif"
+      - "activation / désactivation"
+    question: comportement
+    domaine: "psychologie clinique"
+    penseur: "Phillip Shaver, Mario Mikulincer, Amir Levine, Rachel Heller"
+    statut: solide
+    definition_courte: "Quatre façons d'être en relation selon la disponibilité perçue des autres et la valeur perçue de soi."
+    definition: |
+      Le style sécure fait confiance naturellement, tolère la distance sans alarme.
+      L'anxieux surveille en permanence les signaux de rejet, amplifie les émotions
+      pour maintenir la connexion. L'évitant coupe l'accès émotionnel pour se protéger,
+      valorise l'indépendance. Le désorganisé veut la proximité et la craint simultanément
+      — souvent lié à un trauma précoce. Ces styles se modifient par l'expérience
+      relationnelle et la thérapie.
+    utilite: |
+      Identifier son style change radicalement l'auto-compréhension. Ce qui semblait
+      être un défaut de caractère devient une stratégie adaptative compréhensible.
+      Connaître le style de l'autre permet d'interpréter ses comportements sans
+      sur-réagir.
+    pattern: "Pourquoi lui/elle s'éloigne quand j'ai besoin de proximité. Pourquoi je panique quand il/elle ne répond pas."
+    concepts_lies:
+      - "theorie-de-lattachement"
+      - "la-danse-anxieux-evitant"
+      - "les-4-cavaliers-de-gottman"
+
+  - titre: "Biais cognitifs"
+    vocabulaire:
+      - "heuristique"
+      - "Système 1 / Système 2"
+      - "biais de confirmation"
+      - "biais d'attribution"
+      - "biais de disponibilité"
+      - "effet de cadrage"
+      - "biais du statu quo"
+      - "aversion à la perte"
+    question: comportement
+    domaine: "psychologie cognitive"
+    penseur: "Daniel Kahneman, Amos Tversky"
+    statut: solide
+    definition_courte: "Raccourcis mentaux systématiques qui dévient le raisonnement de façon prévisible."
+    definition: |
+      Kahneman et Tversky ont cartographié des dizaines de biais reproductibles.
+      Le biais de confirmation : on ne voit que ce qui confirme ce qu'on croit déjà.
+      Le biais d'attribution : on explique ses échecs par les circonstances, ceux des
+      autres par leur caractère. Le biais de disponibilité : on surestime ce qui est
+      mémorable ou récent. L'aversion à la perte : perdre 100€ fait deux fois plus
+      mal que gagner 100€ fait plaisir. Ces biais ne sont pas des stupidités — ce sont
+      des solutions évolutives efficaces dans l'environnement ancestral, inadaptées
+      à certains contextes modernes.
+    utilite: |
+      Connaître les biais ne les élimine pas, mais crée un espace entre le stimulus
+      et la réaction. On peut apprendre à se demander : quel biais pourrait opérer ici ?
+    pattern: "Je suis convaincu d'avoir raison alors que je n'ai entendu qu'un côté. Je prends une décision différente selon comment elle est présentée."
+    concepts_lies:
+      - "systeme-1-systeme-2"
+      - "cout-irrecuperable"
+      - "pensee-probabiliste"
+      - "economie-comportementale"
+
+  - titre: "Système 1 / Système 2"
+    vocabulaire:
+      - "pensée rapide / pensée lente"
+      - "automatique / délibéré"
+      - "heuristique de jugement"
+      - "substitution d'attribut"
+      - "illusion de compréhension"
+    question: comportement
+    domaine: "psychologie cognitive"
+    penseur: "Daniel Kahneman"
+    statut: solide
+    definition_courte: "Le cerveau opère sur deux modes — automatique et rapide, ou délibéré et lent — et confond les deux en permanence."
+    definition: |
+      Système 1 : rapide, automatique, émotionnel, associatif. Il fonctionne en
+      permanence, génère des impressions et des intuitions. Système 2 : lent,
+      délibéré, logique, coûteux en énergie. Le problème central : Système 2 croit
+      qu'il décide, mais la plupart du temps il rationalise après coup les décisions
+      déjà prises par Système 1. L'illusion de compréhension : on croit comprendre
+      le monde mieux qu'on ne le fait, parce que Système 1 génère des récits cohérents
+      à partir de données incomplètes.
+    utilite: |
+      Comprendre que la rationalisation vient après la décision émotionnelle change
+      comment on se juge et comment on juge les autres. On arrête de chercher la
+      logique là où il y a de l'émotion déguisée en logique.
+    pattern: "Je prends une décision puis je trouve des raisons pour la justifier. Je crois réfléchir alors que je réagis."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "fatigue-decisionnelle"
+      - "economie-comportementale"
+
+  - titre: "Mécanismes de défense"
+    vocabulaire:
+      - "déni"
+      - "projection"
+      - "rationalisation"
+      - "dissociation"
+      - "idéalisation / dévalorisation"
+      - "acting out"
+      - "intellectualisation"
+    question: comportement
+    domaine: "psychologie clinique"
+    penseur: "Sigmund Freud, Anna Freud, Nancy McWilliams"
+    statut: nuance
+    definition_courte: "Stratégies inconscientes que le psychisme utilise pour se protéger d'une anxiété insupportable."
+    definition: |
+      McWilliams en propose la cartographie la plus opérationnelle. La projection :
+      attribuer à l'autre ce qu'on ne supporte pas en soi. La rationalisation :
+      trouver de bonnes raisons à ce qu'on fait pour de mauvaises raisons.
+      L'intellectualisation : penser les émotions plutôt que les ressentir.
+      Le déni : ne pas voir ce qui est trop menaçant. Ces mécanismes ne sont pas
+      pathologiques en soi — ils sont adaptatifs jusqu'au moment où ils empêchent
+      de voir la réalité. Statut nuancé : utile comme langage descriptif, pas
+      strictement réfutable au sens scientifique.
+    utilite: |
+      Identifier ses mécanismes de défense habituels permet de comprendre pourquoi
+      certaines réalités sont invisibles pour soi, et visibles pour tout le monde autour.
+    pattern: "Je vois chez les autres exactement ce que je ne supporte pas en moi. Je trouve toujours de bonnes raisons pour ce que je fais."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "trauma-et-corps"
+      - "mecanismes-de-defense"
+
+  - titre: "Psychologie évolutionnaire"
+    vocabulaire:
+      - "adaptation évolutive"
+      - "environnement ancestral"
+      - "fitness reproductif"
+      - "altruisme réciproque"
+      - "détection de tricheur"
+      - "just-so story"
+    question: comportement
+    domaine: "psychologie évolutionnaire"
+    penseur: "Robert Trivers, Leda Cosmides, John Tooby, Steven Pinker"
+    statut: nuance
+    definition_courte: "Les comportements humains universels sont des solutions évolutives à des problèmes ancestraux récurrents."
+    definition: |
+      La jalousie, l'aversion au risque, le tribalisme, la hiérarchie sociale, le
+      désir de statut — ce ne sont pas des défauts ou des constructions culturelles
+      arbitraires. Ce sont des adaptations sélectionnées parce qu'elles augmentaient
+      la survie et la reproduction dans l'environnement ancestral. Trivers a formalisé
+      l'altruisme réciproque : on aide ceux qui nous aideront en retour. Attention aux
+      just-so stories — explications narratives post-hoc non testables. Le cadre
+      général est solide, certaines applications spécifiques sont spéculatives.
+    utilite: |
+      Comprendre l'origine évolutive d'un comportement réduit la honte et augmente
+      la compréhension. On arrête de se battre contre sa nature et on commence à
+      la comprendre pour mieux la naviguer.
+    pattern: "Je réagis de façon disproportionnée à certaines situations sociales. Je suis obsédé par ce que les autres pensent de moi."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "hierarchie-sociale-et-statut"
+      - "neuromodulateurs-cles"
+
+  # ============================================================
+  # Q2 — POURQUOI JE RESSENS ÇA ?
+  # ============================================================
+
+  - titre: "Émotions construites"
+    vocabulaire:
+      - "construction émotionnelle"
+      - "granularité émotionnelle"
+      - "concept émotionnel"
+      - "prédiction active"
+      - "intéroception"
+      - "affect de base"
+    question: emotions
+    domaine: "neurosciences affectives"
+    penseur: "Lisa Feldman Barrett"
+    statut: solide
+    definition_courte: "Les émotions ne sont pas des réactions câblées — elles sont construites par le cerveau à partir de signaux corporels et de contexte."
+    definition: |
+      Barrett réfute le modèle classique des émotions universelles (Ekman). Le
+      cerveau ne réagit pas aux émotions — il les fabrique. Il reçoit des signaux
+      corporels bruts (intéroception), les combine avec le contexte et les concepts
+      émotionnels disponibles, et construit une émotion. Conséquence majeure :
+      plus tu as de mots précis pour tes états émotionnels (granularité émotionnelle
+      élevée), plus ton cerveau peut construire des réponses fines et adaptées.
+      Une personne avec peu de vocabulaire émotionnel vit dans un monde de
+      "je me sens bien / je me sens mal".
+    utilite: |
+      Augmenter son vocabulaire émotionnel n'est pas un exercice littéraire —
+      c'est une intervention neurobiologique directe. Nommer précisément ce qu'on
+      ressent régule physiologiquement l'activation du système limbique.
+    pattern: "Je sais que quelque chose ne va pas mais je ne sais pas quoi. Je dis 'je suis stressé' pour tout."
+    concepts_lies:
+      - "interoception"
+      - "regulation-emotionnelle"
+      - "neuromodulateurs-cles"
+      - "emotions-construites"
+
+  - titre: "Neuromodulateurs clés"
+    vocabulaire:
+      - "dopamine"
+      - "sérotonine"
+      - "cortisol"
+      - "ocytocine"
+      - "noradrénaline"
+      - "GABA"
+      - "système de récompense"
+      - "circuit mésolimbique"
+    question: emotions
+    domaine: "neurosciences"
+    penseur: "Robert Sapolsky, Andrew Huberman, Kent Berridge"
+    statut: solide
+    definition_courte: "Les molécules qui régulent motivation, humeur, stress, lien social et arousal — pas comme on le croit souvent."
+    definition: |
+      Dopamine : gère l'anticipation et la motivation, pas le plaisir lui-même
+      (Kent Berridge distingue wanting vs liking). Explique la dépendance, la
+      procrastination, l'addiction aux réseaux sociaux. Sérotonine : sentiment
+      de sécurité, statut social perçu, stabilité de l'humeur. Cortisol : hormone
+      du stress — utile en aigu, destructeur en chronique (mémoire, immunité,
+      métabolisme, cardiovasculaire). Ocytocine : lien social et confiance, mais
+      aussi renforce les préjugés envers l'out-group. Noradrénaline : focus et
+      arousal, excès = anxiété, manque = léthargie.
+    utilite: |
+      Comprendre ces mécanismes change l'interprétation de ses propres états.
+      Le manque de motivation n'est pas une faiblesse de caractère — c'est
+      souvent un problème de dopamine basale. L'anxiété sociale n'est pas une
+      timidité — c'est souvent de la noradrénaline et du cortisol.
+    pattern: "Je procrastine alors que je veux vraiment faire ce projet. Je me sens vide après avoir obtenu ce que je voulais."
+    concepts_lies:
+      - "emotions-construites"
+      - "neuromodulateurs-cles"
+      - "physiologie-du-stress"
+      - "sommeil"
+
+  - titre: "Intéroception"
+    vocabulaire:
+      - "intéroception"
+      - "signaux corporels"
+      - "conscience corporelle"
+      - "nerf vague"
+      - "gut feeling"
+      - "marqueur somatique"
+    question: emotions
+    domaine: "neurosciences"
+    penseur: "Antonio Damasio, Lisa Feldman Barrett, A.D. Craig"
+    statut: solide
+    definition_courte: "La capacité à percevoir les signaux internes du corps — le substrat physiologique des émotions et de l'intuition."
+    definition: |
+      Damasio (hypothèse du marqueur somatique) a montré que les décisions
+      rationnelles dépendent des signaux corporels. Des patients avec lésions
+      du cortex préfrontal ventromédian, incapables de ressentir ces marqueurs,
+      prennent des décisions catastrophiques malgré un raisonnement logique intact.
+      L'intéroception c'est la capacité à percevoir rythme cardiaque, tension
+      musculaire, digestion, température interne. Barrett montre que c'est le
+      matériau brut à partir duquel le cerveau construit les émotions.
+    utilite: |
+      Développer l'intéroception améliore la régulation émotionnelle, la qualité
+      des décisions et la conscience de ses propres besoins. C'est une compétence
+      entraînable par la méditation, le yoga, la thérapie somatique.
+    pattern: "Je ne me rends compte que j'étais épuisé qu'après être tombé malade. Je confonds faim et anxiété."
+    concepts_lies:
+      - "emotions-construites"
+      - "systeme-nerveux-autonome"
+      - "trauma-et-corps"
+      - "mindfulness-pleine-conscience"
+
+  - titre: "Régulation émotionnelle"
+    vocabulaire:
+      - "régulation émotionnelle"
+      - "réévaluation cognitive"
+      - "suppression émotionnelle"
+      - "tolérance à la détresse"
+      - "fenêtre de tolérance"
+      - "co-régulation"
+    question: emotions
+    domaine: "psychologie clinique"
+    penseur: "James Gross, Daniel Siegel, Marsha Linehan"
+    statut: solide
+    definition_courte: "Les stratégies conscientes et inconscientes pour moduler l'intensité, la durée et l'expression des émotions."
+    definition: |
+      Gross distingue la réévaluation cognitive (modifier l'interprétation d'une
+      situation avant que l'émotion monte) de la suppression (bloquer l'expression
+      après que l'émotion est déjà là). La réévaluation est plus efficace et moins
+      coûteuse cognitivement. Siegel parle de fenêtre de tolérance : la zone
+      d'activation optimale où on peut traiter l'expérience sans être débordé
+      (hyper-arousal) ni coupé (hypo-arousal). La co-régulation : on régule
+      nos émotions via celles des autres — base neurobiologique du besoin de lien.
+    utilite: |
+      Comprendre qu'il existe des stratégies de régulation plus ou moins efficaces
+      change l'approche. On arrête de supprimer et on apprend à réévaluer, nommer,
+      tolérer.
+    pattern: "Je ravale mes émotions puis elles explosent. Je suis débordé par des émotions qui semblent disproportionnées."
+    concepts_lies:
+      - "emotions-construites"
+      - "systeme-nerveux-autonome"
+      - "regulation-emotionnelle"
+      - "tcc-therapies-cognitivo-comportementales"
+
+  # ============================================================
+  # Q3 — POURQUOI JE N'ARRIVE PAS À CHANGER ?
+  # ============================================================
+
+  - titre: "Neuroplasticité"
+    vocabulaire:
+      - "neuroplasticité"
+      - "potentiation à long terme (LTP)"
+      - "synaptogenèse"
+      - "élagage synaptique"
+      - "BDNF"
+      - "Hebb : neurons that fire together wire together"
+    question: changement
+    domaine: "neurosciences"
+    penseur: "Donald Hebb, Michael Merzenich, Eric Kandel"
+    statut: solide
+    definition_courte: "Le cerveau adulte se reconfigure structurellement en fonction de ce qu'on pratique — le changement est possible mais demande de la répétition."
+    definition: |
+      Le principe de Hebb (1949) : les neurones qui s'activent ensemble se
+      connectent ensemble. Chaque répétition renforce une connexion synaptique.
+      Le BDNF (Brain-Derived Neurotrophic Factor) est le fertilisant neuronal —
+      stimulé par l'exercice, le sommeil, la nouveauté. La neuroplasticité est
+      réelle à tout âge mais diminue avec l'âge sans stimulation active.
+      Conséquence : ce que tu pratiques se renforce, ce que tu n'utilises pas
+      s'atrophie. Le changement n'est pas une question d'intention mais de
+      répétition dans le temps.
+    utilite: |
+      Remplace la croyance "je suis comme ça" par "j'ai pratiqué ça suffisamment
+      longtemps pour que ça devienne automatique". Change la relation au changement :
+      il est possible, mais pas instantané.
+    pattern: "J'essaie de changer et ça ne dure pas. Je retombe toujours dans les mêmes comportements."
+    concepts_lies:
+      - "pratique-deliberee"
+      - "pre-engagement-dispositifs-dulysse"
+      - "sommeil"
+      - "exercice-et-cerveau"
+
+  - titre: "Épigénétique comportementale"
+    vocabulaire:
+      - "épigénétique"
+      - "méthylation de l'ADN"
+      - "expression génique"
+      - "déterminisme génétique"
+      - "gène × environnement"
+    question: changement
+    domaine: "biologie moléculaire"
+    penseur: "Michael Meaney, Bruce Lipton (avec précaution), Randy Jirtle"
+    statut: solide
+    definition_courte: "L'environnement et le comportement modifient l'expression des gènes sans changer l'ADN — tu n'es pas prisonnier de ton génome."
+    definition: |
+      L'épigénétique montre que les gènes sont des possibilités, pas des destins.
+      La méthylation de l'ADN peut activer ou éteindre des gènes en fonction du
+      stress, de l'alimentation, des relations, du sommeil. Meaney a montré chez
+      les rats que les soins maternels modifient l'expression des gènes du stress
+      de façon transgénérationnelle. Attention : Bruce Lipton va trop loin dans
+      ses affirmations populaires. La base scientifique est solide, certaines
+      applications populaires sont spéculatives.
+    utilite: |
+      Réfute le déterminisme génétique pur. Les choix de vie ont un impact
+      biologique mesurable. La génétique donne des probabilités, pas des certitudes.
+    pattern: "Dans ma famille tout le monde est comme ça, je peux pas y faire grand chose. C'est dans mes gènes."
+    concepts_lies:
+      - "neuroplasticite"
+      - "inflammation-chronique-de-bas-grade"
+      - "physiologie-du-stress"
+
+  - titre: "Pratique délibérée"
+    vocabulaire:
+      - "deliberate practice"
+      - "zone proximale de développement"
+      - "feedback immédiat"
+      - "représentations mentales"
+      - "expertise"
+      - "règle des 10 000 heures (mal comprise)"
+    question: changement
+    domaine: "psychologie cognitive"
+    penseur: "Anders Ericsson, Vygotski"
+    statut: solide
+    definition_courte: "L'expertise vient d'un type spécifique de pratique — à la limite de ses capacités, avec feedback immédiat, sur ses faiblesses."
+    definition: |
+      Ericsson a montré que ce n'est pas le nombre d'heures qui crée l'expertise
+      mais la qualité de la pratique. La pratique délibérée : hors zone de confort,
+      juste au-delà de ses capacités actuelles, avec feedback immédiat et précis,
+      focalisée sur les faiblesses spécifiques. La règle des 10 000 heures de
+      Gladwell déforme Ericsson — Ericsson lui-même a contesté cette vulgarisation.
+      10 000 heures de pratique non délibérée ne créent pas l'expertise.
+    utilite: |
+      Change la façon dont on apprend et dont on s'améliore. Passer du temps n'est
+      pas suffisant. La qualité de l'attention et du feedback est ce qui compte.
+    pattern: "Je fais la même chose depuis 10 ans et je ne m'améliore plus. Je travaille beaucoup sans progresser."
+    concepts_lies:
+      - "neuroplasticite"
+      - "flow-etat-optimal-dexperience"
+      - "motivation-intrinseque-vs-extrinseque"
+      - "science-de-lapprentissage"
+
+  - titre: "Science de l'apprentissage"
+    vocabulaire:
+      - "spacing effect (effet d'espacement)"
+      - "testing effect (récupération en mémoire)"
+      - "interleaving (entrelacement)"
+      - "desirable difficulties"
+      - "illusion de maîtrise"
+    question: changement
+    domaine: "psychologie cognitive"
+    penseur: "Robert Bjork, Henry Roediger, Hermann Ebbinghaus"
+    statut: solide
+    definition_courte: "Les méthodes d'apprentissage intuitives sont sous-optimales — les méthodes efficaces sont contre-intuitives."
+    definition: |
+      L'effet d'espacement : réviser à intervalles croissants bat le bachotage.
+      L'effet de test : se tester activement (récupération en mémoire) bat la
+      relecture passive. L'entrelacement : alterner plusieurs sujets bat la
+      répétition d'un seul. Les desirable difficulties : rendre l'apprentissage
+      plus difficile améliore la rétention à long terme même si ça semble moins
+      efficace à court terme. L'illusion de maîtrise : après une relecture fluide,
+      on croit savoir alors qu'on a seulement de la familiarité.
+    utilite: |
+      Changer ses méthodes d'apprentissage peut doubler ou tripler l'efficacité
+      sans augmenter le temps passé.
+    pattern: "Je relis mes notes et j'ai l'impression de savoir, puis à l'examen ou en pratique, rien ne sort."
+    concepts_lies:
+      - "pratique-deliberee"
+      - "neuroplasticite"
+      - "memoire-types-et-consolidation"
+
+  - titre: "Motivation intrinsèque vs extrinsèque"
+    vocabulaire:
+      - "motivation intrinsèque / extrinsèque"
+      - "autodétermination"
+      - "autonomie"
+      - "compétence"
+      - "relation"
+      - "effet de surjustification"
+      - "amotivation"
+    question: changement
+    domaine: "psychologie motivationnelle"
+    penseur: "Edward Deci, Richard Ryan"
+    statut: solide
+    definition_courte: "Les récompenses externes détruisent la motivation intrinsèque sur les tâches déjà intéressantes."
+    definition: |
+      La Self-Determination Theory (SDT) de Deci et Ryan identifie trois besoins
+      psychologiques fondamentaux : autonomie (se sentir à l'origine de ses actions),
+      compétence (se sentir efficace), relation (se sentir connecté). La motivation
+      intrinsèque (faire quelque chose pour l'activité elle-même) est la plus
+      durable et la plus créative. L'effet de surjustification : ajouter une
+      récompense externe à une activité intrinsèquement motivante réduit la
+      motivation intrinsèque. Très bien répliqué.
+    utilite: |
+      Change comment on se gère soi (moins de carotte et bâton) et comment on
+      motive les autres (enfants, équipes). Explique pourquoi certains emplois
+      épuisent malgré un bon salaire.
+    pattern: "J'adorais cette activité avant qu'elle devienne mon travail. Je n'ai plus envie de faire ce qu'on me force à faire."
+    concepts_lies:
+      - "flow-etat-optimal-dexperience"
+      - "pratique-deliberee"
+      - "neuromodulateurs-cles"
+
+  # ============================================================
+  # Q4 — POURQUOI MES RELATIONS FONCTIONNENT OU ÉCHOUENT ?
+  # ============================================================
+
+  - titre: "Les 4 cavaliers de Gottman"
+    vocabulaire:
+      - "criticism (critique du caractère)"
+      - "contempt (mépris)"
+      - "defensiveness (défensivité)"
+      - "stonewalling (mur)"
+      - "antidotes"
+      - "demande douce"
+      - "responsabilité"
+    question: relations
+    domaine: "psychologie des relations"
+    penseur: "John Gottman, Julie Gottman"
+    statut: solide
+    definition_courte: "Quatre comportements qui prédisent la rupture avec 90% de précision — et leurs antidotes."
+    definition: |
+      Gottman a étudié des milliers de couples sur 40 ans. Quatre comportements
+      prédisent la rupture. Criticism : attaquer le caractère ("tu es toujours...")
+      plutôt que le comportement ("quand tu fais ça, je ressens..."). Contempt :
+      mépris, sarcasme, roulement des yeux — le plus toxique, prédit aussi les
+      maladies infectieuses du partenaire. Defensiveness : contre-attaquer plutôt
+      qu'écouter — "c'est pas ma faute, c'est toi qui...". Stonewalling : mur,
+      retrait émotionnel complet — souvent une réponse à un arousal physiologique
+      trop élevé. Ces patterns s'appliquent hors couple : travail, famille, amitié.
+    utilite: |
+      Reconnaître ces patterns en temps réel (ou a posteriori) change la dynamique
+      des conflits. Les antidotes sont identifiés et apprenables.
+    pattern: "Nos disputes finissent toujours de la même façon. Je deviens froid et distant pendant les conflits."
+    concepts_lies:
+      - "ratio-positif-negatif"
+      - "communication-non-violente"
+      - "styles-dattachement-adulte"
+      - "ecoute-active-et-co-regulation"
+
+  - titre: "Ratio positif / négatif"
+    vocabulaire:
+      - "ratio de Gottman (5:1)"
+      - "banque émotionnelle"
+      - "réparation relationnelle"
+      - "turning towards / away / against"
+    question: relations
+    domaine: "psychologie des relations"
+    penseur: "John Gottman"
+    statut: solide
+    definition_courte: "Les relations stables maintiennent 5 interactions positives pour 1 négative — pas par optimisme, par mécanique relationnelle."
+    definition: |
+      Gottman a mesuré que dans les relations durables, le ratio d'interactions
+      positives sur négatives est de 5:1 au minimum en temps ordinaire, et d'au
+      moins 1:1 pendant les conflits. Les moments positifs : humour, intérêt,
+      affection, validation, curiosité. Les "bids for connection" (offres de
+      connexion) : petites tentatives de contact auxquelles on répond en se
+      tournant vers (towards), en s'éloignant (away), ou contre (against).
+      Les couples qui durent répondent aux bids même petits.
+    utilite: |
+      La qualité d'une relation se construit dans les moments ordinaires, pas
+      dans les grands gestes. L'attention aux petites interactions quotidiennes
+      est plus prédictive que les grandes déclarations.
+    pattern: "On a des moments merveilleux mais les tensions s'accumulent. Je ne comprends pas pourquoi la relation se dégrade."
+    concepts_lies:
+      - "les-4-cavaliers-de-gottman"
+      - "styles-dattachement-adulte"
+      - "ecoute-active-et-co-regulation"
+
+  - titre: "La danse anxieux-évitant"
+    vocabulaire:
+      - "protest behavior"
+      - "activation du système d'attachement"
+      - "déactivation défensive"
+      - "poursuite / retrait"
+      - "prophétie auto-réalisatrice relationnelle"
+    question: relations
+    domaine: "psychologie clinique"
+    penseur: "Sue Johnson, Stan Tatkin, Amir Levine"
+    statut: solide
+    definition_courte: "Le couple anxieux-évitant crée une boucle où chacun déclenche exactement ce qu'il craint chez l'autre."
+    definition: |
+      C'est le pattern relationnel le plus courant et le plus douloureux.
+      L'anxieux, activé par la distance, intensifie les demandes de connexion
+      (protest behavior). L'évitant, submergé par cette intensité, se retire
+      davantage pour se réguler. Le retrait de l'évitant active encore plus
+      l'anxieux. La boucle s'emballe. Chacun vit l'autre comme le problème.
+      En réalité c'est la danse elle-même le problème. Reconnaître la danse
+      permet de sortir de la danse.
+    utilite: |
+      Nommer la boucle dépersonnalise le conflit. On arrête de voir l'autre
+      comme problème et on commence à voir le pattern.
+    pattern: "Plus je me rapproche, plus il/elle s'éloigne. Plus je m'éloigne pour lui donner de l'espace, plus il/elle s'accroche."
+    concepts_lies:
+      - "styles-dattachement-adulte"
+      - "les-4-cavaliers-de-gottman"
+      - "ecoute-active-et-co-regulation"
+      - "tcc-therapies-cognitivo-comportementales"
+
+  - titre: "Communication Non Violente"
+    vocabulaire:
+      - "observation (sans jugement)"
+      - "sentiment"
+      - "besoin"
+      - "demande (vs exigence)"
+      - "empathie"
+      - "auto-empathie"
+      - "langage chacal / girafe"
+    question: relations
+    domaine: "communication"
+    penseur: "Marshall Rosenberg"
+    statut: nuance
+    definition_courte: "Un cadre de communication structuré autour de l'observation, des sentiments, des besoins et des demandes — pour réduire la violence dans les échanges."
+    definition: |
+      Rosenberg propose quatre étapes : observer sans évaluer ("tu as dit X"
+      plutôt que "tu es toujours en retard"), identifier ce qu'on ressent,
+      identifier le besoin sous-jacent, formuler une demande claire et négociable.
+      La distinction demande / exigence est centrale : une demande accepte le non
+      de l'autre. La CNV est particulièrement utile comme discipline mentale
+      (avant de parler : quel est mon besoin réel ?) même si la forme verbale
+      peut sembler artificielle en conversation ordinaire. Statut nuancé : les
+      études d'efficacité clinique sont limitées.
+    utilite: |
+      Révèle que derrière chaque conflit il y a des besoins non exprimés. Déplace
+      la conversation de l'accusation vers la connexion.
+    pattern: "Je dis ce que je pense mais l'autre se sent attaqué. Je demande quelque chose et ça finit en dispute."
+    concepts_lies:
+      - "les-4-cavaliers-de-gottman"
+      - "ecoute-active-et-co-regulation"
+      - "besoins-fondamentaux-sdt"
+
+  - titre: "Écoute active et co-régulation"
+    vocabulaire:
+      - "écoute active"
+      - "présence totale"
+      - "reflet empathique"
+      - "co-régulation"
+      - "résonance limbique"
+      - "validation"
+    question: relations
+    domaine: "psychologie / neurosciences"
+    penseur: "Carl Rogers, Thomas Lewis, John Gottman"
+    statut: solide
+    definition_courte: "Se sentir vraiment écouté régule le système nerveux de l'orateur — l'écoute est un acte physiologique, pas seulement social."
+    definition: |
+      Lewis, Amini et Lannon (*A General Theory of Love*) ont montré que les
+      mammifères régulent leurs systèmes nerveux autonomes les uns par les autres —
+      résonance limbique. Quand quelqu'un se sent vraiment écouté (sans jugement,
+      sans conseil non sollicité, sans redirection), son arousal sympathique se
+      régule. Rogers a formalisé les conditions : congruence, considération positive
+      inconditionnelle, empathie. L'écoute active n'est pas une technique relationnelle
+      douce — c'est de la co-régulation physiologique.
+    utilite: |
+      La qualité de présence dans une conversation est plus importante que les mots.
+      Apprendre à écouter sans préparer sa réponse change radicalement la qualité
+      des relations.
+    pattern: "Les gens me disent qu'ils ne se sentent pas entendus alors que je leur donne des solutions. Je me sens seul même entouré."
+    concepts_lies:
+      - "communication-non-violente"
+      - "ecoute-active-et-co-regulation"
+      - "les-4-cavaliers-de-gottman"
+
+  # ============================================================
+  # Q5 — COMMENT LES AUTRES M'INFLUENCENT SANS QUE JE LE VOIE ?
+  # ============================================================
+
+  - titre: "Principes de persuasion"
+    vocabulaire:
+      - "réciprocité"
+      - "engagement / cohérence"
+      - "preuve sociale"
+      - "autorité"
+      - "sympathie (liking)"
+      - "rareté"
+      - "unité (7e principe)"
+    question: influence
+    domaine: "psychologie sociale"
+    penseur: "Robert Cialdini"
+    statut: solide
+    definition_courte: "Six leviers universels d'influence sociale — utiles pour persuader, indispensables pour reconnaître quand ils sont utilisés contre soi."
+    definition: |
+      Cialdini a identifié six principes répliqués : réciprocité (on se sent obligé
+      de rendre), engagement/cohérence (on aligne ses actions sur ses déclarations
+      passées), preuve sociale (on fait ce que les autres font), autorité (on suit
+      les experts perçus), sympathie (on est influencé par ceux qu'on aime),
+      rareté (ce qui est rare semble plus précieux). Plus récemment il ajoute
+      l'unité : l'identité partagée. Ces principes opèrent hors conscience.
+      Ils sont utilisés en marketing, politique, manipulation relationnelle.
+    utilite: |
+      L'usage le plus important est défensif : reconnaître quand ces leviers sont
+      activés contre soi pour créer un espace de choix conscient.
+    pattern: "J'ai acheté quelque chose dont je n'avais pas besoin. J'ai dit oui à quelque chose juste pour être cohérent avec ce que j'avais dit avant."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "systeme-1-systeme-2"
+      - "triangle-dramatique-de-karpman"
+
+  - titre: "Triangle dramatique de Karpman"
+    vocabulaire:
+      - "Persécuteur"
+      - "Victime"
+      - "Sauveur"
+      - "triangle de Karpman"
+      - "jeux psychologiques"
+      - "rotation des rôles"
+    question: influence
+    domaine: "analyse transactionnelle"
+    penseur: "Stephen Karpman, Eric Berne"
+    statut: nuance
+    definition_courte: "Un modèle des dynamiques relationnelles dysfonctionnelles où chacun joue alternativement trois rôles : Persécuteur, Victime, Sauveur."
+    definition: |
+      Karpman a formalisé ce triangle à partir de l'analyse transactionnelle de
+      Berne. Les jeux psychologiques : séquences d'interactions répétitives avec
+      un retournement et un bénéfice caché (gain psychologique). Dans le triangle,
+      les rôles tournent : le Sauveur devient Persécuteur quand ses efforts ne
+      sont pas reconnus, la Victime devient Persécuteur envers le Sauveur qui
+      "n'aide pas bien". Sortir du triangle : passer au triangle du gagnant
+      (Challenger / Créateur / Coach). Statut nuancé : puissant comme langage
+      descriptif, fondements scientifiques limités.
+    utilite: |
+      Identifier dans quel rôle on est entré dans une interaction, et comment
+      on y a été invité, permet de ne pas jouer la pièce jusqu'à la fin.
+    pattern: "J'aide quelqu'un et je finis épuisé et rancunier. Je me retrouve dans des conflits dont je ne comprends pas comment je suis arrivé là."
+    concepts_lies:
+      - "mecanismes-de-defense"
+      - "analyse-transactionnelle-etats-du-moi"
+      - "communication-non-violente"
+
+  - titre: "Contagion émotionnelle"
+    vocabulaire:
+      - "contagion émotionnelle"
+      - "neurones miroirs"
+      - "synchronisation limbique"
+      - "empathie affective / cognitive"
+      - "régulation co-construite"
+    question: influence
+    domaine: "neurosciences sociales"
+    penseur: "Giacomo Rizzolatti, Elaine Hatfield, Thomas Lewis"
+    statut: solide
+    definition_courte: "Les émotions sont contagieuses biologiquement — on absorbe les états émotionnels des personnes avec qui on passe du temps."
+    definition: |
+      Les neurones miroirs (Rizzolatti) s'activent quand on observe une action
+      comme si on la réalisait soi-même. Hatfield a montré que la synchronisation
+      émotionnelle opère automatiquement, hors conscience — mimétisme facial,
+      posture, ton de voix. Lewis et al. : les mammifères régulent leurs systèmes
+      nerveux autonomes les uns par les autres. Conséquence directe : les personnes
+      avec qui on passe du temps régulent ou dérèglent notre système nerveux.
+      L'environnement social est un régulateur physiologique.
+    utilite: |
+      Choisir son environnement social est un acte de santé, pas de snobisme.
+      Les personnes chroniquement dysrégulées dérèglent ceux qui les entourent.
+    pattern: "Je me sens épuisé après avoir passé du temps avec certaines personnes. Je rentre dans la mauvaise humeur de l'autre sans l'avoir voulu."
+    concepts_lies:
+      - "ecoute-active-et-co-regulation"
+      - "systeme-nerveux-autonome"
+      - "neuromodulateurs-cles"
+
+  - titre: "Théorie des jeux et coopération"
+    vocabulaire:
+      - "dilemme du prisonnier"
+      - "tit-for-tat"
+      - "jeux répétés"
+      - "stratégie dominante"
+      - "équilibre de Nash"
+      - "coopération émergente"
+    question: influence
+    domaine: "mathématiques / économie"
+    penseur: "John Nash, Robert Axelrod, John Maynard Smith"
+    statut: solide
+    definition_courte: "Dans les jeux répétés, la stratégie coopérer d'abord puis imiter bat toutes les autres à long terme."
+    definition: |
+      Axelrod a organisé des tournois de simulation : quelle stratégie gagne le
+      dilemme du prisonnier répété ? Tit-for-tat (coopère d'abord, puis fais
+      ce que l'autre a fait au tour précédent) bat toutes les stratégies plus
+      complexes. Ses propriétés : gentille (commence par coopérer), punitive
+      (répond à la trahison), clémente (pardonne dès que l'autre coopère à nouveau),
+      claire (l'autre comprend la logique). C'est la base rationnelle de la
+      réciprocité, la confiance, et la réputation.
+    utilite: |
+      La coopération n'est pas naïve — c'est la stratégie rationnellement optimale
+      dans les relations durables. La trahison est optimale seulement dans les
+      interactions uniques sans réputation.
+    pattern: "Je ne sais pas si je peux faire confiance. Je me fais avoir quand je coopère mais je perds des opportunités quand je ne coopère pas."
+    concepts_lies:
+      - "theorie-des-jeux-et-cooperation"
+      - "theorie-des-jeux-et-cooperation"
+      - "psychologie-evolutionnaire"
+
+  # ============================================================
+  # Q6 — COMMENT NAVIGUER LES CONFLITS ?
+  # ============================================================
+
+  - titre: "Physiologie du conflit"
+    vocabulaire:
+      - "flooding (submersion physiologique)"
+      - "arousal"
+      - "seuil de 100 bpm"
+      - "auto-apaisement"
+      - "pause structurée"
+      - "mémoire dépendante de l'état"
+    question: conflits
+    domaine: "psychologie / neurosciences"
+    penseur: "John Gottman, Jaak Panksepp"
+    statut: solide
+    definition_courte: "Au-delà d'un certain niveau d'activation physiologique, le cerveau perd sa capacité de traitement rationnel — le conflit devient impossible à résoudre."
+    definition: |
+      Gottman a mesuré que quand la fréquence cardiaque dépasse environ 100 bpm
+      en conflit, la capacité de traitement de l'information complexe s'effondre.
+      On est en survie, pas en dialogue. Le stonewalling est souvent une réponse
+      à ce flooding — un mécanisme de protection physiologique, pas de la
+      mauvaise volonté. La pause structurée (minimum 20 minutes, activité calme)
+      permet au système nerveux de se réguler. Reprendre la conversation avant
+      est contre-productif.
+    utilite: |
+      Comprend que certains conflits ne peuvent pas être résolus dans le moment —
+      non par manque de volonté mais par physiologie. La pause n'est pas de la
+      fuite, c'est une condition de la résolution.
+    pattern: "Nos disputes s'emballent et rien n'est résolu. Je dis des choses que je regrette quand je suis énervé."
+    concepts_lies:
+      - "les-4-cavaliers-de-gottman"
+      - "systeme-nerveux-autonome"
+      - "regulation-emotionnelle"
+
+  - titre: "Escalier d'inférence d'Argyris"
+    vocabulaire:
+      - "ladder of inference"
+      - "données sélectionnées"
+      - "hypothèses"
+      - "boucle réflexive"
+      - "modèles mentaux"
+      - "single-loop / double-loop learning"
+    question: conflits
+    domaine: "théorie des organisations"
+    penseur: "Chris Argyris, Peter Senge"
+    statut: nuance
+    definition_courte: "On monte automatiquement d'une observation brute à une conclusion abstraite en sautant des étapes — et on agit sur la conclusion comme si c'était la réalité."
+    definition: |
+      Argyris identifie les échelons : données brutes → données sélectionnées →
+      signification ajoutée → hypothèses → conclusions → croyances → actions.
+      On monte cet escalier en quelques millisecondes, hors conscience. La boucle
+      réflexive : nos croyances filtrent quelles données on sélectionne, ce qui
+      confirme nos croyances. Le double-loop learning : remettre en question
+      les hypothèses elles-mêmes, pas seulement les actions.
+    utilite: |
+      Descendre l'escalier dans un conflit — "quelles données exactement m'ont
+      amené à cette conclusion ?" — désamorce les malentendus et les projections.
+    pattern: "Je suis convaincu que l'autre a fait quelque chose intentionnellement alors qu'il ne savait pas. Je tire des conclusions sur quelqu'un à partir d'un seul comportement."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "biais-cognitifs"
+      - "communication-non-violente"
+
+  - titre: "Empathie vs sympathie"
+    vocabulaire:
+      - "empathie affective"
+      - "empathie cognitive"
+      - "sympathie"
+      - "détresse empathique"
+      - "fatigue de compassion"
+      - "présence"
+    question: conflits
+    domaine: "psychologie / neurosciences"
+    penseur: "Brené Brown, Tania Singer, Paul Bloom"
+    statut: solide
+    definition_courte: "L'empathie connecte, la sympathie isole — et trop d'empathie affective épuise sans aider."
+    definition: |
+      Brown distingue empathie (se mettre dans le cadre de l'autre sans jugement,
+      "je comprends pourquoi tu ressens ça") et sympathie ("au moins..."). La
+      sympathie crée de la distance. Singer distingue l'empathie affective
+      (ressentir ce que l'autre ressent — épuisante, mène à la détresse empathique)
+      de l'empathie cognitive (comprendre ce que l'autre ressent sans le ressentir
+      — sustainable). Bloom (*Against Empathy*) critique l'empathie affective
+      comme guide moral — elle est biaisée, épuisante, et mal orientée.
+    utilite: |
+      Les aidants, thérapeutes, et personnes très empathiques épuisent souvent
+      par excès d'empathie affective. Cultiver l'empathie cognitive protège
+      et connecte mieux.
+    pattern: "Je m'épuise à ressentir les problèmes des autres. Je ne sais pas comment aider sans être submergé."
+    concepts_lies:
+      - "contagion-emotionnelle"
+      - "regulation-emotionnelle"
+      - "ecoute-active-et-co-regulation"
+
+  # ============================================================
+  # Q7 — COMMENT MON CORPS INFLUENCE MON ESPRIT ?
+  # ============================================================
+
+  - titre: "Système nerveux autonome"
+    vocabulaire:
+      - "sympathique (fight or flight)"
+      - "parasympathique (rest and digest)"
+      - "variabilité cardiaque (HRV)"
+      - "nerf vague"
+      - "réponse de stress"
+      - "récupération"
+      - "fenêtre de tolérance"
+    question: corps
+    domaine: "neurophysiologie"
+    penseur: "Walter Cannon, Stephen Porges, Peter Levine"
+    statut: solide
+    definition_courte: "Le système nerveux autonome régule en permanence l'état physiologique — et cet état détermine les capacités cognitives, émotionnelles et relationnelles disponibles."
+    definition: |
+      Le sympathique mobilise : accélère le cœur, dilate les poumons, redirige
+      le sang vers les muscles. Utile en danger aigu, destructeur en activation
+      chronique. Le parasympathique restaure : ralentit le cœur, active la
+      digestion, facilite le lien social. La HRV (variabilité cardiaque) est
+      le meilleur indicateur de l'équilibre entre les deux — plus elle est élevée,
+      plus le système est flexible et résilient. Le nerf vague est le câble
+      principal du parasympathique — modulable par la respiration, le chant,
+      le froid, la connexion sociale.
+    utilite: |
+      L'état du système nerveux autonome détermine qui tu es dans l'instant :
+      curieux ou défensif, créatif ou rigide, connecté ou isolé. Le moduler
+      directement (respiration, froid, exercice) est le levier le plus rapide.
+    pattern: "Je suis incapable de penser clairement quand je suis stressé. Je ne me reconnais pas dans certaines situations de pression."
+    concepts_lies:
+      - "physiologie-du-stress"
+      - "interoception"
+      - "hrv-variabilite-de-la-frequence-cardiaque"
+      - "systeme-nerveux-autonome"
+
+  - titre: "Physiologie du stress"
+    vocabulaire:
+      - "axe HPA (hypothalamo-hypophyso-surrénalien)"
+      - "cortisol"
+      - "adrénaline / noradrénaline"
+      - "stress aigu vs chronique"
+      - "allostasie"
+      - "charge allostatique"
+      - "réponse de défi vs menace"
+    question: corps
+    domaine: "endocrinologie / neurosciences"
+    penseur: "Hans Selye, Bruce McEwen, Kelly McGonigal, Robert Sapolsky"
+    statut: solide
+    definition_courte: "Le stress aigu est adaptatif, le stress chronique est destructeur — et la perception du stress modifie sa physiologie."
+    definition: |
+      Selye a introduit le concept de stress biologique. L'axe HPA libère cortisol
+      et adrénaline face à une menace perçue. Utile en aigu (survie, performance),
+      destructeur en chronique : dégradation de la mémoire hippocampique, suppression
+      immunitaire, inflammation, risque cardiovasculaire. McGonigal a montré que
+      la croyance sur le stress modifie sa physiologie : voir le stress comme
+      préparation (réponse de défi : DHEA+cortisol, dilatation vasculaire) versus
+      menace (cortisol seul, constriction vasculaire) produit des profils physiologiques
+      et des résultats mesurables différents.
+    utilite: |
+      Réinterpreter le stress comme signal de préparation plutôt que menace
+      existentielle change la physiologie réelle. Pas du positive thinking —
+      une intervention neurobiologique documentée.
+    pattern: "Je suis chroniquement épuisé. Mon stress devient de l'anxiété qui devient un fond permanent."
+    concepts_lies:
+      - "systeme-nerveux-autonome"
+      - "inflammation-chronique-de-bas-grade"
+      - "sommeil"
+      - "hormese"
+
+  - titre: "Trauma et corps"
+    vocabulaire:
+      - "réponse traumatique"
+      - "freeze (sidération)"
+      - "mémoire implicite / explicite"
+      - "mémoire traumatique"
+      - "décharge somatique"
+      - "fenêtre de tolérance"
+      - "PTSD / TSPT"
+    question: corps
+    domaine: "psychiatrie / neurosciences"
+    penseur: "Bessel van der Kolk, Peter Levine, Judith Herman"
+    statut: solide
+    definition_courte: "Le trauma n'est pas un souvenir douloureux — c'est une réponse physiologique figée qui continue à opérer dans le présent."
+    definition: |
+      Van der Kolk (*Le corps n'oublie rien*) : le trauma se stocke dans la
+      mémoire implicite et corporelle, pas seulement dans le récit. Le système
+      nerveux reste mobilisé comme si la menace était présente. Les déclencheurs
+      (triggers) activent la réponse traumatique sans que le cortex comprenne
+      pourquoi. Levine (Somatic Experiencing) : le trauma est de l'énergie de
+      survie non déchargée — les animaux tremblent après un danger pour décharger
+      cette activation. Le corps est le site du trauma et de sa résolution.
+      À lire avec esprit critique : van der Kolk extrapole parfois au-delà des
+      données.
+    utilite: |
+      Comprendre le trauma comme phénomène corporel et non comme faiblesse
+      psychologique réduit la honte et oriente vers des approches thérapeutiques
+      adaptées (EMDR, Somatic Experiencing, thérapie sensori-motrice).
+    pattern: "Je réagis de façon disproportionnée à certaines situations. Mon corps réagit avant que je comprenne pourquoi."
+    concepts_lies:
+      - "systeme-nerveux-autonome"
+      - "theorie-de-lattachement"
+      - "neuroplasticite"
+      - "emdr-desensibilisation-par-les-mouvements-oculaires"
+
+  - titre: "Hormèse"
+    vocabulaire:
+      - "hormèse"
+      - "stress bénéfique"
+      - "adaptation"
+      - "AMPK"
+      - "sirtuines"
+      - "autophagie"
+      - "mitohormèse"
+    question: corps
+    domaine: "biologie / médecine préventive"
+    penseur: "Edward Calabrese, Nassim Taleb (antifragilité)"
+    statut: solide
+    definition_courte: "Des stress modérés et récupérables renforcent le système biologique — le confort permanent l'affaiblit."
+    definition: |
+      L'hormèse est un phénomène dose-réponse : une dose faible d'un agent
+      stressant stimule, une dose élevée inhibe ou détruit. Exemples : exercice
+      intense (stress musculaire → renforcement), jeûne (stress métabolique →
+      autophagie, sensibilité à l'insuline), froid (cryothérapie → noradrénaline,
+      adiponectine), chaleur (sauna → HSP, HSP70, longévité cardiovasculaire).
+      Taleb généralise avec l'antifragilité : certains systèmes s'améliorent
+      sous stress modéré. L'évitement systématique du stress affaiblit la
+      résilience.
+    utilite: |
+      Change la relation au stress et à l'inconfort. L'inconfort contrôlé et
+      récupérable est une intervention de santé, pas une punition.
+    pattern: "Je fuis l'inconfort et je me sens de moins en moins capable de le tolérer. Ma zone de confort rétrécit."
+    concepts_lies:
+      - "exercice-et-cerveau"
+      - "jeune-intermittent"
+      - "physiologie-du-stress"
+      - "antifragilite"
+
+  # ============================================================
+  # Q8 — COMMENT OPTIMISER MON ÉNERGIE ET MA SANTÉ ?
+  # ============================================================
+
+  - titre: "Sommeil"
+    vocabulaire:
+      - "système glymphatique"
+      - "cycles de sommeil (NREM / REM)"
+      - "consolidation mémorielle"
+      - "chronobiologie"
+      - "pression de sommeil (adénosine)"
+      - "rythme circadien"
+      - "dette de sommeil"
+    question: sante
+    domaine: "neurosciences / médecine du sommeil"
+    penseur: "Matthew Walker, Russell Foster, Till Roenneberg"
+    statut: solide
+    definition_courte: "Le sommeil est le seul moment où le cerveau se nettoie — sa privation dégrade mémoire, immunité, métabolisme et régulation émotionnelle."
+    definition: |
+      Le système glymphatique (découvert en 2013) évacue les déchets métaboliques
+      cérébraux pendant le sommeil profond — dont les protéines amyloïdes liées
+      à Alzheimer. Le sommeil REM consolide la mémoire émotionnelle et procédurale,
+      le NREM la mémoire déclarative. La privation chronique : immunité dégradée,
+      résistance à l'insuline augmentée, inflammation, mémoire altérée, régulation
+      émotionnelle compromise. Walker exagère certains chiffres dans son livre
+      populaire — la science du sommeil elle-même est solide. Le chronotype
+      (lève-tôt / couche-tard) est partiellement génétique.
+    utilite: |
+      7-9h n'est pas un luxe ni une faiblesse — c'est une nécessité biologique.
+      Optimiser le sommeil est probablement l'intervention santé au meilleur
+      rapport effort/résultat.
+    pattern: "Je fonctionne avec peu de sommeil depuis longtemps. Je ne me souviens plus de ce que c'est de ne pas être fatigué."
+    concepts_lies:
+      - "chronobiologie"
+      - "inflammation-chronique-de-bas-grade"
+      - "neuromodulateurs-cles"
+      - "systeme-nerveux-autonome"
+
+  - titre: "Métabolisme du glucose et résistance à l'insuline"
+    vocabulaire:
+      - "insuline"
+      - "résistance à l'insuline"
+      - "hyperinsulinémie"
+      - "glycémie"
+      - "index glycémique / charge glycémique"
+      - "diabète de type 2"
+      - "syndrome métabolique"
+    question: sante
+    domaine: "endocrinologie / médecine préventive"
+    penseur: "Robert Lustig, Gerald Reaven, Jason Fung"
+    statut: solide
+    definition_courte: "La résistance à l'insuline précède de 10-15 ans la plupart des maladies chroniques occidentales — et elle est largement réversible."
+    definition: |
+      L'insuline est l'hormone de stockage : elle signal aux cellules de capter
+      le glucose sanguin. La résistance à l'insuline — les cellules ne répondent
+      plus correctement — précède le diabète de type 2, les maladies cardiovasculaires,
+      certains cancers, et potentiellement Alzheimer (parfois nommé "diabète de
+      type 3"). L'hyperinsulinémie chronique (excès d'insuline pour compenser
+      la résistance) est le mécanisme sous-jacent. Réversible par : réduction
+      des glucides raffinés, exercice, jeûne intermittent, sommeil, réduction
+      du stress.
+    utilite: |
+      Comprendre ce mécanisme change les choix alimentaires quotidiens avec
+      une logique biologique claire, pas des règles arbitraires.
+    pattern: "J'ai des coups de fatigue après les repas. J'ai des fringales sucrées que je ne contrôle pas."
+    concepts_lies:
+      - "corps-cetoniques-et-bhb"
+      - "inflammation-chronique-de-bas-grade"
+      - "jeune-intermittent"
+      - "exercice-et-cerveau"
+
+  - titre: "Corps cétoniques et BHB"
+    vocabulaire:
+      - "cétose"
+      - "bêta-hydroxybutyrate (BHB)"
+      - "corps cétoniques"
+      - "cétogenèse"
+      - "barrière hémato-encéphalique"
+      - "régime cétogène"
+      - "jeûne et cétose"
+    question: sante
+    domaine: "biochimie / neurosciences"
+    penseur: "Stephen Cunnane, Dominic D'Agostino, Peter Attia"
+    statut: solide
+    definition_courte: "En l'absence de glucose, le foie produit des corps cétoniques dont le BHB — carburant alternatif pour le cerveau, potentiellement neuroprotecteur."
+    definition: |
+      Le BHB (bêta-hydroxybutyrate) traverse la barrière hémato-encéphalique
+      et constitue un carburant neuronal efficace, surtout quand le métabolisme
+      du glucose est altéré. Il agit aussi comme molécule de signalisation :
+      inhibe l'histone désacétylase (effet épigénétique), active BDNF, réduit
+      l'inflammation. La cétogenèse est induite par le jeûne, l'exercice intense,
+      ou un régime très faible en glucides. Ce n'est pas une mode — c'est de
+      la biochimie documentée, avec des applications cliniques en épilepsie et
+      des recherches actives sur les maladies neurodégénératives.
+    utilite: |
+      Comprendre ce mécanisme éclaire les effets de clarté mentale rapportés
+      pendant le jeûne et oriente les choix métaboliques.
+    pattern: "J'ai une clarté mentale inhabituelle quand je mange peu ou saute un repas. Je me sens mieux cognitvement à certains moments sans comprendre pourquoi."
+    concepts_lies:
+      - "metabolisme-du-glucose-et-resistance-a-linsuline"
+      - "inflammation-chronique-de-bas-grade"
+      - "jeune-intermittent"
+      - "sommeil"
+
+  - titre: "Inflammation chronique de bas grade"
+    vocabulaire:
+      - "inflammation chronique"
+      - "inflammaging"
+      - "cytokines pro-inflammatoires"
+      - "CRP (protéine C-réactive)"
+      - "interleukines (IL-6, IL-1β)"
+      - "TNF-alpha"
+      - "NF-κB"
+    question: sante
+    domaine: "immunologie / médecine"
+    penseur: "Claudio Franceschi, Luigi Ferrucci, Valter Longo"
+    statut: solide
+    definition_courte: "Un état inflammatoire chronique de faible intensité est le substrat commun de la plupart des maladies chroniques — et il est largement modulable."
+    definition: |
+      L'inflammation aiguë est une réponse adaptative. L'inflammation chronique
+      de bas grade est destructrice : elle est impliquée dans les maladies
+      cardiovasculaires, le diabète, la dépression (théorie inflammatoire de la
+      dépression), les maladies neurodégénératives, certains cancers, le
+      vieillissement accéléré (inflammaging). Modifiable par : qualité du sommeil,
+      alimentation (oméga-3, polyphénols, réduction des sucres raffinés), exercice,
+      réduction du stress chronique, microbiome.
+    utilite: |
+      Concept unificateur : une seule cause sous-jacente partagée par des maladies
+      en apparence différentes. Les leviers sont concrets et accessibles.
+    pattern: "Je suis souvent fatigué sans raison claire. J'ai des douleurs diffuses, un brouillard mental chronique."
+    concepts_lies:
+      - "metabolisme-du-glucose-et-resistance-a-linsuline"
+      - "microbiome-intestinal"
+      - "sommeil"
+      - "physiologie-du-stress"
+
+  - titre: "Exercice et cerveau"
+    vocabulaire:
+      - "BDNF (Brain-Derived Neurotrophic Factor)"
+      - "neurogenèse hippocampique"
+      - "VO2max"
+      - "zone 2 (aérobie modéré)"
+      - "HIIT"
+      - "myokines"
+      - "irisine"
+    question: sante
+    domaine: "neurosciences / médecine du sport"
+    penseur: "John Ratey, Peter Attia, Anders Hansen"
+    statut: solide
+    definition_courte: "L'exercice est la seule intervention connue qui stimule la neurogenèse adulte et ralentit le vieillissement cérébral — bien au-delà de ses effets physiques."
+    definition: |
+      Le BDNF (surnommé "engrais pour le cerveau") est libéré par l'exercice
+      aérobie — il stimule la neurogenèse dans l'hippocampe, améliore la
+      plasticité synaptique, protège contre la dépression. La VO2max (capacité
+      aérobie maximale) est le prédicteur le plus fort de mortalité toutes
+      causes confondues — plus que le tabac, l'obésité, le cholestérol (Attia).
+      L'exercice réduit l'anxiété et la dépression à des effets comparables
+      aux médicaments dans les méta-analyses. Les myokines (molécules libérées
+      par les muscles) communiquent avec le cerveau, le foie, le tissu adipeux.
+    utilite: |
+      L'exercice n'est pas optionnel pour la santé mentale — c'est une
+      intervention neurobiologique directe sur l'humeur, la mémoire, l'anxiété
+      et la cognition.
+    pattern: "Je me sens mieux mentalement quand je fais du sport mais je n'en fais pas assez. Mon humeur fluctue avec mon activité physique."
+    concepts_lies:
+      - "neuroplasticite"
+      - "sommeil"
+      - "inflammation-chronique-de-bas-grade"
+      - "hormese"
+
+  - titre: "Microbiome intestinal"
+    vocabulaire:
+      - "microbiote intestinal"
+      - "axe intestin-cerveau (gut-brain axis)"
+      - "nerf vague"
+      - "sérotonine intestinale"
+      - "dysbiose"
+      - "perméabilité intestinale (leaky gut)"
+      - "prébiotiques / probiotiques"
+    question: sante
+    domaine: "microbiologie / neurosciences"
+    penseur: "Rob Knight, John Cryan, Ted Dinan"
+    statut: emergent
+    definition_courte: "Le microbiome intestinal communique avec le cerveau via le nerf vague et produit 90% de la sérotonine du corps — un champ réel mais encore sur-commercialisé."
+    definition: |
+      L'axe intestin-cerveau est bidirectionnel et documenté. 90% de la sérotonine
+      corporelle est produite dans l'intestin. Le nerf vague transmet des signaux
+      dans les deux sens. La dysbiose (déséquilibre microbien) est associée à
+      dépression, anxiété, maladies inflammatoires. La diversité microbienne
+      est corrélée à la santé générale. Mais le domaine est jeune et
+      sur-commercialisé : beaucoup de probiotiques commerciaux ont peu d'effet
+      prouvé. Ce qu'on sait faire : diversité alimentaire, fibres, fermentés,
+      éviter les antibiotiques inutiles.
+    utilite: |
+      Orientation pratique : la diversité alimentaire (>30 types de végétaux/
+      semaine) est le levier le plus documenté pour la santé du microbiome.
+    pattern: "Mon humeur varie avec mon alimentation d'une façon que je n'explique pas. Mes problèmes digestifs coincident avec mes états anxieux."
+    concepts_lies:
+      - "inflammation-chronique-de-bas-grade"
+      - "axe-intestin-cerveau-et-microbiome"
+      - "physiologie-du-stress"
+
+  # ============================================================
+  # Q9 — POURQUOI JE PRENDS DE MAUVAISES DÉCISIONS ?
+  # ============================================================
+
+  - titre: "Économie comportementale"
+    vocabulaire:
+      - "nudge"
+      - "architecture de choix"
+      - "paternalisme libéral"
+      - "aversion à la perte"
+      - "comptabilité mentale"
+      - "effet de dotation"
+      - "myopie temporelle"
+    question: decisions
+    domaine: "économie / psychologie"
+    penseur: "Richard Thaler, Cass Sunstein, Daniel Kahneman"
+    statut: solide
+    definition_courte: "Les décisions réelles dérogent systématiquement à la rationalité — et l'environnement de choix peut être conçu pour orienter vers de meilleures décisions."
+    definition: |
+      Thaler et Sunstein ont formalisé le nudge : modifier l'architecture de
+      choix (ce qui est présenté en premier, ce qui est par défaut) sans interdire
+      ni contraindre. L'effet de dotation : on valorise davantage ce qu'on possède
+      déjà. La myopie temporelle : on sous-évalue fortement le futur par rapport
+      au présent. La comptabilité mentale : on traite différemment de l'argent
+      selon d'où il vient (un remboursement fiscal dépensé différemment qu'un
+      salaire). Ces phénomènes sont reproductibles et exploitables — en bien
+      (santé publique) ou en mal (marketing).
+    utilite: |
+      Concevoir son environnement plutôt que compter sur sa volonté. Rendre le
+      bon comportement le comportement par défaut.
+    pattern: "Je veux faire de l'exercice mais je n'en fais pas. Je dépense différemment selon que c'est un bonus ou un salaire."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "systeme-1-systeme-2"
+      - "cout-irrecuperable"
+      - "pre-engagement-dispositifs-dulysse"
+
+  - titre: "Coût irrécupérable"
+    vocabulaire:
+      - "sunk cost fallacy"
+      - "coût irrécupérable"
+      - "escalade d'engagement"
+      - "biais de cohérence"
+    question: decisions
+    domaine: "économie comportementale"
+    penseur: "Daniel Kahneman, Richard Thaler, Barry Staw"
+    statut: solide
+    definition_courte: "Continuer une action parce qu'on y a déjà investi du temps, de l'argent ou de l'émotion — même quand arrêter est rationnel."
+    definition: |
+      Le passé n'est pas un argument pour le futur. Ce qui a déjà été dépensé
+      (temps, argent, émotion) ne peut pas être récupéré — il ne devrait donc
+      pas influencer les décisions futures. Pourtant il les influence fortement.
+      Staw a documenté l'escalade d'engagement : plus on a investi, plus on
+      investit pour ne pas "admettre" la perte. Applications : relations qui
+      durent trop longtemps, projets morts qu'on ne peut pas abandonner,
+      investissements qu'on ne coupe pas.
+    utilite: |
+      Poser la question : "si je n'avais pas déjà investi X, est-ce que je
+      commencerais ce projet/cette relation/cet investissement aujourd'hui ?"
+      Si non, le coût irrécupérable pilote la décision.
+    pattern: "Je reste dans une situation qui ne me convient pas parce que j'y ai trop investi. Je continue un projet mort pour ne pas avoir perdu mon temps."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "biais-cognitifs"
+      - "fatigue-decisionnelle"
+
+  - titre: "Pensée probabiliste"
+    vocabulaire:
+      - "calibration"
+      - "intervalles de confiance"
+      - "mise à jour bayésienne"
+      - "superforecasting"
+      - "taux de base (base rate)"
+      - "erreur de conjonction"
+    question: decisions
+    domaine: "statistiques / psychologie cognitive"
+    penseur: "Philip Tetlock, Gerd Gigerenzen, Thomas Bayes"
+    statut: solide
+    definition_courte: "Penser en probabilités plutôt qu'en certitudes, et mettre à jour ses croyances proportionnellement aux preuves."
+    definition: |
+      Tetlock (*Superforecasters*) a montré que les meilleurs prévisionnistes ne
+      sont pas les plus intelligents mais ceux qui pensent en probabilités, cherchent
+      à se réfuter, mettent à jour leurs croyances (mise à jour bayésienne), et
+      calibrent leur confiance sur leur historique réel. L'erreur de conjonction
+      (Kahneman) : on estime une combinaison de conditions plus probable qu'une
+      condition seule. Le taux de base : avant d'analyser une situation particulière,
+      quelle est la probabilité de base ?
+    utilite: |
+      Remplacer "je suis sûr que..." par "j'estime à 70% que..." change la qualité
+      des décisions et réduit la surprise et la déception.
+    pattern: "Je suis souvent surpris par des événements que j'aurais pu anticiper. J'overconfide ou j'underconfide sans calibration."
+    concepts_lies:
+      - "biais-cognitifs"
+      - "epistemologie-pratique"
+      - "second-ordre-de-consequences"
+
+  - titre: "Second ordre de conséquences"
+    vocabulaire:
+      - "first-order thinking"
+      - "second-order thinking"
+      - "effets de bord"
+      - "conséquences non intentionnelles"
+      - "loi de Goodhart"
+      - "pensée systémique"
+    question: decisions
+    domaine: "théorie des décisions"
+    penseur: "Ray Dalio, Charlie Munger, Howard Marks"
+    statut: solide
+    definition_courte: "Toute décision a des effets immédiats visibles et des effets différés souvent opposés — la plupart des erreurs viennent de n'avoir pensé qu'au premier ordre."
+    definition: |
+      La pensée de premier ordre : "si je fais X, Y se passe." La pensée de
+      second ordre : "si X se passe, qu'est-ce qui se passe ensuite ? et ensuite ?"
+      L'alcool réduit l'anxiété (1er ordre) mais l'augmente structurellement
+      à long terme (2e ordre). La validation constante rassure (1er ordre) mais
+      érode la confiance en soi (2e ordre). La loi de Goodhart : "quand une mesure
+      devient un objectif, elle cesse d'être une bonne mesure" — conséquence
+      systémique non anticipée.
+    utilite: |
+      Se demander systématiquement "et ensuite ?" deux fois de plus que
+      l'intuition ne le ferait.
+    pattern: "Mes solutions à court terme créent des problèmes à long terme. Je règle un symptôme et un autre apparaît."
+    concepts_lies:
+      - "pensee-systemique"
+      - "biais-cognitifs"
+      - "economie-comportementale"
+
+  # ============================================================
+  # Q10 — COMMENT PENSER PLUS CLAIREMENT ?
+  # ============================================================
+
+  - titre: "Épistémologie pratique"
+    vocabulaire:
+      - "réfutabilité (falsifiabilité)"
+      - "falsificationnisme"
+      - "corroboration"
+      - "démarcation science / pseudo-science"
+      - "induction / déduction"
+      - "degré de croyance justifié"
+    question: clarte
+    domaine: "philosophie des sciences"
+    penseur: "Karl Popper, David Hume"
+    statut: solide
+    definition_courte: "Une affirmation n'est scientifique que si elle peut être réfutée — et la force d'une croyance doit être proportionnelle aux preuves."
+    definition: |
+      Popper a résolu le problème de la démarcation : qu'est-ce qui distingue
+      la science de la pseudo-science ? La réfutabilité. Une théorie scientifique
+      doit pouvoir être fausse. La psychanalyse classique, l'homéopathie, l'astrologie
+      ne sont pas fausses — elles sont irréfutables, ce qui est pire. Hume sur
+      l'induction : observer 1000 cygnes blancs ne prouve pas que tous les cygnes
+      sont blancs. Cette asymétrie est centrale : on ne peut que réfuter, jamais
+      prouver définitivement. La force d'une croyance doit être proportionnelle
+      aux preuves disponibles — ni plus, ni moins.
+    utilite: |
+      C'est la méta-compétence qui permet d'évaluer toutes les autres connaissances.
+      Sans elle, on est vulnérable à n'importe quelle théorie cohérente mais fausse.
+    pattern: "Je crois des choses parce qu'elles sont cohérentes ou séduisantes, pas parce qu'elles sont prouvées. Je ne sais pas comment évaluer une affirmation."
+    concepts_lies:
+      - "pensee-probabiliste"
+      - "biais-cognitifs"
+      - "modeles-mentaux"
+
+  - titre: "Pensée systémique"
+    vocabulaire:
+      - "boucle de rétroaction"
+      - "boucle de renforcement (R)"
+      - "boucle d'équilibre (B)"
+      - "stocks et flux"
+      - "délai systémique"
+      - "levier systémique"
+      - "effets émergents"
+    question: clarte
+    domaine: "théorie des systèmes"
+    penseur: "Donella Meadows, Jay Forrester, Peter Senge"
+    statut: solide
+    definition_courte: "Le monde fonctionne par boucles de rétroaction et non par causes linéaires — intervenir au mauvais endroit aggrave le problème."
+    definition: |
+      Meadows (*Thinking in Systems*) : la pensée linéaire (A cause B) rate
+      l'essentiel des phénomènes complexes. Les boucles de renforcement créent
+      la croissance exponentielle et les spirales (vertu ou vicieuse). Les boucles
+      d'équilibre maintiennent l'homéostasie. Les délais systémiques : l'effet
+      d'une action n'est pas immédiat — on sur-corrige ou sous-corrige. Les leviers :
+      certains points d'intervention ont des effets disproportionnés. Exemple :
+      dans une addiction, le levier n'est pas la substance mais la boucle
+      dopamine/manque/soulagement.
+    utilite: |
+      Voir les systèmes permet d'intervenir aux bons endroits. Beaucoup de
+      solutions intuitives sont des interventions de premier ordre qui renforcent
+      la boucle problématique.
+    pattern: "Je règle un problème et il réapparaît ailleurs. Mes efforts semblent contrecarrés par quelque chose que je ne vois pas."
+    concepts_lies:
+      - "second-ordre-de-consequences"
+      - "modeles-mentaux"
+      - "economie-comportementale"
+
+  - titre: "Modèles mentaux"
+    vocabulaire:
+      - "latticework of mental models"
+      - "inversion"
+      - "rasoir d'Ockham"
+      - "principe de Pareto (80/20)"
+      - "loi de Goodhart"
+      - "première principles thinking"
+      - "carte ≠ territoire"
+    question: clarte
+    domaine: "philosophie / épistémologie"
+    penseur: "Charlie Munger, Alfred Korzybski, Elon Musk"
+    statut: solide
+    definition_courte: "Avoir une grille de modèles issus de multiples disciplines vaut mieux qu'une expertise profonde dans un seul domaine."
+    definition: |
+      Munger : "Pour l'homme qui n'a qu'un marteau, tout ressemble à un clou."
+      L'inversion : au lieu de viser le succès, définir ce qui cause l'échec et
+      l'éliminer. Rasoir d'Ockham : entre deux explications, la plus simple est
+      préférable. Pareto : 20% des causes produisent 80% des effets. First
+      principles : décomposer jusqu'aux vérités fondamentales plutôt qu'analogiser
+      depuis l'existant. Korzybski : "la carte n'est pas le territoire" — tout
+      modèle est une simplification, jamais la réalité.
+    utilite: |
+      Chaque modèle est une lentille. Avoir plusieurs lentilles évite l'erreur
+      de tout voir à travers une seule.
+    pattern: "J'applique toujours la même approche à des problèmes différents. Je confonds mon modèle de la réalité avec la réalité."
+    concepts_lies:
+      - "epistemologie-pratique"
+      - "pensee-systemique"
+      - "biais-cognitifs"
+
+  - titre: "Raisonnement par inversion"
+    vocabulaire:
+      - "inversion"
+      - "pré-mortem"
+      - "via negativa"
+      - "stoïcisme négatif"
+      - "préméditation malorum"
+    question: clarte
+    domaine: "philosophie / mathématiques"
+    penseur: "Charlie Munger, Carl Jacobi, les Stoïciens"
+    statut: solide
+    definition_courte: "Résoudre un problème en se demandant comment produire le résultat opposé — la clarté vient souvent par l'inversion."
+    definition: |
+      Jacobi (mathématicien) : "Inverser, toujours inverser." Pour réussir,
+      demandez-vous ce qui cause l'échec et évitez-le. Le pré-mortem (Gary Klein) :
+      imaginer que le projet a échoué et remonter aux causes — plus efficace
+      que le post-mortem. La via negativa stoïcienne : définir ce qu'on ne veut
+      pas plutôt que ce qu'on veut, éliminer plutôt qu'ajouter. Munger applique
+      cela à tout : "je veux juste savoir où je vais mourir pour ne jamais y aller."
+    utilite: |
+      Beaucoup de problèmes sont insolubles frontalement et se dissolvent par
+      inversion. Éviter les erreurs majeures est plus puissant qu'optimiser.
+    pattern: "Je me concentre sur ce que je veux sans penser à ce qui peut bloquer. Mes plans ne tiennent pas compte des obstacles prévisibles."
+    concepts_lies:
+      - "modeles-mentaux"
+      - "pensee-probabiliste"
+      - "second-ordre-de-consequences"
+
+  - titre: "Méta-cognition"
+    vocabulaire:
+      - "méta-cognition"
+      - "pensée sur la pensée"
+      - "monitoring cognitif"
+      - "contrôle cognitif"
+      - "illusion de Dunning-Kruger"
+      - "effet Dunning-Kruger"
+      - "cercle de compétence"
+    question: clarte
+    domaine: "psychologie cognitive"
+    penseur: "John Flavell, David Dunning, Justin Kruger, Charlie Munger"
+    statut: solide
+    definition_courte: "La capacité à observer sa propre pensée — et à reconnaître les limites de sa compétence — est la compétence qui améliore toutes les autres."
+    definition: |
+      Flavell a formalisé la méta-cognition : la connaissance de ses propres
+      processus cognitifs et leur régulation. L'effet Dunning-Kruger : les moins
+      compétents sur-estiment leurs compétences (ils manquent de la compétence
+      pour évaluer leur incompétence). Les plus compétents sous-estiment parfois
+      (ils savent ce qu'ils ne savent pas). Le cercle de compétence (Munger) :
+      connaître précisément le domaine dans lequel son jugement est fiable —
+      et ne pas déborder.
+    utilite: |
+      Savoir ce qu'on ne sait pas est plus utile que croire savoir ce qu'on
+      ne sait pas. La méta-cognition est entraînable par la pratique réflexive.
+    pattern: "Je m'exprime avec confiance sur des sujets que je connais mal. Je ne sais pas distinguer ce que je sais de ce que je crois savoir."
+    concepts_lies:
+      - "epistemologie-pratique"
+      - "pensee-probabiliste"
+      - "modeles-mentaux"
+
+  - titre: "TCC — Thérapies Cognitivo-Comportementales"
+    vocabulaire:
+      - "pensée automatique"
+      - "distorsion cognitive"
+      - "restructuration cognitive"
+      - "exposition"
+      - "schéma cognitif"
+      - "ABC (Activating event, Belief, Consequence)"
+      - "comportement d'évitement"
+    question: clarte
+    domaine: "psychologie clinique"
+    penseur: "Aaron Beck, Albert Ellis"
+    statut: solide
+    definition_courte: "Les thérapies les mieux validées empiriquement — modifier les pensées automatiques et les comportements d'évitement pour modifier les émotions."
+    definition: |
+      Beck a développé la thérapie cognitive à partir d'une observation : les
+      dépressifs ont des pensées automatiques négatves reconnaissables et modifiables.
+      Principe : les événements activent des croyances qui produisent des conséquences
+      émotionnelles (modèle ABC d'Ellis). La restructuration cognitive : identifier
+      la distorsion (catastrophisation, pensée en tout ou rien, personnalisation,
+      lecture de pensée...) et la remettre en question. L'exposition : approcher
+      progressivement ce qu'on évite pour défaire la réponse de peur. Les TCC
+      sont les mieux validées pour dépression, anxiété, TOC, phobies, PTSD.
+    utilite: |
+      Offre des outils concrets et pratiquables sans thérapeute pour les formes
+      légères à modérées. Burns (*Feeling Good*) reste la meilleure introduction
+      pratique.
+    pattern: "J'ai des pensées répétitives négatives que je sais irrationnelles mais que je ne peux pas arrêter. J'évite des situations qui aggravent mon anxiété."
+    concepts_lies:
+      - "distorsions-cognitives-de-beck"
+      - "act-therapie-dacceptation-et-dengagement"
+      - "neuroplasticite"
+      - "biais-cognitifs"
+
+  - titre: "ACT — Thérapie d'Acceptation et d'Engagement"
+    vocabulaire:
+      - "défusion cognitive"
+      - "acceptation"
+      - "soi comme contexte"
+      - "moment présent"
+      - "identite-narrative"
+      - "action engagée"
+      - "flexibilité psychologique"
+      - "fusion cognitive"
+    question: clarte
+    domaine: "psychologie clinique"
+    penseur: "Steven Hayes"
+    statut: solide
+    definition_courte: "Plutôt que de changer les pensées négatives, apprendre à ne pas être gouverné par elles — et agir selon ses valeurs malgré leur présence."
+    definition: |
+      L'ACT ne vise pas à réduire les pensées et émotions difficiles mais à
+      modifier la relation qu'on entretient avec elles. La défusion cognitive :
+      observer ses pensées comme des événements mentaux plutôt que des vérités
+      ("j'ai la pensée que je suis nul" vs "je suis nul"). La fusion cognitive :
+      être absorbé par ses pensées, les prendre pour la réalité. L'acceptation :
+      faire de la place à l'inconfort sans le combattre. L'action engagée : agir
+      selon ses valeurs même en présence de peur, douleur, incertitude. Particulièrement
+      efficace pour la douleur chronique, l'anxiété généralisée, la dépression.
+    utilite: |
+      Complément puissant des TCC : là où les TCC cherchent à modifier le contenu
+      des pensées, l'ACT modifie le rapport au contenu.
+    pattern: "Je lutte contre mes pensées et émotions négatives et cette lutte m'épuise. Je reporte ma vie à quand je me sentirai mieux."
+    concepts_lies:
+      - "tcc-therapies-cognitivo-comportementales"
+      - "mindfulness-pleine-conscience"
+      - "identite-narrative"
+      - "regulation-emotionnelle"
+
+  - titre: "Mindfulness — pleine conscience"
+    vocabulaire:
+      - "pleine conscience (mindfulness)"
+      - "attention focalisée"
+      - "monitoring ouvert"
+      - "Default Mode Network (DMN)"
+      - "MBSR (Mindfulness-Based Stress Reduction)"
+      - "rumination"
+      - "décentration"
+    question: clarte
+    domaine: "psychologie / neurosciences"
+    penseur: "Jon Kabat-Zinn, Richard Davidson, Matthieu Ricard"
+    statut: nuance
+    definition_courte: "Porter intentionnellement son attention sur le moment présent sans jugement — effets réels mais modestes, souvent sur-vendus."
+    definition: |
+      Kabat-Zinn a sécularisé la méditation bouddhiste en MBSR. Les effets
+      documentés : réduction du stress (effet size ~0.3-0.5), amélioration de
+      l'attention, réduction de la rumination, régulation émotionnelle. Davidson
+      a montré des changements structurels cérébraux chez les méditants long terme.
+      Le Default Mode Network (réseau du ressassement, actif quand on ne fait rien)
+      est réduit par la pratique. La décentration : observer ses pensées et émotions
+      sans s'y identifier. Statut nuancé : effets réels, taille d'effet modeste,
+      pas la panacée vendue.
+    utilite: |
+      Outil parmi d'autres pour la régulation émotionnelle et l'attention.
+      10-20 minutes par jour produisent des effets mesurables sur quelques semaines.
+    pattern: "Mon esprit part dans tous les sens et je ne peux pas le calmer. Je rumine en permanence sur le passé ou le futur."
+    concepts_lies:
+      - "act-therapie-dacceptation-et-dengagement"
+      - "regulation-emotionnelle"
+      - "meta-cognition"
+      - "physiologie-du-stress"
+# ============================================================
+# NOUVEAUX CONCEPTS — BLOC À AJOUTER À concepts.yaml
+# ============================================================
+
+  # ============================================================
+  # Q7 — COMMENT MON CORPS INFLUENCE MON ESPRIT ?
+  # ============================================================
+
+  - titre: "EMDR — Désensibilisation par les mouvements oculaires"
+    vocabulaire:
+      - "EMDR (Eye Movement Desensitization and Reprocessing)"
+      - "retraitement adaptatif de l'information"
+      - "mémoire traumatique"
+      - "stimulation bilatérale"
+      - "désensibilisation"
+      - "reconsolidation mémorielle"
+    question: corps
+    domaine: "psychologie clinique / neurosciences"
+    penseur: "Francine Shapiro"
+    statut: solide
+    definition_courte: "Thérapie structurée utilisant des stimulations bilatérales alternées pour retraiter des souvenirs traumatiques bloqués."
+    definition: |
+      Shapiro a découvert en 1987 que les mouvements oculaires rapides réduisaient
+      la détresse associée à des souvenirs perturbants. L'EMDR s'appuie sur le modèle
+      du traitement adaptatif de l'information : les souvenirs traumatiques restent
+      stockés de manière isolée, non intégrés au réseau mémoriel général, ce qui
+      explique leur réactivation intrusive. La stimulation bilatérale (mouvements
+      oculaires, tapping, sons alternés) faciliterait la reconsolidation et
+      l'intégration. Le mécanisme exact reste débattu — la composante bilatérale
+      pourrait ne pas être l'ingrédient actif principal. L'efficacité sur le PTSD
+      est bien documentée (OMS, APA en font un traitement de première ligne),
+      supérieure à l'absence de traitement, comparable aux TCC trauma-focalisées.
+    utilite: |
+      Alternative aux TCC pour les personnes qui ne peuvent pas parler du trauma
+      en détail. Efficace en nombre de séances relativement restreint pour le PTSD
+      simple. Moins établi pour le trauma complexe ou les troubles dissociatifs.
+    pattern: "J'ai des souvenirs qui resurgiront de façon incontrôlable. Certains événements passés continuent de perturber ma vie présente."
+    concepts_lies:
+      - "dissociation-et-trauma-complexe"
+      - "memoire-types-et-consolidation"
+      - "dissociation-et-trauma-complexe"
+      - "tcc-therapies-cognitivo-comportementales"
+
+  - titre: "Dissociation et trauma complexe"
+    vocabulaire:
+      - "dissociation"
+      - "dépersonnalisation"
+      - "déréalisation"
+      - "trauma complexe (C-PTSD)"
+      - "fenêtre de tolérance"
+      - "hyper-arousal / hypo-arousal"
+      - "fragmentation du soi"
+      - "états du soi"
+    question: corps
+    domaine: "psychologie clinique / traumatologie"
+    penseur: "Judith Herman, Bessel van der Kolk, Onno van der Hart"
+    statut: nuance
+    definition_courte: "La dissociation est un mécanisme de protection face à une surcharge traumatique — couper la connexion entre expérience, mémoire et identité."
+    definition: |
+      Herman a distingué le PTSD simple (événement unique) du trauma complexe
+      (exposition répétée, souvent précoce : abus, négligence, violences chroniques).
+      Le C-PTSD inclut des perturbations durables de la régulation émotionnelle,
+      de l'identité et des relations, au-delà des symptômes de reviviscence du PTSD.
+      Van der Kolk a popularisé l'idée que le trauma est encodé dans le corps :
+      "the body keeps the score." La fenêtre de tolérance (Siegel) : zone d'activation
+      optimale où la régulation est possible — le trauma la rétrécit. La dissociation
+      (van der Hart) : structuration de la personnalité en parties fonctionnelles et
+      parties traumatiques qui ne communiquent pas. Statut nuancé : modèles cliniquement
+      utiles, opérationnalisation variable selon les écoles.
+    utilite: |
+      Explique pourquoi certaines personnes "s'éteignent" émotionnellement (hypo-arousal)
+      ou perdent le contrôle (hyper-arousal) sans raison apparente. Oriente vers des
+      traitements adaptés (thérapie phase-based, EMDR, thérapie sensorimotrice).
+    pattern: "Je me sens parfois déconnecté de moi-même ou de la réalité. Je réagis de façon disproportionnée à certains déclencheurs."
+    concepts_lies:
+      - "emdr-desensibilisation-par-les-mouvements-oculaires"
+      - "dissociation-et-trauma-complexe"
+      - "regulation-emotionnelle"
+      - "styles-dattachement-adulte"
+
+  - titre: "Axe intestin-cerveau et microbiome"
+    vocabulaire:
+      - "axe intestin-cerveau"
+      - "microbiome intestinal"
+      - "nerf vague"
+      - "sérotonine intestinale"
+      - "psychobiotiques"
+      - "dysbiose"
+      - "inflammation systémique de bas grade"
+    question: corps
+    domaine: "neurosciences / gastroentérologie"
+    penseur: "John Cryan, Ted Dinan, Emeran Mayer"
+    statut: emergent
+    definition_courte: "Le microbiome intestinal communique bidirectionnellement avec le cerveau et influence l'humeur, l'anxiété et le comportement."
+    definition: |
+      L'intestin contient environ 500 millions de neurones (système nerveux entérique)
+      et 90% de la sérotonine corporelle y est produite. Le nerf vague constitue
+      la voie de communication principale avec le cerveau. Des études chez l'animal
+      montrent des effets robustes du microbiome sur le comportement et l'anxiété ;
+      chez l'humain, les associations sont établies mais la causalité reste difficile
+      à prouver. L'inflammation systémique de bas grade (souvent liée à la dysbiose)
+      est un facteur de risque documenté pour la dépression. Les psychobiotiques
+      (probiotiques à effets mentaux) montrent des résultats préliminaires positifs
+      mais les études sont hétérogènes. Champ en développement rapide, attention
+      aux sur-interprétations commerciales.
+    utilite: |
+      Justifie l'attention portée à l'alimentation (fibres, fermentés) et au
+      microbiome dans la gestion de l'humeur et du stress. Pas de prescription
+      directe établie mais bonne raison de ne pas négliger la santé digestive.
+    pattern: "Mon état mental se dégrade quand mon alimentation se dégrade. Anxiété ou dépression inexpliquées malgré une vie stable."
+    concepts_lies:
+      - "inflammation-chronique-de-bas-grade"
+      - "chronobiologie"
+      - "physiologie-du-stress"
+      - "vieillissement-et-longevite"
+
+  - titre: "HRV — Variabilité de la fréquence cardiaque"
+    vocabulaire:
+      - "HRV (Heart Rate Variability)"
+      - "variabilité de la fréquence cardiaque"
+      - "système nerveux autonome"
+      - "équilibre sympathique / parasympathique"
+      - "cohérence cardiaque"
+      - "réserve vagale"
+      - "biofeedback cardiaque"
+    question: corps
+    domaine: "physiologie / psychophysiologie"
+    penseur: "Stephen Porges (contexte), HeartMath Institute, recherche autonome"
+    statut: nuance
+    definition_courte: "La variation de l'intervalle entre battements cardiaques est un marqueur de la flexibilité du système nerveux autonome et de la capacité de récupération."
+    definition: |
+      Une HRV haute indique que le système nerveux autonome peut s'adapter rapidement
+      aux demandes — équilibre entre activation (sympathique) et récupération
+      (parasympathique). Une HRV basse est associée au stress chronique, à la
+      fatigue, aux maladies cardiovasculaires, aux troubles anxieux. La HRV se
+      mesure par appareils portables (Oura, Polar, Garmin) et fluctue selon le
+      sommeil, l'alcool, l'exercice, le stress. La cohérence cardiaque (5 respirations/min)
+      augmente la HRV à court terme. La HRV est un outil de biofeedback utile
+      pour doser l'intensité d'entraînement et la récupération. Statut nuancé :
+      marqueur utile, mais valeurs inter-individuelles très variables — la tendance
+      personnelle importe plus que la valeur absolue.
+    utilite: |
+      Outil objectif pour évaluer son état de récupération et ajuster effort et
+      repos. La technique cohérence cardiaque (3x5min/jour) a des effets anxiolytiques
+      documentés à court terme.
+    pattern: "Je pousse quand je devrais récupérer. Je ne sais pas si mon corps est prêt à un effort ou en déficit."
+    concepts_lies:
+      - "recuperation-et-cycles-deffort"
+      - "physiologie-du-stress"
+      - "sommeil"
+      - "exercice-et-cerveau"
+
+  # ============================================================
+  # Q8 — COMMENT OPTIMISER MON ÉNERGIE ET MA SANTÉ ?
+  # ============================================================
+
+  - titre: "Jeûne intermittent"
+    vocabulaire:
+      - "jeûne intermittent (IF)"
+      - "16:8 / 5:2"
+      - "autophagie"
+      - "cétose"
+      - "fenêtre d'alimentation"
+      - "résistance à l'insuline"
+      - "time-restricted eating (TRE)"
+    question: sante
+    domaine: "nutrition / physiologie métabolique"
+    penseur: "Valter Longo, Satchin Panda, Mark Mattson"
+    statut: nuance
+    definition_courte: "Restreindre les périodes d'alimentation à une fenêtre quotidienne ou hebdomadaire pour améliorer la sensibilité à l'insuline et déclencher l'autophagie."
+    definition: |
+      Le jeûne intermittent regroupe plusieurs protocoles : 16:8 (manger sur 8h,
+      jeûner 16h), 5:2 (5 jours normaux, 2 jours très restreints), OMAD (un repas
+      par jour). Panda a développé le time-restricted eating (TRE) en alignant
+      la fenêtre d'alimentation sur le rythme circadien — manger tôt dans la journée.
+      L'autophagie (Ohsumi, Nobel 2016) : processus de recyclage cellulaire activé
+      par le jeûne, impliqué dans la longévité. Les effets documentés incluent
+      l'amélioration de la sensibilité à l'insuline, la réduction du poids (principalement
+      par restriction calorique induite), des marqueurs métaboliques améliorés.
+      Statut nuancé : effets réels mais souvent comparables à une restriction
+      calorique équivalente — l'autophagie chez l'humain sain est difficile à mesurer.
+      Déconseillé pour certaines populations (antécédents TCA, femmes enceintes).
+    utilite: |
+      Outil pratique pour réduire la fenêtre d'alimentation sans compter les
+      calories. Peut améliorer l'énergie et la clarté mentale chez certaines
+      personnes (transition initiale difficile). Aligner la fenêtre d'alimentation
+      sur le matin améliore les marqueurs métaboliques vs alimentation nocturne.
+    pattern: "Je grignote en permanence. Mon énergie fluctue fortement selon les repas. Je cherche à améliorer ma composition corporelle."
+    concepts_lies:
+      - "chronobiologie"
+      - "vieillissement-et-longevite"
+      - "axe-intestin-cerveau-et-microbiome"
+      - "sommeil"
+
+  - titre: "Chronobiologie"
+    vocabulaire:
+      - "rythme circadien"
+      - "horloge centrale (noyau suprachiasmatique)"
+      - "zeitgebers (synchroniseurs)"
+      - "jet lag social"
+      - "chronotype"
+      - "cortisol awakening response (CAR)"
+      - "mélatonine"
+    question: sante
+    domaine: "biologie / médecine"
+    penseur: "Satchin Panda, Russell Foster, Till Roenneberg"
+    statut: solide
+    definition_courte: "Presque tous les processus biologiques suivent des rythmes de 24h — travailler contre ces rythmes a des coûts de santé mesurables."
+    definition: |
+      Le noyau suprachiasmatique de l'hypothalamus est l'horloge centrale synchronisée
+      principalement par la lumière. Chaque cellule du corps possède sa propre horloge
+      périphérique. Les zeitgebers (lumière, alimentation, exercice, température)
+      synchronisent ces horloges. Le jet lag social : décalage entre le chronotype
+      biologique et les horaires sociaux — très fréquent, associé à une augmentation
+      du risque de diabète, dépression, obésité. Roenneberg a montré que 80% de
+      la population est en dette de synchronisation. La CAR : pic de cortisol dans
+      les 30-45 minutes suivant le réveil, phase naturelle d'activation cognitive.
+      Prix Nobel de médecine 2017 attribué aux mécanismes moléculaires des rythmes
+      circadiens (Hall, Rosbash, Young).
+    utilite: |
+      Aligner lumière du matin, exercice, alimentation et sommeil avec le chronotype
+      optimise énergie, performance cognitive et santé métabolique. Éviter la lumière
+      bleue le soir et l'alimentation nocturne sont les leviers les plus accessibles.
+    pattern: "Je suis épuisé le matin même après 8h de sommeil. Mon énergie et ma clarté mentale fluctuent de façon imprévisible."
+    concepts_lies:
+      - "sommeil"
+      - "jeune-intermittent"
+      - "physiologie-du-stress"
+      - "exercice-et-cerveau"
+
+  - titre: "Récupération et cycles d'effort"
+    vocabulaire:
+      - "surcompensation"
+      - "surentraînement (overtraining)"
+      - "périodisation"
+      - "cycles ultradiens"
+      - "charge d'entraînement"
+      - "dette de récupération"
+      - "fenêtre anabolique"
+      - "repos actif"
+    question: sante
+    domaine: "physiologie de l'exercice / performance"
+    penseur: "Eliezer Kreindler, Andrew Huberman, Peter Attia"
+    statut: solide
+    definition_courte: "La progression vient du repos autant que de l'effort — l'adaptation se produit pendant la récupération, pas pendant l'exercice."
+    definition: |
+      La surcompensation : après un stress (exercice, apprentissage), le système
+      revient à la baseline puis la dépasse légèrement — à condition de récupérer
+      suffisamment avant le prochain stress. Le surentraînement survient quand
+      les stress s'accumulent sans récupération adéquate. Les cycles ultradiens
+      (90 min) structurent les capacités attentionnelles et physiques tout au long
+      de la journée — Huberman recommande d'aligner les blocs d'effort sur ces
+      cycles. La périodisation (hard/easy alternance) est le principe central de
+      tout entraînement efficace à long terme. La HRV et la qualité du sommeil
+      sont les marqueurs objectifs de récupération. Le principe s'applique à
+      l'apprentissage cognitif autant qu'au sport.
+    utilite: |
+      Structurer travail intense et récupération délibérée plutôt que de pousser
+      en continu. Prévoir des semaines de décharge, des nuits suffisantes, des
+      blocs de travail avec pauses. La fatigue chronique est souvent un déficit
+      de récupération, pas un manque d'effort.
+    pattern: "Je donne tout en permanence et je régresse ou m'effondre. Je confonds activité intense avec progression."
+    concepts_lies:
+      - "hrv-variabilite-de-la-frequence-cardiaque"
+      - "sommeil"
+      - "flow-etat-optimal-dexperience"
+      - "attention-profonde-deep-work"
+
+  - titre: "Vieillissement et longévité"
+    vocabulaire:
+      - "hallmarks of aging"
+      - "sénescence cellulaire"
+      - "télomères"
+      - "dysfonction mitochondriale"
+      - "rapamycin / mTOR"
+      - "NAD+ / sirtuines"
+      - "zone 2 cardio"
+      - "VO2max"
+      - "muscle comme organe de longévité"
+    question: sante
+    domaine: "biologie du vieillissement / médecine préventive"
+    penseur: "Peter Attia, David Sinclair, Valter Longo, López-Otín"
+    statut: nuance
+    definition_courte: "Le vieillissement est un processus biologique partiellement modulable — les leviers les mieux validés restent exercice, sommeil et alimentation."
+    definition: |
+      López-Otín a formalisé en 2013 les 9 hallmarks of aging (instabilité génomique,
+      raccourcissement des télomères, altérations épigénétiques, perte de protéostase,
+      dysfonction mitochondriale, sénescence cellulaire, épuisement des cellules
+      souches, altérations de la communication intercellulaire). Sinclair (théorie
+      de l'information) postule que le vieillissement est principalement une perte
+      d'information épigénétique — remédiation possible. Attia (médecine 3.0) met
+      l'accent sur le VO2max et la force musculaire comme prédicteurs indépendants
+      de la longévité et de la qualité de vie à 80 ans. Les interventions à meilleure
+      base de preuve chez l'humain restent : exercice (zone 2 + renforcement),
+      sommeil, alimentation, gestion du stress. Les interventions pharmacologiques
+      (rapamycin, NMN) sont prometteuses chez l'animal, données humaines limitées.
+    utilite: |
+      Décisions concrètes : développer VO2max et force musculaire dès 30-40 ans,
+      maintenir le muscle en vieillissant, éviter la sédentarité prolongée.
+      Ne pas attendre les symptômes — la biologie du vieillissement commence tôt.
+    pattern: "Je reporte les décisions de santé à plus tard. Je néglige la force musculaire et le cardio en pensant que c'est optionnel avant 50 ans."
+    concepts_lies:
+      - "exercice-et-cerveau"
+      - "sommeil"
+      - "jeune-intermittent"
+      - "physiologie-du-stress"
+
+  # ============================================================
+  # Q1 / Q3 — COMPORTEMENT / CHANGEMENT
+  # ============================================================
+
+  - titre: "Schémas de Young — Thérapie des schémas"
+    vocabulaire:
+      - "schéma précoce inadapté"
+      - "modes schématiques"
+      - "abandon / carence affective / méfiance"
+      - "surinvestissement / échec"
+      - "style d'adaptation (capitulation / évitement / surcompensation)"
+      - "reparentage limité"
+    question: comportement
+    domaine: "psychologie clinique"
+    penseur: "Jeffrey Young"
+    statut: nuance
+    definition_courte: "Des croyances profondes sur soi et les autres, formées dans l'enfance, qui structurent les comportements dysfonctionnels répétitifs à l'âge adulte."
+    definition: |
+      Young, élève de Beck, a observé que les TCC classiques n'atteignaient pas
+      les patterns les plus profonds. Il a identifié 18 schémas précoces inadaptés
+      (SPI) — des représentations stables de soi-même et du monde formées en réponse
+      à des besoins non satisfaits dans l'enfance. Exemples : abandon ("les autres
+      vont me quitter"), carence affective ("personne ne m'aime vraiment"),
+      méfiance/abus, échec, honte. Face à l'activation d'un schéma, trois styles
+      d'adaptation : capitulation (se soumettre), évitement (fuir), surcompensation
+      (faire le contraire à l'excès). Les modes décrivent des états émotionnels
+      actifs à un moment donné. La thérapie des schémas combine TCC, attachement,
+      gestalt, travail émotionnel. Moins validée empiriquement que les TCC standard
+      mais plus utile pour les personnalités complexes.
+    utilite: |
+      Explique pourquoi les mêmes patterns relationnels ou comportementaux
+      se répètent malgré la prise de conscience. Plus complet que les TCC
+      pour les troubles de la personnalité et les difficultés relationnelles
+      chroniques.
+    pattern: "Je sais que ce comportement me fait du mal mais je le reproduis quand même. Mes relations récapitulent toujours le même scénario douloureux."
+    concepts_lies:
+      - "styles-dattachement-adulte"
+      - "tcc-therapies-cognitivo-comportementales"
+      - "distorsions-cognitives-de-beck"
+      - "dissociation-et-trauma-complexe"
+
+  - titre: "Pré-engagement — dispositifs d'Ulysse"
+    vocabulaire:
+      - "pré-engagement (precommitment)"
+      - "dispositif d'Ulysse"
+      - "incohérence temporelle"
+      - "moi présent vs moi futur"
+      - "auto-contrôle par l'environnement"
+      - "coût d'engagement"
+    question: changement
+    domaine: "économie comportementale / psychologie"
+    penseur: "Richard Thaler, Thomas Schelling, Dan Ariely"
+    statut: solide
+    definition_courte: "Restreindre ses propres options futures maintenant pour protéger ses objectifs d'un soi futur moins discipliné."
+    definition: |
+      Ulysse s'est fait attacher au mât pour ne pas succomber au chant des Sirènes —
+      il savait que son moi futur (sous l'emprise du chant) prendrait une mauvaise
+      décision, alors son moi présent a éliminé cette option. L'incohérence
+      temporelle (Thaler) : on préfère 100€ maintenant à 110€ dans un mois, mais
+      on préfère 110€ dans 13 mois à 100€ dans 12 mois — préférences inverses selon
+      la distance temporelle. Les dispositifs de pré-engagement résolvent ce problème
+      en structurant l'environnement ou en ajoutant des coûts à la transgression
+      (comptes d'épargne bloqués, Beeminder, enlever les applications, signer
+      un contrat social). Différent de la volonté pure — ne suppose pas une capacité
+      de résistance infinie.
+    utilite: |
+      Outil de changement plus fiable que la "motivation" ou la "discipline" pour
+      les comportements soumis à incohérence temporelle (alimentation, économies,
+      procrastination, addictions). Concevoir l'environnement, pas compter sur le
+      caractère.
+    pattern: "Je prends de bonnes résolutions que je ne tiens pas. Je sais ce que je dois faire mais je ne le fais pas quand le moment vient."
+    concepts_lies:
+      - "fatigue-decisionnelle"
+      - "pre-engagement-dispositifs-dulysse"
+      - "economie-comportementale"
+      - "biais-cognitifs"
+
+  - titre: "Fatigue décisionnelle"
+    vocabulaire:
+      - "fatigue décisionnelle"
+      - "ego depletion"
+      - "épuisement du self"
+      - "charge cognitive"
+      - "automatisation des routines"
+      - "charge décisionnelle"
+    question: changement
+    domaine: "psychologie sociale / cognitive"
+    penseur: "Roy Baumeister, Shai Danziger"
+    statut: nuance
+    definition_courte: "La qualité des décisions se dégrade au fil des choix effectués dans la journée — les ressources cognitives pour décider sont limitées."
+    definition: |
+      Baumeister a proposé le modèle de l'ego depletion : l'auto-contrôle puise
+      dans une ressource cognitive qui s'épuise. L'étude classique de Danziger
+      sur les juges israéliens a montré des taux d'accord favorables qui chutent
+      de ~65% à ~15% au fil des audiences (résultats controversés et difficiles
+      à répliquer directement). Le modèle pur de la "ressource épuisable" a été
+      remis en cause par des méta-analyses — les effets sont plus faibles que
+      l'annoncé et dépendent de facteurs motivationnels et de croyances. Ce qui
+      résiste : la qualité des décisions complexes se dégrade avec la surcharge
+      cognitive, la faim et la fatigue. La décision suboptimale sous fatigue est
+      robuste même si le mécanisme exact (ressource vs motivation) est débattu.
+    utilite: |
+      Structurer les décisions importantes en début de journée, automatiser les
+      petites décisions récurrentes (routines vestimentaires, repas), réduire la
+      charge décisionnelle totale. L'environnement décisionnel importe autant
+      que la discipline.
+    pattern: "Je prends de moins bonnes décisions en fin de journée. Je cède plus facilement à des tentations le soir que le matin."
+    concepts_lies:
+      - "pre-engagement-dispositifs-dulysse"
+      - "systeme-1-systeme-2"
+      - "pre-engagement-dispositifs-dulysse"
+      - "biais-cognitifs"
+
+  # ============================================================
+  # Q4 — POURQUOI MES RELATIONS FONCTIONNENT OU ÉCHOUENT ?
+  # ============================================================
+
+  - titre: "Analyse transactionnelle — États du moi"
+    vocabulaire:
+      - "états du moi (Parent / Adulte / Enfant)"
+      - "transactions croisées / complémentaires / cachées"
+      - "jeux psychologiques"
+      - "scénario de vie"
+      - "triangle dramatique (Karpman)"
+      - "positions de vie (OK/pas OK)"
+      - "strokes (signes de reconnaissance)"
+    question: relations
+    domaine: "psychologie clinique"
+    penseur: "Eric Berne"
+    statut: nuance
+    definition_courte: "Trois états du moi (Parent, Adulte, Enfant) et leurs interactions structurent les communications et les patterns relationnels répétitifs."
+    definition: |
+      Berne a développé l'AT en rupture avec la psychanalyse classique — vocabulaire
+      accessible, orienté vers l'autonomie. Les trois états du moi : Parent (pensées/
+      comportements introjectés des figures parentales — normatif ou nourricier),
+      Adulte (traitement rationnel du présent), Enfant (états issus de l'expérience
+      infantile — libre, adapté, rebelle). Les transactions croisées (ex : Adulte-Adulte
+      qui reçoit une réponse Parent-Enfant) produisent les malentendus. Le triangle
+      dramatique de Karpman : oscillations entre Persécuteur, Sauveur et Victime
+      dans les jeux psychologiques. Le scénario de vie : script inconscient de
+      comment sa vie doit se dérouler. Statut nuancé : modèle cliniquement utile
+      pour comprendre les patterns relationnels, fondements théoriques non falsifiables.
+    utilite: |
+      Outil pratique pour repérer depuis quel état on parle et à quel état on
+      s'adresse. Le triangle de Karpman est particulièrement utile pour identifier
+      les jeux relationnels dans lesquels on se retrouve coincé.
+    pattern: "Je me retrouve toujours dans le même rôle dans les conflits. Certaines relations semblent suivre un script prévisible."
+    concepts_lies:
+      - "styles-dattachement-adulte"
+      - "schemas-de-young-therapie-des-schemas"
+      - "les-4-cavaliers-de-gottman"
+      - "communication-non-violente"
+
+  - titre: "Hiérarchie sociale et statut"
+    vocabulaire:
+      - "dominance sociale"
+      - "statut perçu vs statut réel"
+      - "dominance / prestige"
+      - "testostérone et statut"
+      - "signaux de statut"
+      - "Power Moves"
+      - "hiérarchies implicites"
+    question: relations
+    domaine: "psychologie sociale / éthologie"
+    penseur: "Joey Cheng, Robert Sapolsky, Lucio Buffalmano"
+    statut: nuance
+    definition_courte: "Les humains organisent spontanément des hiérarchies sociales selon deux voies — dominance (peur) et prestige (admiration) — avec des effets biologiques et comportementaux mesurables."
+    definition: |
+      Cheng a distingué deux voies d'acquisition du statut : dominance (intimidation,
+      coercition, prise d'espace) et prestige (compétence reconnue, générosité,
+      réputation). Les deux activent des comportements de déférence mais par des
+      mécanismes différents. Sapolsky a montré chez les babouins (et analogies humaines)
+      les effets physiologiques du statut sur le cortisol, la santé cardiovasculaire
+      et la longévité — le statut bas est un stresseur chronique. Les humains
+      évaluent le statut dans les premières secondes d'interaction (posture, voix,
+      regard, occupation de l'espace). Ces évaluations sont largement inconscientes.
+      Statut nuancé : les analogies primates-humains sont suggestives, pas directement
+      transposables ; les signaux de statut sont culturellement variables.
+    utilite: |
+      Comprendre la dynamique de statut dans les groupes explique des comportements
+      qui semblent irrationnels (jalousie, humiliation, déférence automatique).
+      Conscience des signaux non verbaux de statut qu'on émet et reçoit.
+    pattern: "Je me sens réduit au silence dans certains groupes sans comprendre pourquoi. Certaines personnes prennent naturellement de la place."
+    concepts_lies:
+      - "hierarchie-sociale-et-statut"
+      - "emotions-construites"
+      - "biais-cognitifs"
+      - "communication-non-violente"
+
+  # ============================================================
+  # Q2 — POURQUOI JE RESSENS ÇA ?
+  # ============================================================
+
+  - titre: "Besoins fondamentaux — SDT"
+    vocabulaire:
+      - "théorie de l'autodétermination (SDT)"
+      - "compétence / autonomie / appartenance"
+      - "motivation intrinsèque / extrinsèque"
+      - "motivation identifiée / introjectée"
+      - "continuum d'autonomie"
+      - "besoins psychologiques de base"
+      - "amotivation"
+    question: emotions
+    domaine: "psychologie motivationnelle"
+    penseur: "Edward Deci, Richard Ryan"
+    statut: solide
+    definition_courte: "Trois besoins psychologiques universels — compétence, autonomie, appartenance — dont la satisfaction ou la frustration prédit le bien-être et la motivation."
+    definition: |
+      Deci et Ryan ont développé la SDT (Self-Determination Theory) sur 40 ans
+      de recherche. Trois besoins de base : autonomie (se sentir à l'origine de
+      ses actions), compétence (se sentir efficace), appartenance (se sentir relié
+      à autrui). Leur satisfaction prédit la motivation intrinsèque, le bien-être
+      et la persistance. Leur frustration chronique prédit la psychopathologie,
+      la motivation contrôlée (faire pour éviter la honte ou gagner des récompenses)
+      et le désengagement. Différence critique avec Maslow : la SDT est empiriquement
+      testée et ne postule pas de hiérarchie — les trois besoins sont simultanément
+      actifs. La récompense extrinsèque peut détruire la motivation intrinsèque
+      (overjustification effect, répliqué).
+    utilite: |
+      Explique pourquoi certains emplois bien rémunérés sont misérables et pourquoi
+      certaines activités non rémunérées sont épanouissantes. Diagnostiquer lequel
+      des trois besoins est chroniquement frustré oriente les changements à faire.
+    pattern: "Je n'ai plus envie de rien malgré une vie objectivement correcte. Je fais les choses par obligation et non par désir."
+    concepts_lies:
+      - "flow-etat-optimal-dexperience"
+      - "regulation-emotionnelle"
+      - "resilience-facteurs-documentes"
+      - "identite-narrative"
+
+  - titre: "Distorsions cognitives de Beck"
+    vocabulaire:
+      - "pensée en tout ou rien (dichotomique)"
+      - "surgénéralisation"
+      - "filtre mental (abstraction sélective)"
+      - "disqualification du positif"
+      - "lecture de pensée"
+      - "erreur de prédiction (fortune telling)"
+      - "catastrophisation / minimisation"
+      - "raisonnement émotionnel"
+      - "personnalisation"
+      - "devrait / faut (musturbation)"
+    question: emotions
+    domaine: "psychologie clinique"
+    penseur: "Aaron Beck, David Burns"
+    statut: solide
+    definition_courte: "Dix erreurs de traitement de l'information systématiques et reconnaissables qui alimentent la détresse émotionnelle."
+    definition: |
+      Beck a identifié des patterns de pensée automatique caractéristiques dans
+      la dépression et l'anxiété. Burns les a popularisés dans *Feeling Good* (1980).
+      Les dix distorsions principales : (1) tout-ou-rien — "si ce n'est pas parfait,
+      c'est un échec" ; (2) surgénéralisation — "ça arrive toujours" ; (3) filtre
+      mental — ne voir que le négatif ; (4) disqualification du positif — "ça ne compte
+      pas" ; (5) lecture de pensée — supposer ce que l'autre pense ; (6) erreur de
+      prédiction — anticiper le pire comme certain ; (7) catastrophisation — amplifier
+      les problèmes ; (8) raisonnement émotionnel — "je le ressens donc c'est vrai" ;
+      (9) personnalisation — se tenir responsable de tout ; (10) devrait/faut —
+      règles rigides qui produisent culpabilité et ressentiment. Elles s'activent
+      souvent en chaîne.
+    utilite: |
+      Nommer une distorsion en cours d'activation crée un espace entre l'expérience
+      et la croyance. Burns recommande le "double standard" : appliquer à soi le
+      même raisonnement qu'on appliquerait à un ami.
+    pattern: "Je sais que ma pensée est exagérée mais je n'arrive pas à m'en sortir. Mon autocritique est disproportionnée aux faits."
+    concepts_lies:
+      - "tcc-therapies-cognitivo-comportementales"
+      - "regulation-emotionnelle"
+      - "schemas-de-young-therapie-des-schemas"
+      - "act-therapie-dacceptation-et-dengagement"
+
+  - titre: "Résilience — facteurs documentés"
+    vocabulaire:
+      - "résilience"
+      - "facteurs protecteurs"
+      - "tuteur de résilience"
+      - "croissance post-traumatique (PTG)"
+      - "self-efficacy (Bandura)"
+      - "sens (meaning-making)"
+      - "soutien social"
+    question: emotions
+    domaine: "psychologie positive / clinique"
+    penseur: "Boris Cyrulnik, George Bonanno, Ann Masten, Richard Tedeschi"
+    statut: nuance
+    definition_courte: "La résilience n'est pas une qualité innée mais un processus dynamique influencé par des facteurs identifiables et partiellement modifiables."
+    definition: |
+      Bonanno a montré que la résilience (maintien ou rapide retour au fonctionnement
+      normal après un trauma) est la trajectoire la plus commune après événement
+      traumatique — pas l'exception héroïque. Les facteurs protecteurs documentés :
+      soutien social (le plus robuste), sentiment d'efficacité personnelle (Bandura),
+      attribution interne/stable/contrôlable, flexibilité cognitive, régulation
+      émotionnelle, sens donné à l'adversité. Cyrulnik a popularisé le concept de
+      "tuteur de résilience" — une relation bienveillante qui permet la reconstruction.
+      La croissance post-traumatique (Tedeschi) : certains développent de nouvelles
+      forces ou perspectives après l'adversité — réelle mais pas universelle et
+      ne doit pas être prescrite. Statut nuancé : concept opérationnalisé diversement,
+      risque de moralisation ("il faut être résilient").
+    utilite: |
+      Identifier et renforcer les facteurs protecteurs modifiables (relations sociales,
+      sens, compétences) plutôt que d'attendre une résilience innée. Le soutien social
+      est l'intervention la plus évidente et la plus négligée.
+    pattern: "Je m'effondre plus que les autres face à l'adversité. Je ne comprends pas pourquoi certains rebondissent vite et pas moi."
+    concepts_lies:
+      - "besoins-fondamentaux-sdt"
+      - "regulation-emotionnelle"
+      - "identite-narrative"
+      - "solitude-et-ressourcement"
+
+  - titre: "Mort et finitude comme moteur"
+    vocabulaire:
+      - "confrontation à la mort (death awareness)"
+      - "anxiété existentielle"
+      - "préoccupations ultimes (ultimate concerns)"
+      - "Terror Management Theory (TMT)"
+      - "donner sens (meaning-making)"
+      - "authenticité existentielle"
+      - "memento mori"
+    question: emotions
+    domaine: "philosophie existentielle / psychologie"
+    penseur: "Irvin Yalom, Ernest Becker, Jeff Greenberg (TMT)"
+    statut: nuance
+    definition_courte: "La prise de conscience de sa mortalité est une source d'anxiété fondamentale mais aussi, travaillée consciemment, un puissant moteur de sens et d'authenticité."
+    definition: |
+      Yalom identifie quatre préoccupations ultimes : mort, liberté, isolement,
+      absence de sens. La mort est la plus fondamentale — Becker (*The Denial of Death*)
+      soutient que la majeure partie de la culture humaine est une défense contre
+      l'anxiété de la mortalité. La Terror Management Theory (TMT, Greenberg) a
+      testé expérimentalement cette thèse : rappeler aux gens leur mortalité (mortality
+      salience) amplifie le conformisme, la défense du groupe d'appartenance, le
+      rejet de l'autre. L'alternative existentielle (Yalom) : intégrer la finitude
+      consciemment plutôt que la fuir par des défenses — ce travail peut libérer
+      de l'énergie pour vivre plus authentiquement. Les Stoïciens (memento mori),
+      les Épicuriens et Heidegger (être-vers-la-mort) convergent sur ce point.
+    utilite: |
+      Remettre en contact avec la finitude peut clarifier les priorités, dissoudre
+      des peurs secondaires et démasquer des évitements. Thérapie existentielle
+      adaptée aux crises de sens, deuils, maladies, transitions majeures.
+    pattern: "Je vis comme si j'avais tout le temps. Je remets à plus tard ce qui compte vraiment. Je ressens un vide de sens sans explication."
+    concepts_lies:
+      - "resilience-facteurs-documentes"
+      - "identite-narrative"
+      - "besoins-fondamentaux-sdt"
+      - "solitude-et-ressourcement"
+
+  # ============================================================
+  # Q3 — POURQUOI JE N'ARRIVE PAS À CHANGER ?
+  # ============================================================
+
+  - titre: "Conscience de soi — Self-awareness"
+    vocabulaire:
+      - "self-awareness (conscience de soi)"
+      - "conscience de soi interne vs externe"
+      - "introspection trompeuse"
+      - "insight"
+      - "angle mort"
+      - "feedback calibré"
+    question: changement
+    domaine: "psychologie organisationnelle / cognitive"
+    penseur: "Tasha Eurich"
+    statut: nuance
+    definition_courte: "La conscience de soi a deux composantes indépendantes — connaître ses propres valeurs/patterns ET comprendre comment les autres nous perçoivent — et l'introspection non guidée peut aggraver les deux."
+    definition: |
+      Eurich (recherche sur 5000 personnes) a trouvé que 95% des gens se croient
+      conscients d'eux-mêmes mais seulement 10-15% le sont selon des critères
+      objectifs. La conscience interne : clarté sur ses valeurs, émotions, patterns,
+      forces et faiblesses. La conscience externe : comprendre comment on est perçu
+      par les autres. Les deux sont faiblement corrélées — on peut être fort sur
+      l'une et faible sur l'autre. L'introspection classique ("pourquoi") est
+      contre-productive : elle produit des explications confabulées qui renforcent
+      les croyances existantes. Eurich recommande de remplacer "pourquoi" par "quoi"
+      — "que ressentais-je ?" plutôt que "pourquoi ai-je réagi ainsi ?". Le feedback
+      calibré de personnes de confiance est plus fiable que l'introspection seule.
+    utilite: |
+      Remet en cause l'introspection spontanée comme outil fiable. Oriente vers
+      des pratiques plus efficaces : journaling factuel, feedback externe,
+      questions "quoi" plutôt que "pourquoi".
+    pattern: "Je pense me connaître mais les autres me décrivent différemment. Mon introspection tourne en rond sans produire de changement."
+    concepts_lies:
+      - "meta-cognition"
+      - "distorsions-cognitives-de-beck"
+      - "biais-cognitifs"
+      - "identite-narrative"
+
+  - titre: "Identité narrative"
+    vocabulaire:
+      - "identité narrative"
+      - "récit de vie"
+      - "cohérence narrative"
+      - "mise en intrigue (emplotment)"
+      - "rédemption / contamination"
+      - "agentivité dans le récit"
+    question: changement
+    domaine: "psychologie du développement / philosophie"
+    penseur: "Paul Ricoeur, Dan McAdams"
+    statut: nuance
+    definition_courte: "L'identité n'est pas une essence fixe mais une histoire qu'on se raconte sur soi — changer sa vie passe par transformer ce récit."
+    definition: |
+      Ricoeur (philosophie) : l'identité personnelle est essentiellement narrative
+      — on existe comme personnage d'une histoire qu'on construit en permanence
+      (ipséité vs mêmeté). McAdams (psychologie) a opérationnalisé cela empiriquement :
+      les gens construisent un "personal myth" qui donne sens à leur vie.
+      Il a identifié deux méta-récits dominants : rédemption (difficulté → croissance)
+      et contamination (bonne situation → gâchée). Les récits de rédemption
+      prédisent le bien-être et la générativité ; les récits de contamination
+      prédisent la dépression. L'agentivité dans le récit (se voir comme acteur
+      plutôt que victime) est modifiable par l'écriture expressive et la thérapie
+      narrative. Statut nuancé : puissance explicative forte, mesure complexe.
+    utilite: |
+      Examiner le récit qu'on se fait de soi révèle souvent le blocage au changement.
+      L'écriture expressive (Pennebaker) est un outil validé pour transformer le
+      rapport à l'expérience.
+    pattern: "Je me vois comme quelqu'un à qui les choses arrivent. Je répète les mêmes thèmes dans ma vie sans comprendre pourquoi."
+    concepts_lies:
+      - "conscience-de-soi-self-awareness"
+      - "resilience-facteurs-documentes"
+      - "mort-et-finitude-comme-moteur"
+      - "schemas-de-young-therapie-des-schemas"
+
+  - titre: "Solitude et ressourcement"
+    vocabulaire:
+      - "solitude choisie vs solitude subie"
+      - "temps seul (solitude)"
+      - "restauration attentionnelle (ART)"
+      - "environnements restaurateurs"
+      - "théorie de la restauration par l'attention (Kaplan)"
+      - "introversion / extraversion"
+    question: changement
+    domaine: "psychologie environnementale / positive"
+    penseur: "Rachel et Stephen Kaplan, Ester Buchholz, Susan Cain"
+    statut: nuance
+    definition_courte: "Le temps seul et délibéré est une ressource psychologique nécessaire à la récupération attentionnelle, à la créativité et à l'intégration de l'expérience."
+    definition: |
+      Les Kaplan ont développé la théorie de la restauration attentionnelle (ART) :
+      l'attention dirigée (effort cognitif) s'épuise — les environnements "fascinants"
+      (nature, ambiances douces) et le retrait social permettent la récupération.
+      Buchholz a distingué solitude choisie (ressourcement) et solitude subie
+      (isolement douloureux). Les introvertis ont un seuil d'arousal social plus
+      bas — ils s'épuisent plus vite en interaction sociale et récupèrent par
+      la solitude. Mais même les extravertis ont besoin de temps seul pour
+      l'intégration, la réflexion et la créativité. La solitude profonde est
+      distincte de la simple absence d'interaction — elle requiert l'absence de
+      stimulation externe et l'orientation vers l'intérieur. Statut nuancé :
+      bonne base théorique, opérationnalisation variable.
+    utilite: |
+      Légitimer le besoin de solitude comme nécessité physiologique, pas luxe social.
+      Différencier épuisement social (besoin de solitude) d'évitement anxieux (besoin
+      de connexion). Concevoir des rituels de retraite régulière.
+    pattern: "Je me sens coupable de vouloir être seul. Je suis épuisé par les interactions mais je ne me donne pas le temps de récupérer."
+    concepts_lies:
+      - "attention-profonde-deep-work"
+      - "recuperation-et-cycles-deffort"
+      - "besoins-fondamentaux-sdt"
+      - "resilience-facteurs-documentes"
+
+  # ============================================================
+  # Q9 / Q10 — DÉCISIONS / CLARTÉ
+  # ============================================================
+
+  - titre: "Flow — état optimal d'expérience"
+    vocabulaire:
+      - "flow (flux)"
+      - "état optimal d'expérience"
+      - "rapport défi/compétence"
+      - "absorption totale"
+      - "autotélique"
+      - "feedback immédiat"
+      - "perte de conscience de soi"
+    question: clarte
+    domaine: "psychologie positive"
+    penseur: "Mihaly Csikszentmihalyi"
+    statut: nuance
+    definition_courte: "État d'absorption totale dans une activité calibrée — le défi dépasse légèrement la compétence — associé à une expérience subjective optimale."
+    definition: |
+      Csikszentmihalyi a étudié des milliers de personnes (artistes, chirurgiens,
+      joueurs d'échecs, grimpeurs) et identifié un état qualitativement distinct :
+      concentration totale, perte de la conscience du temps, fusion action-conscience,
+      sentiment de contrôle. Les conditions nécessaires : objectif clair, feedback
+      immédiat, équilibre défi/compétence (ni trop facile → ennui, ni trop difficile
+      → anxiété). L'activité est autotélique — faite pour elle-même. Les neurosciences
+      du flow (Arne Dietrich) : réduction temporaire de l'activité du cortex préfrontal
+      (hypofrontalité transitoire), libération de dopamine, noradrénaline, anandamide.
+      Statut nuancé : concept influent, définition opérationnelle variable, difficile
+      à provoquer à la demande.
+    utilite: |
+      Concevoir les activités pour maximiser les conditions du flow (clarté d'objectif,
+      feedback rapide, difficulté appropriée) plutôt que d'attendre l'inspiration.
+      Identifier les activités qui produisent du flow naturellement.
+    pattern: "Certaines activités font disparaître le temps. D'autres me semblent interminables malgré l'effort."
+    concepts_lies:
+      - "attention-profonde-deep-work"
+      - "besoins-fondamentaux-sdt"
+      - "recuperation-et-cycles-deffort"
+      - "meta-cognition"
+
+  - titre: "Antifragilité"
+    vocabulaire:
+      - "antifragilité"
+      - "convexité des résultats"
+      - "optionnalité"
+      - "barbell strategy"
+      - "via negativa"
+      - "fragilité / robustesse / antifragilité"
+      - "cygne noir"
+    question: clarte
+    domaine: "philosophie / théorie de la décision"
+    penseur: "Nassim Nicholas Taleb"
+    statut: nuance
+    definition_courte: "Certains systèmes bénéficient du désordre, de la variabilité et des chocs — l'antifragilité va au-delà de la résilience."
+    definition: |
+      Taleb distingue fragile (se casse sous le stress), robuste (résiste sans
+      changer), antifragile (gagne de la variabilité et des chocs). Le fragile
+      déteste l'incertitude ; l'antifragile en a besoin. Exemples : les muscles
+      (s'affaiblissent sans stress), l'évolution, certains marchés. La barbell
+      strategy : combiner positions très sécurisées et positions très risquées
+      en évitant le milieu (risque modéré mais caché). L'optionnalité : chercher
+      des positions à convexité positive (peu à perdre, beaucoup à gagner) et
+      éviter les positions à convexité négative. La via negativa : enlever plutôt
+      qu'ajouter, éviter les catastrophes plutôt qu'optimiser les performances.
+      Statut nuancé : framework intellectuellement puissant mais prescriptions
+      concrètes parfois vagues ; certaines analogies biologie-finance-vie personnelle
+      forcées.
+    utilite: |
+      Réorienter l'objectif : ne pas chercher à éliminer l'incertitude (fragile)
+      ni à la résister (robuste) mais à construire des systèmes qui en bénéficient.
+      Diagnostiquer la fragilité dans sa propre vie (dépendances, manque de marge).
+    pattern: "Je cherche la stabilité à tout prix et je suis dévasté par les imprévus. Je ne prends aucun risque par peur de perdre."
+    concepts_lies:
+      - "pensee-probabiliste"
+      - "raisonnement-par-inversion"
+      - "second-ordre-de-consequences"
+      - "resilience-facteurs-documentes"
+
+  - titre: "Attention profonde — Deep Work"
+    vocabulaire:
+      - "deep work (travail profond)"
+      - "shallow work (travail superficiel)"
+      - "attention fragmentée"
+      - "résidu d'attention"
+      - "solitude productive"
+      - "blocs de concentration"
+      - "coût de commutation (task switching)"
+    question: clarte
+    domaine: "psychologie cognitive / productivité"
+    penseur: "Cal Newport"
+    statut: nuance
+    definition_courte: "La capacité à se concentrer sans distraction sur une tâche cognitivement exigeante est une compétence rare, entraînable, et productivement décisive."
+    definition: |
+      Newport distingue le deep work (activité professionnelle réalisée dans un
+      état de concentration sans distraction, poussant les capacités cognitives
+      à leur maximum) du shallow work (tâches logistiques, emails, réunions).
+      Le coût de commutation (task switching) : chaque interruption laisse un
+      "résidu d'attention" — Sophie Leroy a montré que l'esprit continue à traiter
+      la tâche précédente même après avoir changé de tâche. Les études sur la
+      distraction (Gloria Mark) montrent qu'une interruption coûte en moyenne
+      23 minutes de récupération. Newport s'appuie sur Anders Ericsson pour
+      soutenir que la pratique délibérée — qui requiert une concentration totale
+      — est le mécanisme du développement de compétences. Statut nuancé : framework
+      pratique bien construit, bonne base empirique sur les coûts de la distraction,
+      prescriptions parfois idéalisées.
+    utilite: |
+      Structurer la journée en blocs de deep work protégés (2-4h), éliminer
+      les interruptions pendant ces blocs, battre les emails et réseaux sociaux
+      à des plages dédiées. L'environnement physique et numérique doit soutenir
+      la concentration.
+    pattern: "Je suis constamment interrompu et je n'avance jamais sur ce qui compte vraiment. Je finis mes journées épuisé mais sans avoir avancé."
+    concepts_lies:
+      - "flow-etat-optimal-dexperience"
+      - "recuperation-et-cycles-deffort"
+      - "solitude-et-ressourcement"
+      - "pre-engagement-dispositifs-dulysse"
+
+  - titre: "Mémoire — types et consolidation"
+    vocabulaire:
+      - "mémoire déclarative (explicite)"
+      - "mémoire procédurale (implicite)"
+      - "mémoire épisodique / sémantique"
+      - "consolidation mémorielle"
+      - "courbe de l'oubli (Ebbinghaus)"
+      - "répétition espacée (spaced repetition)"
+      - "récupération active (retrieval practice)"
+      - "effet de test (testing effect)"
+      - "souvenir flash (flashbulb memory)"
+    question: clarte
+    domaine: "neurosciences cognitives"
+    penseur: "Hermann Ebbinghaus, Henry Molaison (cas HM), Robert Bjork"
+    statut: solide
+    definition_courte: "La mémoire n'est pas un enregistrement passif mais un processus actif de reconstruction — les techniques d'encodage et de récupération changent radicalement l'apprentissage."
+    definition: |
+      La mémoire déclarative (consciente) comprend la mémoire épisodique (événements
+      personnels) et sémantique (faits généraux). La mémoire procédurale (compétences)
+      est implicite. La consolidation : les souvenirs sont instables lors de l'encodage
+      et se stabilisent progressivement (hippocampe → cortex pendant le sommeil).
+      Ebbinghaus a quantifié la courbe de l'oubli : ~50% oublié en 1h, ~70% en 24h
+      sans révision. Bjork a identifié les "desirable difficulties" — les stratégies
+      d'apprentissage efficaces semblent plus lentes mais produisent une mémorisation
+      durable. La répétition espacée (réviser à intervalles croissants) est l'outil
+      le plus efficace connu. L'effet de test : se tester soi-même est plus efficace
+      que relire — la récupération active renforce l'encodage. Les souvenirs sont
+      reconstructifs — chaque rappel les modifie légèrement.
+    utilite: |
+      Abandonner la relecture passive pour le testing actif et la répétition espacée
+      (Anki, systèmes de cartes). La qualité du sommeil conditionne directement
+      la consolidation — apprendre sans dormir gaspille l'apprentissage.
+    pattern: "Je relis mes notes mais je n'arrive pas à retenir. Je dois reconsulter ce que j'ai déjà appris plusieurs fois."
+    concepts_lies:
+      - "sommeil"
+      - "attention-profonde-deep-work"
+      - "neuroplasticite"
+      - "emdr-desensibilisation-par-les-mouvements-oculaires"
+
+  - titre: "Hémisphères cérébraux — McGilchrist"
+    vocabulaire:
+      - "hémisphère gauche / droit"
+      - "attention focalisée vs attention diffuse"
+      - "appréhension (right hemisphere) vs manipulation (left hemisphere)"
+      - "monde rendu (emissary)"
+      - "maître et son émissaire"
+    question: clarte
+    domaine: "neurosciences / philosophie"
+    penseur: "Iain McGilchrist"
+    statut: nuance
+    definition_courte: "Les deux hémisphères cérébraux ne traitent pas les mêmes types d'information mais entretiennent des modes attentionnels fondamentalement différents — avec des implications culturelles profondes."
+    definition: |
+      McGilchrist (psychiatre et philosophe) rejette la vulgate "gauche = logique,
+      droit = créatif" comme trop simpliste. Sa thèse : l'hémisphère gauche a une
+      attention focalisée, manipulatrice, catégorisante (il réduit le monde à des
+      représentations utilisables) ; le droit a une attention diffuse, contextuelle,
+      attentive à la nouveauté et à la relation (il appréhende le monde dans sa
+      totalité). La culture occidentale moderne serait "dominée par le gauche" —
+      privilégiant la manipulation sur la compréhension, le mécanisme sur la vie.
+      Statut nuancé : thèse philosophique ambitieuse soutenue par des données
+      neuroanatomiques réelles mais dont les implications culturelles sont spéculatives
+      et difficiles à falsifier. Utile comme cadre conceptuel, pas comme neuroscience
+      directement applicable.
+    utilite: |
+      Framework utile pour penser la complémentarité entre modes de pensée analytique
+      et holistique, et les risques d'hyper-rationalisation. Moins utile comme
+      guide pratique direct.
+    pattern: "Je sur-analyse et je perds le sens de l'ensemble. Je ne sais pas quand raisonner analytiquement et quand faire confiance à une intuition plus large."
+    concepts_lies:
+      - "systeme-1-systeme-2"
+      - "meta-cognition"
+      - "modeles-mentaux"
+      - "mindfulness-pleine-conscience"
+
