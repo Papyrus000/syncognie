@@ -25,26 +25,29 @@ const currentPath = Astro.url.pathname;
         </svg>
         Cartes
       </a>
-      <a href="/carnet" class={`topbar-link topbar-link--primary ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
+      <!-- Atelier — position 3, badge pill signature -->
+      <a href="/atelier" class={`topbar-link topbar-link--primary topbar-link--atelier ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
+        <span class="atelier-pill">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          Atelier
+        </span>
+      </a>
+    </div>
+    <div class="nav-sep" aria-hidden="true"></div>
+    <div class="nav-secondary">
+      <a href="/carnet" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
         </svg>
         Carnet
       </a>
-    </div>
-    <div class="nav-sep" aria-hidden="true"></div>
-    <div class="nav-secondary">
       <a href="/outils" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
           <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
         </svg>
         Outils
-      </a>
-      <a href="/atelier" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-        </svg>
-        Atelier
       </a>
       <a href="/apropos" class={`topbar-link topbar-link--secondary ${currentPath === '/apropos' ? 'active' : ''}`}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -85,24 +88,27 @@ const currentPath = Astro.url.pathname;
       </svg>
       Cartes
     </a>
-    <a href="/carnet" class={`mobile-link mobile-link--primary ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
+    <!-- Atelier — position 3 mobile, badge pill -->
+    <a href="/atelier" class={`mobile-link mobile-link--primary mobile-link--atelier ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
+      <span class="atelier-pill atelier-pill--mobile">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+        Atelier
+      </span>
+    </a>
+    <div class="mobile-sep" aria-hidden="true"></div>
+    <a href="/carnet" class={`mobile-link ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
       </svg>
       Carnet
     </a>
-    <div class="mobile-sep" aria-hidden="true"></div>
     <a href="/outils" class={`mobile-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
       </svg>
       Outils
-    </a>
-    <a href="/atelier" class={`mobile-link ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-      </svg>
-      Atelier
     </a>
     <a href="/apropos" class={`mobile-link ${currentPath === '/apropos' ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -186,7 +192,100 @@ const currentPath = Astro.url.pathname;
   .topbar-link svg { opacity: .6; flex-shrink: 0; transition: opacity .2s; }
   .topbar-link:hover svg, .topbar-link.active svg { opacity: 1; }
 
+  /* ATELIER — badge pill signature */
+  .topbar-link--atelier {
+    color: rgba(245,240,232,.65);
+    transition: none;
+  }
+  .topbar-link--atelier:hover,
+  .topbar-link--atelier.active { color: rgba(245,240,232,.65); }
 
+  .atelier-pill {
+    display: inline-flex; align-items: center; gap: .35rem;
+    background: linear-gradient(140deg, #e8923a 0%, #c96820 100%);
+    color: #fff;
+    font-family: 'Mulish', sans-serif; font-size: .67rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    padding: .28rem .65rem .28rem .52rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow:
+      0 1px 4px rgba(0,0,0,.3),
+      inset 0 1px 0 rgba(255,255,255,.18);
+    transition:
+      background .2s ease,
+      box-shadow .2s ease,
+      transform .18s ease,
+      border-color .2s ease,
+      color .2s ease;
+    will-change: transform, box-shadow;
+  }
+  .atelier-pill svg {
+    flex-shrink: 0; opacity: .9;
+    transition: opacity .18s ease, transform .18s ease;
+  }
+
+  /* HOVER — le pill s'allume, monte d'1px, halo chaud */
+  .topbar-link--atelier:hover .atelier-pill {
+    background: linear-gradient(140deg, #f0a050 0%, #d97830 100%);
+    border-color: rgba(255,200,100,.2);
+    box-shadow:
+      0 4px 12px rgba(0,0,0,.25),
+      0 0 18px rgba(230,130,40,.3),
+      inset 0 1px 0 rgba(255,255,255,.22);
+    transform: translateY(-1px);
+    color: #fff;
+  }
+  .topbar-link--atelier:hover .atelier-pill svg {
+    opacity: 1;
+    transform: rotate(-5deg) scale(1.1);
+  }
+
+  /* ACTIF — vert terminal, rappel direct de la page Atelier */
+  .topbar-link--atelier.active .atelier-pill {
+    background: linear-gradient(140deg, #4a8a42 0%, #2e6228 100%);
+    border-color: rgba(122,189,110,.3);
+    color: #c8f0c0;
+    box-shadow:
+      0 1px 4px rgba(0,0,0,.35),
+      0 0 14px rgba(122,189,110,.2),
+      0 0 0 1px rgba(122,189,110,.15),
+      inset 0 1px 0 rgba(255,255,255,.1);
+    transform: translateY(0);
+  }
+  .topbar-link--atelier.active .atelier-pill svg {
+    opacity: .9;
+    transform: none;
+  }
+
+  /* Pill mobile */
+  .atelier-pill--mobile {
+    font-size: .75rem; padding: .32rem .75rem .32rem .6rem; border-radius: 6px;
+  }
+  .mobile-link--atelier { color: rgba(245,240,232,.75); }
+  .mobile-link--atelier:hover,
+  .mobile-link--atelier.active {
+    color: rgba(245,240,232,.75);
+    background: transparent;
+    border-left-color: transparent;
+  }
+  .mobile-link--atelier:hover .atelier-pill--mobile {
+    background: linear-gradient(140deg, #f0a050 0%, #d97830 100%);
+    box-shadow: 0 2px 12px rgba(220,130,40,.3), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .mobile-link--atelier.active .atelier-pill--mobile {
+    background: linear-gradient(140deg, #4a8a42 0%, #2e6228 100%);
+    border-color: rgba(122,189,110,.3);
+    color: #c8f0c0;
+    box-shadow:
+      0 0 12px rgba(122,189,110,.2),
+      0 0 0 1px rgba(122,189,110,.15),
+      inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  .mobile-link--atelier.active {
+    border-left-color: #7abd6e;
+    background: rgba(122,189,110,.05);
+  }
 
   /* HAMBURGER */
   .hamburger {
