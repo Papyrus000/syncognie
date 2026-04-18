@@ -154,7 +154,8 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   )}
 
   <!-- ── Bloc Fondations ── -->
-  <div class="fondations-bloc" id="fondationsBloc">
+  <div class="fondations-bloc" id="fondations">
+    <h2 class="sr-only">Fondations</h2>
 
     <!-- Ligne principale : titre + label + flèche vers page complète -->
     <a href="/atelier/fondations" class="fondations-main" aria-label="Voir la page Fondations complete">
@@ -312,7 +313,8 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
 
 <!-- Lien Fondations étendues (ex-Socle) -->
-<a href="/atelier/socle" class="socle-fondations-bloc" aria-label="Fondations étendues">
+<a href="/atelier/socle" class="socle-fondations-bloc" id="fondations-etendues" aria-label="Fondations étendues">
+  <h2 class="sr-only">Fondations étendues</h2>
   <span class="socle-fondations-titre">Fondations étendues</span>
   <span class="socle-fondations-label">Extension</span>
   <span class="socle-fondations-cta">
@@ -328,7 +330,14 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
 <!-- ── Outils Interactifs ── -->
 
-<div class="outils-system">
+<!-- Terminal intro outils -->
+<div class="outils-terminal" id="outilsTerminal" aria-hidden="true">
+  <span class="outils-terminal-prompt">&gt;</span>
+  <span class="outils-terminal-text" id="outilsTerminalText"></span><span class="outils-terminal-cursor" id="outilsTerminalCursor">_</span>
+</div>
+
+<div class="outils-system" id="outils">
+  <h2 class="sr-only">Outils — Granularité Émotionnelle</h2>
 
   <div class="outils-system-head">
     <span class="outils-system-label">système</span>
@@ -340,7 +349,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   <div class="outils-duo">
 
     <!-- Outil 1 : Évaluer -->
-    <a href="/atelier/granularite-emotionnelle" class="outil-duo-bloc outil-duo-bloc--evaluer">
+    <a href="/atelier/granularite-emotionnelle" class="outil-duo-bloc outil-duo-bloc--evaluer" id="evaluer">
       <div class="outil-duo-step">01 · évaluer</div>
       <div class="outil-duo-titre">Granularité Émotionnelle</div>
       <p class="outil-duo-desc">Nommez précisément ce que vous ressentez. Stoppe le piratage de l'amygdale en 5 étapes.</p>
@@ -361,7 +370,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     </div>
 
     <!-- Outil 2 : Entraîner -->
-    <a href="/atelier/nuancier" class="outil-duo-bloc outil-duo-bloc--entrainer">
+    <a href="/atelier/nuancier" class="outil-duo-bloc outil-duo-bloc--entrainer" id="nuancier">
       <div class="outil-duo-step">02 · entraîner</div>
       <div class="outil-duo-titre">Le Nuancier Émotionnel</div>
       <p class="outil-duo-desc">10 scénarios, 4 mots, 1 nuance juste. Entraînez votre cerveau à différencier des émotions très proches.</p>
@@ -391,7 +400,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
   <!-- ── Articles ── -->
   {entrees.length > 0 && (
-    <div class="atelier-entrees">
+    <div class="atelier-entrees" id="exploration">
       <div class="entrees-sep"></div>
       <h2>Exploration</h2>
       <ul class="entrees-list">
@@ -438,6 +447,38 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     setTimeout(type, 520);
   }
 
+  // ── Terminal typewriter outils ────────────────────────────────────────────
+  const outilsTermText   = document.getElementById('outilsTerminalText');
+  const outilsTermCursor = document.getElementById('outilsTerminalCursor');
+  const outilsPhrase     = "évaluer · expérimenter · développer · granularité émotionnelle";
+
+  if (outilsTermText && outilsTermCursor) {
+    outilsTermCursor.style.opacity = '0';
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          let j = 0;
+          const typeOutils = () => {
+            if (j < outilsPhrase.length) {
+              outilsTermText.textContent += outilsPhrase[j];
+              j++;
+              setTimeout(typeOutils, 24 + Math.random() * 20);
+            } else {
+              outilsTermCursor.style.opacity = '1';
+            }
+          };
+          setTimeout(typeOutils, 280);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    const outilsSection = document.getElementById('outilsTerminal');
+    if (outilsSection) observer.observe(outilsSection);
+  }
+
+
   const tooltip = document.getElementById('fnivTooltip');
   const cases   = document.querySelectorAll<HTMLElement>('.fniv-case[data-title]');
 
@@ -466,7 +507,18 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 </script>
 
 <style>
-  /* ── Bloc Fondations ── */
+/* ── Accessibilité — titres cachés pour sommaire ── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Bloc Fondations ── */
   .fondations-bloc {
     display: block;
     text-decoration: none;
@@ -1522,5 +1574,34 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   .outil-duo-titre { font-size: 0.85rem; }
   .outil-duo-desc  { font-size: 0.74rem; }
 }
-  
-</style>
+/* ── Terminal intro outils ── */
+.outils-terminal {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 2.2rem 0 1.4rem;
+  padding: 0 0.2rem;
+}
+.outils-terminal-prompt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: #7abd6e;
+  flex-shrink: 0;
+  user-select: none;
+}
+.outils-terminal-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: rgba(212,168,100,0.75);
+  letter-spacing: 0.02em;
+  font-style: italic;
+}
+.outils-terminal-cursor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  color: #7abd6e;
+  animation: blink 1.1s step-end infinite;
+  opacity: 0;
+}
+
+
