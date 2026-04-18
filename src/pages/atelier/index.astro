@@ -323,6 +323,48 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
 
 
+<!-- ── Outils Interactifs ── -->
+
+<div class="outils-system">
+
+  <div class="outils-system-head">
+    <span class="outils-system-label">système</span>
+    <span class="outils-system-dot">·</span>
+    <span class="outils-system-name">Granularité Émotionnelle</span>
+    <span class="outils-system-count">2 outils</span>
+  </div>
+
+  <div class="outils-duo">
+
+    <!-- Outil 1 : Évaluer -->
+    <a href="/atelier/granularite-emotionnelle" class="outil-duo-bloc outil-duo-bloc--evaluer">
+      <div class="outil-duo-step">01 · évaluer</div>
+      <div class="outil-duo-titre">Granularité Émotionnelle</div>
+      <p class="outil-duo-desc">Nommez précisément ce que vous ressentez. Stoppe le piratage de l'amygdale en 5 étapes.</p>
+      <span class="outil-duo-arrow">&#x2192;</span>
+      <div class="outil-duo-glow outil-duo-glow--evaluer"></div>
+    </a>
+
+    <!-- Connecteur visuel -->
+    <div class="outil-duo-connector" aria-hidden="true">
+      <div class="outil-duo-connector-line"></div>
+      <span class="outil-duo-connector-icon">&#x2192;</span>
+      <div class="outil-duo-connector-line"></div>
+    </div>
+
+    <!-- Outil 2 : Entraîner -->
+    <a href="/atelier/nuancier" class="outil-duo-bloc outil-duo-bloc--entrainer">
+      <div class="outil-duo-step">02 · entraîner</div>
+      <div class="outil-duo-titre">Le Nuancier Émotionnel</div>
+      <p class="outil-duo-desc">10 scénarios, 4 mots, 1 nuance juste. Entraînez votre cerveau à différencier des émotions très proches.</p>
+      <span class="outil-duo-arrow">&#x2192;</span>
+      <div class="outil-duo-glow outil-duo-glow--entrainer"></div>
+    </a>
+
+  </div>
+
+</div>
+
 
   <!-- ── Lien discret : Le Salon des Idées ── -->
   <div class="salon-lien-wrap">
@@ -1186,5 +1228,191 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
 
 
+  /* ── Système duo · Granularité Émotionnelle ── */
+
+.outils-system {
+  margin: 0 0 1.8rem;
+}
+.outils-system-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.outils-system-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(232,160,80,0.5);
+}
+.outils-system-dot {
+  color: rgba(255,255,255,0.12);
+  font-size: 0.6rem;
+}
+.outils-system-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  flex: 1;
+}
+.outils-system-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: 0.08em;
+}
+
+.outils-duo {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  background: linear-gradient(135deg, rgba(245,166,35,0.05) 0%, rgba(232,144,106,0.05) 100%);
+  border: 1px solid rgba(232,160,80,0.12);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.outil-duo-bloc {
+  display: flex;
+  flex-direction: column;
+  padding: 1.2rem 1.4rem;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.22s;
+}
+.outil-duo-bloc:hover {
+  background: rgba(255,255,255,0.04);
+}
+.outil-duo-bloc::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  opacity: 0.3;
+  transition: opacity 0.22s;
+}
+.outil-duo-bloc:hover::before { opacity: 0.75; }
+
+/* Évaluer — amber/or */
+.outil-duo-bloc--evaluer {
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.outil-duo-bloc--evaluer::before {
+  background: linear-gradient(90deg, #e8a050, #ffe066, #e85d20);
+}
+.outil-duo-bloc--evaluer .outil-duo-step  { color: #f5a623; }
+.outil-duo-bloc--evaluer .outil-duo-titre { color: #f5c460; }
+.outil-duo-bloc--evaluer .outil-duo-arrow { color: #f5a623; }
+
+/* Entraîner — corail pêche */
+.outil-duo-bloc--entrainer::before {
+  background: linear-gradient(90deg, #e8906a, #f0b898, #d4623a);
+}
+.outil-duo-bloc--entrainer .outil-duo-step  { color: #e8906a; }
+.outil-duo-bloc--entrainer .outil-duo-titre { color: #f0a882; }
+.outil-duo-bloc--entrainer .outil-duo-arrow { color: #e8906a; }
+
+.outil-duo-step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.75;
+}
+.outil-duo-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.5rem;
+}
+.outil-duo-desc {
+  font-family: 'Mulish', sans-serif;
+  font-weight: 300;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  color: rgba(220,190,150,0.5);
+  flex: 1;
+  margin: 0 0 0.75rem;
+}
+.outil-duo-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  opacity: 0.35;
+  align-self: flex-end;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.outil-duo-bloc:hover .outil-duo-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* Glow de fond au hover */
+.outil-duo-glow {
+  position: absolute;
+  bottom: -20px; right: -20px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  filter: blur(32px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.outil-duo-bloc:hover .outil-duo-glow { opacity: 0.12; }
+.outil-duo-glow--evaluer   { background: #f5a623; }
+.outil-duo-glow--entrainer { background: #e8906a; }
+
+/* Connecteur central */
+.outil-duo-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.6rem;
+  gap: 0.25rem;
+}
+.outil-duo-connector-line {
+  width: 1px;
+  flex: 1;
+  max-height: 36px;
+  background: linear-gradient(to bottom, rgba(245,166,35,0.18), rgba(232,144,106,0.18));
+}
+.outil-duo-connector-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.18);
+}
+
+/* Mobile : empilé */
+@media (max-width: 580px) {
+  .outils-duo {
+    grid-template-columns: 1fr;
+  }
+  .outil-duo-bloc--evaluer {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .outil-duo-connector {
+    flex-direction: row;
+    padding: 0.55rem 1.4rem;
+  }
+  .outil-duo-connector-line {
+    flex: 1;
+    height: 1px;
+    width: auto;
+    max-height: unset;
+    background: linear-gradient(to right, rgba(245,166,35,0.18), rgba(232,144,106,0.18));
+  }
+}
+@media (max-width: 480px) {
+  .outil-duo-titre { font-size: 0.85rem; }
+  .outil-duo-desc  { font-size: 0.74rem; }
+}
   
 </style>

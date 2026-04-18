@@ -1,0 +1,194 @@
+[
+  {
+    "scenario": "Un collègue présente en réunion une idée dont vous aviez discuté ensemble en privé, sans mentionner votre nom.",
+    "options": ["Frustration", "Jalousie", "Trahison", "Indignation"],
+    "correct": "Trahison",
+    "feedback": "La frustration concerne un obstacle matériel. Ici, il s'agit d'une rupture du contrat de loyauté implicite. C'est bien une forme de Trahison, même mineure."
+  },
+  {
+    "scenario": "Vous scrollez sur LinkedIn et voyez qu'un ancien camarade de classe vient d'être nommé directeur.",
+    "options": ["Jalousie", "Envie", "Injustice", "Dépit"],
+    "correct": "Envie",
+    "feedback": "L'Envie est le désir d'avoir ce que l'autre possède. La Jalousie, c'est la peur de perdre ce qui vous appartient déjà."
+  },
+  {
+    "scenario": "Sous le coup de la colère, vous dites une phrase très blessante à un proche.",
+    "options": ["Honte", "Culpabilité", "Embarras", "Remords"],
+    "correct": "Culpabilité",
+    "feedback": "La Honte vous dit 'Je suis mauvais'. La Culpabilité vous dit 'J'ai fait quelque chose de mal'. Elle est saine car elle appelle à la réparation."
+  },
+  {
+    "scenario": "Vous lisez qu'un politicien corrompu a encore échappé à une condamnation grâce à un vice de forme.",
+    "options": ["Colère", "Dégoût", "Indignation", "Mépris"],
+    "correct": "Indignation",
+    "feedback": "L'Indignation est une colère morale. Elle ne naît pas d'une attaque personnelle, mais d'une violation des valeurs ou de l'équité."
+  },
+  {
+    "scenario": "Vous êtes bloqué dans les embouteillages depuis 40 minutes et allez rater un rendez-vous.",
+    "options": ["Colère", "Impuissance", "Exaspération", "Anxiété"],
+    "correct": "Impuissance",
+    "feedback": "Reconnaître l'Impuissance (aucun contrôle sur la situation) permet au cerveau d'arrêter de chercher des solutions et de relâcher la tension."
+  },
+  {
+    "scenario": "Vous repensez à cet ami qui vous a laissé tomber il y a deux ans, et vous sentez votre mâchoire se serrer.",
+    "options": ["Amertume", "Rancœur", "Déception", "Colère"],
+    "correct": "Rancœur",
+    "feedback": "La Rancœur est une colère recuite et ciblée vers une personne du passé. L'Amertume, elle, est une désillusion plus globale envers la vie."
+  },
+  {
+    "scenario": "Demain, vous avez une présentation importante. Vous n'arrivez pas à dormir, votre cœur bat vite, imaginant mille scénarios catastrophes.",
+    "options": ["Peur", "Stress", "Anxiété", "Panique"],
+    "correct": "Anxiété",
+    "feedback": "La Peur est face à un danger immédiat et réel (un lion). L'Anxiété est l'anticipation d'une menace future, souvent floue ou incertaine."
+  },
+  {
+    "scenario": "Quelqu'un mâche bruyamment son chewing-gum juste à côté de vous dans le train. Vous avez envie de hurler.",
+    "options": ["Colère", "Frustration", "Agacement", "Dégoût"],
+    "correct": "Agacement",
+    "feedback": "L'agacement (ou l'irritation) est une émotion de basse intensité souvent liée à une surcharge sensorielle ou une légère violation de votre espace."
+  },
+  {
+    "scenario": "Vous écoutez une vieille chanson de votre enfance. Une tristesse douce et agréable vous envahit.",
+    "options": ["Tristesse", "Mélancolie", "Nostalgie", "Regret"],
+    "correct": "Mélancolie",
+    "feedback": "La Mélancolie (ou la Nostalgie) est une tristesse esthétique. C'est la joie d'avoir vécu quelque chose, mêlée à la tristesse que ce soit révolu."
+  },
+  {
+    "scenario": "Après un échec amoureux, vous vous dites : 'De toute façon, l'amour n'existe pas, les gens sont tous égoïstes.'",
+    "options": ["Tristesse", "Dépit", "Amertume", "Rancœur"],
+    "correct": "Amertume",
+    "feedback": "L'Amertume est l'évolution toxique de la déception. Elle se généralise en une vision du monde cynique ('tous les gens sont...')."
+  },
+  {
+    "scenario": "Vous avez travaillé dur sur un projet et vous le présentez avec une profonde satisfaction intérieure.",
+    "options": ["Joie", "Arrogance", "Fierté", "Soulagement"],
+    "correct": "Fierté",
+    "feedback": "La Fierté est l'émotion saine de l'accomplissement personnel. L'Arrogance, en revanche, nécessiterait de rabaisser les autres pour se sentir grand."
+  },
+  {
+    "scenario": "Vous aviez réservé un restaurant pour votre anniversaire, mais en arrivant, ils ont perdu votre réservation et c'est complet.",
+    "options": ["Dépit", "Frustration", "Déception", "Colère"],
+    "correct": "Déception",
+    "feedback": "La Déception survient quand la réalité ne s'aligne pas avec une attente positive formulée. C'est l'écart douloureux entre le prévu et le réel."
+  },
+{
+    "scenario": "Vous trébuchez et faites tomber votre plateau au milieu d'un restaurant bondé. Vous devenez rouge et souriez nerveusement en ramassant vos affaires.",
+    "options": ["Honte", "Embarras", "Humiliation", "Culpabilité"],
+    "correct": "Embarras",
+    "feedback": "La Honte attaque votre identité ('Je suis un incapable'). L'Embarras est une émotion sociale de surface : c'est un signal d'apaisement envoyé au groupe pour montrer que vous connaissez les règles sociales, même si vous venez d'être maladroit."
+  },
+  {
+    "scenario": "C'est dimanche après-midi. Vous avez plein de choses que vous pourriez faire, mais rien ne vous attire. Vous ressentez une sensation de creux dans la poitrine.",
+    "options": ["Ennui", "Tristesse", "Vide", "Apathie"],
+    "correct": "Vide",
+    "feedback": "L'Ennui est la frustration d'être inoccupé (une énergie bloquée). Le Vide est un symptôme de déconnexion émotionnelle : une incapacité temporaire à ressentir de l'engagement envers soi-même ou le monde."
+  },
+  {
+    "scenario": "Vous êtes face au Grand Canyon au coucher du soleil. Vous vous sentez incroyablement petit, mais profondément connecté à l'univers.",
+    "options": ["Admiration", "Émerveillement", "Joie", "Contemplation"],
+    "correct": "Émerveillement",
+    "feedback": "L'Admiration est dirigée vers les qualités d'une personne. L'Émerveillement (Awe) est déclenché par quelque chose de plus vaste que soi. Sur le plan neurologique, c'est l'émotion qui réduit le plus l'ego et l'activité du réseau du mode par défaut."
+  },
+  {
+    "scenario": "Vous essayez de dormir, mais votre cerveau rejoue en boucle une conversation banale eue ce matin, en analysant le moindre mot que vous avez prononcé.",
+    "options": ["Anxiété", "Inquiétude", "Rumination", "Obsession"],
+    "correct": "Rumination",
+    "feedback": "L'Inquiétude est orientée vers le futur (que va-t-il se passer ?). La Rumination est orientée vers le passé : c'est l'espoir illusoire et épuisant du cerveau de pouvoir changer le ressenti d'une situation déjà figée."
+  },
+  {
+    "scenario": "Un collègue fait constamment des blagues sexistes et lourdes en réunion. Vous le regardez de haut en bas, en pensant qu'il est pathétique.",
+    "options": ["Colère", "Dégoût", "Mépris", "Indignation"],
+    "correct": "Mépris",
+    "feedback": "La Colère cherche à corriger le comportement de l'autre. Le Mépris (un mélange de colère et de dégoût) rejette l'autre comme inférieur ou indigne. C'est l'émotion la plus toxique pour une relation à long terme."
+  },
+  {
+    "scenario": "Vous avouez à votre équipe que vous ne savez pas comment résoudre un problème majeur et que vous avez besoin de leur aide. Votre cœur bat vite.",
+    "options": ["Faiblesse", "Peur", "Vulnérabilité", "Incompétence"],
+    "correct": "Vulnérabilité",
+    "feedback": "La Faiblesse est un manque de capacité que l'on subit. La Vulnérabilité est l'acte courageux d'exposer ses limites avec authenticité. C'est un choix conscient qui génère la confiance du groupe."
+  },
+  {
+    "scenario": "Vous postulez pour une promotion interne. La direction la donne au neveu du patron. Vous soupirez et vous dites : 'J'aurais dû le savoir, c'est toujours comme ça ici.'",
+    "options": ["Tristesse", "Dépit", "Résignation", "Frustration"],
+    "correct": "Résignation",
+    "feedback": "Le Dépit est une réaction amère face à un obstacle. La Résignation est l'abandon actif de l'espoir : le cerveau 'coupe' l'attente pour se protéger de la douleur d'une future déception."
+  },
+  {
+    "scenario": "Vous venez de boucler un projet intense de 3 mois. Tout s'est bien passé, mais vous n'arrivez même pas à vous lever du canapé pour fêter ça. Tout semble lourd.",
+    "options": ["Apathie", "Tristesse", "Épuisement", "Paresse"],
+    "correct": "Épuisement",
+    "feedback": "L'Apathie est un manque d'envie ou de sens. L'Épuisement est physiologique : c'est la déplétion totale de vos ressources cognitives et nerveuses après un effort prolongé. Ce n'est pas moral, c'est mécanique."
+  },
+  {
+    "scenario": "Vous pensiez avoir perdu votre portefeuille avec tous vos papiers dans le métro, mais un inconnu court vers vous pour vous le rendre.",
+    "options": ["Joie", "Soulagement", "Gratitude", "Euphorie"],
+    "correct": "Gratitude",
+    "feedback": "Le Soulagement est la simple baisse de tension quand une menace disparaît. La Gratitude y ajoute une reconnaissance prosociale envers la force (ou la personne) qui a permis ce dénouement positif."
+  },
+  {
+    "scenario": "Toute votre division est licenciée suite à une restructuration, mais vous êtes le seul gardé. Vous avez la boule au ventre en parlant à vos anciens collègues.",
+    "options": ["Honte", "Pitié", "Culpabilité", "Malaise"],
+    "correct": "Culpabilité",
+    "feedback": "C'est la 'Culpabilité du survivant'. Bien que vous n'ayez commis aucune faute, l'esprit de tribu du cerveau interprète le fait d'être épargné comme une injustice morale envers le groupe."
+  },
+{
+    "scenario": "Vous avez 5 emails urgents, le téléphone sonne, et soudainement vous vous figez, incapable d'accomplir la moindre petite tâche.",
+    "options": ["Stress", "Panique", "Accablement", "Anxiété"],
+    "correct": "Accablement",
+    "feedback": "Le Stress mobilise l'énergie (fuite ou combat). L'Accablement (Overwhelm) est un court-circuit cognitif : le volume d'informations dépasse la capacité de traitement du cortex, entraînant une paralysie (le mode 'Freeze')."
+  },
+  {
+    "scenario": "Vous êtes à une grande fête entouré de 50 personnes avec qui vous parlez, mais vous vous sentez douloureusement déconnecté et invisible.",
+    "options": ["Solitude", "Isolement", "Tristesse", "Rejet"],
+    "correct": "Isolement",
+    "feedback": "La Solitude est un état physique (être seul) qui peut être ressourçant. L'Isolement est un état psychologique de déconnexion perçue. On peut subir un profond isolement au milieu d'une foule."
+  },
+  {
+    "scenario": "Vous acceptez d'aider un collègue sur votre week-end. Pendant que vous travaillez, vous bouillonnez intérieurement et vous vous sentez utilisé.",
+    "options": ["Colère", "Frustration", "Ressentiment", "Agacement"],
+    "correct": "Ressentiment",
+    "feedback": "Le Ressentiment naît d'une violation de vos limites à laquelle vous avez secrètement consenti. C'est la colère couplée au sentiment d'être victime de son propre manque d'affirmation (incapacité à dire 'non')."
+  },
+  {
+    "scenario": "Vous découvrez que le mentor que vous admiriez depuis 10 ans a bâti son succès sur des fraudes. Toute votre vision de lui s'effondre.",
+    "options": ["Déception", "Tristesse", "Désillusion", "Colère"],
+    "correct": "Désillusion",
+    "feedback": "La Déception est la perte d'une attente spécifique. La Désillusion est l'effondrement systémique d'un modèle mental ou d'une croyance profonde. C'est un véritable deuil cognitif."
+  },
+  {
+    "scenario": "Un ami traverse un deuil. Vous vous asseyez avec lui, ressentez sa peine, et cherchez à l'alléger par votre présence, sans essayer de 'réparer' la situation.",
+    "options": ["Pitié", "Sympathie", "Empathie", "Compassion"],
+    "correct": "Compassion",
+    "feedback": "La Pitié implique une distance de supériorité. L'Empathie est de ressentir la douleur. La Compassion est l'empathie couplée à une intention active d'alléger la souffrance de l'autre sans la juger."
+  },
+  {
+    "scenario": "Vous recevez un diagnostic médical préoccupant, mais vous continuez votre semaine exactement comme si de rien n'était, en vous disant 'c'est sûrement une erreur'.",
+    "options": ["Détachement", "Choc", "Déni", "Optimisme"],
+    "correct": "Déni",
+    "feedback": "Le Détachement est une prise de distance consciente. Le Déni est un mécanisme de défense aveugle (Système 1) qui refuse d'intégrer une réalité immédiate jugée trop menaçante pour l'ego ou la survie."
+  },
+  {
+    "scenario": "Sans raison apparente, vous ressentez un poids écrasant sur la poitrine et une sensation de catastrophe imminente, sans qu'aucune pensée précise ne l'accompagne.",
+    "options": ["Anxiété", "Angoisse", "Stress", "Peur"],
+    "correct": "Angoisse",
+    "feedback": "L'Anxiété est souvent cognitive (une boucle de pensées). L'Angoisse est viscérale et somatique (le corps s'emballe avec une sensation d'oppression), souvent sans objet précis ni raison logique immédiate."
+  },
+  {
+    "scenario": "Votre train est annulé. Au lieu de vous énerver, vous prenez conscience que vous n'y pouvez rien, vous sortez un livre et acceptez d'arriver en retard.",
+    "options": ["Apathie", "Résignation", "Lâcher-prise", "Détachement"],
+    "correct": "Lâcher-prise",
+    "feedback": "La Résignation est une capitulation amère. Le Lâcher-prise (Acceptation radicale) est le choix cognitif actif de ne pas gaspiller d'énergie sur des variables hors de notre contrôle. C'est une action, pas une passivité."
+  },
+  {
+    "scenario": "Quelqu'un vous fait un compliment très sincère et public sur votre intelligence. Vous baissez les yeux, souriez maladroitement et changez de sujet.",
+    "options": ["Honte", "Pudeur", "Malaise", "Humilité"],
+    "correct": "Pudeur",
+    "feedback": "La Honte est le sentiment d'être défectueux. La Pudeur (ou gêne positive) est un mécanisme sain de protection de son intimité face à une exposition émotionnelle soudaine, même lorsqu'elle est positive."
+  },
+  {
+    "scenario": "Vous venez de gagner une compétition majeure. Vous sautez partout, votre cœur bat à tout rompre et vous vous sentez totalement invincible.",
+    "options": ["Joie", "Bonheur", "Euphorie", "Fierté"],
+    "correct": "Euphorie",
+    "feedback": "La Joie est un état de plénitude ancré et soutenable. L'Euphorie est un pic chimique (dopamine/endorphine) explosif mais insoutenable sur la durée, qui altère temporairement le jugement en donnant un sentiment de toute-puissance."
+  }    
+]

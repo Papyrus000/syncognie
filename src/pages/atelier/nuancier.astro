@@ -1,0 +1,927 @@
+---
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+import scenariosData from '../../data/scenarios.json';
+
+// Sérialisation sécurisée pour injection côté client
+const scenariosJSON = JSON.stringify(scenariosData);
+---
+
+<AtelierLayout
+  title="Le Nuancier Émotionnel"
+  filename="nuancier"
+  description="Entraînez votre cerveau à différencier des émotions très proches grâce à des mises en situation."
+>
+
+<div class="nu-wrap">
+
+  <header class="nu-header">
+    <p class="nu-surtitle">outil · entraînement cognitif</p>
+    <h1 class="nu-title">Le Nuancier Émotionnel</h1>
+    <p class="nu-subtitle">
+      Dix scénarios. Quatre mots. Une seule nuance juste.<br>
+      La salle de gym du vocabulaire émotionnel.
+    </p>
+  </header>
+
+  <!-- ── Barre de progression de session ── -->
+  <div class="nu-progress-bar" id="nuProgressBar" aria-hidden="true">
+    <div class="nu-progress-fill" id="nuProgressFill"></div>
+  </div>
+  <p class="nu-progress-label" id="nuProgressLabel"></p>
+
+  <!-- ── Carte principale ── -->
+  <div class="nu-card" id="nuCard">
+
+    <!-- Phase A : Scénario + Options -->
+    <div id="nuPhaseQuestion">
+      <p class="nu-scenario-label">Scénario</p>
+      <p class="nu-scenario-text" id="nuScenario"></p>
+      <div class="nu-options" id="nuOptions" role="group" aria-label="Choisissez l'émotion la plus précise"></div>
+    </div>
+
+    <!-- Phase B : Feedback (caché initialement) -->
+    <div id="nuPhaseFeedback" class="nu-phase--hidden" role="alert" aria-live="polite">
+      <div class="nu-feedback-header" id="nuFeedbackHeader">
+        <span class="nu-feedback-icon" id="nuFeedbackIcon" aria-hidden="true"></span>
+        <span class="nu-feedback-verdict" id="nuFeedbackVerdict"></span>
+      </div>
+      <p class="nu-correct-word" id="nuCorrectWord"></p>
+      <p class="nu-feedback-text" id="nuFeedbackText"></p>
+      <button class="nu-next-btn" id="nuNextBtn"></button>
+    </div>
+
+  </div>
+
+  <!-- ── Écran de fin ── -->
+  <div class="nu-end" id="nuEnd" style="display:none" role="region" aria-label="Résultats de la session">
+
+    <!-- Titre -->
+    <p class="nu-end-icon" aria-hidden="true" id="nuEndIcon">✦</p>
+    <p class="nu-end-title" id="nuEndTitle">Votre granularité émotionnelle s'est enrichie aujourd'hui.</p>
+
+    <!-- Score chiffré -->
+    <div class="nu-score-display">
+      <span class="nu-score-number" id="nuScoreNumber"></span>
+      <span class="nu-score-total" id="nuScoreTotal"></span>
+    </div>
+
+    <!-- Barre de score visuelle -->
+    <div class="nu-score-bar-wrap" aria-hidden="true">
+      <div class="nu-score-bar-track">
+        <div class="nu-score-bar-fill" id="nuScoreBarFill"></div>
+        <div class="nu-score-bar-glow" id="nuScoreBarGlow"></div>
+      </div>
+      <div class="nu-score-bar-labels">
+        <span>0</span>
+        <span id="nuScoreBarMax"></span>
+      </div>
+    </div>
+
+    <!-- Badge de niveau -->
+    <div class="nu-level-badge" id="nuLevelBadge">
+      <span class="nu-level-stars" id="nuLevelStars" aria-hidden="true"></span>
+      <span class="nu-level-label" id="nuLevelLabel"></span>
+    </div>
+
+    <!-- Message contextuel -->
+    <p class="nu-end-sub" id="nuEndSub"></p>
+
+    <button class="nu-restart-btn" id="nuRestart">↺ Nouveau tirage</button>
+
+  </div>
+
+  <footer class="nu-footer">
+    <p>Inspiré des travaux de Lisa Feldman Barrett et de la théorie des émotions construites.</p>
+  </footer>
+
+</div>
+
+</AtelierLayout>
+
+<!-- Injection sécurisée des données depuis le frontmatter Astro -->
+<script is:inline define:vars={{ scenariosJSON }}>
+  window.__NU_SCENARIOS__ = JSON.parse(scenariosJSON);
+</script>
+
+<script>
+  // ── Types ──
+  interface Scenario {
+    scenario: string;
+    options: string[];
+    correct: string;
+    feedback: string;
+  }
+
+  // ── Données injectées par le frontmatter ──
+  const ALL_SCENARIOS = (window as any).__NU_SCENARIOS__ as Scenario[];
+  const SESSION_SIZE = 10;
+
+  // Fisher-Yates shuffle
+  function shuffle<T>(arr: T[]): T[] {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Sélectionne une session aléatoire de SESSION_SIZE scénarios
+  function buildSession(): Scenario[] {
+    const shuffled = shuffle(ALL_SCENARIOS);
+    return shuffled.slice(0, Math.min(SESSION_SIZE, shuffled.length));
+  }
+
+  let deck = buildSession();
+  let currentIndex = 0;
+  let score = 0;
+
+  // ── DOM refs ──
+  const card            = document.getElementById('nuCard')!;
+  const phaseQ          = document.getElementById('nuPhaseQuestion')!;
+  const phaseF          = document.getElementById('nuPhaseFeedback')!;
+  const scenarioEl      = document.getElementById('nuScenario')!;
+  const optionsEl       = document.getElementById('nuOptions')!;
+  const feedbackHeader  = document.getElementById('nuFeedbackHeader')!;
+  const feedbackIcon    = document.getElementById('nuFeedbackIcon')!;
+  const feedbackVerdict = document.getElementById('nuFeedbackVerdict')!;
+  const correctWordEl   = document.getElementById('nuCorrectWord')!;
+  const feedbackText    = document.getElementById('nuFeedbackText')!;
+  const nextBtn         = document.getElementById('nuNextBtn')!;
+  const endScreen       = document.getElementById('nuEnd')!;
+  const progressFill    = document.getElementById('nuProgressFill')!;
+  const progressLabel   = document.getElementById('nuProgressLabel')!;
+  const restartBtn      = document.getElementById('nuRestart')!;
+
+  // ── DOM refs écran de fin ──
+  const endIcon        = document.getElementById('nuEndIcon')!;
+  const endTitle       = document.getElementById('nuEndTitle')!;
+  const scoreNumber    = document.getElementById('nuScoreNumber')!;
+  const scoreTotal     = document.getElementById('nuScoreTotal')!;
+  const scoreBarFill   = document.getElementById('nuScoreBarFill')!;
+  const scoreBarGlow   = document.getElementById('nuScoreBarGlow')!;
+  const scoreBarMax    = document.getElementById('nuScoreBarMax')!;
+  const levelBadge     = document.getElementById('nuLevelBadge')!;
+  const levelStars     = document.getElementById('nuLevelStars')!;
+  const levelLabel     = document.getElementById('nuLevelLabel')!;
+  const endSub         = document.getElementById('nuEndSub')!;
+
+  // ── Niveaux de gamification ──
+  interface Level {
+    min: number; // fraction 0–1
+    label: string;
+    stars: string;
+    color: string;
+    glowColor: string;
+    barColor: string;
+    title: string;
+    sub: string;
+  }
+
+  const LEVELS: Level[] = [
+    {
+      min: 0.9,
+      label: 'Cartographe émotionnel',
+      stars: '★★★',
+      color: '#f0c040',
+      glowColor: 'rgba(240,192,64,0.45)',
+      barColor: 'linear-gradient(90deg, #e8a020, #f0d060)',
+      title: 'Précision remarquable.',
+      sub: 'Vous distinguez les émotions avec une finesse rare. Votre cartographie intérieure est d\'une résolution exceptionnelle.',
+    },
+    {
+      min: 0.7,
+      label: 'Explorateur des nuances',
+      stars: '★★☆',
+      color: '#e8a050',
+      glowColor: 'rgba(232,160,80,0.38)',
+      barColor: 'linear-gradient(90deg, #e85d20, #e8a050)',
+      title: 'Bonne sensibilité.',
+      sub: 'Vous saisissez la majorité des nuances. Quelques zones d\'ombre à explorer pour affiner encore votre vocabulaire émotionnel.',
+    },
+    {
+      min: 0.5,
+      label: 'Apprenti nuancier',
+      stars: '★☆☆',
+      color: '#c87840',
+      glowColor: 'rgba(200,120,64,0.32)',
+      barColor: 'linear-gradient(90deg, #c85820, #c89040)',
+      title: 'Le terrain est fertile.',
+      sub: 'Chaque session révèle de nouvelles distinctions. Continuez — la granularité émotionnelle s\'acquiert par la répétition.',
+    },
+    {
+      min: 0,
+      label: 'En éveil',
+      stars: '☆☆☆',
+      color: '#a06040',
+      glowColor: 'rgba(160,96,64,0.28)',
+      barColor: 'linear-gradient(90deg, #a04020, #c07040)',
+      title: 'Le voyage commence.',
+      sub: 'Nommer les émotions avec précision est une compétence qui se cultive. Chaque tentative construit de nouveaux chemins neuronaux.',
+    },
+  ];
+
+  function getLevel(pct: number): Level {
+    return LEVELS.find(l => pct >= l.min) ?? LEVELS[LEVELS.length - 1];
+  }
+
+  function updateProgress() {
+    const pct = (currentIndex / deck.length) * 100;
+    progressFill.style.width = pct + '%';
+    progressLabel.textContent = `${currentIndex} / ${deck.length}`;
+  }
+
+  function renderQuestion() {
+    const q = deck[currentIndex];
+
+    // Transition sortie
+    card.classList.add('nu-card--exit');
+    setTimeout(() => {
+      scenarioEl.textContent = q.scenario;
+
+      // Mélanger les options à l'affichage
+      optionsEl.innerHTML = '';
+      shuffle(q.options).forEach((opt: string) => {
+        const btn = document.createElement('button');
+        btn.className = 'nu-option';
+        btn.textContent = opt;
+        btn.dataset.value = opt;
+        optionsEl.appendChild(btn);
+      });
+
+      phaseQ.classList.remove('nu-phase--hidden');
+      phaseF.classList.add('nu-phase--hidden');
+      card.classList.remove('nu-card--exit');
+      card.classList.add('nu-card--enter');
+      setTimeout(() => card.classList.remove('nu-card--enter'), 450);
+    }, 220);
+
+    updateProgress();
+  }
+
+  function showFeedback(chosen: string) {
+    const q = deck[currentIndex];
+    const isCorrect = chosen === q.correct;
+    if (isCorrect) score++;
+
+    // Marquer les boutons
+    optionsEl.querySelectorAll('.nu-option').forEach(btn => {
+      const b = btn as HTMLButtonElement;
+      b.disabled = true;
+      if (b.dataset.value === q.correct) {
+        b.classList.add('nu-option--correct');
+      } else if (b.dataset.value === chosen && !isCorrect) {
+        b.classList.add('nu-option--wrong');
+      } else {
+        b.classList.add('nu-option--dim');
+      }
+    });
+
+    // Feedback
+    setTimeout(() => {
+      phaseQ.classList.add('nu-phase--hidden');
+      phaseF.classList.remove('nu-phase--hidden');
+      phaseF.classList.add('nu-feedback--enter');
+      setTimeout(() => phaseF.classList.remove('nu-feedback--enter'), 400);
+
+      if (isCorrect) {
+        feedbackHeader.className = 'nu-feedback-header nu-feedback-header--correct';
+        feedbackIcon.textContent = '✓';
+        feedbackVerdict.textContent = 'Excellente analyse';
+      } else {
+        feedbackHeader.className = 'nu-feedback-header nu-feedback-header--close';
+        feedbackIcon.textContent = '◎';
+        feedbackVerdict.textContent = 'Presque !';
+      }
+
+      correctWordEl.textContent = q.correct;
+      feedbackText.textContent = q.feedback;
+
+      const isLast = currentIndex === deck.length - 1;
+      nextBtn.textContent = isLast ? 'Voir mon bilan →' : 'Scénario suivant →';
+
+      // Focus clavier sur le bouton suivant
+      nextBtn.focus();
+    }, 320);
+  }
+
+  function nextQuestion() {
+    currentIndex++;
+    if (currentIndex >= deck.length) {
+      showEnd();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showEnd() {
+    progressFill.style.width = '100%';
+    progressLabel.textContent = `${deck.length} / ${deck.length}`;
+    card.style.display = 'none';
+
+    const pct = score / deck.length;
+    const level = getLevel(pct);
+
+    // Score chiffré
+    scoreNumber.textContent = String(score);
+    scoreTotal.textContent  = `/ ${deck.length}`;
+    scoreBarMax.textContent = String(deck.length);
+
+    // Barre de score — animée après un léger délai
+    scoreBarFill.style.setProperty('--bar-color', level.barColor);
+    scoreBarGlow.style.setProperty('--glow-color', level.glowColor);
+    scoreBarFill.style.width = '0%';
+    scoreBarGlow.style.width = '0%';
+
+    // Badge de niveau
+    levelStars.textContent = level.stars;
+    levelLabel.textContent = level.label;
+    levelBadge.style.setProperty('--level-color', level.color);
+    levelBadge.style.setProperty('--level-glow', level.glowColor);
+
+    // Textes
+    endTitle.textContent = level.title;
+    endSub.textContent   = level.sub;
+
+    // Icône selon score
+    endIcon.textContent =
+      pct >= 0.9 ? '✦✦✦' :
+      pct >= 0.7 ? '✦✦◇' :
+      pct >= 0.5 ? '✦◇◇' : '◇◇◇';
+
+    endScreen.style.display = 'block';
+    endScreen.classList.add('nu-end--enter');
+    setTimeout(() => endScreen.classList.remove('nu-end--enter'), 500);
+
+    // Animation de la barre de score (délai pour laisser le temps à l'entrée)
+    setTimeout(() => {
+      scoreBarFill.style.width = (pct * 100) + '%';
+      scoreBarGlow.style.width = (pct * 100) + '%';
+    }, 300);
+
+    // Focus clavier sur le bouton restart
+    setTimeout(() => restartBtn.focus(), 600);
+  }
+
+  function restart() {
+    deck = buildSession();
+    currentIndex = 0;
+    score = 0;
+    endScreen.style.display = 'none';
+    card.style.removeProperty('display');
+    renderQuestion();
+  }
+
+  // ── Événements souris ──
+  optionsEl.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.nu-option') as HTMLButtonElement | null;
+    if (!btn || btn.disabled) return;
+    showFeedback(btn.dataset.value!);
+  });
+
+  nextBtn.addEventListener('click', nextQuestion);
+  restartBtn.addEventListener('click', restart);
+
+  // ── Raccourcis clavier — Entrée/Espace pour avancer ──
+  document.addEventListener('keydown', (e) => {
+    // Phase feedback : Entrée ou Espace pour continuer
+    if (!phaseF.classList.contains('nu-phase--hidden')) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        nextQuestion();
+      }
+    }
+    // Écran de fin : Entrée ou Espace pour recommencer
+    if (endScreen.style.display !== 'none') {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        restart();
+      }
+    }
+  });
+
+  // ── Init ──
+  renderQuestion();
+</script>
+
+<style>
+  .nu-wrap {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0.5rem 0 3rem;
+  }
+
+  /* ── Header ── */
+  .nu-header { margin-bottom: 1.8rem; }
+
+  .nu-surtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(200,136,64,0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .nu-title {
+    font-family: 'Mulish', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #e8a050;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+
+  .nu-subtitle {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.95rem;
+    color: rgba(180,140,90,0.65);
+    line-height: 1.65;
+  }
+
+  /* ── Barre de progression de session ── */
+  .nu-progress-bar {
+    height: 2px;
+    background: rgba(200,136,64,0.12);
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+  }
+
+  .nu-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #e85d20, #e8a050);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 0%;
+  }
+
+  .nu-progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: rgba(200,136,64,0.35);
+    text-align: right;
+    margin-bottom: 1.4rem;
+  }
+
+  /* ── Carte ── */
+  .nu-card {
+    border: 1px solid rgba(200,136,64,0.18);
+    border-radius: 14px;
+    padding: 1.8rem;
+    background: rgba(255,180,80,0.04);
+    min-height: 260px;
+  }
+
+  .nu-card--exit {
+    animation: cardOut 0.22s ease forwards;
+  }
+
+  .nu-card--enter {
+    animation: cardIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes cardOut {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-10px); }
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Scénario ── */
+  .nu-scenario-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(200,136,64,0.4);
+    margin-bottom: 0.75rem;
+  }
+
+  .nu-scenario-text {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.97rem;
+    font-style: italic;
+    color: #c8a070;
+    line-height: 1.75;
+    margin-bottom: 1.6rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid rgba(200,136,64,0.1);
+  }
+
+  /* ── Options ── */
+  .nu-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+
+  /* ── Boutons option — :global pour percer le scope Astro ── */
+  :global(.nu-option) {
+    position: relative;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, rgba(232,160,80,0.16) 0%, rgba(232,100,32,0.12) 100%) !important;
+    border: 1.5px solid rgba(232,140,60,0.4) !important;
+    border-radius: 12px;
+    font-family: 'Mulish', sans-serif !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: #e8b070 !important;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition:
+      background 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease,
+      transform 0.14s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.18s ease;
+    text-align: center;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    overflow: hidden;
+    width: 100%;
+    outline: none;
+  }
+
+  /* Reflet lumineux */
+  :global(.nu-option)::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,220,140,0.07) 0%, transparent 60%);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* ── Accessibilité clavier ── */
+  :global(.nu-option:focus-visible) {
+    outline: 2px solid rgba(232,160,80,0.9) !important;
+    outline-offset: 3px !important;
+    box-shadow:
+      0 0 0 4px rgba(232,160,80,0.18),
+      0 4px 16px rgba(232,120,40,0.22) !important;
+    border-color: rgba(232,160,80,0.85) !important;
+  }
+
+  :global(.nu-option:hover:not(:disabled)) {
+    background: linear-gradient(135deg, rgba(232,160,80,0.30) 0%, rgba(232,100,32,0.24) 100%) !important;
+    border-color: rgba(232,140,60,0.75) !important;
+    color: #f0c880 !important;
+    transform: translateY(-2px) scale(1.01);
+    box-shadow:
+      0 4px 16px rgba(232,120,40,0.22),
+      0 1px 4px rgba(232,160,80,0.16),
+      inset 0 1px 0 rgba(255,220,140,0.12);
+  }
+
+  :global(.nu-option:active:not(:disabled)) {
+    transform: translateY(0) scale(0.99);
+    box-shadow: none;
+  }
+
+  :global(.nu-option:disabled) { cursor: default; }
+
+  /* États post-clic */
+  :global(.nu-option--correct) {
+    background: linear-gradient(135deg, rgba(122,189,110,0.22) 0%, rgba(80,180,90,0.16) 100%) !important;
+    border-color: rgba(122,189,110,0.55) !important;
+    color: #9edc8e !important;
+    box-shadow: 0 2px 12px rgba(100,200,80,0.15) !important;
+  }
+
+  :global(.nu-option--wrong) {
+    background: linear-gradient(135deg, rgba(210,90,70,0.16) 0%, rgba(200,60,50,0.12) 100%) !important;
+    border-color: rgba(200,90,70,0.4) !important;
+    color: rgba(210,140,120,0.65) !important;
+    text-decoration: line-through;
+  }
+
+  :global(.nu-option--dim) {
+    opacity: 0.3;
+  }
+
+  /* ── Phase hidden ── */
+  .nu-phase--hidden { display: none; }
+
+  /* ── Feedback ── */
+  .nu-feedback--enter {
+    animation: feedbackIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes feedbackIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .nu-feedback-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(200,136,64,0.1);
+  }
+
+  .nu-feedback-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .nu-feedback-header--correct .nu-feedback-icon {
+    background: rgba(122,189,110,0.15);
+    color: #8ecc80;
+    border: 1px solid rgba(122,189,110,0.3);
+  }
+
+  .nu-feedback-header--close .nu-feedback-icon {
+    background: rgba(232,160,80,0.12);
+    color: #e8a050;
+    border: 1px solid rgba(232,160,80,0.28);
+  }
+
+  .nu-feedback-verdict {
+    font-family: 'Mulish', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .nu-feedback-header--correct .nu-feedback-verdict { color: #8ecc80; }
+  .nu-feedback-header--close   .nu-feedback-verdict { color: #e8a050; }
+
+  .nu-correct-word {
+    font-family: 'Mulish', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #e8a050;
+    margin-bottom: 0.65rem;
+  }
+
+  .nu-feedback-text {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.95rem;
+    color: #c8a070;
+    line-height: 1.75;
+    margin-bottom: 1.4rem;
+  }
+
+  /* ── Bouton suivant ── */
+  .nu-next-btn {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff8ee;
+    background: linear-gradient(135deg, #e87030 0%, #e8a050 100%);
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem 1.6rem;
+    cursor: pointer;
+    transition:
+      filter 0.18s ease,
+      transform 0.14s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.18s ease;
+    box-shadow: 0 2px 12px rgba(232,120,48,0.3), inset 0 1px 0 rgba(255,220,160,0.2);
+    outline: none;
+  }
+
+  .nu-next-btn:focus-visible {
+    outline: 2px solid rgba(232,160,80,0.9);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(232,160,80,0.18), 0 2px 12px rgba(232,120,48,0.3);
+  }
+
+  .nu-next-btn:hover {
+    filter: brightness(1.1);
+    transform: translateX(3px);
+    box-shadow: 0 4px 20px rgba(232,120,48,0.4), inset 0 1px 0 rgba(255,220,160,0.25);
+  }
+
+  .nu-next-btn:active {
+    transform: translateX(1px) scale(0.98);
+    filter: brightness(0.95);
+  }
+
+  /* ════════════════════════════════════════
+     ── Écran de fin — Bilan visuel ──
+  ════════════════════════════════════════ */
+  .nu-end {
+    text-align: center;
+    padding: 2rem 1rem 2.5rem;
+  }
+
+  .nu-end--enter {
+    animation: cardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .nu-end-icon {
+    font-size: 1.4rem;
+    color: #e8a050;
+    margin-bottom: 0.7rem;
+    opacity: 0.8;
+    letter-spacing: 0.2em;
+  }
+
+  .nu-end-title {
+    font-family: 'Mulish', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #e8a050;
+    line-height: 1.5;
+    margin-bottom: 1.6rem;
+  }
+
+  /* ── Score chiffré ── */
+  .nu-score-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  .nu-score-number {
+    font-family: 'Mulish', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 800;
+    color: #e8a050;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .nu-score-total {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: rgba(200,136,64,0.45);
+    font-weight: 400;
+  }
+
+  /* ── Barre de score visuelle ── */
+  .nu-score-bar-wrap {
+    margin: 0 auto 1.6rem;
+    max-width: 400px;
+  }
+
+  .nu-score-bar-track {
+    position: relative;
+    height: 10px;
+    background: rgba(200,136,64,0.12);
+    border-radius: 99px;
+    overflow: visible;
+    margin-bottom: 0.4rem;
+  }
+
+  .nu-score-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 99px;
+    background: var(--bar-color, linear-gradient(90deg, #e85d20, #e8a050));
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 0%;
+    z-index: 2;
+  }
+
+  /* Glow au bout de la barre */
+  .nu-score-bar-glow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    height: 20px;
+    border-radius: 99px;
+    background: var(--glow-color, rgba(232,160,80,0.4));
+    filter: blur(6px);
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 0%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .nu-score-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    color: rgba(200,136,64,0.28);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Badge de niveau ── */
+  .nu-level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: rgba(255,180,80,0.06);
+    border: 1px solid rgba(var(--level-color, 232,160,80), 0.25);
+    border-color: color-mix(in srgb, var(--level-color, #e8a050) 30%, transparent);
+    border-radius: 99px;
+    padding: 0.45rem 1.1rem 0.45rem 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .nu-level-stars {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--level-color, #e8a050);
+  }
+
+  .nu-level-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--level-color, #e8a050);
+    text-transform: uppercase;
+  }
+
+  /* ── Message contextuel ── */
+  .nu-end-sub {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: rgba(180,140,90,0.6);
+    line-height: 1.7;
+    margin-bottom: 1.8rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Bouton Recommencer ── */
+  .nu-restart-btn {
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #fff8ee;
+    background: linear-gradient(135deg, #c85820 0%, #e89040 100%);
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem 2rem;
+    cursor: pointer;
+    transition:
+      filter 0.18s ease,
+      transform 0.14s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.18s ease;
+    box-shadow: 0 2px 16px rgba(200,90,32,0.35), inset 0 1px 0 rgba(255,200,120,0.18);
+    outline: none;
+  }
+
+  .nu-restart-btn:focus-visible {
+    outline: 2px solid rgba(232,160,80,0.9);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(232,160,80,0.18), 0 2px 16px rgba(200,90,32,0.35);
+  }
+
+  .nu-restart-btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.03);
+    box-shadow: 0 6px 24px rgba(200,90,32,0.45), inset 0 1px 0 rgba(255,200,120,0.22);
+  }
+
+  .nu-restart-btn:active {
+    transform: scale(0.98);
+    filter: brightness(0.95);
+  }
+
+  /* ── Footer ── */
+  .nu-footer {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(200,136,64,0.1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(160,120,70,0.4);
+    letter-spacing: 0.03em;
+    line-height: 1.7;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 480px) {
+    .nu-title        { font-size: 1.25rem; }
+    .nu-card         { padding: 1.2rem; }
+    .nu-options      { grid-template-columns: 1fr; }
+    .nu-score-number { font-size: 2.6rem; }
+    .nu-kbd-hint     { display: none; }
+  }
+</style>

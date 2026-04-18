@@ -1,0 +1,711 @@
+---
+import AtelierLayout from '../../layouts/AtelierLayout.astro';
+---
+
+<AtelierLayout
+  title="Outil de Granularité Émotionnelle"
+  filename="granularite-emotionnelle"
+  description="Un outil neurobiologique pour nommer précisément ce que vous ressentez et reprendre le contrôle de vos émotions."
+>
+
+<div class="ge-wrap">
+
+  <header class="ge-header">
+    <p class="ge-surtitle">outil · neuro-ergonomie</p>
+    <h1 class="ge-title">Granularité Émotionnelle</h1>
+    <p class="ge-subtitle">
+      Nommer précisément ce que vous ressentez, c'est déjà reprendre le contrôle.
+    </p>
+  </header>
+
+  <!-- ── ENTONNOIR ── -->
+  <div class="ge-funnel" id="geFunnel">
+
+    <!-- Étape 1 : Énergie corporelle -->
+    <div class="ge-step" id="step1">
+      <p class="ge-question">En ce moment, mon corps est…</p>
+      <div class="ge-choices">
+        <button class="ge-btn" data-next="step2-haute">
+          <span class="ge-btn-icon">⚡</span>
+          <span class="ge-btn-label">Agité, tendu, activé</span>
+          <span class="ge-btn-sub">énergie haute</span>
+        </button>
+        <button class="ge-btn" data-next="step2-basse">
+          <span class="ge-btn-icon">🌑</span>
+          <span class="ge-btn-label">Lourd, vide, ralenti</span>
+          <span class="ge-btn-sub">énergie basse</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 2a : Valence — Énergie haute -->
+    <div class="ge-step ge-step--hidden" id="step2-haute">
+      <p class="ge-question">Cette agitation est…</p>
+      <div class="ge-choices">
+        <button class="ge-btn" data-next="step3-haute-agreable">
+          <span class="ge-btn-icon">✦</span>
+          <span class="ge-btn-label">Plutôt agréable</span>
+          <span class="ge-btn-sub">enthousiasme, excitation</span>
+        </button>
+        <button class="ge-btn" data-next="step3-haute-desagreable">
+          <span class="ge-btn-icon">◈</span>
+          <span class="ge-btn-label">Plutôt désagréable</span>
+          <span class="ge-btn-sub">tension, malaise</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 2b : Valence — Énergie basse -->
+    <div class="ge-step ge-step--hidden" id="step2-basse">
+      <p class="ge-question">Ce calme pesant est…</p>
+      <div class="ge-choices">
+        <button class="ge-btn" data-next="step3-basse-agreable">
+          <span class="ge-btn-icon">✦</span>
+          <span class="ge-btn-label">Plutôt agréable</span>
+          <span class="ge-btn-sub">sérénité, repos</span>
+        </button>
+        <button class="ge-btn" data-next="step3-basse-desagreable">
+          <span class="ge-btn-icon">◈</span>
+          <span class="ge-btn-label">Plutôt désagréable</span>
+          <span class="ge-btn-sub">épuisement, tristesse</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 3 : Catégories primaires -->
+    <!-- Haute + Désagréable -->
+    <div class="ge-step ge-step--hidden" id="step3-haute-desagreable">
+      <p class="ge-question">Ce que je ressens ressemble le plus à…</p>
+      <div class="ge-choices ge-choices--3">
+        <button class="ge-btn" data-next="step4-colere">
+          <span class="ge-btn-icon">🔥</span>
+          <span class="ge-btn-label">De la colère</span>
+          <span class="ge-btn-sub">injustice, résistance</span>
+        </button>
+        <button class="ge-btn" data-next="step4-peur">
+          <span class="ge-btn-icon">⚠</span>
+          <span class="ge-btn-label">De la peur</span>
+          <span class="ge-btn-sub">menace, incertitude</span>
+        </button>
+        <button class="ge-btn" data-next="step4-frustration">
+          <span class="ge-btn-icon">◌</span>
+          <span class="ge-btn-label">De la frustration</span>
+          <span class="ge-btn-sub">obstacle, impuissance</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Haute + Agréable -->
+    <div class="ge-step ge-step--hidden" id="step3-haute-agreable">
+      <p class="ge-question">Ce que je ressens ressemble le plus à…</p>
+      <div class="ge-choices ge-choices--3">
+        <button class="ge-btn" data-next="step4-joie">
+          <span class="ge-btn-icon">☀</span>
+          <span class="ge-btn-label">De la joie</span>
+          <span class="ge-btn-sub">légèreté, plaisir</span>
+        </button>
+        <button class="ge-btn" data-next="step4-excitation">
+          <span class="ge-btn-icon">⚡</span>
+          <span class="ge-btn-label">De l'excitation</span>
+          <span class="ge-btn-sub">anticipation, élan</span>
+        </button>
+        <button class="ge-btn" data-next="step4-fierte">
+          <span class="ge-btn-icon">✦</span>
+          <span class="ge-btn-label">De la fierté</span>
+          <span class="ge-btn-sub">accomplissement, valeur</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Basse + Désagréable -->
+    <div class="ge-step ge-step--hidden" id="step3-basse-desagreable">
+      <p class="ge-question">Ce que je ressens ressemble le plus à…</p>
+      <div class="ge-choices ge-choices--3">
+        <button class="ge-btn" data-next="step4-tristesse">
+          <span class="ge-btn-icon">🌧</span>
+          <span class="ge-btn-label">De la tristesse</span>
+          <span class="ge-btn-sub">perte, manque</span>
+        </button>
+        <button class="ge-btn" data-next="step4-honte">
+          <span class="ge-btn-icon">◉</span>
+          <span class="ge-btn-label">De la honte / culpabilité</span>
+          <span class="ge-btn-sub">jugement, faute</span>
+        </button>
+        <button class="ge-btn" data-next="step4-epuisement">
+          <span class="ge-btn-icon">○</span>
+          <span class="ge-btn-label">De l'épuisement</span>
+          <span class="ge-btn-sub">vide, détachement</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Basse + Agréable -->
+    <div class="ge-step ge-step--hidden" id="step3-basse-agreable">
+      <p class="ge-question">Ce que je ressens ressemble le plus à…</p>
+      <div class="ge-choices ge-choices--3">
+        <button class="ge-btn" data-next="step4-paix">
+          <span class="ge-btn-icon">◌</span>
+          <span class="ge-btn-label">De la paix</span>
+          <span class="ge-btn-sub">calme, acceptation</span>
+        </button>
+        <button class="ge-btn" data-next="step4-gratitude">
+          <span class="ge-btn-icon">✦</span>
+          <span class="ge-btn-label">De la gratitude</span>
+          <span class="ge-btn-sub">connexion, chaleur</span>
+        </button>
+        <button class="ge-btn" data-next="step4-contemplation">
+          <span class="ge-btn-icon">○</span>
+          <span class="ge-btn-label">De la contemplation</span>
+          <span class="ge-btn-sub">distance sereine, réflexion</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Étape 4 : Granularité fine ── -->
+    <!-- Colère -->
+    <div class="ge-step ge-step--hidden" id="step4-colere">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Indignation" data-resolve="Vous traversez un état d'indignation. Quelque chose a heurté profondément votre sens de la justice. Nommer cela, c'est cesser de subir.">Indignation</button>
+        <button class="ge-btn ge-btn--fine" data-word="Trahison" data-resolve="Vous traversez un sentiment de trahison. Une confiance a été rompue. Ce n'est pas de la faiblesse — c'est de l'attachement.">Trahison</button>
+        <button class="ge-btn ge-btn--fine" data-word="Rancœur" data-resolve="Vous portez de la rancœur. Une blessure ancienne non résolue refait surface. La nommer est déjà la dépotentialiser.">Rancœur</button>
+        <button class="ge-btn ge-btn--fine" data-word="Mépris" data-resolve="Vous ressentez du mépris. C'est une distanciation protectrice face à une valeur bafouée. Observer cela sans le nier vous redonne de l'agentivité.">Mépris</button>
+        <button class="ge-btn ge-btn--fine" data-word="Exaspération" data-resolve="Vous êtes dans l'exaspération. La répétition d'un schéma non résolu a saturé votre tolérance. Ce signal mérite d'être écouté.">Exaspération</button>
+      </div>
+    </div>
+
+    <!-- Peur -->
+    <div class="ge-step ge-step--hidden" id="step4-peur">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Anxiété" data-resolve="Vous traversez de l'anxiété. Une menace diffuse, sans objet précis, mobilise votre système d'alerte. Nommer cela démantèle son pouvoir.">Anxiété</button>
+        <button class="ge-btn ge-btn--fine" data-word="Appréhension" data-resolve="Vous ressentez de l'appréhension. Une situation future concentre votre vigilance. Ce n'est pas une prédiction — c'est une émotion.">Appréhension</button>
+        <button class="ge-btn ge-btn--fine" data-word="Panique" data-resolve="Vous êtes dans un état de panique. Votre cortex préfrontal peut reprendre la main. Respiration lente, 4 temps. Vous êtes en sécurité maintenant.">Panique</button>
+        <button class="ge-btn ge-btn--fine" data-word="Vulnérabilité" data-resolve="Vous ressentez de la vulnérabilité. Être exposé est inconfortable. C'est aussi la condition de tout lien authentique.">Vulnérabilité</button>
+        <button class="ge-btn ge-btn--fine" data-word="Insécurité" data-resolve="Vous traversez un sentiment d'insécurité. Une base stable (intérieure ou extérieure) manque. Identifier le manque est la première étape pour y répondre.">Insécurité</button>
+      </div>
+    </div>
+
+    <!-- Frustration -->
+    <div class="ge-step ge-step--hidden" id="step4-frustration">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Impuissance" data-resolve="Vous ressentez de l'impuissance. Un obstacle bloque une action que vous voulez mener. Identifier ce qui est hors de votre contrôle libère de l'énergie pour ce qui y est.">Impuissance</button>
+        <button class="ge-btn ge-btn--fine" data-word="Déception" data-resolve="Vous traversez une déception. L'écart entre ce qui était attendu et ce qui est arrivé est douloureux. C'est le signe que vous attendiez quelque chose de bien.">Déception</button>
+        <button class="ge-btn ge-btn--fine" data-word="Impatience" data-resolve="Vous ressentez de l'impatience. Le rythme extérieur ne correspond pas à votre rythme interne. Ce signal mérite d'être interrogé.">Impatience</button>
+        <button class="ge-btn ge-btn--fine" data-word="Ambivalence" data-resolve="Vous êtes dans l'ambivalence. Deux besoins contradictoires coexistent. Les nommer séparément, c'est pouvoir les négocier.">Ambivalence</button>
+        <button class="ge-btn ge-btn--fine" data-word="Résignation" data-resolve="Vous ressentez de la résignation. Un abandon progressif face à un obstacle persistant. Observer cela sans jugement est le début d'un nouveau choix.">Résignation</button>
+      </div>
+    </div>
+
+    <!-- Tristesse -->
+    <div class="ge-step ge-step--hidden" id="step4-tristesse">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Deuil" data-resolve="Vous traversez un état de deuil. Une perte — réelle ou symbolique — demande à être reconnue. Le deuil n'est pas une faiblesse, c'est le prix de l'attachement.">Deuil</button>
+        <button class="ge-btn ge-btn--fine" data-word="Mélancolie" data-resolve="Vous ressentez de la mélancolie. Une nostalgie douce-amère pour quelque chose qui n'est plus. Laisser cette émotion être, sans l'accélérer.">Mélancolie</button>
+        <button class="ge-btn ge-btn--fine" data-word="Solitude" data-resolve="Vous traversez un sentiment de solitude. Un manque de connexion — pas nécessairement d'absence. Nommer ce besoin est déjà une forme de connexion avec soi.">Solitude</button>
+        <button class="ge-btn ge-btn--fine" data-word="Désespoir" data-resolve="Vous ressentez du désespoir. La perception que rien ne changera. C'est une distorsion cognitive sous pression. Ce moment n'est pas permanent.">Désespoir</button>
+        <button class="ge-btn ge-btn--fine" data-word="Nostalgie" data-resolve="Vous ressentez de la nostalgie. Un passé lumineux contraste avec le présent. C'est une ressource, pas un piège — si vous choisissez de l'utiliser.">Nostalgie</button>
+      </div>
+    </div>
+
+    <!-- Honte -->
+    <div class="ge-step ge-step--hidden" id="step4-honte">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Honte" data-resolve="Vous ressentez de la honte. Ce n'est pas ce que vous avez fait qui vous définit — c'est la conviction que vous êtes fondamentalement défaillant. Cette conviction peut être remise en question.">Honte</button>
+        <button class="ge-btn ge-btn--fine" data-word="Culpabilité" data-resolve="Vous ressentez de la culpabilité. Un acte ou une omission heurte vos valeurs. Contrairement à la honte, la culpabilité est réparable — elle pointe vers une action possible.">Culpabilité</button>
+        <button class="ge-btn ge-btn--fine" data-word="Embarras" data-resolve="Vous ressentez de l'embarras. Une exposition sociale inattendue active votre système d'autoévaluation. C'est une émotion très humaine, et très temporaire.">Embarras</button>
+        <button class="ge-btn ge-btn--fine" data-word="Remords" data-resolve="Vous portez des remords. Un passé non modifiable pèse sur le présent. Reconnaître cela ouvre la voie à la réparation — ou à l'acceptation de ce qui ne peut être réparé.">Remords</button>
+        <button class="ge-btn ge-btn--fine" data-word="Auto-critique" data-resolve="Vous êtes dans un mode d'auto-critique intense. Ce juge intérieur a une intention protectrice mal calibrée. Observer la voix plutôt que de vous y identifier est un acte de distance saine.">Auto-critique</button>
+      </div>
+    </div>
+
+    <!-- Épuisement -->
+    <div class="ge-step ge-step--hidden" id="step4-epuisement">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Burnout" data-resolve="Vous êtes en état d'épuisement profond. Les ressources sont à sec. Ce n'est pas un manque de volonté — c'est un signal biologique sérieux qui mérite une réponse sérieuse.">Burnout</button>
+        <button class="ge-btn ge-btn--fine" data-word="Détachement" data-resolve="Vous ressentez du détachement. Une anesthésie émotionnelle protectrice s'est installée. C'est souvent le signe d'une surcharge prolongée. Nommer cela, c'est déjà sortir de l'anesthésie.">Détachement</button>
+        <button class="ge-btn ge-btn--fine" data-word="Apathie" data-resolve="Vous traversez de l'apathie. La motivation, l'élan, l'intérêt semblent absents. Ce n'est pas qui vous êtes — c'est un état, et les états changent.">Apathie</button>
+        <button class="ge-btn ge-btn--fine" data-word="Accablement" data-resolve="Vous êtes accablé. Le poids de trop de choses à la fois écrase. Réduire le champ de vision à la prochaine heure est une tactique neurologique légitime.">Accablement</button>
+        <button class="ge-btn ge-btn--fine" data-word="Vide" data-resolve="Vous ressentez le vide. L'absence de sens, de ressenti, de direction. Ce n'est pas une vérité sur vous — c'est un signal que quelque chose de fondamental demande à être réexaminé.">Vide</button>
+      </div>
+    </div>
+
+    <!-- Joie -->
+    <div class="ge-step ge-step--hidden" id="step4-joie">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Allégresse" data-resolve="Vous ressentez de l'allégresse. Une légèreté vive et spontanée. Laissez-la exister pleinement — les émotions positives méritent autant d'attention que les difficiles.">Allégresse</button>
+        <button class="ge-btn ge-btn--fine" data-word="Soulagement" data-resolve="Vous ressentez du soulagement. Une tension longtemps portée vient de se dissoudre. Savourez ce relâchement — votre système nerveux en a besoin.">Soulagement</button>
+        <button class="ge-btn ge-btn--fine" data-word="Jubilation" data-resolve="Vous ressentez de la jubilation. Une joie intense et expansive. Laissez-la occuper tout l'espace — elle est réelle.">Jubilation</button>
+        <button class="ge-btn ge-btn--fine" data-word="Contentement" data-resolve="Vous ressentez du contentement. Une satisfaction calme et profonde. C'est l'une des formes de bonheur les plus stables — et les plus sous-estimées.">Contentement</button>
+        <button class="ge-btn ge-btn--fine" data-word="Émerveillement" data-resolve="Vous ressentez de l'émerveillement. Quelque chose a dépassé vos attentes ou révélé sa beauté. Cette émotion est liée à l'expansion du sens.">Émerveillement</button>
+      </div>
+    </div>
+
+    <!-- Excitation -->
+    <div class="ge-step ge-step--hidden" id="step4-excitation">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Anticipation" data-resolve="Vous ressentez de l'anticipation. Votre cerveau projette un futur désirable et s'y prépare. Cet élan est une énergie — utilisez-la.">Anticipation</button>
+        <button class="ge-btn ge-btn--fine" data-word="Enthousiasme" data-resolve="Vous ressentez de l'enthousiasme. Un alignement entre votre énergie et une direction. Notez ce qui l'a provoqué — c'est une information précieuse sur vos valeurs profondes.">Enthousiasme</button>
+        <button class="ge-btn ge-btn--fine" data-word="Inspiration" data-resolve="Vous ressentez de l'inspiration. Une connexion soudaine entre une idée et votre élan propre. Capturez-la maintenant, avant que le quotidien ne la dilue.">Inspiration</button>
+        <button class="ge-btn ge-btn--fine" data-word="Désir" data-resolve="Vous ressentez du désir. Un mouvement vers quelque chose ou quelqu'un. Nommer l'objet de ce désir avec précision est la première condition pour pouvoir le poursuivre ou le questionner.">Désir</button>
+        <button class="ge-btn ge-btn--fine" data-word="Euphorie" data-resolve="Vous ressentez de l'euphorie. Une intensité émotionnelle haute. Profitez de cet état — et observez-le sans trop vous y identifier, car les états passent.">Euphorie</button>
+      </div>
+    </div>
+
+    <!-- Fierté -->
+    <div class="ge-step ge-step--hidden" id="step4-fierte">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Fierté" data-resolve="Vous ressentez de la fierté. Un accomplissement aligné avec vos valeurs a été reconnu — par vous. C'est rare et précieux. Laissez-le s'installer.">Fierté</button>
+        <button class="ge-btn ge-btn--fine" data-word="Confiance" data-resolve="Vous ressentez de la confiance. Une foi dans votre capacité à faire face. Ce n'est pas de l'arrogance — c'est de la compétence reconnue.">Confiance</button>
+        <button class="ge-btn ge-btn--fine" data-word="Satisfaction" data-resolve="Vous ressentez de la satisfaction. Un travail mené à son terme, un effort honoré. Prenez le temps de l'enregistrer — votre cerveau en a besoin pour apprendre.">Satisfaction</button>
+        <button class="ge-btn ge-btn--fine" data-word="Dignité" data-resolve="Vous ressentez de la dignité. Un sentiment d'intégrité préservée face à une épreuve. C'est l'une des formes de force les plus solides qui soit.">Dignité</button>
+        <button class="ge-btn ge-btn--fine" data-word="Gratitude envers soi" data-resolve="Vous ressentez de la gratitude envers vous-même. Vous avez traversé quelque chose et vous avez tenu. Reconnaître cela n'est pas de la vanité — c'est de la justice.">Gratitude envers soi</button>
+      </div>
+    </div>
+
+    <!-- Paix -->
+    <div class="ge-step ge-step--hidden" id="step4-paix">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Sérénité" data-resolve="Vous ressentez de la sérénité. Un calme stable, non fragile. Votre système nerveux est en régulation. C'est un état à cultiver délibérément.">Sérénité</button>
+        <button class="ge-btn ge-btn--fine" data-word="Acceptation" data-resolve="Vous ressentez de l'acceptation. Non la résignation, mais le choix lucide de ne pas lutter contre ce qui est. C'est une forme de sagesse active.">Acceptation</button>
+        <button class="ge-btn ge-btn--fine" data-word="Plénitude" data-resolve="Vous ressentez de la plénitude. Un sentiment de complétude rare. Notez ce contexte — il vous dit ce dont vous avez vraiment besoin pour vivre.">Plénitude</button>
+        <button class="ge-btn ge-btn--fine" data-word="Quiétude" data-resolve="Vous ressentez de la quiétude. Une paix tranquille, sans effort. Laissez-la être sans chercher à l'analyser ou la justifier.">Quiétude</button>
+        <button class="ge-btn ge-btn--fine" data-word="Équilibre" data-resolve="Vous ressentez de l'équilibre. Les différentes polarités de votre vie semblent momentanément alignées. Observez ce qui a rendu cet état possible.">Équilibre</button>
+      </div>
+    </div>
+
+    <!-- Gratitude -->
+    <div class="ge-step ge-step--hidden" id="step4-gratitude">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Gratitude" data-resolve="Vous ressentez de la gratitude. Une reconnaissance pour ce qui est là, maintenant. La gratitude est l'une des émotions les plus documentées pour le bien-être durable.">Gratitude</button>
+        <button class="ge-btn ge-btn--fine" data-word="Tendresse" data-resolve="Vous ressentez de la tendresse. Un attachement doux pour quelqu'un ou quelque chose. C'est une forme de soin qui dit quelque chose d'important sur ce qui compte pour vous.">Tendresse</button>
+        <button class="ge-btn ge-btn--fine" data-word="Connexion" data-resolve="Vous ressentez de la connexion. Un sentiment d'appartenance ou de résonance avec quelqu'un. C'est un besoin humain fondamental — et vous le ressentez maintenant.">Connexion</button>
+        <button class="ge-btn ge-btn--fine" data-word="Affection" data-resolve="Vous ressentez de l'affection. Un lien chaleureux, ancré, sans effort. Prenez le temps de l'exprimer — les liens se nourrissent d'être nommés.">Affection</button>
+        <button class="ge-btn ge-btn--fine" data-word="Émerveillement partagé" data-resolve="Vous ressentez de l'émerveillement partagé. La beauté d'une expérience vécue avec d'autres. C'est l'une des formes les plus riches de lien humain.">Émerveillement partagé</button>
+      </div>
+    </div>
+
+    <!-- Contemplation -->
+    <div class="ge-step ge-step--hidden" id="step4-contemplation">
+      <p class="ge-question">Précisément, ce que je vis est…</p>
+      <div class="ge-choices ge-choices--fine">
+        <button class="ge-btn ge-btn--fine" data-word="Distance réflexive" data-resolve="Vous êtes dans un état de distance réflexive. Un recul lucide sur votre propre vie. C'est un état rare et précieux — beaucoup d'insight émergent de là.">Distance réflexive</button>
+        <button class="ge-btn ge-btn--fine" data-word="Curiosité" data-resolve="Vous ressentez de la curiosité. Un mouvement vers l'inconnu, sans urgence. C'est l'état optimal pour apprendre et découvrir.">Curiosité</button>
+        <button class="ge-btn ge-btn--fine" data-word="Résolution tranquille" data-resolve="Vous êtes dans un état de résolution tranquille. Une décision prise avec calme et clarté. Faites confiance à ce signal.">Résolution tranquille</button>
+        <button class="ge-btn ge-btn--fine" data-word="Nostalgie douce" data-resolve="Vous ressentez une nostalgie douce. Le passé est évoqué avec bienveillance, non avec regret. C'est une forme de paix avec son histoire.">Nostalgie douce</button>
+        <button class="ge-btn ge-btn--fine" data-word="Détachement serein" data-resolve="Vous ressentez un détachement serein. Un recul non forcé, sans froideur. C'est une forme de sagesse qui vous permet de voir plus clairement.">Détachement serein</button>
+      </div>
+    </div>
+
+    <!-- ── Étape 5 : Résolution ── -->
+    <div class="ge-step ge-step--hidden" id="step5">
+      <div class="ge-resolve">
+        <p class="ge-resolve-word" id="geWord"></p>
+        <p class="ge-resolve-text" id="geResolveText"></p>
+      </div>
+      <button class="ge-restart-btn" id="geRestart">↺ Recommencer</button>
+    </div>
+
+  </div>
+  <!-- /ge-funnel -->
+
+  <!-- Indicateur de progression -->
+  <div class="ge-progress" id="geProgress" aria-hidden="true">
+    <div class="ge-progress-dot ge-progress-dot--active"></div>
+    <div class="ge-progress-dot"></div>
+    <div class="ge-progress-dot"></div>
+    <div class="ge-progress-dot"></div>
+    <div class="ge-progress-dot"></div>
+  </div>
+
+  <footer class="ge-footer">
+    <p>Basé sur les travaux de Lisa Feldman Barrett sur la <em>granularité émotionnelle</em> et les recherches en affect labeling (Torre &amp; Lieberman, 2018).</p>
+  </footer>
+
+</div>
+<!-- /ge-wrap -->
+
+</AtelierLayout>
+
+<script>
+  const STEP_ORDER = ['step1','step2','step3','step4','step5'];
+
+  let currentDepth = 0;
+  let history: string[] = ['step1'];
+
+  function showStep(id: string, depth: number) {
+    // Masquer l'étape courante
+    const currentId = history[history.length - 1];
+    const current = document.getElementById(currentId);
+    if (current) {
+      current.classList.add('ge-step--exit');
+      setTimeout(() => {
+        current.classList.add('ge-step--hidden');
+        current.classList.remove('ge-step--exit');
+      }, 260);
+    }
+
+    // Afficher la nouvelle étape
+    setTimeout(() => {
+      const next = document.getElementById(id);
+      if (!next) return;
+      next.classList.remove('ge-step--hidden');
+      next.classList.add('ge-step--enter');
+      setTimeout(() => next.classList.remove('ge-step--enter'), 460);
+    }, 270);
+
+    history.push(id);
+    updateProgress(depth);
+  }
+
+  function updateProgress(depth: number) {
+    const dots = document.querySelectorAll('.ge-progress-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('ge-progress-dot--active', i <= depth);
+      dot.classList.toggle('ge-progress-dot--done', i < depth);
+    });
+  }
+
+  function reset() {
+    // Masquer toutes les étapes
+    document.querySelectorAll('.ge-step').forEach(s => {
+      s.classList.add('ge-step--hidden');
+      s.classList.remove('ge-step--exit', 'ge-step--enter');
+    });
+    history = ['step1'];
+    currentDepth = 0;
+
+    setTimeout(() => {
+      const first = document.getElementById('step1');
+      if (first) {
+        first.classList.remove('ge-step--hidden');
+        first.classList.add('ge-step--enter');
+        setTimeout(() => first.classList.remove('ge-step--enter'), 350);
+      }
+      updateProgress(0);
+    }, 50);
+  }
+
+  // Délégation d'événements sur le funnel
+  document.getElementById('geFunnel')?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('[data-next],[data-word]') as HTMLElement | null;
+    if (!btn) return;
+
+    if (btn.dataset.next) {
+      // Navigation vers étape suivante
+      const nextId = btn.dataset.next;
+      // Calculer la profondeur selon le préfixe
+      const depth = nextId.startsWith('step5') ? 4
+        : nextId.startsWith('step4') ? 3
+        : nextId.startsWith('step3') ? 2
+        : nextId.startsWith('step2') ? 1 : 0;
+      showStep(nextId, depth);
+
+    } else if (btn.dataset.word) {
+      // Résolution finale
+      const word = btn.dataset.word!;
+      const resolveText = btn.dataset.resolve!;
+
+      const wordEl = document.getElementById('geWord');
+      const textEl = document.getElementById('geResolveText');
+      if (wordEl) wordEl.textContent = word;
+      if (textEl) textEl.textContent = resolveText;
+
+      showStep('step5', 4);
+    }
+  });
+
+  document.getElementById('geRestart')?.addEventListener('click', reset);
+</script>
+
+<style>
+  /* ── Wrapper ── */
+  .ge-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0.5rem 0 3rem;
+  }
+
+  /* ── Header ── */
+  .ge-header { margin-bottom: 2.5rem; }
+
+  .ge-surtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(200,136,64,0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .ge-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #e8a050;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+
+  .ge-subtitle {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: rgba(180,140,90,0.7);
+    line-height: 1.6;
+  }
+
+  /* ── Funnel container ── */
+  .ge-funnel {
+    position: relative;
+    min-height: 220px;
+  }
+
+  /* ── Steps ── */
+  .ge-step {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .ge-step--hidden {
+    display: none;
+  }
+
+  .ge-step--enter {
+    animation: stepIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .ge-step--exit {
+    animation: stepOut 0.25s ease forwards;
+    pointer-events: none;
+  }
+
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes stepOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-14px) scale(0.98); }
+  }
+
+  /* ── Question ── */
+  .ge-question {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: #c88840;
+    margin-bottom: 1.4rem;
+    line-height: 1.5;
+  }
+
+  /* ── Choix ── */
+  .ge-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .ge-choices--3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .ge-choices--3 .ge-btn:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .ge-choices--fine {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* ── Boutons principaux ── */
+  .ge-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.2rem;
+    background: rgba(255,180,80,0.06);
+    border: 1px solid rgba(200,136,64,0.22);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.18s, border-color 0.18s, transform 0.15s, box-shadow 0.18s;
+    width: 100%;
+  }
+
+  .ge-btn:hover {
+    background: rgba(255,180,80,0.13);
+    border-color: rgba(232,160,80,0.42);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+
+  .ge-btn:active { transform: translateY(0); }
+
+  .ge-btn-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    opacity: 0.75;
+    width: 1.4rem;
+    text-align: center;
+  }
+
+  .ge-btn-label {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #d4a878;
+    flex: 1;
+  }
+
+  .ge-btn-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(180,140,90,0.4);
+    flex-shrink: 0;
+  }
+
+  /* ── Boutons fins (step4) ── */
+  .ge-btn--fine {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #c88840;
+    background: rgba(255,180,80,0.05);
+    border: 1px solid rgba(200,136,64,0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+  }
+
+  .ge-btn--fine:hover {
+    background: rgba(232,160,80,0.14);
+    border-color: rgba(232,160,80,0.48);
+    color: #e8a050;
+  }
+
+  /* ── Résolution (étape 5) ── */
+  .ge-resolve {
+    padding: 1.8rem;
+    background: rgba(255,180,80,0.07);
+    border: 1px solid rgba(200,136,64,0.25);
+    border-radius: 12px;
+    border-left: 3px solid rgba(232,160,80,0.6);
+    margin-bottom: 1.5rem;
+    animation: resolveIn 0.5s ease forwards;
+  }
+
+  @keyframes resolveIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .ge-resolve-word {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #e8a050;
+    margin-bottom: 0.8rem;
+  }
+
+  .ge-resolve-text {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: #c8a070;
+    line-height: 1.7;
+  }
+
+  .ge-restart-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(180,140,90,0.55);
+    background: transparent;
+    border: 1px solid rgba(180,140,90,0.2);
+    border-radius: 6px;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .ge-restart-btn:hover {
+    color: #e8a050;
+    border-color: rgba(232,160,80,0.4);
+  }
+
+  /* ── Indicateur de progression ── */
+  .ge-progress {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .ge-progress-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(180,140,90,0.2);
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .ge-progress-dot--active {
+    background: rgba(232,160,80,0.55);
+    transform: scale(1.2);
+  }
+
+  .ge-progress-dot--done {
+    background: rgba(232,160,80,0.3);
+    transform: scale(1);
+  }
+
+  /* ── Footer ── */
+  .ge-footer {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(200,136,64,0.1);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(160,120,70,0.45);
+    letter-spacing: 0.03em;
+    line-height: 1.7;
+  }
+
+  .ge-footer em {
+    font-style: italic;
+    color: rgba(200,160,100,0.5);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 480px) {
+    .ge-title { font-size: 1.25rem; }
+    .ge-choices--3 { grid-template-columns: 1fr; }
+    .ge-choices--3 .ge-btn:last-child:nth-child(odd) { grid-column: auto; }
+    .ge-btn-sub { display: none; }
+    .ge-resolve { padding: 1.2rem; }
+  }
+</style>

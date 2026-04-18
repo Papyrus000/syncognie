@@ -28,6 +28,16 @@ const currentPath = Astro.url.pathname;
       </div>
     </nav>
 
+     <div class="footer-disclaimer">
+      <span class="footer-disclaimer-symbol">✦</span>
+      <p class="footer-disclaimer-text">
+        Syncognie est un jardin numérique qui évolue, pas une clinique.<br />
+        Son créateur est un curieux qui lit, croise, se trompe et recommence.<br />
+        Les IA coopèrent à la réflexion, au code et à l'écriture du site.<br />
+        Ce que tu trouves ici ne sont pas des conseils mais des pistes pour réfléchir et s'interroger.
+      </p>
+    </div>   
+
     <div class="footer-bottom">
       <div class="footer-signature">
         <span class="footer-logo-text">syncognie</span>
@@ -38,6 +48,8 @@ const currentPath = Astro.url.pathname;
         <span class="footer-version">{version}</span>
       </div>
     </div>
+
+
 
   </div>
 
@@ -91,6 +103,36 @@ const currentPath = Astro.url.pathname;
   }
   .footer-link:hover       { color: var(--accent); }
   .footer-link--active     { color: var(--ink-mid); }
+
+  /* Note d'intention */
+  .footer-disclaimer {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    padding: 1.25rem 0 1.5rem;
+    border-top: 1px solid var(--rule);
+    margin-top: 1.5rem;
+  }
+
+  .footer-disclaimer-symbol {
+    font-size: .6rem;
+    color: var(--accent);
+    opacity: .7;
+    flex-shrink: 0;
+    margin-top: .1rem;
+  }
+
+  .footer-disclaimer-text {
+    font-family: 'Mulish', sans-serif;
+    font-size: .8rem;
+    font-weight: 300;
+    letter-spacing: .05em;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    opacity: .6;
+    margin: 0;
+    font-style: italic;
+  }
 
   /* Bas de footer */
   .footer-bottom {
