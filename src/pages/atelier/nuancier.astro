@@ -916,12 +916,22 @@ const scenariosJSON = JSON.stringify(scenariosData);
     line-height: 1.7;
   }
 
-  /* ── Mobile ── */
+  /* ── Mobile portrait (≤ 480px) ── */
   @media (max-width: 480px) {
     .nu-title        { font-size: 1.25rem; }
-    .nu-card         { padding: 1.2rem; }
+    .nu-card         { padding: 1.2rem; min-height: 200px; }
     .nu-options      { grid-template-columns: 1fr; }
     .nu-score-number { font-size: 2.6rem; }
     .nu-kbd-hint     { display: none; }
+  }
+
+  /* ── Tablette portrait (481px – 768px) ── */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .nu-wrap  { padding: 0.5rem 0 2rem; }
+    .nu-card  { padding: 1.5rem; }
+    /* Options en colonne si texte long */
+    :global(.nu-option) { font-size: 0.95rem !important; padding: 0.7rem 0.8rem; }
+    .nu-next-btn { width: 100%; }
+    .nu-restart-btn { width: 100%; }
   }
 </style>

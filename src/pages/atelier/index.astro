@@ -858,7 +858,12 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     .fniv-label      { width: 4.5rem; font-size: 0.55rem; }
     .fniv-badge-num  { display: none; }
     .fniv-case       { width: 8px; height: 8px; }
-    .fondations-cta-text { display: none; }
+    /* CTA toujours visible sur touch (pas de hover fiable) */
+    .fondations-cta-text,
+    .socle-fondations-cta-text { display: none; }
+    /* Flèche toujours visible */
+    .fondations-arrow,
+    .socle-fondations-arrow { opacity: 0.7; }
     /* Listes d'articles : extrait tronqué */
     .entree-extrait  { display: none; }
     .entree-link     { flex-wrap: wrap; gap: 0.4rem; }
@@ -879,7 +884,11 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     .fniv-label      { width: 5.5rem; }
     .fniv-badge-num  { display: none; }
     .fniv-case       { width: 9px; height: 9px; }
-    .fondations-cta-text { display: none; }
+    /* CTA text masqué mais flèche visible */
+    .fondations-cta-text,
+    .socle-fondations-cta-text { display: none; }
+    .fondations-arrow,
+    .socle-fondations-arrow { opacity: 0.7; }
     .entree-extrait  { max-width: 140px; }
   }
 
@@ -936,13 +945,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     margin-left: auto;
   }
 
-  @media (max-width: 480px) {
-    .fniv-sous-label { width: 5.5rem; }
-    .fniv-label      { width: 5rem; }
-    .fniv-badge-num  { display: none; }
-    .fniv-case       { width: 8px; height: 8px; }
-    .fondations-cta-text { display: none; }
-  }
+  /* Breakpoint interne index — supprimé (doublon couvert par le bloc ci-dessus) */
 
   /* ── Blocs Niveau 0 et Niveau 4 ── */
   .extra-bloc {

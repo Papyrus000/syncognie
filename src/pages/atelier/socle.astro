@@ -786,15 +786,34 @@ const statutLabel: Record<string, string> = {
   .s-retour-link { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #7a5a3a; text-decoration: none; transition: color 0.2s; }
   .s-retour-link:hover { color: #f0a050; }
 
-  /* ── Mobile ── */
+  /* ── Mobile (≤ 480px) ── */
   @media (max-width: 480px) {
     .s-grille { grid-template-columns: 1fr; }
     .s-nav { gap: 0.3rem; }
     .s-nav-label { font-size: 0.58rem; }
     .s-nav-chip { padding: 0.3rem 0.55rem; }
     .s-titre-main { font-size: 1.15rem; }
+    /* Carte ouverte : padding raisonnable sur petit écran */
+    .s-carte--open {
+      padding: 1.2rem 1rem 1.2rem 1.2rem !important;
+    }
+    /* Nav scrollable horizontalement si trop de chips */
+    .s-nav {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .s-nav::-webkit-scrollbar { display: none; }
+    .s-nav-chip { flex-shrink: 0; }
   }
+
+  /* ── Tablette portrait (481px – 768px) ── */
   @media (min-width: 481px) and (max-width: 768px) {
     .s-grille { grid-template-columns: 1fr 1fr; }
+    /* Carte ouverte : padding adapté */
+    .s-carte--open {
+      padding: 1.6rem 1.6rem 1.6rem 2rem !important;
+    }
   }
 </style>

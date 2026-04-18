@@ -237,11 +237,22 @@ const {
   const contentEl = document.getElementById('atelierContent');
 
   if (btn && contentEl) {
-    contentEl.addEventListener('scroll', () => {
-      btn.classList.toggle('scroll-top--visible', contentEl.scrollTop > 400);
-    }, { passive: true });
+    // Sur mobile, overflow-y est visible donc le scroll se fait sur window.
+    // On écoute les deux sources et on prend celle qui scroll.
+    function onScroll() {
+      const scrolled = contentEl.scrollTop > 400 || window.scrollY > 400;
+      btn!.classList.toggle('scroll-top--visible', scrolled);
+    }
+
+    contentEl.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+
     btn.addEventListener('click', () => {
-      contentEl.scrollTo({ top: 0, behavior: 'smooth' });
+      if (contentEl.scrollTop > 0) {
+        contentEl.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
   }
 
@@ -311,10 +322,16 @@ const {
           fermerDrawer();
           const target = document.getElementById(h.id);
           if (target && content) {
-            const containerRect = content.getBoundingClientRect();
-            const targetRect    = target.getBoundingClientRect();
-            const offset = targetRect.top - containerRect.top + content.scrollTop - 20;
-            content.scrollTo({ top: offset, behavior: 'smooth' });
+            // Sur mobile (overflow-y: visible), le scroll est sur window
+            if (content.style.overflow === '' && content.scrollHeight <= window.innerHeight + 10) {
+              const targetY = target.getBoundingClientRect().top + window.scrollY - 80;
+              window.scrollTo({ top: targetY, behavior: 'smooth' });
+            } else {
+              const containerRect = content.getBoundingClientRect();
+              const targetRect    = target.getBoundingClientRect();
+              const offset = targetRect.top - containerRect.top + content.scrollTop - 20;
+              content.scrollTo({ top: offset, behavior: 'smooth' });
+            }
           }
         });
 
@@ -871,16 +888,19 @@ const {
       gap: 0.65rem;
     }
     .atelier-frame {
+      /* Désactive le sticky — la page défile normalement */
       position: relative;
       top: 0;
       flex: none;
       min-height: 0;
-      /* Laisse le contenu s'étirer naturellement */
-      display: block;
+      /* Garde flex column pour que le drawer absolu reste dans le cadre */
+      display: flex;
+      flex-direction: column;
       overflow: visible;
     }
     .atelier-content {
       padding: 1.4rem 1.1rem;
+      /* Le scroll se fait sur window, pas sur l'élément */
       overflow-y: visible;
       max-height: none;
       flex: none;
@@ -901,6 +921,8 @@ const {
     .scroll-top { bottom: 1rem; right: 1rem; }
     /* Breadcrumb compact */
     .crumb { padding: 2px 8px; font-size: 0.65rem; }
+    /* Masque atelier-hint qui peut pousser les crumbs */
+    .atelier-hint { display: none; }
     .atelier-titlebar { padding: 10px 14px; }
 
     /* Drawer pleine largeur sur mobile portrait */
@@ -909,6 +931,22 @@ const {
       border-right: none;
       border-radius: 0;
       box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      /* Le drawer doit rester dans le flux du frame même sans overflow:hidden */
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      left: 0;
+      height: 70vh;
+      border-radius: 16px 16px 0 0;
+    }
+    /* Ajuste le voile en fixed aussi sur mobile */
+    .sommaire-veil {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 0;
     }
   }
 
@@ -922,14 +960,16 @@ const {
       min-height: 0;
     }
     .atelier-frame {
+      /* Pas de sticky en tablette portrait — évite les bugs Safari iOS */
       position: relative;
       top: 0;
       flex: none;
-      display: block;
+      display: flex;
+      flex-direction: column;
       overflow: visible;
     }
     .atelier-content {
-      padding: 2rem 2rem;
+      padding: 2rem 1.5rem;
       overflow-y: visible;
       max-height: none;
       flex: none;
@@ -942,9 +982,14 @@ const {
     }
     .scroll-top { bottom: 1.2rem; right: 1.2rem; }
 
-    /* Drawer 60% en paysage */
+    /* Drawer 65% en tablette portrait */
     .sommaire-drawer {
-      width: 55%;
+      width: 65%;
     }
+  }
+
+  /* ── Gap intermédiaire 769px–900px ── */
+  @media (min-width: 769px) and (max-width: 900px) {
+    .atelier-content { padding: 2rem 2.5rem; }
   }
 </style>
