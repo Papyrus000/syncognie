@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import StatsWidget from '../components/StatsWidget.astro';
 import Footer from '../components/Footer.astro';
 
 export interface Props {
@@ -127,6 +128,7 @@ const ogImage = new URL(image, Astro.site).toString();
     <slot />
   </main>
 
+<StatsWidget />  
 <Footer />
 
 </body>

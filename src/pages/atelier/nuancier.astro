@@ -1,5 +1,6 @@
 ---
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
+import { saveNuancierSession } from '../../lib/syncognie-tracker';
 import scenariosData from '../../data/scenarios.json';
 
 // Sérialisation sécurisée pour injection côté client
@@ -324,6 +325,7 @@ const scenariosJSON = JSON.stringify(scenariosData);
 
     // Score chiffré
     scoreNumber.textContent = String(score);
+    (window as any).saveNuancierSession?.(score, deck.length);
     scoreTotal.textContent  = `/ ${deck.length}`;
     scoreBarMax.textContent = String(deck.length);
 

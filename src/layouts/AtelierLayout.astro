@@ -1,5 +1,6 @@
 ---
 import Header from '../components/Header.astro';
+import StatsWidget from '../components/StatsWidget.astro';
 import Footer from '../components/Footer.astro';
 
 interface BreadcrumbParent {
@@ -225,6 +226,7 @@ const {
 
       </div>
     </main>
+    <StatsWidget />
     <Footer />
 
     <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
