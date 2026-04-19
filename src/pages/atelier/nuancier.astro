@@ -1,10 +1,13 @@
 ---
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
-import { saveNuancierSession } from '../../lib/syncognie-tracker';
 import scenariosData from '../../data/scenarios.json';
 
 // Sérialisation sécurisée pour injection côté client
 const scenariosJSON = JSON.stringify(scenariosData);
+
+// Calcul du pool d'émotions uniques (correct seulement) — se met à jour automatiquement avec le JSON
+const emotionPool: string[] = [...new Set(scenariosData.map((s: any) => s.correct))];
+const emotionPoolJSON = JSON.stringify(emotionPool);
 ---
 
 <AtelierLayout
@@ -99,8 +102,10 @@ const scenariosJSON = JSON.stringify(scenariosData);
 </AtelierLayout>
 
 <!-- Injection sécurisée des données depuis le frontmatter Astro -->
-<script is:inline define:vars={{ scenariosJSON }}>
-  window.__NU_SCENARIOS__ = JSON.parse(scenariosJSON);
+<script is:inline define:vars={{ scenariosJSON, emotionPoolJSON }}>
+  window.__NU_SCENARIOS__    = JSON.parse(scenariosJSON);
+  window.__NU_EMOTION_POOL__ = JSON.parse(emotionPoolJSON);   // array des correct uniques
+  window.__NU_TOTAL_EMOTIONS__ = window.__NU_EMOTION_POOL__.length;
 </script>
 
 <script>
@@ -284,10 +289,14 @@ const scenariosJSON = JSON.stringify(scenariosData);
       phaseF.classList.add('nu-feedback--enter');
       setTimeout(() => phaseF.classList.remove('nu-feedback--enter'), 400);
 
-      if (isCorrect) {
+    if (isCorrect) {
         feedbackHeader.className = 'nu-feedback-header nu-feedback-header--correct';
         feedbackIcon.textContent = '✓';
         feedbackVerdict.textContent = 'Excellente analyse';
+        // Notifie le StatsWidget en temps réel
+        window.dispatchEvent(new CustomEvent('nuancier:emotion-unlocked', {
+          detail: { emotion: q.correct }
+        }));
       } else {
         feedbackHeader.className = 'nu-feedback-header nu-feedback-header--close';
         feedbackIcon.textContent = '◎';

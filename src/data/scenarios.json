@@ -190,5 +190,137 @@
     "options": ["Joie", "Bonheur", "Euphorie", "Fierté"],
     "correct": "Euphorie",
     "feedback": "La Joie est un état de plénitude ancré et soutenable. L'Euphorie est un pic chimique (dopamine/endorphine) explosif mais insoutenable sur la durée, qui altère temporairement le jugement en donnant un sentiment de toute-puissance."
-  }    
+  },
+  {
+    "scenario": "Vous avez un examen médical important demain. Vous n'arrêtez pas d'y penser en imaginant les pires résultats possibles, au point d'avoir une sensation d'oppression dans la poitrine.",
+    "options": ["Anxiété", "Angoisse", "Peur", "Inquiétude"],
+    "correct": "Angoisse",
+    "feedback": "L'Inquiétude est cognitive (des pensées). L'Anxiété est une tension diffuse vers l'avenir. L'Angoisse, quant à elle, se caractérise par des manifestations physiques intenses (oppression, gorge serrée) face à une menace existentielle."
+  },
+  {
+    "scenario": "Un ami vous raconte qu'il vient de perdre son emploi. Vous ressentez sa tristesse, mais surtout, vous êtes immédiatement poussé par une envie d'agir pour l'aider concrètement.",
+    "options": ["Empathie", "Pitié", "Sympathie", "Compassion"],
+    "correct": "Compassion",
+    "feedback": "L'Empathie est la capacité à ressentir l'émotion de l'autre. La Compassion va un cran plus loin : c'est l'empathie couplée à un désir actif de soulager la souffrance de l'autre."
+  },
+  {
+    "scenario": "Vous avez obtenu une promotion, et vous vous dites intérieurement que cela prouve que vous êtes d'une essence supérieure à vos collègues qui ont échoué.",
+    "options": ["Orgueil", "Fierté", "Arrogance", "Vanité"],
+    "correct": "Orgueil",
+    "feedback": "La Fierté est l'émotion saine liée à l'accomplissement ('J'ai bien travaillé'). L'Arrogance est le comportement méprisant. L'Orgueil est ce sentiment intérieur, souvent aveugle, de supériorité inhérente."
+  },
+  {
+    "scenario": "Vous êtes face au Grand Canyon au lever du soleil. Devant cette immensité, vous restez silencieux, le souffle coupé, avec un sentiment d'humilité.",
+    "options": ["Admiration", "Émerveillement", "Fascination", "Stupeur"],
+    "correct": "Émerveillement",
+    "feedback": "L'Admiration s'adresse souvent à une personne. La Fascination implique une attraction presque hypnotique. L'Émerveillement (Awe) mêle surprise esthétique, sentiment d'humilité et connexion à plus grand que soi."
+  },
+  {
+    "scenario": "Des années après que votre associé vous a trahi, vous repensez à lui avec une colère froide, ruminant cette injustice comme si elle datait d'hier.",
+    "options": ["Rancune", "Ressentiment", "Amertume", "Dépit"],
+    "correct": "Ressentiment",
+    "feedback": "La Rancune est un désir de vengeance ciblé. L'Amertume est un dégoût généralisé de la vie. Le Ressentiment est la 're-sensation' d'une blessure passée, une colère froide et chronique liée à une injustice mal digérée."
+  },
+  {
+    "scenario": "Vous avez tout donné pour organiser une sortie, mais vos amis annulent tous. Au lieu d'exploser de colère, vous rangez les affaires en soupirant, l'énergie totalement coupée.",
+    "options": ["Frustration", "Dépit", "Tristesse", "Résignation"],
+    "correct": "Dépit",
+    "feedback": "La Frustration implique une tension (on veut forcer l'obstacle). Le Dépit est un renoncement amer et ponctuel face à une déception : l'énergie d'action s'effondre face à l'inutilité de la situation."
+  },
+  {
+    "scenario": "Vous vous apprêtez à dire 'je t'aime' en premier à votre partenaire, sans savoir s'il ressent la même chose. Vous êtes à découvert.",
+    "options": ["Peur", "Anxiété", "Vulnérabilité", "Gêne"],
+    "correct": "Vulnérabilité",
+    "feedback": "Bien qu'il y ait de la peur, le cœur de l'émotion est la Vulnérabilité (au sens de Brené Brown) : le fait de s'exposer émotionnellement au risque et à l'incertitude sans moyen de défense."
+  },
+  {
+    "scenario": "On vous complimente longuement en public sur vos qualités. Vous rougissez légèrement et cherchez à minimiser l'attention, tout en étant touché.",
+    "options": ["Honte", "Pudeur", "Humilité", "Embarras"],
+    "correct": "Pudeur",
+    "feedback": "Contrairement à l'Embarras (gêné par une maladresse) ou la Honte (sentiment d'indignité), la Pudeur est une réserve protectrice naturelle et saine de son intimité émotionnelle face au regard des autres."
+  },
+  {
+    "scenario": "C'est un dimanche pluvieux. Sans raison apparente, vous vous sentez vide, lourd, coupé du monde, comme si le temps s'étirait douloureusement.",
+    "options": ["Ennui", "Tristesse", "Dépression", "Spleen"],
+    "correct": "Spleen",
+    "feedback": "Popularisé par Baudelaire, le Spleen est une forme littéraire et poétique de mélancolie sans cause : un ennui existentiel lourd et angoissant, bien au-delà du simple ennui passager."
+  },
+  {
+    "scenario": "Votre voisin très hautain, qui se vante toujours de sa voiture de sport, vient d'érafler sa carrosserie en se garant. Vous esquissez un petit sourire satisfait.",
+    "options": ["Moquerie", "Schadenfreude", "Mépris", "Sadisme"],
+    "correct": "Schadenfreude",
+    "feedback": "Mot allemand (prononcé 'cha-deun-froï-deu'). C'est la joie malicieuse ressentie face au malheur mineur d'autrui, particulièrement quand on estime que son arrogance mérite d'être punie."
+  },
+  {
+    "scenario": "En écoutant une vieille chanson, vous ressentez un amour profond pour votre maison d'enfance qui n'existe plus, mêlé à la tristesse de son absence.",
+    "options": ["Nostalgie", "Mélancolie", "Saudade", "Regret"],
+    "correct": "Saudade",
+    "feedback": "Concept portugais (prononcé 'saou-da-dji'). Plus vibrante que la simple nostalgie, la Saudade est la présence ressentie d'une absence. C'est l'amour qui reste et continue de vivre quand l'objet aimé a disparu."
+  },
+  {
+    "scenario": "Vous observez les dernières feuilles d'automne tomber au vent. C'est magnifique, mais cela vous emplit d'une légère et douce tristesse face à la fragilité de la vie.",
+    "options": ["Mélancolie", "Mono no aware", "Fatalisme", "Émerveillement"],
+    "correct": "Mono no aware",
+    "feedback": "Concept japonais (prononcé 'mo-no no a-wa-ré'). C'est 'le pathos des choses', une sensibilité douce-amère et empathique face à l'impermanence de la beauté et de tout ce qui existe."
+  },
+  {
+    "scenario": "Vingt minutes après une dispute tendue, en marchant dans la rue seul, vous trouvez soudainement la réplique cinglante et parfaite que vous auriez dû dire.",
+    "options": ["Regret", "Frustration", "L'esprit de l'escalier", "Révélation"],
+    "correct": "L'esprit de l'escalier",
+    "feedback": "Expression française de Diderot. C'est la frustration bien spécifique et presque humoristique de trouver la répartie idéale une fois qu'on a quitté la scène (arrivé 'dans l'escalier')."
+  },
+  {
+    "scenario": "Vos collègues découvrent que vous avez menti sur une compétence clé de votre CV. Vous baissez la tête, voulant littéralement disparaître sous terre.",
+    "options": ["Culpabilité", "Honte", "Embarras", "Humiliation"],
+    "correct": "Honte",
+    "feedback": "La Culpabilité concerne l'acte ('J'ai fait une erreur'). La Honte est une attaque directe et douloureuse contre l'identité : c'est le sentiment d'être fondamentalement défectueux ou indigne ('Je suis une mauvaise personne')."
+  },
+  {
+    "scenario": "Lors d'une soirée, vous voyez votre partenaire rire de manière très complice avec une personne très séduisante. Une boule douloureuse se forme dans votre ventre.",
+    "options": ["Envie", "Jalousie", "Colère", "Inquiétude"],
+    "correct": "Jalousie",
+    "feedback": "L'Envie est le désir d'obtenir ce que l'autre possède. La Jalousie est la peur existentielle et viscérale de perdre une relation, un statut ou une affection qui nous appartient au profit d'un rival."
+  },
+  {
+    "scenario": "Vous attendez les résultats d'une biopsie depuis deux semaines. Le médecin vous appelle pour vous dire que c'est totalement bénin. Vous expirez un grand coup, les genoux tremblants.",
+    "options": ["Joie", "Gratitude", "Soulagement", "Euphorie"],
+    "correct": "Soulagement",
+    "feedback": "Le Soulagement n'est pas l'ajout d'une chose positive (comme la Joie), mais la dissipation brutale d'une menace ou d'une tension anxiogène. C'est la transition physiologique entre l'alerte et la sécurité."
+  },
+  {
+    "scenario": "Vous apprenez qu'un de vos voisins a profité de la faiblesse d'une personne âgée pour lui soutirer toutes ses économies. Vous avez un mouvement de recul et une sensation de nausée.",
+    "options": ["Colère", "Mépris", "Dégoût", "Indignation"],
+    "correct": "Dégoût",
+    "feedback": "Bien qu'il y ait de l'indignation, la réaction physique (nausée, rejet) face à une violation extrême de la pureté ou de l'éthique caractérise le 'Dégoût moral', une adaptation psychologique de notre dégoût alimentaire protecteur."
+  },
+  {
+    "scenario": "Vous essayez de monter un meuble depuis une heure, mais une vis refuse systématiquement de s'enclencher. Vous serrez les dents et avez envie de jeter votre tournevis par la fenêtre.",
+    "options": ["Colère", "Dépit", "Frustration", "Agacement"],
+    "correct": "Frustration",
+    "feedback": "La Frustration naît de l'entrave d'une action dirigée vers un but précis. L'énergie mobilisée pour atteindre l'objectif se heurte à un obstacle persistant, créant une tension motrice qui exige d'être évacuée."
+  },
+  {
+    "scenario": "Vous écoutez le discours d'une personne qui a surmonté d'immenses épreuves avec une dignité et une résilience absolues. Vous ressentez une élévation intérieure et l'envie de devenir meilleur.",
+    "options": ["Émerveillement", "Fascination", "Admiration", "Respect"],
+    "correct": "Admiration",
+    "feedback": "L'Émerveillement s'adresse à des choses vastes (nature, univers). L'Admiration est déclenchée spécifiquement par l'excellence morale ou la compétence exceptionnelle d'une personne. C'est une émotion prosociale qui pousse à l'émulation."
+  },
+  {
+    "scenario": "Malgré un contexte économique catastrophique, vous vous lancez dans un nouveau projet d'entreprise avec la conviction tenace que vos efforts finiront par payer.",
+    "options": ["Optimisme", "Espoir", "Illusion", "Confiance"],
+    "correct": "Espoir",
+    "feedback": "L'Optimisme est une croyance générale (souvent passive) que les choses iront bien. L'Espoir est une émotion active : c'est la capacité cognitive à imaginer un chemin vers un objectif positif, tout en reconnaissant pleinement l'incertitude et la difficulté du présent."
+  },
+  {
+    "scenario": "Vous êtes coincé dans une salle d'attente depuis une heure sans téléphone ni livre. Vous bougez sur votre chaise, soupirez, cherchant désespérément quelque chose à fixer.",
+    "options": ["Apathie", "Ennui", "Vide", "Lassitude"],
+    "correct": "Ennui",
+    "feedback": "L'Apathie ou le Vide impliquent un manque d'énergie. L'Ennui est un état de frustration cognitive active : vous avez l'énergie et le désir de vous engager dans une tâche, mais l'environnement ne vous offre aucune stimulation adéquate."
+  },
+  {
+    "scenario": "Vous marchez seul dans une rue sombre et entendez soudain des pas rapides qui se mettent à courir juste derrière vous. Votre cœur fait un bond et votre respiration se coupe.",
+    "options": ["Anxiété", "Panique", "Peur", "Angoisse"],
+    "correct": "Peur",
+    "feedback": "L'Anxiété et l'Angoisse sont tournées vers des menaces futures ou floues. La Peur est la réponse biologique immédiate (fight/flight/freeze) du système nerveux sympathique face à un danger concret, présent et imminent."
+  }
 ]
