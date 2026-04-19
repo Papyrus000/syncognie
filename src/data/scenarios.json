@@ -322,5 +322,89 @@
     "options": ["Anxiété", "Panique", "Peur", "Angoisse"],
     "correct": "Peur",
     "feedback": "L'Anxiété et l'Angoisse sont tournées vers des menaces futures ou floues. La Peur est la réponse biologique immédiate (fight/flight/freeze) du système nerveux sympathique face à un danger concret, présent et imminent."
+  },
+  {
+    "scenario": "Vous ouvrez un message que vous attendiez depuis des semaines : votre candidature a été acceptée. Un sourire spontané vous vient et vous sentez une chaleur légère dans la poitrine.",
+    "options": ["Joie", "Soulagement", "Fierté", "Euphorie"],
+    "correct": "Joie",
+    "feedback": "La Joie est une émotion positive simple, directe et vivante face à un événement favorable. Le Soulagement suppose surtout la disparition d'une tension, tandis que la Fierté implique une évaluation de son mérite personnel."
+  },
+  {
+    "scenario": "En rentrant chez vous, vous apprenez qu'un proche cher à votre famille est décédé. Vous restez assis, silencieux, avec une douleur lourde et nette.",
+    "options": ["Tristesse", "Mélancolie", "Vide", "Dépit"],
+    "correct": "Tristesse",
+    "feedback": "La Tristesse est la réponse fondamentale à une perte réelle. La Mélancolie est plus diffuse et esthétique, tandis que le Vide décrit davantage une déconnexion émotionnelle qu'une peine clairement liée à un événement."
+  },
+  {
+    "scenario": "Après plusieurs provocations, quelqu'un vous accuse encore injustement devant tout le monde. Vous sentez une poussée d'énergie brutale et l'envie immédiate de réagir.",
+    "options": ["Colère", "Indignation", "Agacement", "Ressentiment"],
+    "correct": "Colère",
+    "feedback": "La Colère est l'émotion de mobilisation face à une offense ou une entrave perçue. L'Indignation est une colère morale, plus liée à des principes ; le Ressentiment, lui, est une colère chronique qui recuit dans le temps."
+  },
+  {
+    "scenario": "Vous traversez la rue quand une voiture surgit soudainement à toute vitesse près de vous. Votre corps recule avant même que vous ayez le temps de penser.",
+    "options": ["Peur", "Panique", "Anxiété", "Angoisse"],
+    "correct": "Peur",
+    "feedback": "La Peur est la réponse immédiate du système nerveux face à un danger concret et présent. L'Anxiété et l'Angoisse concernent des menaces plus diffuses ou anticipées ; la Panique est une désorganisation plus extrême."
+  },
+  {
+    "scenario": "En ouvrant le réfrigérateur, vous découvrez une odeur infecte et un plat complètement moisi. Vous reculez avec une grimace instantanée.",
+    "options": ["Dégoût", "Colère", "Mépris", "Indignation"],
+    "correct": "Dégoût",
+    "feedback": "Le Dégoût est une émotion de rejet immédiat face à quelque chose perçu comme contaminant, impur ou avarié. Le Mépris vise une personne jugée inférieure, alors que le Dégoût concerne d'abord une réaction de répulsion."
+  },
+  {
+    "scenario": "Quelqu'un frappe à votre porte et vous découvrez un ami que vous n'aviez pas vu depuis quinze ans, sans avoir été prévenu. Vous restez figé une seconde, les yeux grands ouverts.",
+    "options": ["Surprise", "Joie", "Stupeur", "Émerveillement"],
+    "correct": "Surprise",
+    "feedback": "La Surprise est la réponse brève à l'inattendu. Elle vient avant l'interprétation complète de la situation. La Joie peut suivre ensuite, mais l'émotion initiale est bien la Surprise."
+  },
+  {
+    "scenario": "Un médecin vous annonce un résultat complètement inattendu et très grave. Pendant quelques secondes, vous n'arrivez même plus à comprendre ce qu'il dit.",
+    "options": ["Stupeur", "Surprise", "Déni", "Angoisse"],
+    "correct": "Stupeur",
+    "feedback": "La Stupeur est une surprise de haute intensité qui suspend momentanément le traitement mental. Le Déni est un mécanisme plus durable ; la Surprise est plus brève et moins sidérante."
+  },
+  {
+    "scenario": "Vous repensez à une décision passée : personne n'en a souffert directement, mais vous savez que vous auriez pu choisir plus justement. Une petite douleur morale persiste.",
+    "options": ["Regret", "Culpabilité", "Honte", "Remords"],
+    "correct": "Regret",
+    "feedback": "Le Regret porte sur une décision que l'on aurait voulu prendre autrement. La Culpabilité implique d'avoir commis une faute envers autrui ou ses valeurs. Le Remords est généralement plus intense et plus tourmenté."
+  },
+  {
+    "scenario": "Lors d'une cérémonie, quelqu'un révèle publiquement un détail intime sur vous pour vous rabaisser. Vous vous sentez exposé, écrasé et diminué devant tout le monde.",
+    "options": ["Embarras", "Honte", "Humiliation", "Pudeur"],
+    "correct": "Humiliation",
+    "feedback": "L'Humiliation est une honte infligée par autrui dans une scène de rabaissement public. L'Embarras est plus léger, la Pudeur protège l'intimité, et la Honte peut exister sans mise en scène sociale humiliante."
+  },
+  {
+    "scenario": "Vous commencez à lire un sujet totalement nouveau, et plus vous avancez, plus vous ressentez une envie vive de comprendre comment tout cela fonctionne.",
+    "options": ["Curiosité", "Admiration", "Fascination", "Espoir"],
+    "correct": "Curiosité",
+    "feedback": "La Curiosité est l'élan mental vers l'exploration et la compréhension. La Fascination est plus absorbante et quasi hypnotique ; l'Admiration, elle, porte plutôt sur une personne ou une qualité remarquable."
+  },
+  {
+    "scenario": "Vous regardez votre enfant endormi ou votre animal blotti contre vous, et vous sentez une douceur protectrice, calme et chaleureuse.",
+    "options": ["Tendresse", "Joie", "Pitié", "Gratitude"],
+    "correct": "Tendresse",
+    "feedback": "La Tendresse est une émotion douce d'attachement et de protection envers un être proche et vulnérable. Elle est moins explosive que la Joie et moins morale que la Gratitude."
+  },
+  {
+    "scenario": "Après une semaine très agitée, vous vous asseyez enfin dehors en silence. Rien d'extraordinaire ne se passe, mais tout en vous semble redevenu simple et calme.",
+    "options": ["Sérénité", "Apathie", "Soulagement", "Résignation"],
+    "correct": "Sérénité",
+    "feedback": "La Sérénité est un état d'apaisement stable et ouvert. Le Soulagement correspond davantage à la chute d'une tension précise. La Résignation est amère, alors que la Sérénité reste pleinement vivante."
+  },
+  {
+    "scenario": "Vous devez gérer plusieurs demandes importantes en même temps, surveiller une échéance et répondre rapidement, mais vous continuez à agir malgré la tension intérieure.",
+    "options": ["Stress", "Accablement", "Anxiété", "Panique"],
+    "correct": "Stress",
+    "feedback": "Le Stress est une mobilisation de l'organisme face à une forte demande. Contrairement à l'Accablement, il ne paralyse pas nécessairement ; contrairement à l'Anxiété, il est souvent directement lié à des contraintes concrètes et immédiates."
+  },
+  {
+    "scenario": "Dans un musée, vous restez longtemps devant une œuvre étrange sans pouvoir vous en détacher. Vous ne comprenez pas tout, mais elle vous attire puissamment.",
+    "options": ["Fascination", "Curiosité", "Émerveillement", "Admiration"],
+    "correct": "Fascination",
+    "feedback": "La Fascination est une capture de l'attention par quelque chose qui exerce un pouvoir d'attraction intense, parfois mystérieux. La Curiosité pousse à explorer ; la Fascination, elle, retient presque hypnotiquement."
   }
 ]
