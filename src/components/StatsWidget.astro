@@ -170,6 +170,12 @@
         barHTML += '<span class="sw-carto-seg' + (i < filled ? ' sw-carto-seg--on' : '') + '"></span>';
       }
 
+      var cartoSub = derniere
+        ? '<p class="sw-carto-derniere">dernière\u00a0: ' + derniere + '</p>'
+        : (sessions.length > 0 && cartoCount === 0
+            ? '<p class="sw-carto-derniere">jouez pour commencer à cartographier</p>'
+            : '');
+
       nuBody.innerHTML =
         // Sessions + pills score
         (sessions.length > 0
@@ -190,16 +196,14 @@
               '</div>' +
             '</div>'
           : '') +
-        // Bloc cartographie
+        // Bloc cartographie — toujours affiché dès qu'il y a sessions ou cartographiees
         '<div class="sw-carto-block">' +
           '<div class="sw-carto-header">' +
             '<span class="sw-carto-label">cartographiées</span>' +
             '<span class="sw-carto-count">' + cartoCount + '\u2009/\u2009' + total + '</span>' +
           '</div>' +
           '<div class="sw-carto-bar">' + barHTML + '</div>' +
-          (derniere
-            ? '<p class="sw-carto-derniere">dernière\u00a0: ' + derniere + '</p>'
-            : '') +
+          cartoSub +
         '</div>';
     }
 
@@ -260,7 +264,7 @@
 })();
 </script>
 
-<style>
+<style is:global>
   /* ── Dot — visible, solide, harmonieux ── */
   .sw-dot {
     position: fixed;
