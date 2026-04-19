@@ -128,8 +128,18 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
 
   <!-- ── Terminal line ── -->
   <div class="atelier-terminal">
-    <span class="atelier-terminal-prompt">&gt;</span>
-    <span class="atelier-terminal-text" id="terminalText"></span><span class="atelier-terminal-cursor" id="terminalCursor">_</span>
+    <div class="atelier-terminal-line">
+      <span class="atelier-terminal-prompt">&gt;</span>
+      <span class="atelier-terminal-body">
+        <span class="atelier-terminal-text" id="terminalText1"></span>
+      </span>
+    </div>
+    <div class="atelier-terminal-line" id="terminalLine2" style="visibility:hidden">
+      <span class="atelier-terminal-prompt">&gt;</span>
+      <span class="atelier-terminal-body">
+        <span class="atelier-terminal-text" id="terminalText2"></span><span class="atelier-terminal-cursor" id="terminalCursor">_</span>
+      </span>
+    </div>
   </div>
 
   <!-- Niveau 0 : SHOW_NIVEAU_0 = false pour désactiver, true pour réactiver -->
@@ -474,27 +484,40 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   })();
 
   // ── Terminal typewriter ──────────────────────────────────────────────────
-  const termText   = document.getElementById('terminalText');
+  const termText1  = document.getElementById('terminalText1');
+  const termText2  = document.getElementById('terminalText2');
   const termCursor = document.getElementById('terminalCursor');
-  const phrase     = "espace de concepts, d'idées, de penseurs";
+  const termLine2  = document.getElementById('terminalLine2');
+  const phrase1    = "recherche des concepts, des idées, des théories...";
+  const phrase2    = "pour se comprendre, lire les relations, les systèmes et tant d'autres...";
 
-  if (termText && termCursor) {
-    let i = 0;
+  if (termText1 && termText2 && termCursor && termLine2) {
     termCursor.style.opacity = '0';
 
-    const type = () => {
-      if (i < phrase.length) {
-        termText.textContent += phrase[i];
-        i++;
-        setTimeout(type, 28 + Math.random() * 22);
-      } else {
-        // frappe terminée — curseur se met à clignoter
-        termCursor.style.opacity = '1';
-      }
+    const typePhrase = (el: HTMLElement, phrase: string, delay: number, onDone?: () => void) => {
+      let i = 0;
+      setTimeout(() => {
+        const tick = () => {
+          if (i < phrase.length) {
+            el.textContent += phrase[i];
+            i++;
+            setTimeout(tick, 26 + Math.random() * 22);
+          } else {
+            onDone?.();
+          }
+        };
+        tick();
+      }, delay);
     };
 
-    // légère pause avant de commencer
-    setTimeout(type, 520);
+    // Ligne 1 — commence après pause initiale
+    typePhrase(termText1 as HTMLElement, phrase1, 520, () => {
+      // Ligne 2 — apparaît juste après la fin de la ligne 1
+      (termLine2 as HTMLElement).style.visibility = 'visible';
+      typePhrase(termText2 as HTMLElement, phrase2, 180, () => {
+        (termCursor as HTMLElement).style.opacity = '1';
+      });
+    });
   }
 
   // ── Terminal typewriter outils ────────────────────────────────────────────
@@ -929,11 +952,16 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
   /* ── Terminal line ── */
   .atelier-terminal {
     display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.32rem;
     margin: 0 auto 2rem;
     width: 85%;
     padding: 0 0.2rem;
+  }
+  .atelier-terminal-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
   .atelier-terminal-prompt {
     font-family: 'JetBrains Mono', monospace;
@@ -941,6 +969,12 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
     color: #7abd6e;
     flex-shrink: 0;
     user-select: none;
+    line-height: 1.6;
+  }
+  .atelier-terminal-body {
+    flex: 1;
+    word-break: break-word;
+    line-height: 1.6;
   }
   .atelier-terminal-text {
     font-family: 'JetBrains Mono', monospace;
