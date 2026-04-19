@@ -274,11 +274,6 @@
     if (e.key === 'Escape') closePanel();
   });
 
-  // ── Thème selon la section ──
-  if (!window.location.pathname.startsWith('/atelier')) {
-    document.getElementById('swPanel').classList.add('sw-theme--light');
-  }
-
 })();
 </script>
 
@@ -422,7 +417,7 @@ color: rgba(255, 220, 160, 0.85);
     font-family: "Libre Baskerville", Georgia, serif;
     font-size: 0.82rem;
     font-style: italic;
-    color: rgba(255, 235, 190, 0.45);
+    color: rgba(255, 235, 190, 0.75);
     line-height: 1.5;
   }
 
@@ -443,7 +438,7 @@ color: rgba(255, 220, 160, 0.85);
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(245, 200, 100, 0.6);
+    color: rgba(255, 215, 110, 1);
   }
 
   .sw-nu-pill-val {
@@ -461,7 +456,7 @@ color: rgba(255, 220, 160, 0.85);
     font-family: "Mulish", sans-serif;
     font-size: 0.7rem;
     font-weight: 400;
-    color: rgba(255, 235, 190, 0.45);
+    color: rgba(255, 235, 190, 0.75);
     letter-spacing: 0.02em;
   }
 
@@ -490,7 +485,7 @@ color: rgba(255, 220, 160, 0.85);
     font-size: 0.58rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(245, 200, 100, 0.6);
+    color: rgba(255, 215, 110, 1);
   }
 
   .sw-carto-count {
@@ -542,54 +537,5 @@ color: rgba(255, 220, 160, 0.85);
   @media (max-width: 480px) {
     .sw-dot  { bottom: 1.1rem; left: 1.1rem; }
     .sw-panel { bottom: 2.5rem; left: 1rem; width: calc(100vw - 2rem); max-width: 300px; }
-  }
-</style>
-
-<style is:global>
-  /* ── Thème clair — hors Atelier ── */
-  .sw-theme--light .sw-panel-title {
-    color: rgba(90, 60, 25, 0.85);
-  }
-  .sw-theme--light .sw-panel-close {
-    color: rgba(90, 60, 25, 0.35);
-  }
-  .sw-theme--light .sw-panel-close:hover {
-    color: rgba(90, 60, 25, 0.75);
-  }
-  .sw-theme--light .sw-block-label {
-    color: rgba(180, 100, 30, 0.8);
-  }
-  .sw-theme--light .sw-stat-value {
-    color: rgba(40, 28, 18, 0.9);
-  }
-  .sw-theme--light .sw-stat-unit {
-    color: rgba(100, 72, 40, 0.65);
-  }
-  .sw-theme--light .sw-stat-sub {
-    color: rgba(100, 72, 40, 0.55);
-  }
-  .sw-theme--light .sw-empty {
-    color: rgba(100, 72, 40, 0.5);
-  }
-  .sw-theme--light .sw-nu-pill-label {
-    color: rgba(160, 90, 25, 0.65);
-  }
-  .sw-theme--light .sw-nu-pill-val {
-    color: rgba(40, 28, 18, 0.9);
-  }
-  .sw-theme--light .sw-nu-pill-total {
-    color: rgba(100, 72, 40, 0.5);
-  }
-  .sw-theme--light .sw-carto-label {
-    color: rgba(160, 90, 25, 0.65);
-  }
-  .sw-theme--light .sw-carto-count {
-    color: rgba(40, 28, 18, 0.88);
-  }
-  .sw-theme--light .sw-carto-derniere {
-    color: rgba(100, 72, 40, 0.6);
-  }
-  .sw-theme--light .sw-panel-footer {
-    color: rgba(90, 60, 25, 0.35);
   }
 </style>
