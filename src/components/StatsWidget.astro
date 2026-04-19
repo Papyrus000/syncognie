@@ -153,7 +153,7 @@
     var sessions = s.nuancier.sessions || [];
     var avg      = avgScore(s);
     var cartographiees = s.nuancier.cartographiees || [];
-    var total    = (window.__NU_TOTAL_EMOTIONS__) || 28; // fallback si hors page nuancier
+    var total    = s.nuancier.emotionTotal || (window.__NU_TOTAL_EMOTIONS__) || cartographiees.length || 1;
     var derniere = s.nuancier.derniereCartographiee || null;
 
     if (sessions.length === 0 && cartographiees.length === 0) {

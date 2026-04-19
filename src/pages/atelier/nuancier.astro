@@ -103,9 +103,18 @@ const emotionPoolJSON = JSON.stringify(emotionPool);
 
 <!-- Injection sécurisée des données depuis le frontmatter Astro -->
 <script is:inline define:vars={{ scenariosJSON, emotionPoolJSON }}>
-  window.__NU_SCENARIOS__    = JSON.parse(scenariosJSON);
-  window.__NU_EMOTION_POOL__ = JSON.parse(emotionPoolJSON);   // array des correct uniques
+  window.__NU_SCENARIOS__      = JSON.parse(scenariosJSON);
+  window.__NU_EMOTION_POOL__   = JSON.parse(emotionPoolJSON);
   window.__NU_TOTAL_EMOTIONS__ = window.__NU_EMOTION_POOL__.length;
+
+  // Persiste le total dans localStorage — StatsWidget le lira sur toutes les pages
+  try {
+    var _raw = localStorage.getItem('syncognie_stats_v1');
+    var _s   = _raw ? JSON.parse(_raw) : {};
+    if (!_s.nuancier) _s.nuancier = {};
+    _s.nuancier.emotionTotal = window.__NU_TOTAL_EMOTIONS__;
+    localStorage.setItem('syncognie_stats_v1', JSON.stringify(_s));
+  } catch(e) {}
 </script>
 
 <script>
