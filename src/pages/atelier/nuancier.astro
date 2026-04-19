@@ -94,7 +94,7 @@ const emotionPoolJSON = JSON.stringify(emotionPool);
   </div>
 
   <footer class="nu-footer">
-    <p>Inspiré des travaux de Lisa Feldman Barrett et de la théorie des émotions construites.</p>
+    <p>Inspiré des travaux de <a href="/atelier/fondations/#open=barrett" class="nu-footer-link">Lisa Feldman Barrett et de la théorie des émotions construites</a>.</p>
   </footer>
 
 </div>
@@ -924,6 +924,18 @@ const emotionPoolJSON = JSON.stringify(emotionPool);
   }
 
   /* ── Footer ── */
+  .nu-footer-link {
+    color: rgba(160,120,70,0.6);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(160,120,70,0.25);
+    transition: color 0.2s, text-decoration-color 0.2s;
+  }
+  .nu-footer-link:hover {
+    color: rgba(200,136,64,0.85);
+    text-decoration-color: rgba(200,136,64,0.5);
+  }
+
   .nu-footer {
     margin-top: 2.5rem;
     padding-top: 1.5rem;
