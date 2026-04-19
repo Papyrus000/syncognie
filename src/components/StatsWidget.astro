@@ -112,6 +112,19 @@
 
   startSession();
 
+  // ── Écoute la lecture d'un article ──
+  window.addEventListener('article:read', function (e) {
+    var slug = e.detail && e.detail.slug;
+    if (!slug) return;
+    var s = readStats();
+    if (!s.articles.read) s.articles.read = [];
+    if (s.articles.read.indexOf(slug) === -1) {
+      s.articles.read.push(slug);
+      s.articles.lastRead = slug;
+      writeStats(s);
+    }
+  });
+
   // ── Écoute temps réel des émotions correctement identifiées ──
   window.addEventListener('nuancier:emotion-unlocked', function (e) {
     var emotion = e.detail && e.detail.emotion;
@@ -260,6 +273,11 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closePanel();
   });
+
+  // ── Thème selon la section ──
+  if (!window.location.pathname.startsWith('/atelier')) {
+    document.getElementById('swPanel').classList.add('sw-theme--light');
+  }
 
 })();
 </script>
@@ -524,5 +542,54 @@ color: rgba(255, 220, 160, 0.85);
   @media (max-width: 480px) {
     .sw-dot  { bottom: 1.1rem; left: 1.1rem; }
     .sw-panel { bottom: 2.5rem; left: 1rem; width: calc(100vw - 2rem); max-width: 300px; }
+  }
+</style>
+
+<style is:global>
+  /* ── Thème clair — hors Atelier ── */
+  .sw-theme--light .sw-panel-title {
+    color: rgba(90, 60, 25, 0.85);
+  }
+  .sw-theme--light .sw-panel-close {
+    color: rgba(90, 60, 25, 0.35);
+  }
+  .sw-theme--light .sw-panel-close:hover {
+    color: rgba(90, 60, 25, 0.75);
+  }
+  .sw-theme--light .sw-block-label {
+    color: rgba(180, 100, 30, 0.8);
+  }
+  .sw-theme--light .sw-stat-value {
+    color: rgba(40, 28, 18, 0.9);
+  }
+  .sw-theme--light .sw-stat-unit {
+    color: rgba(100, 72, 40, 0.65);
+  }
+  .sw-theme--light .sw-stat-sub {
+    color: rgba(100, 72, 40, 0.55);
+  }
+  .sw-theme--light .sw-empty {
+    color: rgba(100, 72, 40, 0.5);
+  }
+  .sw-theme--light .sw-nu-pill-label {
+    color: rgba(160, 90, 25, 0.65);
+  }
+  .sw-theme--light .sw-nu-pill-val {
+    color: rgba(40, 28, 18, 0.9);
+  }
+  .sw-theme--light .sw-nu-pill-total {
+    color: rgba(100, 72, 40, 0.5);
+  }
+  .sw-theme--light .sw-carto-label {
+    color: rgba(160, 90, 25, 0.65);
+  }
+  .sw-theme--light .sw-carto-count {
+    color: rgba(40, 28, 18, 0.88);
+  }
+  .sw-theme--light .sw-carto-derniere {
+    color: rgba(100, 72, 40, 0.6);
+  }
+  .sw-theme--light .sw-panel-footer {
+    color: rgba(90, 60, 25, 0.35);
   }
 </style>

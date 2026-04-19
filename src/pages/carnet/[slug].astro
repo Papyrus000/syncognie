@@ -440,10 +440,20 @@ const eng = engagementRank[note.data.engagement ?? ''] ?? 0;
   // Barre de progression
   const bar = document.getElementById('progress');
   if (bar) {
+    let articleTracked = false;
     window.addEventListener('scroll', () => {
       const doc = document.documentElement;
       const total = doc.scrollHeight - doc.clientHeight;
-      if (total > 0) bar.style.width = `${(doc.scrollTop / total) * 100}%`;
+      if (total > 0) {
+        const pct = (doc.scrollTop / total) * 100;
+        bar.style.width = `${pct}%`;
+        if (pct >= 80 && !articleTracked) {
+          articleTracked = true;
+          window.dispatchEvent(new CustomEvent('article:read', {
+            detail: { slug: window.location.pathname }
+          }));
+        }
+      }
     }, { passive: true });
   }
 
