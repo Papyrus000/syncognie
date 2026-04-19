@@ -406,5 +406,95 @@
     "options": ["Fascination", "Curiosité", "Émerveillement", "Admiration"],
     "correct": "Fascination",
     "feedback": "La Fascination est une capture de l'attention par quelque chose qui exerce un pouvoir d'attraction intense, parfois mystérieux. La Curiosité pousse à explorer ; la Fascination, elle, retient presque hypnotiquement."
+  },
+  {
+    "scenario": "Vous envoyez un message important et voyez que la personne est 'en ligne' sans répondre pendant plusieurs minutes. Une légère tension apparaît.",
+    "options": ["Inquiétude", "Anxiété", "Agacement", "Impatience"],
+    "correct": "Inquiétude",
+    "feedback": "L'Inquiétude est une forme légère d'anticipation négative. L'Anxiété serait plus diffuse et intense. Ici, la tension reste modérée et ciblée."
+  },
+  {
+    "scenario": "Quelqu'un interrompt brièvement votre explication, puis vous laisse continuer. Vous sentez une petite crispation passer.",
+    "options": ["Colère", "Irritation", "Agacement", "Mépris"],
+    "correct": "Irritation",
+    "feedback": "L'Irritation est une réaction de très faible intensité, presque réflexe. L'Agacement est déjà plus installé, la Colère plus mobilisatrice."
+  },
+  {
+    "scenario": "Vous terminez une tâche prévue, sans difficulté particulière. Vous ressentez un état calme et légèrement positif.",
+    "options": ["Joie", "Fierté", "Contentement", "Soulagement"],
+    "correct": "Contentement",
+    "feedback": "Le Contentement est une satisfaction simple, stable et sans intensité forte. La Joie serait plus vive, la Fierté impliquerait une valorisation de soi."
+  },
+  {
+    "scenario": "Vous hésitez à prendre la parole dans un groupe, sans raison claire, avec une légère retenue intérieure.",
+    "options": ["Peur", "Anxiété", "Appréhension", "Honte"],
+    "correct": "Appréhension",
+    "feedback": "L'Appréhension est une anticipation légère et souvent vague. La Peur est plus directe, l'Anxiété plus envahissante."
+  },
+  {
+    "scenario": "Une conversation s'éternise alors que vous avez envie de partir. Vous restez poli mais sentez une fatigue sociale monter.",
+    "options": ["Ennui", "Lassitude", "Apathie", "Agacement"],
+    "correct": "Lassitude",
+    "feedback": "La Lassitude est une fatigue progressive face à une situation qui dure. L'Ennui implique un manque de stimulation, l'Apathie un manque global d'énergie."
+  },
+  {
+    "scenario": "Vous relisez un message que vous avez envoyé et vous vous demandez s'il pouvait être mal interprété.",
+    "options": ["Rumination", "Inquiétude", "Doute", "Anxiété"],
+    "correct": "Doute",
+    "feedback": "Le Doute est une incertitude cognitive légère. La Rumination serait une répétition mentale persistante, l'Anxiété plus chargée émotionnellement."
+  },
+  {
+    "scenario": "Quelqu'un vous complimente brièvement. Vous souriez, mais une petite gêne reste en vous sans savoir pourquoi.",
+    "options": ["Pudeur", "Embarras", "Honte", "Malaise"],
+    "correct": "Malaise",
+    "feedback": "Le Malaise est une gêne diffuse sans cause clairement identifiée. L'Embarras est lié à une situation précise, la Pudeur protège l'intimité."
+  },
+  {
+    "scenario": "Vous commencez une tâche nouvelle. Rien ne vous bloque, mais vous n'êtes pas totalement à l'aise.",
+    "options": ["Curiosité", "Incertitude", "Anxiété", "Appréhension"],
+    "correct": "Incertitude",
+    "feedback": "L'Incertitude est un état cognitif neutre teinté d'instabilité. L'Appréhension ajoute une coloration négative anticipée."
+  },
+  {
+    "scenario": "Un collègue réussit quelque chose que vous visiez aussi. Vous êtes content pour lui, mais une légère tension subsiste.",
+    "options": ["Envie", "Jalousie", "Frustration", "Déception"],
+    "correct": "Envie",
+    "feedback": "L'Envie peut exister à faible intensité, même sans hostilité. Elle coexiste ici avec une forme de reconnaissance positive."
+  },
+  {
+    "scenario": "Vous attendez quelque chose qui tarde légèrement. Vous vérifiez l'heure plusieurs fois.",
+    "options": ["Anxiété", "Impatience", "Stress", "Inquiétude"],
+    "correct": "Impatience",
+    "feedback": "L'Impatience est une tension liée au délai. Elle est orientée vers le temps qui s'étire, sans forcément de peur associée."
+  },
+  {
+    "scenario": "Après une longue journée, vous n'avez pas vraiment envie de faire quoi que ce soit, sans être particulièrement triste.",
+    "options": ["Apathie", "Fatigue", "Lassitude", "Tristesse"],
+    "correct": "Apathie",
+    "feedback": "L'Apathie est un manque d'élan motivationnel. Elle se distingue de la Tristesse par l'absence de douleur émotionnelle claire."
+  },
+  {
+    "scenario": "Quelqu'un vous regarde un peu trop longtemps sans sourire. Vous ne savez pas comment interpréter la situation.",
+    "options": ["Malaise", "Peur", "Inquiétude", "Paranoïa"],
+    "correct": "Malaise",
+    "feedback": "Le Malaise naît d'une ambiguïté sociale difficile à décoder. Il n'implique pas nécessairement un danger réel."
+  },
+  {
+    "scenario": "Vous relisez un ancien projet et constatez qu'il n'était pas aussi bon que vous le pensiez à l'époque.",
+    "options": ["Honte", "Regret", "Déception", "Lucidité"],
+    "correct": "Déception",
+    "feedback": "La Déception ici est tournée vers soi et une attente passée. Le Regret impliquerait un choix différent à refaire."
+  },
+  {
+    "scenario": "Vous commencez à expliquer quelque chose, puis vous perdez légèrement le fil de votre pensée.",
+    "options": ["Embarras", "Honte", "Confusion", "Stress"],
+    "correct": "Confusion",
+    "feedback": "La Confusion est une désorganisation cognitive momentanée. L'Embarras viendrait surtout du regard des autres."
+  },
+  {
+    "scenario": "Vous entendez votre prénom dans une conversation à distance sans savoir si cela vous concerne.",
+    "options": ["Curiosité", "Inquiétude", "Surprise", "Vigilance"],
+    "correct": "Vigilance",
+    "feedback": "La Vigilance est un état d'alerte léger face à un signal potentiellement pertinent. Elle précède souvent d'autres émotions."
   }
 ]
