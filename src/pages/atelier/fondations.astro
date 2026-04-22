@@ -98,6 +98,33 @@ const progViv   = progSection(domainesViv);
 
   <hr class="f-hr" />
 
+  <!-- Barre de recherche -->
+  <div class="f-search-wrap">
+    <div class="f-search-inner">
+      <span class="f-search-icon" aria-hidden="true">//</span>
+      <input
+        type="text"
+        id="fSearchInput"
+        class="f-search-input"
+        placeholder="rechercher — penseur, concept, domaine…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="f-search-clear" id="fSearchClear" aria-label="Effacer la recherche" hidden>✕</button>
+    </div>
+    <div class="f-search-status" id="fSearchStatus" hidden>
+      <span id="fSearchCount" class="f-search-count"></span>
+      <span class="f-search-status-sep">·</span>
+      <button class="f-search-reset" id="fSearchReset" type="button">tout afficher</button>
+    </div>
+  </div>
+
+  <!-- Message aucun résultat -->
+  <div class="f-no-result" id="fNoResult" hidden>
+    <span class="f-no-result-icon">//</span>
+    <span class="f-no-result-text">aucun penseur pour « <span id="fNoResultQuery"></span> »</span>
+  </div>
+
   <!-- Barre de filtres chips -->
   <div class="f-filtres">
     <div class="f-chips-groupe">
@@ -144,6 +171,7 @@ const progViv   = progSection(domainesViv);
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
+                      data-search={[p.nom, p.concept, p.description, dom.label, (p as any).detail ?? ''].join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}
                       role={hasDetail ? 'button' : undefined}
                       tabindex={hasDetail ? 0 : undefined}
                     >
@@ -224,6 +252,7 @@ const progViv   = progSection(domainesViv);
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
+                      data-search={[p.nom, p.concept, p.description, dom.label, (p as any).detail ?? ''].join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}
                       role={hasDetail ? 'button' : undefined}
                       tabindex={hasDetail ? 0 : undefined}
                     >
@@ -304,6 +333,7 @@ const progViv   = progSection(domainesViv);
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
+                      data-search={[p.nom, p.concept, p.description, dom.label, (p as any).detail ?? ''].join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}
                       role={hasDetail ? 'button' : undefined}
                       tabindex={hasDetail ? 0 : undefined}
                     >
@@ -384,6 +414,7 @@ const progViv   = progSection(domainesViv);
                       data-redige={on ? 'true' : 'false'}
                       data-id={p.id}
                       data-has-detail={hasDetail ? 'true' : 'false'}
+                      data-search={[p.nom, p.concept, p.description, dom.label, (p as any).detail ?? ''].join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}
                       role={hasDetail ? 'button' : undefined}
                       tabindex={hasDetail ? 0 : undefined}
                     >
@@ -635,6 +666,97 @@ const progViv   = progSection(domainesViv);
   });
 </script>
 
+<script>
+  // ── RECHERCHE LIVE ────────────────────────────────────────────────────────────
+  const fSearchInput   = document.getElementById('fSearchInput')   as HTMLInputElement  | null;
+  const fSearchClear   = document.getElementById('fSearchClear')   as HTMLButtonElement | null;
+  const fSearchStatus  = document.getElementById('fSearchStatus')  as HTMLElement       | null;
+  const fSearchCount   = document.getElementById('fSearchCount')   as HTMLElement       | null;
+  const fSearchReset   = document.getElementById('fSearchReset')   as HTMLButtonElement | null;
+  const fNoResult      = document.getElementById('fNoResult')      as HTMLElement       | null;
+  const fNoResultQuery = document.getElementById('fNoResultQuery') as HTMLElement       | null;
+  const fFiltresEl     = document.querySelector<HTMLElement>('.f-filtres');
+
+  const fAllCartes   = document.querySelectorAll<HTMLElement>('.f-carte');
+  const fAllNiveaux  = document.querySelectorAll<HTMLElement>('.f-niveau');
+  const fAllDoms     = document.querySelectorAll<HTMLElement>('.f-dom');
+
+  function fNormalise(s: string): string {
+    return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function fApplySearch(raw: string) {
+    const query = fNormalise(raw.trim());
+    if (!query) { fResetSearch(); return; }
+
+    const tokens = query.split(/\s+/).filter(Boolean);
+    let visible  = 0;
+
+    fAllCartes.forEach(carte => {
+      const match = tokens.every(t => fNormalise(carte.dataset.search ?? '').includes(t));
+      carte.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    // Masquer les domaines vides
+    fAllDoms.forEach(dom => {
+      const grille = dom.querySelector<HTMLElement>('.f-grille');
+      if (!grille) return;
+      const hasVisible = [...grille.children].some(c => (c as HTMLElement).style.display !== 'none');
+      dom.style.display = hasVisible ? '' : 'none';
+    });
+
+    // Masquer les niveaux vides
+    fAllNiveaux.forEach(niv => {
+      const hasVisible = [...niv.querySelectorAll<HTMLElement>('.f-carte')].some(c => c.style.display !== 'none');
+      niv.style.display = hasVisible ? '' : 'none';
+    });
+
+    // Masquer les chips de filtres (inutiles en mode recherche)
+    if (fFiltresEl) fFiltresEl.style.display = 'none';
+
+    // Statut
+    if (fSearchStatus && fSearchCount) {
+      fSearchStatus.hidden = false;
+      fSearchCount.textContent = `${visible} penseur${visible !== 1 ? 's' : ''}`;
+    }
+
+    // Aucun résultat
+    if (fNoResult && fNoResultQuery) {
+      fNoResult.hidden           = visible > 0;
+      fNoResultQuery.textContent = raw.trim();
+    }
+
+    if (fSearchClear) fSearchClear.hidden = false;
+  }
+
+  function fResetSearch() {
+    fAllCartes.forEach(c  => (c.style.display  = ''));
+    fAllDoms.forEach(d    => (d.style.display   = ''));
+    fAllNiveaux.forEach(n => (n.style.display   = ''));
+    if (fFiltresEl)    fFiltresEl.style.display  = '';
+    if (fSearchStatus) fSearchStatus.hidden      = true;
+    if (fNoResult)     fNoResult.hidden          = true;
+    if (fSearchClear)  fSearchClear.hidden       = true;
+    if (fSearchInput)  fSearchInput.value        = '';
+  }
+
+  let fDebounce: ReturnType<typeof setTimeout>;
+
+  if (fSearchInput) {
+    fSearchInput.addEventListener('input', () => {
+      clearTimeout(fDebounce);
+      fDebounce = setTimeout(() => fApplySearch(fSearchInput.value), 120);
+    });
+    fSearchInput.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') fResetSearch();
+    });
+  }
+
+  if (fSearchClear) fSearchClear.addEventListener('click', () => fResetSearch());
+  if (fSearchReset) fSearchReset.addEventListener('click', () => fResetSearch());
+</script>
+
 <style>
   /* ── Header ── */
   .f-header { margin-bottom: 2rem; }
@@ -733,6 +855,117 @@ const progViv   = progSection(domainesViv);
     border: none;
     border-top: 1px solid rgba(255,150,80,0.12);
     margin: 0 0 1.8rem;
+  }
+
+  /* ── BARRE DE RECHERCHE ── */
+  .f-search-wrap { margin-bottom: 1.2rem; }
+
+  .f-search-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,150,80,0.18);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .f-search-inner:focus-within {
+    border-color: rgba(232,148,58,0.5);
+    box-shadow: 0 0 0 3px rgba(232,148,58,0.09), 0 2px 14px rgba(0,0,0,0.18);
+  }
+
+  .f-search-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: rgba(232,148,58,0.4);
+    user-select: none;
+    flex-shrink: 0;
+    letter-spacing: -0.04em;
+  }
+
+  .f-search-input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: rgba(240,200,120,0.9);
+    letter-spacing: 0.02em;
+    caret-color: #e8943a;
+  }
+  .f-search-input::placeholder {
+    color: rgba(180,130,80,0.32);
+    font-style: italic;
+  }
+
+  .f-search-clear {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(232,148,58,0.38);
+    padding: 2px 5px;
+    border-radius: 3px;
+    transition: color 0.15s, background 0.15s;
+    flex-shrink: 0;
+  }
+  .f-search-clear:hover {
+    color: rgba(232,148,58,0.85);
+    background: rgba(232,148,58,0.09);
+  }
+
+  .f-search-status {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.45rem;
+    padding-left: 0.15rem;
+  }
+  .f-search-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(232,148,58,0.55);
+    letter-spacing: 0.04em;
+  }
+  .f-search-status-sep { color: rgba(255,150,80,0.2); font-size: 0.65rem; }
+  .f-search-reset {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: rgba(180,130,80,0.38);
+    letter-spacing: 0.04em;
+    padding: 0;
+    transition: color 0.15s;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(180,130,80,0.18);
+  }
+  .f-search-reset:hover { color: rgba(232,148,58,0.65); }
+
+  /* ── Aucun résultat ── */
+  .f-no-result {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 2.5rem 0.5rem;
+  }
+  .f-no-result-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    color: rgba(232,148,58,0.22);
+    letter-spacing: -0.04em;
+  }
+  .f-no-result-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: rgba(180,130,80,0.38);
+    letter-spacing: 0.02em;
   }
 
   /* ── Filtres ── */
