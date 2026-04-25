@@ -1,0 +1,153 @@
+---
+// src/pages/parchemins/[slug].astro
+
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ParcheminLayout from '../../layouts/ParcheminLayout.astro';
+
+export async function getStaticPaths() {
+  const parchemins = await getCollection('parchemins', ({ data }) => data.draft !== true);
+  return parchemins.map(entry => ({
+    params: { slug: entry.slug },
+    props:  { entry },
+  }));
+}
+
+type Props = { entry: CollectionEntry<'parchemins'> };
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+const genreLabel: Record<string, string> = {
+  nouvelle: 'Nouvelle',
+  'poème':  'Poème',
+  essai:    'Essai',
+  fragment: 'Fragment',
+  conte:    'Conte',
+  autre:    'Texte',
+};
+---
+
+<ParcheminLayout
+  title={entry.data.title}
+  filename={entry.slug}
+  description={entry.data.description}
+  parent={entry.data.serie ? { label: entry.data.serie, href: '/parchemins' } : undefined}
+>
+
+  <!-- En-tête du texte -->
+  <header class="parch-header">
+    <div class="parch-meta">
+      <span class="parch-date">{formatDate(entry.data.date)}</span>
+      {entry.data.genre && (
+        <span class="parch-genre">{genreLabel[entry.data.genre] ?? entry.data.genre}</span>
+      )}
+      {entry.data.serie && (
+        <span class="parch-serie">
+          {entry.data.serie}
+          {entry.data.episode != null && <> · {entry.data.episode}</>}
+        </span>
+      )}
+      {entry.data.stade && (
+        <span class="parch-stade">
+          {entry.data.stade === 'graine' ? '🌱' : entry.data.stade === 'pousse' ? '🌿' : '🌳'}
+        </span>
+      )}
+    </div>
+
+    <h1>{entry.data.title}</h1>
+
+    {entry.data.extrait && (
+      <p class="parch-extrait">{entry.data.extrait}</p>
+    )}
+  </header>
+
+  <hr />
+
+  <!-- Corps Markdown -->
+  <Content />
+
+  <!-- Pied — retour liste -->
+  <footer class="parch-footer">
+    <hr />
+    <a href="/parchemins" class="parch-retour">← tous les parchemins</a>
+  </footer>
+
+</ParcheminLayout>
+
+<style>
+  /* ── En-tête ── */
+  .parch-header { margin-bottom: 0; }
+
+  .parch-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .parch-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: rgba(100,65,25,0.5);
+  }
+
+  .parch-genre {
+    font-family: 'Cinzel', serif;
+    font-size: 0.56rem;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(120,70,20,0.6);
+    border: 1px solid rgba(120,80,30,0.25);
+    padding: 1px 8px;
+    border-radius: 10px;
+  }
+
+  .parch-serie {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: rgba(100,60,20,0.5);
+  }
+
+  .parch-stade {
+    font-size: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .parch-extrait {
+    font-family: 'IM Fell English', serif !important;
+    font-style: italic;
+    font-size: 1.1rem !important;
+    color: rgba(60,35,10,0.65) !important;
+    text-align: center;
+    line-height: 1.7 !important;
+    margin: 0.5rem 2rem 0 !important;
+    border-left: none !important;
+    padding-left: 0 !important;
+  }
+
+  /* ── Pied ── */
+  .parch-footer { margin-top: 1rem; }
+
+  .parch-retour {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(100,65,25,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: block;
+    text-align: center;
+    padding-top: 0.5rem;
+  }
+  .parch-retour:hover { color: rgba(100,65,25,0.9); }
+</style>

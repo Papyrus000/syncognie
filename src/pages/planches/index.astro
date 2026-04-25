@@ -1,0 +1,517 @@
+---
+// src/pages/planches/index.astro
+
+import { getCollection } from 'astro:content';
+import PlancheLayout from '../../layouts/PlancheLayout.astro';
+
+const planches = await getCollection('planches', ({ data }) => data.draft !== true);
+planches.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+
+<PlancheLayout
+  title="Planches"
+  filename="planches"
+  description="Planches — concepts, idées et recherches illustrés en BD."
+  ogTitle="Planches — Syncognie"
+  ogDescription="Des idées complexes racontées en cases et bulles."
+>
+
+  <!-- En-tête de la page -->
+  <header class="page-header">
+    <p class="page-label">Syncognie</p>
+    <h1 class="page-title">Planches</h1>
+    <p class="page-intro">Des concepts, des recherches, des idées — racontés en cases.</p>
+  </header>
+
+  <!-- Grille -->
+  {planches.length === 0 ? (
+    <p class="vide">Les premières planches arrivent bientôt.</p>
+  ) : (
+    <ul class="grille" id="grille">
+      {planches.map((p, i) => (
+        <li class="carte" data-index={i}>
+          <button
+            class="carte-btn"
+            aria-label={`Agrandir la planche : ${p.data.title}`}
+            data-img={p.data.image}
+            data-img2={p.data.image2 ?? ''}
+            data-title={p.data.title}
+            data-extrait={p.data.extrait ?? ''}
+            data-date={formatDate(p.data.date)}
+            data-sujet={p.data.sujet ?? ''}
+            data-serie={p.data.serie ?? ''}
+            data-episode={p.data.episode != null ? String(p.data.episode) : ''}
+          >
+            <div class="carte-img-wrap">
+              <img
+                src={p.data.image}
+                alt={p.data.title}
+                class="carte-img"
+                loading="lazy"
+              />
+              <div class="carte-overlay">
+                <span class="carte-loupe">⊕</span>
+              </div>
+            </div>
+            <div class="carte-infos">
+              <div class="carte-meta">
+                <span class="carte-date">{formatDate(p.data.date)}</span>
+                {p.data.sujet && <span class="carte-sujet">{p.data.sujet}</span>}
+                {p.data.serie && (
+                  <span class="carte-serie">
+                    {p.data.serie}{p.data.episode != null ? ` · ${p.data.episode}` : ''}
+                  </span>
+                )}
+              </div>
+              <h2 class="carte-titre">{p.data.title}</h2>
+              {p.data.extrait && <p class="carte-extrait">{p.data.extrait}</p>}
+            </div>
+          </button>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Planche agrandie" hidden>
+    <button class="lb-close" id="lb-close" aria-label="Fermer">✕</button>
+    <button class="lb-prev"  id="lb-prev"  aria-label="Planche précédente">‹</button>
+    <button class="lb-next"  id="lb-next"  aria-label="Planche suivante">›</button>
+
+    <div class="lb-inner">
+      <div class="lb-images" id="lb-images">
+        <!-- images injectées en JS -->
+      </div>
+      <div class="lb-caption" id="lb-caption">
+        <p class="lb-title"   id="lb-title"></p>
+        <p class="lb-extrait" id="lb-extrait"></p>
+        <p class="lb-meta"    id="lb-meta"></p>
+      </div>
+    </div>
+  </div>
+  <div class="lb-backdrop" id="lb-backdrop"></div>
+
+</PlancheLayout>
+
+<style>
+  /* ══ En-tête ══ */
+  .page-header {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    animation: fadeUp .5s .05s both;
+  }
+  .page-label {
+    font-family: 'Mulish', sans-serif;
+    font-size: .6rem;
+    font-weight: 300;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(120,80,30,.55);
+    margin-bottom: .6rem;
+  }
+  .page-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 400;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #1a1714;
+    margin-bottom: .9rem;
+  }
+  .page-intro {
+    font-family: 'Crimson Text', serif;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    font-style: italic;
+    color: #6a5a4a;
+    line-height: 1.7;
+  }
+
+  .vide {
+    font-family: 'Cinzel', serif;
+    font-size: .78rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(90,70,55,.35);
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  /* ══ Grille ══ */
+  .grille {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+
+  /* ══ Carte ══ */
+  .carte { animation: fadeUp .4s both; }
+  .carte:nth-child(1) { animation-delay: .05s; }
+  .carte:nth-child(2) { animation-delay: .10s; }
+  .carte:nth-child(3) { animation-delay: .15s; }
+  .carte:nth-child(4) { animation-delay: .20s; }
+  .carte:nth-child(5) { animation-delay: .25s; }
+  .carte:nth-child(6) { animation-delay: .30s; }
+
+  .carte-btn {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid rgba(120,80,30,.12);
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: left;
+    padding: 0;
+    overflow: hidden;
+    transition: border-color .22s, transform .22s, box-shadow .22s;
+  }
+  .carte-btn:hover {
+    border-color: rgba(120,80,30,.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0,0,0,.1), 0 0 0 1px rgba(120,80,30,.1);
+  }
+
+  /* ── Image ── */
+  .carte-img-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: #f0ece4;
+  }
+  .carte-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s ease;
+  }
+  .carte-btn:hover .carte-img { transform: scale(1.04); }
+
+  .carte-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .22s;
+  }
+  .carte-btn:hover .carte-overlay { opacity: 1; }
+  .carte-loupe {
+    font-size: 2.2rem;
+    color: rgba(255,255,255,.9);
+    line-height: 1;
+  }
+
+  /* ── Infos ── */
+  .carte-infos {
+    padding: 1rem 1.1rem 1.1rem;
+  }
+  .carte-meta {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    flex-wrap: wrap;
+    margin-bottom: .45rem;
+  }
+  .carte-date {
+    font-family: 'Mulish', sans-serif;
+    font-size: .55rem;
+    font-weight: 300;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(90,70,55,.5);
+  }
+  .carte-sujet {
+    font-family: 'Cinzel', serif;
+    font-size: .52rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(120,70,20,.7);
+    border: 1px solid rgba(120,80,30,.2);
+    padding: 1px 7px;
+    border-radius: 10px;
+  }
+  .carte-serie {
+    font-family: 'Crimson Text', serif;
+    font-size: .78rem;
+    font-style: italic;
+    color: rgba(90,70,55,.45);
+  }
+  .carte-titre {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(.85rem, 1.2vw, 1rem);
+    font-weight: 400;
+    letter-spacing: .04em;
+    color: #f0ece4;
+    margin-bottom: .35rem;
+    line-height: 1.4;
+  }
+  .carte-extrait {
+    font-family: 'Crimson Text', serif;
+    font-size: .92rem;
+    font-style: italic;
+    color: rgba(60,40,20,.5);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ══ Lightbox ══ */
+  .lb-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(20,15,10,.82);
+    z-index: 200;
+    cursor: pointer;
+  }
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 201;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+  .lb-backdrop.lb-open,
+  .lightbox.lb-open {
+    display: flex;
+  }
+
+  .lb-inner {
+    position: relative;
+    max-width: min(1200px, 95vw);
+    width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: lbIn .25s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  .lb-images {
+    display: flex;
+    gap: .75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .lb-images img {
+    max-height: 78vh;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    box-shadow: 0 12px 40px rgba(0,0,0,.6);
+  }
+  /* Si 2 images côte à côte */
+  .lb-images.has-two {
+    flex-direction: column;
+    align-items: center;
+  }
+  .lb-images.has-two img {
+    max-width: 100%;
+    max-height: none;
+    width: 100%;
+  }
+
+  .lb-caption {
+    text-align: center;
+    padding: .25rem 0 .5rem;
+  }
+  .lb-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(.9rem, 1.5vw, 1.1rem);
+    font-weight: 400;
+    letter-spacing: .1em;
+    color: #1a1714;
+    margin-bottom: .3rem;
+  }
+  .lb-extrait {
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(60,40,20,.6);
+    margin-bottom: .2rem;
+  }
+  .lb-meta {
+    font-family: 'Mulish', sans-serif;
+    font-size: .58rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(120,70,20,.6);
+  }
+
+  /* Boutons lightbox */
+  .lb-close {
+    position: fixed;
+    top: 1.2rem; right: 1.5rem;
+    background: #faf8f4;
+    border: 1px solid rgba(120,80,30,.2);
+    color: rgba(60,40,20,.6);
+    font-size: 1rem;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 202;
+    transition: border-color .2s, color .2s;
+  }
+  .lb-close:hover { border-color: rgba(120,70,20,.6); color: rgba(120,70,20,.9); }
+
+  .lb-prev, .lb-next {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(250,248,244,.92);
+    border: 1px solid rgba(120,80,30,.15);
+    color: rgba(60,40,20,.6);
+    font-size: 1.6rem;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 202;
+    transition: border-color .2s, color .2s, background .2s;
+    line-height: 1;
+  }
+  .lb-prev { left: .8rem; }
+  .lb-next { right: .8rem; }
+  .lb-prev:hover, .lb-next:hover {
+    border-color: rgba(120,70,20,.4);
+    color: rgba(120,70,20,.9);
+    background: rgba(250,248,244,.98);
+  }
+  .lb-prev.lb-hidden, .lb-next.lb-hidden { opacity: .2; pointer-events: none; }
+
+  /* ══ Animations ══ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes lbIn {
+    from { opacity: 0; transform: scale(.97); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ══ Mobile ══ */
+  @media (max-width: 600px) {
+    .grille { grid-template-columns: 1fr; }
+
+    .lb-prev { left: .3rem; }
+    .lb-next { right: .3rem; }
+  }
+</style>
+
+<script>
+(function () {
+  // Collecte toutes les cartes
+  const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('.carte-btn'));
+  const lightbox  = document.getElementById('lightbox')!;
+  const backdrop  = document.getElementById('lb-backdrop')!;
+  const lbImages  = document.getElementById('lb-images')!;
+  const lbTitle   = document.getElementById('lb-title')!;
+  const lbExtrait = document.getElementById('lb-extrait')!;
+  const lbMeta    = document.getElementById('lb-meta')!;
+  const btnClose  = document.getElementById('lb-close')!;
+  const btnPrev   = document.getElementById('lb-prev')!;
+  const btnNext   = document.getElementById('lb-next')!;
+
+  let current = 0;
+
+  function open(index: number) {
+    current = index;
+    render();
+    lightbox.removeAttribute('hidden');
+    lightbox.classList.add('lb-open');
+    backdrop.classList.add('lb-open');
+    document.body.style.overflow = 'hidden';
+    lightbox.focus();
+  }
+
+  function close() {
+    lightbox.classList.remove('lb-open');
+    backdrop.classList.remove('lb-open');
+    lightbox.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+    btns[current]?.focus();
+  }
+
+  function render() {
+    const btn = btns[current];
+    if (!btn) return;
+
+    const img  = btn.dataset.img  ?? '';
+    const img2 = btn.dataset.img2 ?? '';
+
+    // Images
+    lbImages.innerHTML = '';
+    lbImages.classList.toggle('has-two', !!img2);
+
+    const i1 = document.createElement('img');
+    i1.src = img;
+    i1.alt = btn.dataset.title ?? '';
+    lbImages.appendChild(i1);
+
+    if (img2) {
+      const i2 = document.createElement('img');
+      i2.src = img2;
+      i2.alt = (btn.dataset.title ?? '') + ' (suite)';
+      lbImages.appendChild(i2);
+    }
+
+    // Caption
+    lbTitle.textContent   = btn.dataset.title   ?? '';
+    lbExtrait.textContent = btn.dataset.extrait  ?? '';
+
+    const parts: string[] = [];
+    if (btn.dataset.sujet)   parts.push(btn.dataset.sujet);
+    if (btn.dataset.serie) {
+      let s = btn.dataset.serie;
+      if (btn.dataset.episode) s += ` · ${btn.dataset.episode}`;
+      parts.push(s);
+    }
+    if (btn.dataset.date) parts.push(btn.dataset.date);
+    lbMeta.textContent = parts.join('  ·  ');
+
+    // Flèches
+    btnPrev.classList.toggle('lb-hidden', current === 0);
+    btnNext.classList.toggle('lb-hidden', current === btns.length - 1);
+
+    // Scroll haut
+    lightbox.querySelector('.lb-inner')?.scrollTo({ top: 0 });
+  }
+
+  // Ouverture
+  btns.forEach((btn, i) => btn.addEventListener('click', () => open(i)));
+
+  // Fermeture
+  btnClose.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+
+  // Navigation
+  btnPrev.addEventListener('click', () => { if (current > 0) { current--; render(); } });
+  btnNext.addEventListener('click', () => { if (current < btns.length - 1) { current++; render(); } });
+
+  // Clavier
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('lb-open')) return;
+    if (e.key === 'Escape')     close();
+    if (e.key === 'ArrowLeft')  { if (current > 0) { current--; render(); } }
+    if (e.key === 'ArrowRight') { if (current < btns.length - 1) { current++; render(); } }
+  });
+})();
+</script>

@@ -49,8 +49,21 @@ const carnet = defineCollection({
   }),
 });
 
-// ── Nouvelle collection : atelier ──
+// ── Collection existante : atelier ──
 const atelier = defineCollection({
+  schema: z.object({
+    title:       z.string(),
+    date:        z.date(),
+    description: z.string().optional(),
+    extrait:     z.string().optional(),
+    draft:       z.boolean().optional(),
+    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
+    penseur:     z.string().optional(),
+  }),
+});
+
+// ── Collection : planches ──
+const planches = defineCollection({
   schema: z.object({
     // Obligatoires
     title:       z.string(),
@@ -58,13 +71,19 @@ const atelier = defineCollection({
 
     // Optionnels
     description: z.string().optional(),
-    extrait:     z.string().optional(),
+    extrait:     z.string().optional(),   // accroche courte pour la grille
     draft:       z.boolean().optional(),
-    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
 
-    // Lien vers un penseur dans penseurs.ts — active la case dans Fondations
-    penseur:     z.string().optional(),
+    // Image(s) de la planche — chemin(s) relatif(s) depuis /public
+    image:       z.string(),              // image principale (miniature + lightbox)
+    image2:      z.string().optional(),   // deuxième partie si la planche est en 2 volets
+
+    // Méta
+    sujet:       z.string().optional(),   // ex. "John Gottman", "CNV", "Attachement"
+    serie:       z.string().optional(),   // nom d'une série de planches
+    episode:     z.number().optional(),   // numéro dans la série
+    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
   }),
 });
 
-export const collections = { articles, fenetres, carnet, atelier };
+export const collections = { articles, fenetres, carnet, atelier, planches };

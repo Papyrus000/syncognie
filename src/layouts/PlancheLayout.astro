@@ -1,0 +1,120 @@
+---
+// src/layouts/PlancheLayout.astro
+
+import Header from '../components/Header.astro';
+import StatsWidget from '../components/StatsWidget.astro';
+import Footer from '../components/Footer.astro';
+
+const {
+  title         = "Planches",
+  filename      = "planche",
+  description,
+  ogTitle,
+  ogDescription,
+} = Astro.props as {
+  title?:         string;
+  filename?:      string;
+  description?:   string;
+  ogTitle?:       string;
+  ogDescription?: string;
+};
+---
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — Syncognie</title>
+    <meta name="robots" content="index, follow" />
+    {description && <meta name="description" content={description} />}
+    <meta property="og:title"       content={ogTitle ?? title} />
+    {(ogDescription ?? description) && (
+      <meta property="og:description" content={ogDescription ?? description} />
+    )}
+    <meta property="og:type"        content="website" />
+    <meta name="twitter:card"       content="summary_large_image" />
+    <meta name="twitter:title"      content={ogTitle ?? title} />
+    {(ogDescription ?? description) && (
+      <meta name="twitter:description" content={ogDescription ?? description} />
+    )}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400&family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style is:global>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    </style>
+  </head>
+
+  <body class="planche-body">
+    <Header />
+
+    <main class="planche-main">
+      <div class="planche-wrapper">
+        <slot />
+      </div>
+    </main>
+
+    <StatsWidget />
+    <Footer />
+
+    <button class="scroll-top" id="scrollTop" aria-label="Retour en haut">↑</button>
+  </body>
+</html>
+
+<script>
+  const btn = document.getElementById('scrollTop');
+  if (btn) {
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('scroll-top--visible', window.scrollY > 400);
+    }, { passive: true });
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+</script>
+
+<style>
+  .planche-body {
+    background: #f5f0e8;
+    color: #1a1714;
+    font-family: 'Libre Baskerville', Georgia, serif;
+    min-height: 100vh;
+  }
+
+  .planche-main {
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  .planche-wrapper {
+    max-width: 780px;
+    width: calc(100% - clamp(2rem, 5vw, 5rem));
+    margin: 0 auto;
+    padding-top: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  /* ══ Scroll-top ══ */
+  .scroll-top {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid #ddd6c8;
+    background: #f5f0e8;
+    color: #5a534c;
+    font-family: 'Mulish', sans-serif;
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s, transform 0.2s, border-color 0.2s;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .scroll-top--visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .scroll-top:hover    { border-color: #9a9189; }
+</style>
