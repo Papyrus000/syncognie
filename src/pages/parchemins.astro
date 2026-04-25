@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/Base.astro';
+---
+
+<BaseLayout
+  title="Parchemins — Syncognie"
+  description="Les Parchemins — un espace à venir."
+>
+
+<section class="chronique">
+  <div class="chronique-inner">
+    <p class="chronique-placeholder">La Chronique arrive bientôt.</p>
+  </div>
+</section>
+
+<style>
+  .chronique {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*
+      ─── IMAGE DU LIVRE ───────────────────────────────────────────────
+      Remplace par ton image une fois qu'elle est dans public/images/
+      background-image: url('/images/cadre_2.webp');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      ──────────────────────────────────────────────────────────────────
+    */
+  }
+
+  .chronique-inner {
+    text-align: center;
+  }
+
+  .chronique-placeholder {
+    font-family: 'Mulish', sans-serif;
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+</style>
+
+</BaseLayout>
