@@ -1,0 +1,40 @@
+---
+// src/pages/journal/[slug].astro
+// Page individuelle d'une entrée du journal
+
+import JournalLayout from '../../layouts/JournalLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('journal', ({ data }) => !data.draft);
+  return entries.map(entry => ({
+    params: { slug: entry.id },
+    props:  { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Estimation du temps de lecture si absent du frontmatter
+// ~200 mots/min pour un texte en français
+function estimateLecture(body: string): number {
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+// Le corps brut est disponible via entry.body
+const readTime = entry.data.lecture ?? estimateLecture(entry.body ?? '');
+---
+
+<JournalLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  description={entry.data.description}
+  lecture={readTime}
+  type={entry.data.type}
+  stade={entry.data.stade}
+  slug={entry.id}
+>
+  <Content />
+</JournalLayout>

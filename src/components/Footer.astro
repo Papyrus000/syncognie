@@ -23,7 +23,7 @@ const currentPath = Astro.url.pathname;
       <div class="footer-nav-group">
         <span class="footer-group-label">Archives</span>
         <a href="/articles" class={`footer-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'footer-link--active' : ''}`}>Tous les articles</a>
-        <a href="/journal"  class={`footer-link ${currentPath === '/journal'  ? 'footer-link--active' : ''}`}>Journal de genèse</a>
+        <a href="/notes"  class={`footer-link ${currentPath === '/notes'  ? 'footer-link--active' : ''}`}>Journal de genèse</a>
         <a href="/carte"    class={`footer-link ${currentPath === '/carte'    ? 'footer-link--active' : ''}`}>Carte du site</a>
       </div>
     </nav>

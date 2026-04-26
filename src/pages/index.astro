@@ -5,6 +5,8 @@ import { getCollection } from 'astro:content';
 const allArticles = await getCollection('articles');
 const allCarnet   = await getCollection('carnet');
 const allFenetres = await getCollection('fenetres');
+const allJournal  = await getCollection('journal', ({ data }) => !data.draft);
+const journalEntries = allJournal.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const serieNotes = allArticles
   .filter(a => a.data.serie === "Notes d'un modèle en construction")
@@ -342,7 +344,7 @@ function formatDateShort(date: Date) {
           </li>
 
           <!-- ── IV. OUTILS ── -->
-          <li class="toc-section toc-section--last">
+          <li class="toc-section">
             <a class="toc-row toc-row--section" href="/outils">
               <span class="toc-n">IV</span>
               <span class="toc-name">Outils</span>
@@ -363,6 +365,41 @@ function formatDateShort(date: Date) {
                   </a>
                 </li>
               ))}
+            </ul>
+          </li>
+
+          <!-- ── V. JOURNAL ── -->
+          <li class="toc-section toc-section--last">
+            <a class="toc-row toc-row--section" href="/journal">
+              <span class="toc-n">V</span>
+              <span class="toc-name">Journal</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Notes de bord, réflexions en cours, fragments du processus</span>
+              <span class="toc-ct">{journalEntries.length} entrée{journalEntries.length > 1 ? 's' : ''}</span>
+            </a>
+
+            <ul class="toc-mecanique">
+              {journalEntries.slice(0, 8).map((entry) => (
+                <li>
+                  <a class="toc-mec-item" href={`/journal/${entry.id}`}>
+                    <span class="toc-mec-date">
+                      {entry.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                    <span class="toc-mec-titre">{entry.data.title}</span>
+                    <span class="toc-mec-arr">→</span>
+                  </a>
+                </li>
+              ))}
+              {journalEntries.length > 8 && (
+                <li>
+                  <a class="toc-mec-item" href="/journal">
+                    <span class="toc-mec-date"></span>
+                    <span class="toc-mec-titre" style="font-style:italic;opacity:.6">
+                      Voir toutes les entrées ({journalEntries.length}) →
+                    </span>
+                  </a>
+                </li>
+              )}
             </ul>
           </li>
 

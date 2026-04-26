@@ -1,4 +1,5 @@
 // src/content.config.ts
+// ── REMPLACE ton fichier existant ──
 
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
@@ -85,4 +86,23 @@ const planches = defineCollection({
   }),
 });
 
-export const collections = { articles, fenetres, carnet, atelier, planches };
+// ── Collection NOUVELLE : journal ──
+// Chaque fichier = une entrée de journal, classée par date
+const journal = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/journal' }),
+  schema: z.object({
+    title:       z.string(),
+    date:        z.date(),
+    description: z.string().optional(),
+    // Temps de lecture estimé (en minutes) — calculé auto si absent
+    lecture:     z.number().optional(),
+    // Étiquette libre : 'réflexion', 'processus', 'observation', etc.
+    type:        z.string().optional(),
+    // Stade du jardin numérique
+    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
+    // Masquer de l'index public
+    draft:       z.boolean().optional(),
+  }),
+});
+
+export const collections = { articles, fenetres, carnet, atelier, planches, journal };

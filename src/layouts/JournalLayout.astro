@@ -1,0 +1,593 @@
+---
+// src/layouts/JournalLayout.astro
+// Layout Journal — lisibilité maximale, isolé du style global du site
+
+import Base from './Base.astro';
+
+export interface Props {
+  title:        string;
+  date:         Date;
+  description?: string;
+  lecture?:     number;
+  type?:        string;
+  stade?:       'graine' | 'pousse' | 'arbre';
+  slug:         string;
+}
+
+const { title, date, description, lecture, type, stade, slug } = Astro.props;
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function stadeLabel(s?: string) {
+  if (s === 'pousse') return '🌿 Pousse';
+  if (s === 'arbre')  return '🌳 Arbre';
+  return '🌱 Graine';
+}
+---
+
+<Base title={`${title} — Journal · Syncognie`} description={description}>
+
+<!-- Polices chargées directement dans le body (Base.astro n'expose pas de slot head) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Styles globaux — isolation du site + variables -->
+<style is:global>
+  html:has(.jl-wrap) {
+    --jl-bg:        #F7F3EE;
+    --jl-paper:     #FDFAF6;
+    --jl-ink:       #1C1811;
+    --jl-ink-soft:  #4A4237;
+    --jl-ink-muted: #9A8F82;
+    --jl-accent:    #B85C2A;
+    --jl-accent-hl: #F0DDD0;
+    --jl-border:    #E4DDD4;
+    --jl-serif:     'Lora', Georgia, serif;
+    --jl-sans:      'DM Sans', sans-serif;
+    --jl-lh:        1.87;
+    --jl-measure:   66ch;
+    --jl-base:      18px;
+  }
+
+  body.jl-night-mode {
+    --jl-bg:        #141210 !important;
+    --jl-paper:     #1C1914 !important;
+    --jl-ink:       #EDE8DF !important;
+    --jl-ink-soft:  #BDB3A5 !important;
+    --jl-ink-muted: #6E6458 !important;
+    --jl-accent:    #C4773A !important;
+    --jl-accent-hl: #2A2018 !important;
+    --jl-border:    #2E2820 !important;
+  }
+
+  /* Fond parchemin sur pages journal */
+  body:has(.jl-wrap) {
+    background-color: var(--jl-bg) !important;
+    background-image: none !important;
+  }
+
+  /* Barre de progression */
+  .jl-progress {
+    position: fixed;
+    top: 52px; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--pop-orange, #ff8000);
+    box-shadow: 0 0 6px rgba(255,128,0,.5);
+    z-index: 500;
+    transition: width .1s linear;
+  }
+
+  /* ── Neutralisation des héritages du site dans le corps de l'article ── */
+
+  .jl-body p {
+    font-family: var(--jl-serif) !important;
+    font-size: var(--jl-base) !important;
+    line-height: var(--jl-lh) !important;
+    color: var(--jl-ink-soft) !important;
+    max-width: var(--jl-measure);
+    margin-bottom: 1.45rem !important;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+
+  /* Drop cap */
+  .jl-body p:first-of-type::first-letter {
+    font-size: 3.6em;
+    font-weight: 600;
+    line-height: .82;
+    float: left;
+    margin-right: .08em;
+    margin-top: .05em;
+    color: var(--jl-accent);
+    font-family: var(--jl-serif) !important;
+  }
+
+  /* Offset ancre pour header fixe */
+  .jl-body h2,
+  .jl-body h3 {
+    scroll-margin-top: 76px;
+  }
+
+  .jl-body h2 {
+    font-family: var(--jl-serif) !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    color: var(--jl-ink) !important;
+    margin: 3rem 0 1rem !important;
+    letter-spacing: -.015em;
+    line-height: 1.25 !important;
+  }
+
+  .jl-body h3 {
+    font-family: var(--jl-sans) !important;
+    font-size: .78rem !important;
+    font-weight: 500 !important;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--jl-ink-muted) !important;
+    margin: 2.5rem 0 .8rem !important;
+  }
+
+  /* Blockquote — neutralise le style orange/italic du site */
+  .jl-body blockquote {
+    border-left: 3px solid var(--jl-accent) !important;
+    margin: 2.5rem 0 !important;
+    padding: .4rem 0 .4rem 1.6rem !important;
+    font-style: normal !important;
+    color: inherit !important;
+    opacity: 1 !important;
+    background: transparent !important;
+  }
+  .jl-body blockquote p {
+    font-style: italic !important;
+    font-size: 1.05rem !important;
+    color: var(--jl-ink) !important;
+    margin-bottom: 0 !important;
+    text-align: left !important;
+  }
+  .jl-body blockquote cite {
+    display: block;
+    font-family: var(--jl-sans) !important;
+    font-size: .68rem !important;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--jl-ink-muted) !important;
+    margin-top: .65rem;
+    font-style: normal !important;
+  }
+
+  .jl-body ul,
+  .jl-body ol {
+    font-family: var(--jl-serif) !important;
+    font-size: var(--jl-base) !important;
+    line-height: var(--jl-lh) !important;
+    color: var(--jl-ink-soft) !important;
+    max-width: var(--jl-measure);
+    padding-left: 1.6rem;
+    margin-bottom: 1.45rem !important;
+  }
+  .jl-body li { margin-bottom: .4rem; }
+
+  .jl-body a {
+    color: var(--jl-accent) !important;
+    text-decoration-color: var(--jl-accent-hl);
+    text-underline-offset: .2em;
+  }
+  .jl-body a:hover { text-decoration-color: var(--jl-accent) !important; }
+
+  .jl-body em     { font-style: italic !important; }
+  .jl-body strong { font-weight: 600; color: var(--jl-ink) !important; }
+
+  .jl-body hr {
+    border: none !important;
+    border-top: 1px solid var(--jl-border) !important;
+    margin: 3rem 0 !important;
+  }
+
+  .jl-body code {
+    font-size: .86em;
+    background: var(--jl-accent-hl) !important;
+    padding: .1em .35em;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace !important;
+    color: var(--jl-ink) !important;
+  }
+
+  /* ToC — liens créés en JS, nécessitent is:global */
+  .jl-toc a {
+    display: block;
+    font-family: var(--jl-sans) !important;
+    font-size: .67rem !important;
+    line-height: 1.45;
+    color: var(--jl-ink-muted) !important;
+    text-decoration: none !important;
+    padding: .28rem .5rem;
+    border-left: 2px solid transparent;
+    transition: color .18s, border-color .18s, background .18s;
+    border-radius: 0 2px 2px 0;
+  }
+  .jl-toc a:hover {
+    color: var(--jl-ink-soft) !important;
+    border-left-color: var(--jl-border) !important;
+    text-decoration: none !important;
+  }
+  .jl-toc a.jl-toc-active {
+    color: var(--jl-accent) !important;
+    border-left-color: var(--jl-accent) !important;
+    background: var(--jl-accent-hl);
+    text-decoration: none !important;
+  }
+</style>
+
+<!-- Barre de progression -->
+<div class="jl-progress" id="jl-progress" aria-hidden="true"></div>
+
+<!-- Contrôles flottants -->
+<div class="jl-controls" id="jl-controls">
+  <button class="jl-ctrl-btn" id="jl-sz-down" aria-label="Réduire">−</button>
+  <span class="jl-ctrl-sep"></span>
+  <button class="jl-ctrl-btn" id="jl-sz-up" aria-label="Agrandir">+</button>
+  <span class="jl-ctrl-sep jl-ctrl-sep--wide"></span>
+  <button class="jl-ctrl-btn" id="jl-night" aria-label="Mode nuit">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</div>
+
+<div class="jl-wrap" id="jl-wrap">
+
+  <!-- Sidebar -->
+  <aside class="jl-aside" aria-label="Navigation dans l'article">
+    <div class="jl-aside-inner">
+      <a class="jl-back" href="/journal">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Journal
+      </a>
+      <div class="jl-aside-sep"></div>
+      <nav class="jl-toc" id="jl-toc" aria-label="Sections"></nav>
+      <div class="jl-aside-sep" style="margin-top:1.5rem"></div>
+      <div class="jl-read-stat">
+        <span class="jl-read-pct" id="jl-read-pct">0%</span>
+        <span class="jl-read-label">lu</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Article -->
+  <article class="jl-article" id="jl-article">
+
+    <header class="jl-header">
+      <div class="jl-meta">
+        {type && <span class="jl-tag">{type}</span>}
+        <time class="jl-date" datetime={date.toISOString()}>{formatDate(date)}</time>
+        {lecture && <span class="jl-read-time">· {lecture} min</span>}
+        {stade && <span class="jl-stade">{stadeLabel(stade)}</span>}
+      </div>
+      <h1 class="jl-titre">{title}</h1>
+      {description && <p class="jl-subtitle">{description}</p>}
+      <div class="jl-rule"></div>
+    </header>
+
+    <div class="jl-body" id="jl-body">
+      <slot />
+    </div>
+
+    <footer class="jl-footer">
+      <a class="jl-footer-back" href="/journal">← Retour au journal</a>
+    </footer>
+
+  </article>
+</div>
+
+</Base>
+
+<style>
+  /* ── CONTRÔLES FLOTTANTS ── */
+  .jl-controls {
+    position: fixed;
+    top: 50%;
+    right: 1.4rem;
+    transform: translateY(-50%);
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+    background: var(--jl-paper);
+    border: 1px solid var(--jl-border);
+    border-radius: 8px;
+    padding: .5rem .35rem;
+    box-shadow: 0 2px 12px rgba(28,24,17,.08);
+  }
+  .jl-ctrl-btn {
+    width: 28px; height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--jl-ink-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, color .15s;
+    font-family: var(--jl-sans);
+  }
+  .jl-ctrl-btn:hover {
+    background: var(--jl-accent-hl);
+    color: var(--jl-accent);
+  }
+  .jl-ctrl-sep {
+    display: block;
+    width: 16px; height: 1px;
+    background: var(--jl-border);
+    margin: .05rem auto;
+  }
+  .jl-ctrl-sep--wide { margin: .2rem auto; }
+
+  /* ── WRAPPER ── */
+  .jl-wrap {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 0 3.5rem;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 3rem 4.5rem 5rem 2rem;
+    align-items: start;
+    font-size: var(--jl-base);
+  }
+
+  /* ── SIDEBAR ── */
+  .jl-aside {
+    position: sticky;
+    top: 5rem;
+    padding-top: .4rem;
+  }
+  .jl-aside-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .jl-back {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-family: var(--jl-sans);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--jl-ink-muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .jl-back:hover { color: var(--jl-accent); }
+
+  .jl-aside-sep {
+    height: 1px;
+    background: var(--jl-border);
+    margin: .85rem 0;
+  }
+
+  .jl-toc {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+  }
+
+  .jl-read-stat {
+    display: flex;
+    align-items: baseline;
+    gap: .3rem;
+    padding: .3rem .5rem;
+  }
+  .jl-read-pct {
+    font-family: var(--jl-sans);
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--jl-accent);
+  }
+  .jl-read-label {
+    font-family: var(--jl-sans);
+    font-size: .62rem;
+    color: var(--jl-ink-muted);
+    letter-spacing: .08em;
+  }
+
+  /* ── ARTICLE ── */
+  .jl-article {
+    background: var(--jl-paper);
+    border: 1px solid var(--jl-border);
+    border-radius: 4px;
+    padding: 3.5rem 4rem;
+    box-shadow: 0 2px 20px rgba(28,24,17,.05), 0 1px 3px rgba(28,24,17,.04);
+    min-width: 0;
+    font-family: var(--jl-serif);
+    font-size: var(--jl-base);
+    color: var(--jl-ink-soft);
+  }
+
+  /* ── EN-TÊTE ── */
+  .jl-meta {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+  }
+  .jl-tag {
+    font-family: var(--jl-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--jl-accent);
+    background: var(--jl-accent-hl);
+    padding: .28em .65em;
+    border-radius: 2px;
+  }
+  .jl-date {
+    font-family: var(--jl-sans);
+    font-size: .7rem;
+    font-weight: 300;
+    color: var(--jl-ink-muted);
+    letter-spacing: .06em;
+  }
+  .jl-read-time {
+    font-family: var(--jl-sans);
+    font-size: .67rem;
+    color: var(--jl-ink-muted);
+  }
+  .jl-stade {
+    font-family: var(--jl-sans);
+    font-size: .64rem;
+    color: var(--jl-ink-muted);
+    margin-left: auto;
+  }
+
+  .jl-titre {
+    font-family: var(--jl-serif);
+    font-size: clamp(1.65rem, 2.8vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.18;
+    color: var(--jl-ink);
+    letter-spacing: -.022em;
+    margin-bottom: .7rem;
+  }
+  .jl-subtitle {
+    font-family: var(--jl-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--jl-ink-soft);
+    line-height: 1.58;
+    margin-bottom: 2rem;
+    max-width: 50ch;
+  }
+  .jl-rule {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--pop-orange, #ff8000);
+    box-shadow: 0 0 6px rgba(255,128,0,.5);
+    opacity: .5;
+    margin-bottom: 2.2rem;
+  }
+
+  /* ── PIED ── */
+  .jl-footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--jl-border);
+  }
+  .jl-footer-back {
+    font-family: var(--jl-sans);
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--jl-ink-muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .jl-footer-back:hover { color: var(--jl-accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .jl-wrap {
+      grid-template-columns: 1fr;
+      padding: 2rem 1.5rem 4rem;
+    }
+    .jl-aside { display: none; }
+    .jl-controls { right: .75rem; }
+  }
+  @media (max-width: 520px) {
+    .jl-article { padding: 2rem 1.5rem; }
+    .jl-controls { display: none; }
+  }
+</style>
+
+<script define:vars={{ slug }}>
+(function () {
+  const body    = document.getElementById('jl-body');
+  const toc     = document.getElementById('jl-toc');
+  const bar     = document.getElementById('jl-progress');
+  const pctEl   = document.getElementById('jl-read-pct');
+  const szDown  = document.getElementById('jl-sz-down');
+  const szUp    = document.getElementById('jl-sz-up');
+  const nightBtn= document.getElementById('jl-night');
+
+  // Taille mémorisée
+  let fontSize = parseInt(localStorage.getItem('jl_fontsize') || '18', 10);
+  function applySize() {
+    document.documentElement.style.setProperty('--jl-base', fontSize + 'px');
+    localStorage.setItem('jl_fontsize', String(fontSize));
+  }
+  applySize();
+  szDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
+  szUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
+
+  // Mode nuit mémorisé
+  if (localStorage.getItem('jl_night') === '1') document.body.classList.add('jl-night-mode');
+  nightBtn?.addEventListener('click', () => {
+    document.body.classList.toggle('jl-night-mode');
+    localStorage.setItem('jl_night', document.body.classList.contains('jl-night-mode') ? '1' : '0');
+  });
+
+  // Progression
+  let readFired = false;
+  function onScroll() {
+    const total = document.body.scrollHeight - window.innerHeight;
+    const pct   = total > 0 ? Math.round((window.scrollY / total) * 100) : 0;
+    if (bar)   bar.style.width = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (pct >= 80 && !readFired) {
+      readFired = true;
+      window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/journal/' + slug } }));
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // ToC auto
+  if (body && toc) {
+    const headings = body.querySelectorAll('h2, h3');
+    const links = [];
+    headings.forEach((h, i) => {
+      if (!h.id) h.id = 'jl-h-' + i;
+      const a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent || '';
+      if (h.tagName === 'H3') a.style.paddingLeft = '.9rem';
+      // Offset scroll pour compenser header fixe (52px) + marge (16px)
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(h.id);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 52 - 24;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+      toc.appendChild(a);
+      links.push({ el: h, a });
+    });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.a.classList.remove('jl-toc-active'));
+          const found = links.find(l => l.el === e.target);
+          if (found) found.a.classList.add('jl-toc-active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    links.forEach(l => io.observe(l.el));
+  }
+
+  // Tracking 15s
+  setTimeout(() => {
+    window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/journal/' + slug } }));
+  }, 15000);
+})();
+</script>

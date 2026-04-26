@@ -1,0 +1,317 @@
+---
+// src/pages/journal/index.astro
+// Index du Journal — liste chronologique, design cohérent avec le site
+
+import BaseLayout from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const allJournal = await getCollection('journal', ({ data }) => !data.draft);
+const entries = allJournal.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Regrouper par année
+const byYear: Record<string, typeof entries> = {};
+entries.forEach(e => {
+  const y = e.data.date.getFullYear().toString();
+  if (!byYear[y]) byYear[y] = [];
+  byYear[y].push(e);
+});
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+}
+function stadeLabel(s?: string) {
+  if (s === 'pousse') return '🌿';
+  if (s === 'arbre')  return '🌳';
+  return '🌱';
+}
+---
+
+<BaseLayout
+  title="Journal — Syncognie"
+  description="Notes de bord, réflexions en cours, fragments du processus de création."
+>
+
+<section class="jidx-hero">
+  <p class="jidx-eyebrow">V · Journal</p>
+  <h1 class="jidx-titre">Journal</h1>
+  <p class="jidx-sous">Notes de bord, réflexions en cours, fragments du processus de création. Des textes qui avancent à leur rythme, sans destination arrêtée.</p>
+  <div class="jidx-rule"></div>
+  <p class="jidx-count">{entries.length} entrée{entries.length > 1 ? 's' : ''}</p>
+</section>
+
+<div class="jidx-list">
+  {years.map(year => (
+    <div class="jidx-year-group">
+      <div class="jidx-year-label">{year}</div>
+      <ul class="jidx-entries">
+        {byYear[year].map(entry => (
+          <li class="jidx-item">
+            <a class="jidx-link" href={`/journal/${entry.id}`}>
+              <div class="jidx-item-left">
+                <time class="jidx-item-date" datetime={entry.data.date.toISOString()}>
+                  {formatDate(entry.data.date)}
+                </time>
+                {entry.data.type && (
+                  <span class="jidx-item-type">{entry.data.type}</span>
+                )}
+              </div>
+              <div class="jidx-item-centre">
+                <p class="jidx-item-titre">{entry.data.title}</p>
+                {entry.data.description && (
+                  <p class="jidx-item-desc">{entry.data.description}</p>
+                )}
+              </div>
+              <div class="jidx-item-right">
+                <span class="jidx-item-stade" title={entry.data.stade ?? 'graine'}>
+                  {stadeLabel(entry.data.stade)}
+                </span>
+                {entry.data.lecture && (
+                  <span class="jidx-item-lecture">{entry.data.lecture} min</span>
+                )}
+                <span class="jidx-item-arr">→</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+
+  {entries.length === 0 && (
+    <div class="jidx-empty">
+      <p class="jidx-empty-txt">Le journal est vide pour l'instant. La première entrée arrive bientôt.</p>
+    </div>
+  )}
+</div>
+
+</BaseLayout>
+
+<style>
+  /* ── Polices ── */
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+  /* ── Variables locales ── */
+  :root {
+    --ji-accent:    #8b5e3c;
+    --ji-hl:        #E8D5C4;
+    --ji-serif:     'Lora', 'Libre Baskerville', Georgia, serif;
+    --ji-sans:      'DM Sans', 'Mulish', sans-serif;
+    --max:          740px;
+  }
+
+  /* ── HERO ── */
+  .jidx-hero {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 3.5rem 1.75rem 2rem;
+  }
+  .jidx-eyebrow {
+    font-family: var(--ji-sans);
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--ji-accent);
+    opacity: .7;
+    margin-bottom: .8rem;
+  }
+  .jidx-titre {
+    font-family: var(--ji-serif);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    margin-bottom: .7rem;
+  }
+  .jidx-sous {
+    font-family: var(--ji-serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+    max-width: 52ch;
+    margin-bottom: 1.5rem;
+  }
+  .jidx-rule {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--ji-accent);
+    opacity: .5;
+    margin-bottom: 1rem;
+  }
+  .jidx-count {
+    font-family: var(--ji-sans);
+    font-size: .7rem;
+    color: var(--ink-soft);
+    letter-spacing: .08em;
+  }
+
+  /* ── LISTE ── */
+  .jidx-list {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 1.75rem 5rem;
+  }
+
+  /* ── Groupe par année ── */
+  .jidx-year-group {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 0 2rem;
+    margin-bottom: .5rem;
+  }
+
+  .jidx-year-label {
+    font-family: var(--ji-sans);
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    color: var(--ink-soft);
+    opacity: .45;
+    padding-top: 1.4rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .jidx-entries {
+    list-style: none;
+    border-left: 1px solid var(--rule);
+    padding-left: 1.5rem;
+    margin-left: 0;
+  }
+
+  /* ── Entrée ── */
+  .jidx-item { list-style: none; }
+  .jidx-link {
+    display: grid;
+    grid-template-columns: 8rem 1fr auto;
+    gap: 0 1.25rem;
+    align-items: start;
+    padding: 1.1rem 0 1.1rem .1rem;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    transition: padding-left .2s;
+    position: relative;
+  }
+  .jidx-link::before {
+    content: '';
+    position: absolute;
+    left: -1.55rem;
+    top: 1.55rem;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--rule);
+    border: 1.5px solid var(--bg);
+    transition: background .2s;
+  }
+  .jidx-link:hover { padding-left: .4rem; }
+  .jidx-link:hover::before { background: var(--ji-accent); }
+  .jidx-link:hover .jidx-item-titre { color: var(--ji-accent); }
+  .jidx-link:hover .jidx-item-arr { opacity: 1; transform: translateX(0); }
+
+  .jidx-item-left {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    padding-top: .1rem;
+  }
+  .jidx-item-date {
+    font-family: var(--ji-sans);
+    font-size: .7rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    opacity: .65;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .jidx-item-type {
+    font-family: var(--ji-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ji-accent);
+    background: var(--ji-hl);
+    padding: .18em .5em;
+    border-radius: 2px;
+    width: fit-content;
+  }
+
+  .jidx-item-centre { min-width: 0; }
+  .jidx-item-titre {
+    font-family: var(--ji-serif);
+    font-size: .96rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: .3rem;
+    transition: color .18s;
+  }
+  .jidx-item-desc {
+    font-family: var(--ji-sans);
+    font-size: .78rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-mid);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .jidx-item-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .35rem;
+    padding-top: .1rem;
+    flex-shrink: 0;
+  }
+  .jidx-item-stade { font-size: .8rem; }
+  .jidx-item-lecture {
+    font-family: var(--ji-sans);
+    font-size: .65rem;
+    color: var(--ink-soft);
+    opacity: .55;
+    white-space: nowrap;
+  }
+  .jidx-item-arr {
+    font-size: .72rem;
+    color: var(--ji-accent);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity .18s, transform .2s cubic-bezier(.16,.84,.44,1);
+  }
+
+  /* ── Vide ── */
+  .jidx-empty {
+    padding: 3rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .jidx-empty-txt {
+    font-family: var(--ji-serif);
+    font-style: italic;
+    font-size: .96rem;
+    color: var(--ink-soft);
+    opacity: .6;
+    line-height: 1.6;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 580px) {
+    .jidx-year-group { grid-template-columns: 1fr; gap: 0; }
+    .jidx-year-label { text-align: left; padding-top: 1.5rem; padding-bottom: .2rem; }
+    .jidx-link { grid-template-columns: 1fr auto; }
+    .jidx-item-left { display: none; }
+    .jidx-item-titre::before {
+      content: attr(data-date) ' · ';
+      font-size: .7rem;
+      color: var(--ink-soft);
+      font-family: var(--ji-sans);
+      font-weight: 300;
+    }
+  }
+</style>
