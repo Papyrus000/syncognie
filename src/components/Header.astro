@@ -28,8 +28,8 @@ const currentPath = Astro.url.pathname;
       <!-- Atelier — position 3, badge pill signature -->
       <a href="/atelier" class={`topbar-link topbar-link--primary topbar-link--atelier ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
         <span class="atelier-pill">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 12l-8.5 8.5a2.121 2.121 0 0 1-3-3L12 9"/><path d="M17.64 15L22 10.36"/><path d="M20.91 11.7a2.5 2.5 0 1 0-3.61-3.46l1.06 1.06a1 1 0 0 1 0 1.41l-1.4 1.4a1 1 0 0 1-1.42 0l-1.06-1.06a2.5 2.5 0 0 0 3.46 3.61z"/>
           </svg>
           Atelier
         </span>
@@ -37,11 +37,11 @@ const currentPath = Astro.url.pathname;
     </div>
     <div class="nav-sep" aria-hidden="true"></div>
     <div class="nav-secondary">
-      <a href="/carnet" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
+      <a href="/journal" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/journal') ? 'active' : ''}`}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
         </svg>
-        Carnet
+        Journal
       </a>
       <a href="/outils" class={`topbar-link topbar-link--secondary ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
@@ -100,18 +100,18 @@ const currentPath = Astro.url.pathname;
     <!-- Atelier — position 3 mobile, badge pill -->
     <a href="/atelier" class={`mobile-link mobile-link--primary mobile-link--atelier ${currentPath.startsWith('/atelier') ? 'active' : ''}`}>
       <span class="atelier-pill atelier-pill--mobile">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 12l-8.5 8.5a2.121 2.121 0 0 1-3-3L12 9"/><path d="M17.64 15L22 10.36"/><path d="M20.91 11.7a2.5 2.5 0 1 0-3.61-3.46l1.06 1.06a1 1 0 0 1 0 1.41l-1.4 1.4a1 1 0 0 1-1.42 0l-1.06-1.06a2.5 2.5 0 0 0 3.46 3.61z"/>
         </svg>
         Atelier
       </span>
     </a>
     <div class="mobile-sep" aria-hidden="true"></div>
-    <a href="/carnet" class={`mobile-link ${currentPath.startsWith('/carnet') ? 'active' : ''}`}>
+    <a href="/journal" class={`mobile-link ${currentPath.startsWith('/journal') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
       </svg>
-      Carnet
+      Journal
     </a>
     <a href="/outils" class={`mobile-link ${currentPath.startsWith('/outils') ? 'active' : ''}`}>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">

@@ -369,7 +369,7 @@ function formatDateShort(date: Date) {
           </li>
 
           <!-- ── V. JOURNAL ── -->
-          <li class="toc-section toc-section--last">
+          <li class="toc-section">
             <a class="toc-row toc-row--section" href="/journal">
               <span class="toc-n">V</span>
               <span class="toc-name">Journal</span>
@@ -400,6 +400,31 @@ function formatDateShort(date: Date) {
                   </a>
                 </li>
               )}
+            </ul>
+          </li>
+
+          <!-- ── VI. CARNET ── -->
+          <li class="toc-section toc-section--last">
+            <a class="toc-row toc-row--section" href="/carnet">
+              <span class="toc-n">VI</span>
+              <span class="toc-name">Carnet</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Notes, fragments, pensées en cours</span>
+              <span class="toc-ct">{allCarnet.length} notes</span>
+            </a>
+
+            <ul class="toc-mecanique">
+              {allCarnet.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 6).map((note) => (
+                <li>
+                  <a class="toc-mec-item" href={`/carnet/${note.id}`}>
+                    <span class="toc-mec-date">
+                      {note.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                    <span class="toc-mec-titre">{note.data.title}</span>
+                    <span class="toc-mec-arr">→</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </li>
 

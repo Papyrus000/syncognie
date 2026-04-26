@@ -681,12 +681,23 @@ function stadeLabel(s?: string) {
   let readFired = false;
 
   function onScroll() {
-    // Mesure sur l'article uniquement, pas toute la page
+    // Calcul précis : 0% au haut de l'article, 100% quand le bas de l'article passe le bas de l'écran
     const article = document.getElementById('jl-article');
-    const articleTop    = article ? article.getBoundingClientRect().top + window.scrollY : 0;
-    const articleHeight = article ? article.offsetHeight : document.body.scrollHeight;
-    const scrolled = Math.max(0, window.scrollY - articleTop + window.innerHeight * 0.15);
-    const pct = Math.min(100, Math.max(0, Math.round((scrolled / articleHeight) * 100)));
+    let pct = 0;
+    if (article) {
+      const articleTop    = article.offsetTop;
+      const articleBottom = articleTop + article.offsetHeight;
+      // 0% quand scrollY atteint le haut de l'article
+      // 100% quand scrollY atteint le bas de l'article (moins la hauteur fenêtre)
+      const scrollable = articleBottom - articleTop - window.innerHeight;
+      const scrolled   = Math.max(0, window.scrollY - articleTop);
+      pct = scrollable > 0
+        ? Math.min(100, Math.max(0, Math.round((scrolled / scrollable) * 100)))
+        : (window.scrollY >= articleTop ? 100 : 0);
+    } else {
+      const total = document.body.scrollHeight - window.innerHeight;
+      pct = total > 0 ? Math.round((window.scrollY / total) * 100) : 0;
+    }
     if (bar)   bar.style.width = pct + '%';
     if (pctEl) pctEl.textContent = pct + '%';
 
@@ -718,14 +729,25 @@ function stadeLabel(s?: string) {
         e.preventDefault();
         const target = document.getElementById(h.id);
         if (target) {
+          // Mettre à jour l'actif immédiatement au clic, sans attendre l'observer
+          links.forEach(l => l.a.classList.remove('jl-toc-active'));
+          a.classList.add('jl-toc-active');
+          // Désactiver l'observer pendant le scroll animé
+          scrolling = true;
+          clearTimeout(scrollingTimer);
           const top = target.getBoundingClientRect().top + window.scrollY - 52 - 24;
           window.scrollTo({ top, behavior: 'smooth' });
+          // Réactiver après la fin du scroll (smooth dure ~500ms max)
+          scrollingTimer = setTimeout(() => { scrolling = false; }, 700);
         }
       });
       toc.appendChild(a);
       links.push({ el: h, a });
     });
+    let scrolling = false;
+    let scrollingTimer;
     const io = new IntersectionObserver(entries => {
+      if (scrolling) return; // ignorer les intersections pendant le scroll programmé
       entries.forEach(e => {
         if (e.isIntersecting) {
           links.forEach(l => l.a.classList.remove('jl-toc-active'));
