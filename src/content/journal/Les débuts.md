@@ -26,3 +26,9 @@ Fondations, son écriture, son design, son ergonomie et une carte notamment, Bar
 ## Journal
 
 Cette rubrique, cette note se veut différente. Moins d'IA. Plus d'écriture libre. Moins de relecture. 
+
+0 IA ? Non ! Tout ce site combine humain et IA (au pluriel), toutes celles qui peuvent y contribuer. 
+
+La distinction ou le refus d'usage n'est pas recherché. Au contraire, c'est tout l'inverse : qu'est-ce que je peux faire avec l'aide des IA que je ne pourrais faire seul ? 
+
+Ce site est en quelque sorte la vitrine technologique de ce qu'on peut faire ensemble ;)
