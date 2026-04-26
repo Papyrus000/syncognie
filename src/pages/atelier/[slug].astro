@@ -1,18 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
 import { PENSEURS } from '../../data/penseurs';
 
 export async function getStaticPaths() {
   const entrees = await getCollection('atelier', ({ id }) => id !== 'index');
   return entrees.map((entree) => ({
-    params: { slug: entree.slug },
+    params: { slug: entree.id },
     props:  { entree },
   }));
 }
 
 const { entree } = Astro.props;
-const { Content } = await entree.render();
+const { Content } = await render(entree);
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });

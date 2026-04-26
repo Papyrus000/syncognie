@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { getEntry } from 'astro:content';
 import Reactions from '../../components/Reactions.astro';
 import Personnage from '../../components/Personnage.astro';
@@ -11,13 +11,13 @@ import SMS from '../../components/SMS.astro';
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
   return articles.map(article => ({
-    params: { slug: article.slug },
+    params: { slug: article.id },
     props: { article },
   }));
 }
 
 const { article } = Astro.props;
-const { Content } = await article.render();
+const { Content } = await render(article);
 
 const date = article.data.date.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 const wordCount = article.body.split(/\s+/).length;
@@ -78,7 +78,7 @@ const episodesSerie = article.data.serie
       .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0))
   : [];
 
-const idxSerie = episodesSerie.findIndex(a => a.slug === article.slug);
+const idxSerie = episodesSerie.findIndex(a => a.id === article.id);
 
 // Navigation contextuelle : dans la série si applicable, sinon globale par date
 let precedent = null;
@@ -91,7 +91,7 @@ if (article.data.serie && episodesSerie.length > 1) {
   suivant   = idxSerie < episodesSerie.length - 1  ? episodesSerie[idxSerie + 1] : null;
 } else {
   const tousParDate = [...tousArticles].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-  const idx = tousParDate.findIndex(a => a.slug === article.slug);
+  const idx = tousParDate.findIndex(a => a.id === article.id);
   precedent = idx < tousParDate.length - 1 ? tousParDate[idx + 1] : null;
   suivant   = idx > 0                      ? tousParDate[idx - 1]  : null;
 }
@@ -529,7 +529,7 @@ article.dialogue .content p { font-size: 15px; color: var(--ink-mid); }
   <!-- Fenêtre liée -->
   {fenetreLiee && (
     <aside class="fenetre-liee">
-      <a href={`/fenetres/${fenetreLiee.slug}`} class="fenetre-liee-lien">
+      <a href={`/fenetres/${fenetreLiee.id}`} class="fenetre-liee-lien">
         <div class="fenetre-liee-inner">
           <span class="fenetre-liee-eyebrow">Fenêtre · {fenetreLiee.data.heure}</span>
           <span class="fenetre-liee-titre">{fenetreLiee.data.personnage}</span>
@@ -546,7 +546,7 @@ article.dialogue .content p { font-size: 15px; color: var(--ink-mid); }
     <Content components={{ Personnage, NoteReference, Instant, SMS }} />
   </div>
 
-  <Reactions slug={article.slug} />
+  <Reactions slug={article.id} />
 
   <!-- Partage -->
   <div class="partage-wrap">
@@ -584,7 +584,7 @@ article.dialogue .content p { font-size: 15px; color: var(--ink-mid); }
         <div class="serie-encart-progress">
           <div class="serie-encart-dots">
             {episodesSerie.map((ep, i) => (
-              <span class={`serie-dot${ep.slug === article.slug ? ' serie-dot--active' : i < idxSerie ? ' serie-dot--done' : ''}`}></span>
+              <span class={`serie-dot${ep.id === article.id ? ' serie-dot--active' : i < idxSerie ? ' serie-dot--done' : ''}`}></span>
             ))}
           </div>
           <span class="serie-encart-pos">{idxSerie + 1} sur {episodesSerie.length}</span>
@@ -600,7 +600,7 @@ article.dialogue .content p { font-size: 15px; color: var(--ink-mid); }
   <nav class="nav-article">
     <div class="nav-item nav-item--prev">
       {precedent ? (
-        <a href={`/articles/${precedent.slug}`} class="nav-lien">
+        <a href={`/articles/${precedent.id}`} class="nav-lien">
           {navMode === 'serie' && serieStyle && (
             <span class="nav-serie-label" style={`color:${serieStyle.color}`}>← Épisode précédent</span>
           )}
@@ -635,7 +635,7 @@ article.dialogue .content p { font-size: 15px; color: var(--ink-mid); }
 
     <div class="nav-item nav-item--next">
       {suivant ? (
-        <a href={`/articles/${suivant.slug}`} class="nav-lien nav-lien--right">
+        <a href={`/articles/${suivant.id}`} class="nav-lien nav-lien--right">
           {navMode === 'serie' && serieStyle && (
             <span class="nav-serie-label" style={`color:${serieStyle.color}`}>Épisode suivant →</span>
           )}

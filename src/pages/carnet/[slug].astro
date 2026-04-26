@@ -1,18 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import '../../styles/carnet.css';
 
 export async function getStaticPaths() {
   const notes = await getCollection('carnet');
   return notes.map(note => ({
-    params: { slug: note.slug },
+    params: { slug: note.id },
     props: { note },
   }));
 }
 
 const { note } = Astro.props;
-const { Content } = await note.render();
+const { Content } = await render(note);
 
 const date = note.data.date.toLocaleDateString('fr-FR', {
   day: 'numeric', month: 'long', year: 'numeric'
@@ -41,7 +41,7 @@ const stadeInfo = note.data.stade ? stadeConfig[note.data.stade] : null;
 // Navigation entre notes (par date)
 const toutesNotes = await getCollection('carnet');
 const parDate = [...toutesNotes].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const idx       = parDate.findIndex(n => n.slug === note.slug);
+const idx       = parDate.findIndex(n => n.id === note.id);
 const precedent = idx < parDate.length - 1 ? parDate[idx + 1] : null;
 const suivant   = idx > 0                  ? parDate[idx - 1]  : null;
 
@@ -163,7 +163,7 @@ const eng = engagementRank[note.data.engagement ?? ''] ?? 0;
   <nav class="nav-article">
     <div class="nav-item nav-item--prev">
       {precedent ? (
-        <a href={`/carnet/${precedent.slug}`} class="nav-lien">
+        <a href={`/carnet/${precedent.id}`} class="nav-lien">
           <span class="nav-dir">← Note précédente</span>
           <span class="nav-titre">{precedent.data.title}</span>
         </a>
@@ -182,7 +182,7 @@ const eng = engagementRank[note.data.engagement ?? ''] ?? 0;
 
     <div class="nav-item nav-item--next">
       {suivant ? (
-        <a href={`/carnet/${suivant.slug}`} class="nav-lien nav-lien--right">
+        <a href={`/carnet/${suivant.id}`} class="nav-lien nav-lien--right">
           <span class="nav-dir">Note suivante →</span>
           <span class="nav-titre">{suivant.data.title}</span>
         </a>

@@ -1,18 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
 
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const fenetres = await getCollection('fenetres');
   return fenetres.map(f => ({
-    params: { slug: f.slug },
+    params: { slug: f.id },
     props: { fenetre: f },
   }));
 }
 
 const { fenetre } = Astro.props;
-const { Content } = await fenetre.render();
+const { Content } = await render(fenetre);
 
 // Couleurs par personnage
 const COULEURS: Record<string, string> = {
@@ -44,7 +44,7 @@ if (fenetre.data.lien_article) {
 // Navigation précédent / suivant
 const toutes = (await getCollection('fenetres'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const idx = toutes.findIndex(f => f.slug === fenetre.slug);
+const idx = toutes.findIndex(f => f.id === fenetre.id);
 const precedente = idx < toutes.length - 1 ? toutes[idx + 1] : null;
 const suivante   = idx > 0                  ? toutes[idx - 1] : null;
 ---
@@ -155,7 +155,7 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
             <div class="suite-line"></div>
           </div>
           <p class="suite-label">Ce moment continue ailleurs</p>
-          <a href={`/articles/${dialogueLie.slug}`} class="suite-lien">
+          <a href={`/articles/${dialogueLie.id}`} class="suite-lien">
             <div class="suite-lien-inner">
               <span class="suite-eyebrow">Dialogue</span>
               <span class="suite-titre">{dialogueLie.data.title}</span>
@@ -174,7 +174,7 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
             <div class="suite-line"></div>
           </div>
           <p class="suite-label">Ce moment a un dessous</p>
-          <a href={`/articles/${articleLie.slug}`} class="suite-lien suite-lien--analyse">
+          <a href={`/articles/${articleLie.id}`} class="suite-lien suite-lien--analyse">
             <div class="suite-lien-inner">
               <span class="suite-eyebrow suite-eyebrow--analyse">Analyse</span>
               <span class="suite-titre">{articleLie.data.title}</span>
@@ -190,7 +190,7 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
     <nav class="nav-fenetre" style={`--c: ${couleur}`}>
       <div class="nav-item nav-item--prev">
         {precedente ? (
-          <a href={`/fenetres/${precedente.slug}`} class="nav-lien">
+          <a href={`/fenetres/${precedente.id}`} class="nav-lien">
             <span class="nav-dir">← Précédente</span>
             <span class="nav-nom">{precedente.data.personnage}</span>
             <span class="nav-heure">{precedente.data.heure}</span>
@@ -210,7 +210,7 @@ const suivante   = idx > 0                  ? toutes[idx - 1] : null;
 
       <div class="nav-item nav-item--next">
         {suivante ? (
-          <a href={`/fenetres/${suivante.slug}`} class="nav-lien nav-lien--right">
+          <a href={`/fenetres/${suivante.id}`} class="nav-lien nav-lien--right">
             <span class="nav-dir">Suivante →</span>
             <span class="nav-nom">{suivante.data.personnage}</span>
             <span class="nav-heure">{suivante.data.heure}</span>
