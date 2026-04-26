@@ -1,6 +1,6 @@
 ---
 title: "Esther Perel — Comprendre le couple moderne"
-date: 2024-06-03
+date: 2026-04-20
 sujet: "Esther Perel"
 extrait: "Les paradoxes du couple moderne : sécurité et désir, intimité et indépendance, fidélité et liberté."
 image: "/images/planches/perel-partie-1.png"
