@@ -419,7 +419,7 @@ const SHOW_SYNTHESE  = false;  // /atelier/synthese
       <ul class="entrees-list">
         {entrees.map((entree) => (
           <li>
-            <a href={`/atelier/${entree.slug}`} class="entree-link">
+            <a href={`/atelier/${entree.id}`} class="entree-link">
               <span class="entree-arrow">&#x2192;</span>
               <span class="entree-title">{entree.data.title}</span>
               {entree.data.extrait && (

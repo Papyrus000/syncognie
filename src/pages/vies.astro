@@ -137,7 +137,7 @@ function stadeEmoji(stade?: string) {
           <div class="episode-numero">{String(ep.data.episode ?? i+1).padStart(2,'0')}</div>
           {i < dialogues.length - 1 && <div class="episode-trait"></div>}
         </div>
-        <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.1 + i * 0.07}s`}>
+        <a class="episode-card" href={`/articles/${ep.id}`} style={`animation-delay:${0.1 + i * 0.07}s`}>
           <div class="episode-meta">
             <span class="episode-date">{formatDateShort(ep.data.date)}</span>
             {ep.data.stade && <span class="episode-stade">{stadeEmoji(ep.data.stade)}</span>}
@@ -196,7 +196,7 @@ function stadeEmoji(stade?: string) {
     {fenetresVivantes.map((f, i) => {
       const couleur = COULEURS_PERSO[f.data.personnage] ?? '#8b5e3c';
       return (
-        <a class="fenetre-tuile" href={`/fenetres/${f.slug}`}
+        <a class="fenetre-tuile" href={`/fenetres/${f.id}`}
            style={`--c:${couleur}; animation-delay:${0.05 + i * 0.06}s`}>
           <div class="tuile-lueur"></div>
           <div class="tuile-head">

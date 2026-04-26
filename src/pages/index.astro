@@ -223,7 +223,7 @@ function formatDateShort(date: Date) {
                 <ul class="toc-mecanique">
                   {serieNotes.map((note) => (
                     <li>
-                      <a class="toc-mec-item" href={`/articles/${note.slug}`}>
+                      <a class="toc-mec-item" href={`/articles/${note.id}`}>
                         <span class="toc-mec-ep">Ép. {String(note.data.episode ?? '').padStart(2,'0')}</span>
                         <span class="toc-mec-titre">{note.data.title}</span>
                         <span class="toc-mec-arr">→</span>
@@ -244,7 +244,7 @@ function formatDateShort(date: Date) {
                 <ul class="toc-mecanique">
                   {serieMecanique.map((note) => (
                     <li>
-                      <a class="toc-mec-item" href={`/articles/${note.slug}`}>
+                      <a class="toc-mec-item" href={`/articles/${note.id}`}>
                         <span class="toc-mec-date">{formatDateShort(note.data.date)}</span>
                         <span class="toc-mec-titre">{note.data.title}</span>
                         <span class="toc-mec-arr">→</span>
@@ -271,7 +271,7 @@ function formatDateShort(date: Date) {
             <ul class="toc-mecanique">
               {serieDialogues.map((ep) => (
                 <li>
-                  <a class="toc-mec-item" href={`/articles/${ep.slug}`}>
+                  <a class="toc-mec-item" href={`/articles/${ep.id}`}>
                     <span class="toc-mec-ep">Ép. {String(ep.data.episode ?? '').padStart(2,'0')}</span>
                     <span class="toc-mec-titre">{ep.data.title}</span>
                     <span class="toc-mec-arr">→</span>
@@ -382,7 +382,7 @@ function formatDateShort(date: Date) {
       <div class="cadre-bd">
         <ul class="carnet-list">
           {allCarnet.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3).map((note) => (
-            <a class="cn-item" href={`/carnet/${note.slug}`}>
+            <a class="cn-item" href={`/carnet/${note.id}`}>
               <div class="cn-meta">
                 <span class="cn-date">{note.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                 <span class={`cn-stade cn-stade--${note.data.stade ?? 'graine'}`}>{stadeLabel(note.data.stade)}</span>
@@ -412,7 +412,7 @@ function formatDateShort(date: Date) {
 <div class="pubs-layout">
   <div class="articles-col">
     {recents.map((a) => (
-      <a class="article-item" href={`/${a.collection}/${a.slug}`}>
+      <a class="article-item" href={`/${a.collection}/${a.id}`}>
         <div class="article-meta">
           <span class="article-date">{formatDate(a.data.date)}</span>
           {a.collection === 'carnet' && (

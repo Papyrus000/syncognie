@@ -40,7 +40,7 @@ const prismeHero = [...prismes].sort((a, b) => {
   return (a.data.episode ?? 0) - (b.data.episode ?? 0);
 })[0] ?? null;
 
-const prismesSuite = prismes.filter(p => p.slug !== prismeHero?.slug);
+const prismesSuite = prismes.filter(p => p.id !== prismeHero?.id);
 
 const totalPrismes = prismes.length;
 const totalFen     = fenetresAnalyses.length;
@@ -127,7 +127,7 @@ function stadeEmoji(stade?: string) {
         </p>
       </div>
       {prismeHero && (
-        <a class="prismes-entree-lien" href={`/articles/${prismeHero.slug}`}>
+        <a class="prismes-entree-lien" href={`/articles/${prismeHero.id}`}>
           Commencer par la première →
         </a>
       )}
@@ -140,7 +140,7 @@ function stadeEmoji(stade?: string) {
       const dt  = formatDateShort(prismeHero.data.date);
       const ep  = prismeHero.data.episode ?? 1;
       return (
-        <a class="carte-hero" href={`/articles/${prismeHero.slug}`}>
+        <a class="carte-hero" href={`/articles/${prismeHero.id}`}>
           <div class="hero-gnum" aria-hidden="true">{String(ep).padStart(2,'0')}</div>
           <div class="hero-top">
             <span class="hero-ep">Prisme {String(ep).padStart(2,'0')}</span>
@@ -169,7 +169,7 @@ function stadeEmoji(stade?: string) {
           const rt  = readTime(p.body);
           const dt  = formatDateShort(p.data.date);
           return (
-            <a class="carte-prisme" href={`/articles/${p.slug}`}
+            <a class="carte-prisme" href={`/articles/${p.id}`}
                style={`animation-delay:${0.1 + i * 0.08}s`}>
               <div class="cp-gnum">{String(ep).padStart(2,'0')}</div>
               <div class="cp-head">
@@ -218,7 +218,7 @@ function stadeEmoji(stade?: string) {
           const rt  = readTime(n.body);
           const dt  = formatDateShort(n.data.date);
           return (
-            <a class="carte-satellite" href={`/articles/${n.slug}`}
+            <a class="carte-satellite" href={`/articles/${n.id}`}
                style={`animation-delay:${0.05 + i * 0.06}s`}>
               <span class="sat-badge sat-badge--note">Note</span>
               <p class="sat-titre">{n.data.title}</p>
@@ -259,7 +259,7 @@ function stadeEmoji(stade?: string) {
           const rt  = readTime(f.body);
           const dt  = formatDateShort(f.data.date);
           return (
-            <a class="carte-satellite" href={`/articles/${f.slug}`}
+            <a class="carte-satellite" href={`/articles/${f.id}`}
                style={`animation-delay:${0.05 + i * 0.06}s`}>
               <span class="sat-badge sat-badge--fen">Fenêtre →</span>
               <p class="sat-titre">{f.data.title}</p>

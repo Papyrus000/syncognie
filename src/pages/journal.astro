@@ -7,8 +7,8 @@ const allArticles = await getCollection('articles');
 // Articles de genèse — commencement + tout ce qui a rubrique journal ou tag genese
 const journalArticles = allArticles
   .filter(a =>
-    a.slug === 'commencement' ||
-    a.slug === 'la-premiere-pierre' ||
+    a.id === 'commencement' ||
+    a.id === 'la-premiere-pierre' ||
     a.data.rubrique === 'journal' ||
     (a.data.tags && a.data.tags.includes('genese')) ||
     (a.data.title && a.data.title.toLowerCase().includes('première pierre'))
@@ -71,7 +71,7 @@ function stadeEmoji(stade?: string) {
             <div class="journal-dot"></div>
             {i < journalArticles.length - 1 && <div class="journal-trait"></div>}
           </div>
-          <a class="journal-card" href={`/articles/${a.slug}`} style={`animation-delay:${0.1 + i * 0.08}s`}>
+          <a class="journal-card" href={`/articles/${a.id}`} style={`animation-delay:${0.1 + i * 0.08}s`}>
             <span class="journal-date">{formatDate(a.data.date)}</span>
             <p class="journal-titre">{a.data.title}</p>
             {a.data.description && <p class="journal-desc">{a.data.description}</p>}

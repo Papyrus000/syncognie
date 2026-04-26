@@ -174,7 +174,7 @@ function lireLabel(article: any): string {
           return (
             <a
               class={`article-item${fc ? ' ' + fc : ''}`}
-              href={`/articles/${article.slug}`}
+              href={`/articles/${article.id}`}
               style={`animation-delay:${0.05 + i * 0.06}s`}
             >
               <span class="ghost-num">{String(total - i).padStart(2, '0')}</span>
@@ -236,7 +236,7 @@ function lireLabel(article: any): string {
               </div>
               <div class="serie-eps">
                 {serie.articles.map(a => (
-                  <a class="ep-row" href={`/articles/${a.slug}`}>
+                  <a class="ep-row" href={`/articles/${a.id}`}>
                     <span class={`ep-num en-${serie.cls}`}>{String(a.data.episode ?? serie.articles.indexOf(a) + 1).padStart(2, '0')}</span>
                     <span class="ep-titre">{a.data.title}</span>
                     <span class="ep-stade">
@@ -280,7 +280,7 @@ function lireLabel(article: any): string {
           <div class="orn-line"></div>
         </div>
         {artRecits.map((article, i) => (
-          <a class="article-item recit" href={`/articles/${article.slug}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
+          <a class="article-item recit" href={`/articles/${article.id}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
             <span class="ghost-num">{String(article.data.episode ?? i + 1).padStart(2, '0')}</span>
             <div class="article-aside">
               <span class="article-date">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
@@ -326,7 +326,7 @@ function lireLabel(article: any): string {
           <div class="orn-line"></div>
         </div>
         {artMeca.map((article, i) => (
-          <a class="article-item meca" href={`/articles/${article.slug}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
+          <a class="article-item meca" href={`/articles/${article.id}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
             <span class="ghost-num">{String(article.data.episode ?? i + 1).padStart(2, '0')}</span>
             <div class="article-aside">
               <span class="article-date">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
@@ -372,7 +372,7 @@ function lireLabel(article: any): string {
           <div class="orn-line"></div>
         </div>
         {artPrismes.map((article, i) => (
-          <a class="article-item prismes" href={`/articles/${article.slug}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
+          <a class="article-item prismes" href={`/articles/${article.id}`} style={`animation-delay:${0.05 + i * 0.07}s`}>
             <span class="ghost-num">{String(article.data.episode ?? i + 1).padStart(2, '0')}</span>
             <div class="article-aside">
               <span class="article-date">{article.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>

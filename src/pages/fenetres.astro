@@ -109,7 +109,7 @@ const fantomes = [
           const couleur = COULEURS[f.data.personnage] ?? '#8b5e3c';
           return (
             <a
-              href={`/fenetres/${f.slug}`}
+              href={`/fenetres/${f.id}`}
               class="fenetre-tuile"
               style={`--c: ${couleur}; animation-delay: ${0.1 + i * 0.08}s`}
               data-size={i === 0 ? 'large' : i % 5 === 3 ? 'tall' : 'normal'}

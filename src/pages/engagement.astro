@@ -18,9 +18,9 @@ const lectures   = tout.filter(estLecture).length;
 const immersions = tout.filter(estImmersion).length;
 
 function urlArticle(a: any) {
-  if (a.collection === 'carnet')   return `/carnet/${a.slug}`;
-  if (a.collection === 'fenetres') return `/fenetres/${a.slug}`;
-  return `/articles/${a.slug}`;
+  if (a.collection === 'carnet')   return `/carnet/${a.id}`;
+  if (a.collection === 'fenetres') return `/fenetres/${a.id}`;
+  return `/articles/${a.id}`;
 }
 
 const articlesSurvol    = tout.filter(estSurvol)

@@ -59,7 +59,7 @@ function formatDate(date: Date) {
         {notes.map((entry, i) => {
           const isRiche = !!(entry.data.description || (entry.data.tags && entry.data.tags.length > 0));
           return (
-            <a href={`/carnet/${entry.slug}`}
+            <a href={`/carnet/${entry.id}`}
                class={`entree-carte ${isRiche ? '' : 'entree-carte--note'}`}
                style={`animation-delay:${0.2 + i * 0.06}s`}>
 
@@ -117,7 +117,7 @@ function formatDate(date: Date) {
       </div>
       <div class="entrees-liste">
         {dialogues.map((entry, i) => (
-          <a href={`/carnet/${entry.slug}`} class="entree-carte" style={`animation-delay:${0.15 + i * 0.07}s`}>
+          <a href={`/carnet/${entry.id}`} class="entree-carte" style={`animation-delay:${0.15 + i * 0.07}s`}>
             <div class="entree-meta">
               <span class="entree-date">{formatDate(entry.data.date)}</span>
               {entry.data.stade && (

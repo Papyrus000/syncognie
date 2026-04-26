@@ -113,7 +113,7 @@ const eng = maxEngagement(episodes);
             <div class="episode-numero">{ep.data.episode ?? i + 1}</div>
             {!estDernier && <div class="episode-trait"></div>}
           </div>
-          <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
+          <a class="episode-card" href={`/articles/${ep.id}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
             <div class="episode-card-meta">
               <span class="episode-date">{date}</span>
               {stadeInfo && <span class="badge badge-stade" style={`background:color-mix(in srgb,${stadeInfo.color} 8%,transparent);color:${stadeInfo.color};border:1px solid color-mix(in srgb,${stadeInfo.color} 22%,transparent)`}><span>{stadeInfo.emoji}</span><span>{stadeInfo.label}</span></span>}

@@ -79,7 +79,7 @@ function getCouleur(nom: string) {
       <div class="recits-liste">
         <p class="liste-titre">Les récits disponibles</p>
         {recits.map((recit, i) => (
-          <a href={`/articles/${recit.slug}`} class="recit-card">
+          <a href={`/articles/${recit.id}`} class="recit-card">
             <div class="recit-numero">
               <span class="num-label">Épisode</span>
               <span class="num-val">{String(i + 1).padStart(2, '0')}</span>

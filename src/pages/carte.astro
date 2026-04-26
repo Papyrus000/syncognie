@@ -163,28 +163,28 @@ const maxTotal   = Math.max(...tags.map(t => t.total), 1);
             <div class="tag-contenus">
 
               {t.analyses.map(a => (
-                <a href={`/articles/${a.slug}`} class="tag-lien tag-lien--analyse">
+                <a href={`/articles/${a.id}`} class="tag-lien tag-lien--analyse">
                   <span class="tag-lien-glyph">◈</span>
                   <span class="tag-lien-titre">{a.data.title}</span>
                 </a>
               ))}
 
               {t.recits.map(r => (
-                <a href={`/articles/${r.slug}`} class="tag-lien tag-lien--recit">
+                <a href={`/articles/${r.id}`} class="tag-lien tag-lien--recit">
                   <span class="tag-lien-glyph">✦</span>
                   <span class="tag-lien-titre">{r.data.title}</span>
                 </a>
               ))}
 
               {t.autres.map(a => (
-                <a href={`/articles/${a.slug}`} class="tag-lien tag-lien--autre">
+                <a href={`/articles/${a.id}`} class="tag-lien tag-lien--autre">
                   <span class="tag-lien-glyph">→</span>
                   <span class="tag-lien-titre">{a.data.title}</span>
                 </a>
               ))}
 
               {t.fenetres.map(f => (
-                <a href={`/fenetres/${f.slug}`} class="tag-lien tag-lien--fenetre">
+                <a href={`/fenetres/${f.id}`} class="tag-lien tag-lien--fenetre">
                   <span class="tag-lien-glyph">□</span>
                   <span class="tag-lien-titre">{f.data.personnage} · {f.data.heure}</span>
                 </a>

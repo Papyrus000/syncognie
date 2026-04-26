@@ -177,7 +177,7 @@ const eng = maxEngagement(episodes);
             <div class="episode-numero">{ep.data.episode ?? i + 1}</div>
             {!estDernier && <div class="episode-trait"></div>}
           </div>
-          <a class="episode-card" href={`/articles/${ep.slug}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
+          <a class="episode-card" href={`/articles/${ep.id}`} style={`animation-delay:${0.2 + i * 0.1}s`}>
             <div class="episode-card-meta">
               <span class="episode-date">{date}</span>
               <span class="episode-readtime">· {readTime} min</span>
