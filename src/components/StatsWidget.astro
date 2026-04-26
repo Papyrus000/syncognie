@@ -234,7 +234,7 @@
     document.getElementById('swArticlesUnit').textContent  = count > 1 ? 'articles' : 'article';
     var lastArtEl = document.getElementById('swLastArticle');
     if (s.articles.lastRead) {
-      var label = s.articles.lastRead.replace(/^\/carnet\//, '').replace(/-/g, ' ');
+      var label = s.articles.lastRead.replace(/^/(carnet|journal)//, '').replace(/-/g, ' ');
       lastArtEl.textContent = 'Dernier : ' + label;
     }
   }
