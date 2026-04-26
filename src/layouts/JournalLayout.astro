@@ -12,9 +12,11 @@ export interface Props {
   type?:        string;
   stade?:       'graine' | 'pousse' | 'arbre';
   slug:         string;
+  prev?:        { slug: string; title: string };
+  next?:        { slug: string; title: string };
 }
 
-const { title, date, description, lecture, type, stade, slug } = Astro.props;
+const { title, date, description, lecture, type, stade, slug, prev, next } = Astro.props;
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -28,7 +30,6 @@ function stadeLabel(s?: string) {
 
 <Base title={`${title} — Journal · Syncognie`} description={description}>
 
-<!-- Polices chargées directement dans le body (Base.astro n'expose pas de slot head) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
@@ -36,11 +37,10 @@ function stadeLabel(s?: string) {
   rel="stylesheet"
 />
 
-<!-- Styles globaux — isolation du site + variables -->
 <style is:global>
   html:has(.jl-wrap) {
     --jl-bg:        #F7F3EE;
-    --jl-paper:     #FDFAF6;
+    --jl-paper:     #FAF7F2;
     --jl-ink:       #1C1811;
     --jl-ink-soft:  #4A4237;
     --jl-ink-muted: #9A8F82;
@@ -51,7 +51,7 @@ function stadeLabel(s?: string) {
     --jl-sans:      'DM Sans', sans-serif;
     --jl-lh:        1.87;
     --jl-measure:   66ch;
-    --jl-base:      18px;
+    --jl-base:      19px;
   }
 
   body.jl-night-mode {
@@ -65,7 +65,6 @@ function stadeLabel(s?: string) {
     --jl-border:    #2E2820 !important;
   }
 
-  /* Fond parchemin sur pages journal */
   body:has(.jl-wrap) {
     background-color: var(--jl-bg) !important;
     background-image: none !important;
@@ -75,45 +74,43 @@ function stadeLabel(s?: string) {
   .jl-progress {
     position: fixed;
     top: 52px; left: 0;
-    height: 3px;
-    width: 0%;
+    height: 3px; width: 0%;
     background: var(--pop-orange, #ff8000);
     box-shadow: 0 0 6px rgba(255,128,0,.5);
     z-index: 500;
-    transition: width .1s linear;
+    transition: width .08s linear;
   }
 
-  /* ── Neutralisation des héritages du site dans le corps de l'article ── */
-
+  /* ── Corps article ── */
   .jl-body p {
     font-family: var(--jl-serif) !important;
     font-size: var(--jl-base) !important;
     line-height: var(--jl-lh) !important;
     color: var(--jl-ink-soft) !important;
     max-width: var(--jl-measure);
-    margin-bottom: 1.45rem !important;
+    margin-bottom: 1.5rem !important;
     text-align: justify;
     hyphens: auto;
     -webkit-hyphens: auto;
   }
 
-  /* Drop cap */
-  .jl-body p:first-of-type::first-letter {
-    font-size: 3.6em;
-    font-weight: 600;
-    line-height: .82;
-    float: left;
-    margin-right: .08em;
-    margin-top: .05em;
-    color: var(--jl-accent);
-    font-family: var(--jl-serif) !important;
+  /* Drop cap — désactivé sur mobile */
+  @media (min-width: 521px) {
+    .jl-body p:first-of-type::first-letter {
+      font-size: 3.6em;
+      font-weight: 600;
+      line-height: .82;
+      float: left;
+      margin-right: .08em;
+      margin-top: .05em;
+      color: var(--jl-accent);
+      font-family: var(--jl-serif) !important;
+    }
   }
 
-  /* Offset ancre pour header fixe */
+  /* Titres */
   .jl-body h2,
-  .jl-body h3 {
-    scroll-margin-top: 76px;
-  }
+  .jl-body h3 { scroll-margin-top: 76px; }
 
   .jl-body h2 {
     font-family: var(--jl-serif) !important;
@@ -124,7 +121,6 @@ function stadeLabel(s?: string) {
     letter-spacing: -.015em;
     line-height: 1.25 !important;
   }
-
   .jl-body h3 {
     font-family: var(--jl-sans) !important;
     font-size: .78rem !important;
@@ -135,7 +131,7 @@ function stadeLabel(s?: string) {
     margin: 2.5rem 0 .8rem !important;
   }
 
-  /* Blockquote — neutralise le style orange/italic du site */
+  /* Blockquote */
   .jl-body blockquote {
     border-left: 3px solid var(--jl-accent) !important;
     margin: 2.5rem 0 !important;
@@ -163,6 +159,7 @@ function stadeLabel(s?: string) {
     font-style: normal !important;
   }
 
+  /* Listes */
   .jl-body ul,
   .jl-body ol {
     font-family: var(--jl-serif) !important;
@@ -171,7 +168,7 @@ function stadeLabel(s?: string) {
     color: var(--jl-ink-soft) !important;
     max-width: var(--jl-measure);
     padding-left: 1.6rem;
-    margin-bottom: 1.45rem !important;
+    margin-bottom: 1.5rem !important;
   }
   .jl-body li { margin-bottom: .4rem; }
 
@@ -200,7 +197,7 @@ function stadeLabel(s?: string) {
     color: var(--jl-ink) !important;
   }
 
-  /* ToC — liens créés en JS, nécessitent is:global */
+  /* ToC liens (créés en JS) */
   .jl-toc a {
     display: block;
     font-family: var(--jl-sans) !important;
@@ -231,9 +228,33 @@ function stadeLabel(s?: string) {
 
 <!-- Contrôles flottants -->
 <div class="jl-controls" id="jl-controls">
-  <button class="jl-ctrl-btn" id="jl-sz-down" aria-label="Réduire">−</button>
+  <button class="jl-ctrl-btn" id="jl-sz-down" aria-label="Réduire la taille">−</button>
   <span class="jl-ctrl-sep"></span>
-  <button class="jl-ctrl-btn" id="jl-sz-up" aria-label="Agrandir">+</button>
+  <button class="jl-ctrl-btn" id="jl-sz-up" aria-label="Agrandir la taille">+</button>
+  <span class="jl-ctrl-sep jl-ctrl-sep--wide"></span>
+  <!-- Interligne -->
+  <button class="jl-ctrl-btn" id="jl-lh-down" aria-label="Réduire l'interligne" title="Interligne −">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+  <button class="jl-ctrl-btn" id="jl-lh-up" aria-label="Augmenter l'interligne" title="Interligne +">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="3" y1="4" x2="21" y2="4"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="20" x2="21" y2="20"/>
+    </svg>
+  </button>
+  <span class="jl-ctrl-sep jl-ctrl-sep--wide"></span>
+  <!-- Mesure (largeur) -->
+  <button class="jl-ctrl-btn" id="jl-w-down" aria-label="Réduire la largeur" title="Largeur −">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <polyline points="15 18 9 12 15 6"/><line x1="9" y1="12" x2="20" y2="12"/>
+    </svg>
+  </button>
+  <button class="jl-ctrl-btn" id="jl-w-up" aria-label="Augmenter la largeur" title="Largeur +">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <polyline points="9 18 15 12 9 6"/><line x1="15" y1="12" x2="4" y2="12"/>
+    </svg>
+  </button>
   <span class="jl-ctrl-sep jl-ctrl-sep--wide"></span>
   <button class="jl-ctrl-btn" id="jl-night" aria-label="Mode nuit">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -260,6 +281,11 @@ function stadeLabel(s?: string) {
         <span class="jl-read-pct" id="jl-read-pct">0%</span>
         <span class="jl-read-label">lu</span>
       </div>
+      <!-- Temps restant -->
+      <div class="jl-time-left" id="jl-time-left" style="display:none">
+        <span class="jl-time-val" id="jl-time-val">—</span>
+        <span class="jl-read-label">restant</span>
+      </div>
     </div>
   </aside>
 
@@ -281,6 +307,26 @@ function stadeLabel(s?: string) {
     <div class="jl-body" id="jl-body">
       <slot />
     </div>
+
+    <!-- Navigation prev/next -->
+    {(prev || next) && (
+      <nav class="jl-nav" aria-label="Articles précédent et suivant">
+        <div class="jl-nav-inner">
+          {prev ? (
+            <a class="jl-nav-item jl-nav-item--prev" href={`/journal/${prev.slug}`}>
+              <span class="jl-nav-dir">← Plus ancien</span>
+              <span class="jl-nav-title">{prev.title}</span>
+            </a>
+          ) : <div />}
+          {next ? (
+            <a class="jl-nav-item jl-nav-item--next" href={`/journal/${next.slug}`}>
+              <span class="jl-nav-dir">Plus récent →</span>
+              <span class="jl-nav-title">{next.title}</span>
+            </a>
+          ) : <div />}
+        </div>
+      </nav>
+    )}
 
     <footer class="jl-footer">
       <a class="jl-footer-back" href="/journal">← Retour au journal</a>
@@ -338,9 +384,9 @@ function stadeLabel(s?: string) {
     display: grid;
     grid-template-columns: 150px 1fr;
     gap: 0 3.5rem;
-    max-width: 980px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 3rem 4.5rem 5rem 2rem;
+    padding: 3rem 3rem 5rem 2rem;
     align-items: start;
     font-size: var(--jl-base);
   }
@@ -381,13 +427,15 @@ function stadeLabel(s?: string) {
     gap: .1rem;
   }
 
-  .jl-read-stat {
+  .jl-read-stat,
+  .jl-time-left {
     display: flex;
     align-items: baseline;
     gap: .3rem;
-    padding: .3rem .5rem;
+    padding: .2rem .5rem;
   }
-  .jl-read-pct {
+  .jl-read-pct,
+  .jl-time-val {
     font-family: var(--jl-sans);
     font-size: .75rem;
     font-weight: 500;
@@ -450,7 +498,6 @@ function stadeLabel(s?: string) {
     color: var(--jl-ink-muted);
     margin-left: auto;
   }
-
   .jl-titre {
     font-family: var(--jl-serif);
     font-size: clamp(1.65rem, 2.8vw, 2.25rem);
@@ -472,16 +519,59 @@ function stadeLabel(s?: string) {
   .jl-rule {
     width: 2.5rem;
     height: 1px;
-    background: var(--pop-orange, #ff8000);
-    box-shadow: 0 0 6px rgba(255,128,0,.5);
+    background: var(--jl-accent);
     opacity: .5;
     margin-bottom: 2.2rem;
   }
 
+  /* ── NAVIGATION PREV / NEXT ── */
+  .jl-nav {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--jl-border);
+  }
+  .jl-nav-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .jl-nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    padding: .9rem 1rem;
+    border: 1px solid var(--jl-border);
+    border-radius: 4px;
+    text-decoration: none;
+    background: var(--jl-bg);
+    transition: border-color .2s, background .2s;
+  }
+  .jl-nav-item:hover {
+    border-color: var(--jl-accent);
+    background: var(--jl-accent-hl);
+  }
+  .jl-nav-item--next { text-align: right; }
+  .jl-nav-dir {
+    font-family: var(--jl-sans);
+    font-size: .62rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--jl-ink-muted);
+    transition: color .2s;
+  }
+  .jl-nav-item:hover .jl-nav-dir { color: var(--jl-accent); }
+  .jl-nav-title {
+    font-family: var(--jl-serif);
+    font-size: .92rem;
+    color: var(--jl-ink);
+    line-height: 1.35;
+  }
+
   /* ── PIED ── */
   .jl-footer {
-    margin-top: 3.5rem;
-    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.2rem;
     border-top: 1px solid var(--jl-border);
   }
   .jl-footer-back {
@@ -507,21 +597,30 @@ function stadeLabel(s?: string) {
   @media (max-width: 520px) {
     .jl-article { padding: 2rem 1.5rem; }
     .jl-controls { display: none; }
+    .jl-nav-inner { grid-template-columns: 1fr; }
   }
 </style>
 
-<script define:vars={{ slug }}>
+<script define:vars={{ slug, lecture }}>
 (function () {
   const body    = document.getElementById('jl-body');
   const toc     = document.getElementById('jl-toc');
   const bar     = document.getElementById('jl-progress');
   const pctEl   = document.getElementById('jl-read-pct');
+  const timeEl  = document.getElementById('jl-time-left');
+  const timeVal = document.getElementById('jl-time-val');
   const szDown  = document.getElementById('jl-sz-down');
   const szUp    = document.getElementById('jl-sz-up');
+  const lhDown  = document.getElementById('jl-lh-down');
+  const lhUp    = document.getElementById('jl-lh-up');
+  const wDown   = document.getElementById('jl-w-down');
+  const wUp     = document.getElementById('jl-w-up');
   const nightBtn= document.getElementById('jl-night');
 
-  // Taille mémorisée
-  let fontSize = parseInt(localStorage.getItem('jl_fontsize') || '18', 10);
+  const STORAGE_KEY = 'jl_pos_' + slug;
+
+  // ── Taille de texte ──
+  let fontSize = parseInt(localStorage.getItem('jl_fontsize') || '19', 10);
   function applySize() {
     document.documentElement.style.setProperty('--jl-base', fontSize + 'px');
     localStorage.setItem('jl_fontsize', String(fontSize));
@@ -530,20 +629,70 @@ function stadeLabel(s?: string) {
   szDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
   szUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
 
-  // Mode nuit mémorisé
+  // ── Interligne ──
+  const LH_STEPS = [1.6, 1.7, 1.87, 2.0, 2.15, 2.3];
+  let lhIdx = parseInt(localStorage.getItem('jl_lh_idx') || '2', 10);
+  function applyLH() {
+    document.documentElement.style.setProperty('--jl-lh', String(LH_STEPS[lhIdx]));
+    localStorage.setItem('jl_lh_idx', String(lhIdx));
+  }
+  applyLH();
+  lhDown?.addEventListener('click', () => { if (lhIdx > 0) { lhIdx--; applyLH(); } });
+  lhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
+
+  // ── Largeur de mesure ──
+  const W_STEPS = ['52ch', '58ch', '66ch', '72ch', '78ch'];
+  let wIdx = parseInt(localStorage.getItem('jl_w_idx') || '2', 10);
+  function applyW() {
+    document.documentElement.style.setProperty('--jl-measure', W_STEPS[wIdx]);
+    localStorage.setItem('jl_w_idx', String(wIdx));
+  }
+  applyW();
+  wDown?.addEventListener('click', () => { if (wIdx > 0) { wIdx--; applyW(); } });
+  wUp?.addEventListener('click',   () => { if (wIdx < W_STEPS.length - 1) { wIdx++; applyW(); } });
+
+  // ── Mode nuit ──
   if (localStorage.getItem('jl_night') === '1') document.body.classList.add('jl-night-mode');
   nightBtn?.addEventListener('click', () => {
     document.body.classList.toggle('jl-night-mode');
     localStorage.setItem('jl_night', document.body.classList.contains('jl-night-mode') ? '1' : '0');
   });
 
-  // Progression
+  // ── Mémorisation de position ──
+  // Restaurer position après chargement
+  window.addEventListener('load', () => {
+    const saved = sessionStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const pos = parseInt(saved, 10);
+      if (pos > 200) window.scrollTo({ top: pos, behavior: 'instant' });
+    }
+  });
+  // Sauvegarder position au scroll (throttle 500ms)
+  let saveTimer;
+  window.addEventListener('scroll', () => {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      sessionStorage.setItem(STORAGE_KEY, String(Math.round(window.scrollY)));
+    }, 500);
+  }, { passive: true });
+
+  // ── Progression + temps restant ──
+  const totalMin = lecture || 4;
   let readFired = false;
+
   function onScroll() {
     const total = document.body.scrollHeight - window.innerHeight;
     const pct   = total > 0 ? Math.round((window.scrollY / total) * 100) : 0;
     if (bar)   bar.style.width = pct + '%';
     if (pctEl) pctEl.textContent = pct + '%';
+
+    // Temps restant
+    if (pct > 5 && timeEl && timeVal) {
+      timeEl.style.display = 'flex';
+      const remaining = Math.max(0, Math.round(totalMin * (1 - pct / 100)));
+      timeVal.textContent = remaining < 1 ? '< 1 min' : remaining + ' min';
+    }
+
     if (pct >= 80 && !readFired) {
       readFired = true;
       window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/journal/' + slug } }));
@@ -551,7 +700,7 @@ function stadeLabel(s?: string) {
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // ToC auto
+  // ── ToC automatique ──
   if (body && toc) {
     const headings = body.querySelectorAll('h2, h3');
     const links = [];
@@ -561,7 +710,6 @@ function stadeLabel(s?: string) {
       a.href = '#' + h.id;
       a.textContent = h.textContent || '';
       if (h.tagName === 'H3') a.style.paddingLeft = '.9rem';
-      // Offset scroll pour compenser header fixe (52px) + marge (16px)
       a.addEventListener('click', (e) => {
         e.preventDefault();
         const target = document.getElementById(h.id);
@@ -585,7 +733,7 @@ function stadeLabel(s?: string) {
     links.forEach(l => io.observe(l.el));
   }
 
-  // Tracking 15s
+  // ── Tracking 15s ──
   setTimeout(() => {
     window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/journal/' + slug } }));
   }, 15000);
