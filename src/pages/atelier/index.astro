@@ -1,18 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import AtelierLayout from '../../layouts/AtelierLayout.astro';
 import { PENSEURS, DOMAINES } from '../../data/penseurs';
 import type { Domaine } from '../../data/penseurs';
 
 const tout = await getCollection('atelier');
 
-const master = tout.find(e => e.id === 'index.md' || e.slug === 'index');
+const master = tout.find(e => e.id === 'index');
 const entrees = tout
-  .filter(e => e.id !== 'index.md' && e.slug !== 'index' && e.data.draft !== true)
+  .filter(e => e.id !== 'index' && e.data.draft !== true)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 if (!master) throw new Error('Fichier src/content/atelier/index.md introuvable');
-const { Content } = await master.render();
+const { Content } = await render(master);
 
 // Progression globale — basée sur mode 2 (detail), pas sur article rédigé
 const exploresIds = new Set(tout.filter(e => e.data.penseur).map(e => e.data.penseur));

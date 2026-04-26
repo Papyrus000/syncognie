@@ -1,9 +1,11 @@
-// src/content/config.ts
+// src/content.config.ts
 
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 // ── Collection existante : articles ──
 const articles = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
   schema: z.object({
     title:       z.string(),
     description: z.string().optional(),
@@ -26,6 +28,7 @@ const articles = defineCollection({
 
 // ── Collection existante : fenetres ──
 const fenetres = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/fenetres' }),
   schema: z.object({
     personnage: z.string(),
     heure:      z.string().optional(),
@@ -37,6 +40,7 @@ const fenetres = defineCollection({
 
 // ── Collection existante : carnet ──
 const carnet = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/carnet' }),
   schema: z.object({
     title:       z.string(),
     date:        z.date(),
@@ -51,6 +55,7 @@ const carnet = defineCollection({
 
 // ── Collection existante : atelier ──
 const atelier = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/atelier' }),
   schema: z.object({
     title:       z.string(),
     date:        z.date(),
@@ -64,24 +69,18 @@ const atelier = defineCollection({
 
 // ── Collection : planches ──
 const planches = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/planches' }),
   schema: z.object({
-    // Obligatoires
     title:       z.string(),
     date:        z.date(),
-
-    // Optionnels
     description: z.string().optional(),
-    extrait:     z.string().optional(),   // accroche courte pour la grille
+    extrait:     z.string().optional(),
     draft:       z.boolean().optional(),
-
-    // Image(s) de la planche — chemin(s) relatif(s) depuis /public
-    image:       z.string(),              // image principale (miniature + lightbox)
-    image2:      z.string().optional(),   // deuxième partie si la planche est en 2 volets
-
-    // Méta
-    sujet:       z.string().optional(),   // ex. "John Gottman", "CNV", "Attachement"
-    serie:       z.string().optional(),   // nom d'une série de planches
-    episode:     z.number().optional(),   // numéro dans la série
+    image:       z.string(),
+    image2:      z.string().optional(),
+    sujet:       z.string().optional(),
+    serie:       z.string().optional(),
+    episode:     z.number().optional(),
     stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
   }),
 });
