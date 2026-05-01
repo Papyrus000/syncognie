@@ -2,6 +2,7 @@
 title: Les débuts
 date: 2026-04-26
 stade: graine
+type: Notes
 ---
 Tout a démarré à partir d'un post sur X. 
 
@@ -25,10 +26,10 @@ J'ai voulu expérimenter un autre design : Atelier. Très différent du site. Un
 Fondations, son écriture, son design, son ergonomie et une carte notamment, Barrett, a conduit à la production de deux outils : évaluation et granularité émotionnelle. 
 ## Journal
 
-Cette rubrique, cette note se veut différente. Moins d'IA. Plus d'écriture libre. Moins de relecture. 
+Cette rubrique est l'expérimentation d'un nouveau design pour le site, orientée ergonomie et confort visuel. 
 
-0 IA ? Non ! Tout ce site combine humain et IA (au pluriel), toutes celles qui peuvent y contribuer. 
+Les articles ou notes auront un système de sous-titres permettant une navigation fluide entre les différentes sections.
 
-La distinction ou le refus d'usage n'est pas recherché. Au contraire, c'est tout l'inverse : qu'est-ce que je peux faire avec l'aide des IA que je ne pourrais faire seul ? 
+Le menu à droite du texte permet à chaque utilisateur d'adapter le contenu à ses préférences.
 
-Ce site est en quelque sorte la vitrine technologique de ce qu'on peut faire ensemble ;)
+Bonne lecture ;)
