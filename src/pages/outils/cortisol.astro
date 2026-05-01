@@ -1,0 +1,1680 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Rythme cortisol — Évaluation · Syncognie" description="Cinq dimensions pour cartographier votre profil cortisol sur 24h. Pas un diagnostic — une boussole physiologique.">
+
+<div class="cort-wrap">
+
+  <!-- BREADCRUMB -->
+  <nav class="cort-breadcrumb">
+    <a href="/outils" class="cort-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Tous les outils
+    </a>
+    <span class="cort-sep">·</span>
+    <span>Rythme cortisol</span>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="cort-header">
+    <div class="cort-header-pill">Outil · Axe HPA</div>
+    <h1 class="cort-titre">Rythme <em>cortisol</em></h1>
+    <p class="cort-sous">Vingt questions sur cinq dimensions physiologiques. En résultat : votre courbe estimée sur 24h et un profil d'équilibre surrénalien.</p>
+    <div class="cort-meta-row">
+      <span class="cort-chip chip-blue">20 questions</span>
+      <span class="cort-chip chip-teal">~5 min</span>
+      <span class="cort-chip chip-green">Aucune donnée collectée</span>
+    </div>
+    <div class="cort-science-note">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#4a90a4" stroke-width="1.1"/><path d="M6 5.5V8" stroke="#4a90a4" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="3.8" r=".65" fill="#4a90a4"/></svg>
+      <span>Basé sur la PSS-10 (Cohen, 1983), les marqueurs cliniques de l'hypercortisolémie et la littérature sur le rythme circadien de l'axe HPA.</span>
+    </div>
+    <div class="cort-disclaimer-note">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L1 10.5h10L6 1z" stroke="#92400e" stroke-width="1.1" stroke-linejoin="round"/><path d="M6 5.5V7.5" stroke="#92400e" stroke-width="1.1" stroke-linecap="round"/><circle cx="6" cy="9" r=".55" fill="#92400e"/></svg>
+      <span><strong>Outil d'exploration, non professionnel.</strong> Ce questionnaire est une boussole d'auto-évaluation à visée informative — il ne constitue pas un diagnostic médical, ne remplace pas une consultation médicale et ne doit pas orienter de décision thérapeutique. Tout symptôme persistant mérite un avis professionnel.</span>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="cort-progress" id="cort-progress">
+    <div class="cort-prog-top">
+      <span class="cort-prog-label" id="prog-dim-label">Début</span>
+      <span class="cort-prog-count" id="prog-count">0 / 20</span>
+    </div>
+    <div class="cort-prog-track"><div class="cort-prog-fill" id="cort-prog-fill"></div></div>
+    <div class="cort-prog-steps">
+      <span class="cort-prog-step active" data-d="0">I</span>
+      <span class="cort-prog-step" data-d="1">II</span>
+      <span class="cort-prog-step" data-d="2">III</span>
+      <span class="cort-prog-step" data-d="3">IV</span>
+      <span class="cort-prog-step" data-d="4">V</span>
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <section class="cort-section" id="section-intro">
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Calibrage</span>
+      <h2 class="cort-sec-titre">Avant de commencer</h2>
+      <p class="cort-sec-sous">Le cortisol suit un rythme circadien strict. Cette information conditionne l'interprétation de vos réponses.</p>
+    </div>
+    <div class="cort-q-card" id="q-intro">
+      <p class="cort-q-text">À quelle heure vous réveillez-vous habituellement ?</p>
+      <div class="cort-choice-grid2">
+        <button class="cort-choice-btn" data-val="early">Avant 6h30</button>
+        <button class="cort-choice-btn" data-val="normal">6h30 – 8h</button>
+        <button class="cort-choice-btn" data-val="late">8h – 9h30</button>
+        <button class="cort-choice-btn" data-val="very-late">Après 9h30</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIM I — STRESS PERÇU -->
+  <section class="cort-section hidden" id="section-0">
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Dimension I</span>
+      <h2 class="cort-sec-titre">Stress perçu &amp; charge mentale</h2>
+      <p class="cort-sec-sous">Ce que vous ressentez comme pression, imprévisibilité, perte de contrôle — sur le dernier mois.</p>
+    </div>
+    <div class="cort-q-card" id="q-0" data-qid="0" data-dim="0">
+      <p class="cort-q-num">Question 1 / 20</p>
+      <p class="cort-q-text">Au cours du dernier mois, combien de fois avez-vous eu le sentiment que les choses vous échappaient, que vous ne maîtrisiez plus votre situation ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Toujours</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Toujours</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-1" data-qid="1" data-dim="0">
+      <p class="cort-q-num">Question 2 / 20</p>
+      <p class="cort-q-text">À quelle fréquence avez-vous du mal à "déconnecter" — à cesser de penser au travail, aux problèmes, aux obligations, même quand vous le souhaiteriez ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Toujours</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Toujours</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-2" data-qid="2" data-dim="0">
+      <p class="cort-q-num">Question 3 / 20</p>
+      <p class="cort-q-text">Dans votre vie quotidienne, avez-vous le sentiment d'avoir trop de choses à faire et pas assez de temps pour les faire ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Toujours</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Toujours</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-3" data-qid="3" data-dim="0">
+      <p class="cort-q-num">Question 4 / 20</p>
+      <p class="cort-q-text">Avez-vous des petites choses inattendues (un email, un imprévu, une information) qui vous déstabilisent ou vous irritent de façon disproportionnée ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Toujours</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Toujours</small></button>
+        </div>
+      </div>
+    </div>
+    <button class="cort-next-btn hidden" id="next-0" data-next-section="1">Dimension suivante <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </section>
+
+  <!-- DIM II — RYTHME & SOMMEIL -->
+  <section class="cort-section hidden" id="section-1">
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Dimension II</span>
+      <h2 class="cort-sec-titre">Rythme circadien &amp; sommeil</h2>
+      <p class="cort-sec-sous">Le sommeil est le miroir le plus fidèle de l'axe HPA. Ces questions ciblent la qualité de votre cycle cortisol sur 24h.</p>
+    </div>
+    <div class="cort-q-card" id="q-4" data-qid="4" data-dim="1">
+      <p class="cort-q-num">Question 5 / 20</p>
+      <p class="cort-q-text">Comment vous sentez-vous dans les 30 premières minutes après votre réveil ?</p>
+      <div class="cort-choice-v">
+        <button class="cort-choice-btn" data-val="0">Alerte et relativement en forme dès le départ</button>
+        <button class="cort-choice-btn" data-val="1">Un peu lent·e, mais je démarre bien après 30 min</button>
+        <button class="cort-choice-btn" data-val="2">Épuisé·e malgré une nuit suffisante, j'ai besoin d'une heure pour fonctionner</button>
+        <button class="cort-choice-btn" data-val="3">Complètement à plat le matin, jamais vraiment "récupéré·e"</button>
+        <button class="cort-choice-btn" data-val="4">Je me réveille souvent la nuit ou très tôt (3h-5h) sans pouvoir me rendormir</button>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-5" data-qid="5" data-dim="1">
+      <p class="cort-q-num">Question 6 / 20</p>
+      <p class="cort-q-text">Comment décririez-vous votre niveau d'énergie au fil de la journée ?</p>
+      <div class="cort-choice-v">
+        <button class="cort-choice-btn" data-val="0">Stable et constant, légère baisse naturelle en fin d'après-midi</button>
+        <button class="cort-choice-btn" data-val="1">Pic le matin, baisse notable l'après-midi, je récupère le soir</button>
+        <button class="cort-choice-btn" data-val="2">Crash brutal entre 14h et 16h, difficultés à me concentrer</button>
+        <button class="cort-choice-btn" data-val="3">Faible le matin, je me réveille vraiment en fin d'après-midi ou le soir</button>
+        <button class="cort-choice-btn" data-val="4">Généralement bas toute la journée, pas de pic d'énergie identifiable</button>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-6" data-qid="6" data-dim="1">
+      <p class="cort-q-num">Question 7 / 20</p>
+      <p class="cort-q-text">Le soir, comment vous sentez-vous habituellement avant de dormir ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Calme, s'endormir est facile</span><span>Hyperactivé·e, difficile de s'arrêter</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Très calme</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Calme</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Neutre</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Activé·e</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Très activé·e</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-7" data-qid="7" data-dim="1">
+      <p class="cort-q-num">Question 8 / 20</p>
+      <p class="cort-q-text">Combien d'heures dormez-vous en moyenne, et quelle est la qualité ressentie de votre sommeil ?</p>
+      <div class="cort-choice-v">
+        <button class="cort-choice-btn" data-val="0">7-8h, sommeil réparateur, je me réveille reposé·e</button>
+        <button class="cort-choice-btn" data-val="1">6-7h, sommeil correct avec quelques interruptions</button>
+        <button class="cort-choice-btn" data-val="2">5-6h ou sommeil haché, je me réveille fatigué·e</button>
+        <button class="cort-choice-btn" data-val="3">Moins de 5h ou sommeil très perturbé régulièrement</button>
+      </div>
+    </div>
+    <button class="cort-next-btn hidden" id="next-1" data-next-section="2">Dimension suivante <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </section>
+
+  <!-- DIM III — SIGNAUX PHYSIQUES -->
+  <section class="cort-section hidden" id="section-2">
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Dimension III</span>
+      <h2 class="cort-sec-titre">Signaux physiques</h2>
+      <p class="cort-sec-sous">Le corps manifeste les déséquilibres hormonaux avant la conscience. Ces marqueurs ont une valeur clinique documentée.</p>
+    </div>
+    <div class="cort-q-card" id="q-8" data-qid="8" data-dim="2">
+      <p class="cort-q-num">Question 9 / 20</p>
+      <p class="cort-q-text">Avez-vous observé une prise de poids abdominale récente — graisse qui se concentre sur le ventre et les flancs, même sans changement d'alimentation ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Pas du tout</span><span>Oui, clairement</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Non</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Légèrement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Modérément</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Nettement</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Évident</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-9" data-qid="9" data-dim="2">
+      <p class="cort-q-num">Question 10 / 20</p>
+      <p class="cort-q-text">Avez-vous des maux de tête récurrents, notamment le matin au réveil ou en fin d'après-midi ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Souvent</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Très souvent</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-10" data-qid="10" data-dim="2">
+      <p class="cort-q-num">Question 11 / 20</p>
+      <p class="cort-q-text">Ressentez-vous des tensions musculaires fréquentes — nuque, épaules, mâchoire — sans cause physique identifiable ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Chronique</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Chronique</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-11" data-qid="11" data-dim="2">
+      <p class="cort-q-num">Question 12 / 20</p>
+      <p class="cort-q-text">Votre système digestif est-il perturbé fréquemment — ballonnements, transit irrégulier, nausées légères — sans cause médicale connue ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Très souvent</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Très souvent</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-12" data-qid="12" data-dim="2">
+      <p class="cort-q-num">Question 13 / 20</p>
+      <p class="cort-q-text">Tombez-vous souvent malade (rhumes, infections) ou mettez-vous longtemps à récupérer d'une maladie bénigne ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Rarement malade</span><span>Très souvent</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Peu</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Très souvent</small></button>
+        </div>
+      </div>
+    </div>
+    <button class="cort-next-btn hidden" id="next-2" data-next-section="3">Dimension suivante <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </section>
+
+  <!-- DIM IV — RÉGULATION ÉMOTIONNELLE -->
+  <section class="cort-section hidden" id="section-3">
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Dimension IV</span>
+      <h2 class="cort-sec-titre">Régulation émotionnelle &amp; cognition</h2>
+      <p class="cort-sec-sous">Le cortisol chronique altère le cortex préfrontal. Ces questions évaluent la mémoire de travail, la concentration et la régulation émotionnelle.</p>
+    </div>
+    <div class="cort-q-card" id="q-13" data-qid="13" data-dim="3">
+      <p class="cort-q-num">Question 14 / 20</p>
+      <p class="cort-q-text">Avez-vous des difficultés à vous concentrer — l'esprit qui s'échappe, oublis fréquents, difficulté à finir ce que vous commencez ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Non, je suis focus</span><span>Oui, chroniquement</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Non</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Légèrement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Modérément</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Nettement</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Chronique</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-14" data-qid="14" data-dim="3">
+      <p class="cort-q-num">Question 15 / 20</p>
+      <p class="cort-q-text">Vos humeurs sont-elles stables, ou ressentez-vous des sautes émotionnelles, une irritabilité, une anxiété de fond difficile à expliquer ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Stable</span><span>Très instable</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Stable</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Légères</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Notables</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Instable</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Très instable</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-15" data-qid="15" data-dim="3">
+      <p class="cort-q-num">Question 16 / 20</p>
+      <p class="cort-q-text">Avez-vous des ruminations — pensées qui tournent en boucle, scénarios catastrophiques, incapacité à "lâcher" mentalement une situation ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Très fréquent</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Très fréquent</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-16" data-qid="16" data-dim="3">
+      <p class="cort-q-num">Question 17 / 20</p>
+      <p class="cort-q-text">Ressentez-vous une fatigue mentale profonde — même les décisions simples vous coûtent — même après une nuit de sommeil ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Non</span><span>Oui, chroniquement</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Non</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Légèrement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Modérément</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Nettement</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Chronique</small></button>
+        </div>
+      </div>
+    </div>
+    <button class="cort-next-btn hidden" id="next-3" data-next-section="4">Dimension suivante <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </section>
+
+  <!-- DIM V — COMPORTEMENTS -->
+  <section class="cort-section hidden" id="section-4">
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Dimension V</span>
+      <h2 class="cort-sec-titre">Comportements compensatoires</h2>
+      <p class="cort-sec-sous">Les comportements sont des marqueurs indirects puissants. Ce que nous faisons sans vraiment le décider révèle souvent l'état de l'axe HPA.</p>
+    </div>
+    <div class="cort-q-card" id="q-17" data-qid="17" data-dim="4">
+      <p class="cort-q-num">Question 18 / 20</p>
+      <p class="cort-q-text">Quelle est votre relation à la caféine (café, thé, boissons énergisantes) ?</p>
+      <div class="cort-choice-v">
+        <button class="cort-choice-btn" data-val="0">Je n'en consomme pas ou très peu (1 par jour max)</button>
+        <button class="cort-choice-btn" data-val="1">1-2 par jour, pas de dépendance ressentie</button>
+        <button class="cort-choice-btn" data-val="2">2-3 par jour, je les utilise pour "tenir"</button>
+        <button class="cort-choice-btn" data-val="3">3+ par jour, sans café je ne fonctionne pas</button>
+        <button class="cort-choice-btn" data-val="4">Je consomme de la caféine le soir pour rester actif·ve</button>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-18" data-qid="18" data-dim="4">
+      <p class="cort-q-num">Question 19 / 20</p>
+      <p class="cort-q-text">Ressentez-vous des fringales intenses de sucre ou de glucides — souvent en fin d'après-midi ou le soir — qui arrivent soudainement ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Quotidiennement</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Quotidien</small></button>
+        </div>
+      </div>
+    </div>
+    <div class="cort-q-card hidden" id="q-19" data-qid="19" data-dim="4">
+      <p class="cort-q-num">Question 20 / 20</p>
+      <p class="cort-q-text">Utilisez-vous l'alcool, les écrans ou d'autres habitudes le soir pour "redescendre" et vous permettre de vous endormir ?</p>
+      <div class="cort-scale-wrap">
+        <div class="cort-scale-poles"><span>Jamais</span><span>Systématiquement</span></div>
+        <div class="cort-scale-btns">
+          <button class="cort-scale-btn" data-val="0"><b>0</b><small>Jamais</small></button>
+          <button class="cort-scale-btn" data-val="1"><b>1</b><small>Rarement</small></button>
+          <button class="cort-scale-btn" data-val="2"><b>2</b><small>Parfois</small></button>
+          <button class="cort-scale-btn" data-val="3"><b>3</b><small>Souvent</small></button>
+          <button class="cort-scale-btn" data-val="4"><b>4</b><small>Systématique</small></button>
+        </div>
+      </div>
+    </div>
+    <button class="cort-next-btn hidden" id="next-4" data-next-section="results">Voir mes résultats <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </section>
+
+  <!-- RÉSULTATS -->
+  <section class="cort-section hidden" id="section-results">
+
+    <div class="cort-sec-head">
+      <span class="cort-sec-eyebrow">Analyse complète</span>
+      <h2 class="cort-sec-titre">Votre profil cortisol</h2>
+    </div>
+
+    <!-- Profil badge -->
+    <div class="cort-profil-card" id="profil-card">
+      <div class="cort-profil-top">
+        <div class="cort-profil-icon" id="profil-icon"></div>
+        <div class="cort-profil-info">
+          <p class="cort-profil-eyebrow" id="profil-label"></p>
+          <p class="cort-profil-name" id="profil-name"></p>
+        </div>
+      </div>
+      <p class="cort-profil-desc" id="profil-desc"></p>
+    </div>
+
+    <!-- Courbe 24h -->
+    <div class="cort-result-block">
+      <div class="cort-result-block-head">
+        <h3 class="cort-result-titre">Courbe cortisol estimée · 24h</h3>
+        <p class="cort-result-sous">Votre profil de sécrétion estimé, comparé à la courbe de référence physiologique.</p>
+      </div>
+      <div class="cort-chart-wrap">
+        <canvas id="cortisol-chart"></canvas>
+        <div class="cort-chart-legend">
+          <span><span class="leg-line ref-line"></span>Référence</span>
+          <span><span class="leg-line you-line"></span>Votre estimation</span>
+        </div>
+      </div>
+      <div class="cort-annot-row" id="courbe-annot"></div>
+    </div>
+
+    <!-- Radar -->
+    <div class="cort-result-block">
+      <div class="cort-result-block-head">
+        <h3 class="cort-result-titre">Profil en cinq dimensions</h3>
+      </div>
+      <div class="cort-radar-layout">
+        <div class="cort-radar-canvaswrap"><canvas id="radar-chart"></canvas></div>
+        <div class="cort-dims-list" id="dims-grid"></div>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div class="cort-result-block">
+      <div class="cort-result-block-head">
+        <h3 class="cort-result-titre">Éclairages</h3>
+      </div>
+      <div class="cort-insights-list" id="cort-insights"></div>
+    </div>
+
+    <!-- Recommandations personnalisées -->
+    <div class="cort-reco-section" id="reco-section">
+      <div class="cort-result-block-head">
+        <h3 class="cort-result-titre">Pistes d'équilibre · Personnalisées</h3>
+      </div>
+      <p class="cort-reco-intro">Ces recommandations sont générées à partir de vos scores par dimension. Elles s'appuient sur la littérature en psychoneuroendocrinologie, chronobiologie et médecine du style de vie. <em>Elles ne remplacent pas un avis médical.</em></p>
+      <div class="cort-reco-grid" id="reco-grid"></div>
+    </div>
+
+    <!-- Note médicale -->
+    <div class="cort-alert-note">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1.5L1 13h13L7.5 1.5z" stroke="#d97706" stroke-width="1.2" stroke-linejoin="round"/><path d="M7.5 6.5V9.5" stroke="#d97706" stroke-width="1.3" stroke-linecap="round"/><circle cx="7.5" cy="11" r=".7" fill="#d97706"/></svg>
+      <p>Cet outil est une boussole, pas un diagnostic. Tout score élevé persistant mérite une consultation médicale — en particulier si vous suspectez un syndrome de Cushing ou une insuffisance surrénale.</p>
+    </div>
+
+    <div class="cort-refaire-wrap">
+      <button class="cort-refaire-btn" id="btn-refaire">Recommencer l'évaluation</button>
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ═══════════════════════════ STYLES ═══════════════════════════ -->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.cort-wrap {
+  /* ── Palette — surfaces sur fond site #f5f0e8 ── */
+  --bg:          #f5f0e8;
+  --surface:     #fdfcfa;
+  --surface2:    #f0ece5;
+  --border:      #ddd6c8;
+  --border2:     #c8c0b4;
+  --ink:         #1a1714;
+  --ink-mid:     #5a534c;
+  --ink-soft:    #9a9189;
+  --ink-xsoft:   #bbb3a8;
+
+  /* Accent vif — bleu-canard */
+  --accent:      #2e7de0;
+  --accent-lt:   #e8f1fc;
+  --accent-mid:  #6aa3e8;
+
+  /* Couleurs sémantiques résultats */
+  --col-green:   #16a34a;
+  --col-green-lt:#dcfce7;
+  --col-amber:   #d97706;
+  --col-amber-lt:#fef3c7;
+  --col-orange:  #ea580c;
+  --col-orange-lt:#ffedd5;
+  --col-red:     #dc2626;
+  --col-red-lt:  #fee2e2;
+
+  /* Couleurs dimensions radar */
+  --dim0: #6366f1;
+  --dim1: #0ea5e9;
+  --dim2: #10b981;
+  --dim3: #f59e0b;
+  --dim4: #ef4444;
+
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 6rem;
+  font-family: 'Mulish', -apple-system, system-ui, sans-serif;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* ── BREADCRUMB ── */
+.cort-breadcrumb {
+  display: flex; align-items: center; gap: .5rem;
+  font-size: .75rem; color: var(--ink-soft);
+  margin-bottom: 2.5rem; font-weight: 400;
+}
+.cort-back {
+  display: inline-flex; align-items: center; gap: .3rem;
+  color: var(--ink-soft); text-decoration: none;
+  transition: color .15s;
+}
+.cort-back:hover { color: var(--accent); }
+.cort-sep { color: var(--border2); }
+
+/* ── HEADER ── */
+.cort-header { margin-bottom: 2rem; }
+.cort-header-pill {
+  display: inline-block;
+  background: var(--accent-lt); color: var(--accent);
+  border: 1px solid #c0d8f8;
+  border-radius: 100px; font-size: .68rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .25rem .75rem; margin-bottom: .9rem;
+}
+.cort-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 700; color: var(--ink);
+  line-height: 1.2; margin-bottom: .65rem;
+  letter-spacing: -.02em;
+}
+.cort-titre em { font-style: italic; color: var(--accent); }
+.cort-sous {
+  font-size: .92rem; font-weight: 300; color: var(--ink-mid);
+  line-height: 1.72; max-width: 540px; margin-bottom: .9rem;
+}
+.cort-meta-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .85rem; }
+.cort-chip {
+  font-size: .65rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; padding: .22rem .6rem;
+  border-radius: 100px; border: 1px solid;
+}
+.chip-blue  { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.chip-teal  { background: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
+.chip-green { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+
+.cort-science-note {
+  display: flex; align-items: flex-start; gap: .5rem;
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid #4a90a4;
+  border-radius: 0 6px 6px 0;
+  padding: .65rem .85rem; max-width: 560px;
+  margin-bottom: .5rem;
+}
+.cort-science-note svg { flex-shrink: 0; margin-top: .15rem; }
+.cort-science-note span {
+  font-size: .72rem; color: var(--ink-soft);
+  line-height: 1.55; font-weight: 400;
+}
+
+.cort-disclaimer-note {
+  display: flex; align-items: flex-start; gap: .5rem;
+  background: #fffbf0; border: 1px solid #e8d5a0;
+  border-left: 3px solid #d97706;
+  border-radius: 0 6px 6px 0;
+  padding: .65rem .85rem; max-width: 560px;
+}
+.cort-disclaimer-note svg { flex-shrink: 0; margin-top: .18rem; }
+.cort-disclaimer-note span {
+  font-size: .72rem; color: #78520a;
+  line-height: 1.55; font-weight: 400;
+}
+.cort-disclaimer-note strong { font-weight: 700; }
+
+/* ── PROGRESS ── */
+.cort-progress {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: .9rem 1.1rem;
+  margin-bottom: 1.75rem;
+  position: sticky; top: .75rem; z-index: 20;
+  box-shadow: 0 1px 8px rgba(0,0,0,.06), 0 0 0 1px rgba(0,0,0,.02);
+}
+.cort-prog-top {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: .45rem;
+}
+.cort-prog-label {
+  font-size: .7rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.cort-prog-count { font-size: .7rem; color: var(--ink-soft); font-weight: 400; }
+.cort-prog-track {
+  height: 5px; background: var(--surface2);
+  border-radius: 3px; overflow: hidden; margin-bottom: .6rem;
+}
+.cort-prog-fill {
+  height: 100%; background: linear-gradient(90deg, #2e7de0, #06b6d4);
+  border-radius: 3px; width: 0;
+  transition: width .45s cubic-bezier(.4,0,.2,1);
+}
+.cort-prog-steps { display: flex; gap: .35rem; }
+.cort-prog-step {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .62rem; font-weight: 800; letter-spacing: .04em;
+  border: 1.5px solid var(--border);
+  color: var(--ink-xsoft); background: var(--surface2);
+  transition: all .25s; cursor: default;
+}
+.cort-prog-step.active {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; box-shadow: 0 2px 8px rgba(46,125,224,.35);
+}
+.cort-prog-step.done {
+  background: var(--accent-lt); border-color: var(--accent-mid);
+  color: var(--accent);
+}
+
+/* ── SECTIONS ── */
+.cort-section { margin-bottom: .5rem; }
+.cort-section.hidden { display: none; }
+
+.cort-sec-head {
+  margin-bottom: 1.4rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.cort-sec-eyebrow {
+  display: inline-block;
+  font-size: .62rem; font-weight: 800; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: .35rem;
+}
+.cort-sec-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.15rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .35rem;
+}
+.cort-sec-sous {
+  font-size: .82rem; font-weight: 300; color: var(--ink-soft);
+  line-height: 1.65; max-width: 500px;
+}
+
+/* ── QUESTION CARDS ── */
+.cort-q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem 1.5rem;
+  margin-bottom: .75rem;
+  animation: qFadeIn .28s ease forwards;
+  scroll-margin-top: 90px;
+}
+.cort-q-card.hidden { display: none; }
+@keyframes qFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cort-q-num {
+  font-size: .62rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-xsoft);
+  margin-bottom: .55rem;
+}
+.cort-q-text {
+  font-size: .93rem; font-weight: 400; color: var(--ink);
+  line-height: 1.65; margin-bottom: 1.1rem;
+}
+
+/* ── SCALE 0–4 ── */
+.cort-scale-wrap { }
+.cort-scale-poles {
+  display: flex; justify-content: space-between;
+  font-size: .62rem; color: var(--ink-xsoft); font-weight: 400;
+  margin-bottom: .4rem; padding: 0 2px;
+}
+.cort-scale-btns {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem;
+}
+.cort-scale-btn {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: .18rem;
+  padding: .65rem .15rem;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 9px; cursor: pointer;
+  transition: all .16s;
+  -webkit-tap-highlight-color: transparent;
+}
+.cort-scale-btn b {
+  font-size: 1rem; font-weight: 800; color: var(--ink-mid);
+  line-height: 1; font-family: 'Libre Baskerville', serif;
+}
+.cort-scale-btn small {
+  font-size: .52rem; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--ink-xsoft);
+  line-height: 1.2; text-align: center;
+}
+.cort-scale-btn:hover {
+  border-color: var(--accent); background: var(--accent-lt);
+  transform: translateY(-1px);
+}
+.cort-scale-btn:hover b { color: var(--accent); }
+.cort-scale-btn.selected {
+  background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 3px 10px rgba(46,125,224,.3);
+}
+.cort-scale-btn.selected b,
+.cort-scale-btn.selected small { color: #fff; }
+
+/* ── CHOIX VERTICAUX ── */
+.cort-choice-grid2 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .45rem;
+}
+.cort-choice-v { display: flex; flex-direction: column; gap: .4rem; }
+.cort-choice-btn {
+  padding: .75rem 1rem;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-family: 'Mulish', sans-serif;
+  font-size: .86rem; font-weight: 400;
+  color: var(--ink-mid); cursor: pointer;
+  text-align: left; line-height: 1.5;
+  transition: all .16s;
+  -webkit-tap-highlight-color: transparent;
+}
+.cort-choice-btn:hover {
+  border-color: var(--accent); background: var(--accent-lt);
+  color: var(--ink);
+}
+.cort-choice-btn.selected {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff; box-shadow: 0 3px 10px rgba(46,125,224,.3);
+}
+
+/* ── NEXT BUTTON ── */
+.cort-next-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: .5rem;
+  padding: .8rem 1.6rem;
+  background: var(--ink);
+  color: #fff;
+  border: none; border-radius: 9px;
+  font-family: 'Mulish', sans-serif;
+  font-size: .8rem; font-weight: 800;
+  letter-spacing: .1em; text-transform: uppercase;
+  cursor: pointer; transition: all .2s;
+}
+.cort-next-btn:hover {
+  background: var(--accent);
+  box-shadow: 0 4px 14px rgba(46,125,224,.35);
+  transform: translateY(-1px);
+}
+.cort-next-btn.hidden { display: none; }
+
+/* ══ RÉSULTATS ══ */
+
+.cort-profil-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  animation: qFadeIn .35s ease forwards;
+}
+.cort-profil-top {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: .85rem;
+}
+.cort-profil-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem; flex-shrink: 0;
+}
+.cort-profil-eyebrow {
+  font-size: .62rem; font-weight: 800; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink-soft);
+  margin-bottom: .2rem;
+}
+.cort-profil-name {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.2rem; font-weight: 700; color: var(--ink);
+}
+.cort-profil-desc {
+  font-size: .88rem; font-weight: 300; color: var(--ink-mid);
+  line-height: 1.72;
+}
+
+.cort-result-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 1.3rem 1.4rem 1.5rem;
+  margin-bottom: 1.1rem;
+  animation: qFadeIn .35s ease .1s both;
+}
+.cort-result-block-head { margin-bottom: 1.1rem; }
+.cort-result-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1rem; font-weight: 700; color: var(--ink);
+  margin-bottom: .25rem;
+}
+.cort-result-sous { font-size: .78rem; color: var(--ink-soft); font-weight: 300; line-height: 1.55; }
+
+/* Canvas */
+.cort-chart-wrap {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 1rem 1rem .75rem;
+}
+#cortisol-chart { width: 100%; display: block; }
+.cort-chart-legend {
+  display: flex; gap: 1.2rem; margin-top: .7rem;
+  padding-top: .6rem; border-top: 1px solid var(--border);
+}
+.cort-chart-legend span {
+  display: flex; align-items: center; gap: .4rem;
+  font-size: .7rem; color: var(--ink-soft);
+}
+.leg-line { display: inline-block; width: 20px; height: 3px; border-radius: 2px; }
+.ref-line { background: #c8d0dc; }
+.you-line { background: var(--accent); }
+
+.cort-annot-row {
+  display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem;
+}
+.cort-annot-tag {
+  font-size: .68rem; font-weight: 600;
+  padding: .25rem .65rem; border-radius: 100px; border: 1px solid;
+}
+
+/* Radar layout */
+.cort-radar-layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  align-items: start;
+}
+.cort-radar-canvaswrap {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 10px; padding: .75rem;
+}
+#radar-chart { width: 100%; display: block; }
+
+.cort-dims-list { display: flex; flex-direction: column; gap: .55rem; }
+.cort-dim-row {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: .7rem .85rem;
+}
+.cort-dim-row-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: .35rem;
+}
+.cort-dim-row-name {
+  font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-mid);
+}
+.cort-dim-row-score {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .95rem; font-weight: 700;
+}
+.cort-dim-bar {
+  height: 4px; background: var(--border);
+  border-radius: 2px; overflow: hidden;
+}
+.cort-dim-bar-fill { height: 100%; border-radius: 2px; transition: width .9s cubic-bezier(.4,0,.2,1); }
+
+/* Insights */
+.cort-insights-list { display: flex; flex-direction: column; gap: .65rem; }
+.cort-insight {
+  display: flex; gap: .8rem;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 9px; padding: .9rem 1rem;
+  border-left: 3px solid;
+}
+.cort-insight-ico { font-size: .95rem; flex-shrink: 0; line-height: 1.55; }
+.cort-insight-title {
+  font-size: .8rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem;
+}
+.cort-insight-text {
+  font-size: .78rem; font-weight: 300; color: var(--ink-mid); line-height: 1.65;
+}
+
+/* Alert */
+.cort-alert-note {
+  display: flex; gap: .6rem; align-items: flex-start;
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: 9px; padding: .85rem 1rem; margin-bottom: 1.4rem;
+  animation: qFadeIn .35s ease .3s both;
+}
+.cort-alert-note svg { flex-shrink: 0; margin-top: .05rem; }
+.cort-alert-note p { font-size: .75rem; color: #92400e; line-height: 1.65; font-weight: 400; }
+
+/* Refaire */
+.cort-refaire-wrap { text-align: center; padding-top: .5rem; }
+.cort-refaire-btn {
+  padding: .65rem 1.4rem; background: transparent;
+  border: 1.5px solid var(--border2); border-radius: 9px;
+  font-family: 'Mulish', sans-serif; font-size: .78rem;
+  font-weight: 700; color: var(--ink-soft); cursor: pointer;
+  letter-spacing: .08em; text-transform: uppercase;
+  transition: all .18s;
+}
+.cort-refaire-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+/* styles .cort-reco-* déplacés dans <style is:global> ci-dessous */
+
+/* ── RESPONSIVE ── */
+@media (max-width: 560px) {
+  .cort-wrap { padding: 1.2rem 1rem 4rem; }
+  .cort-scale-btns { gap: .25rem; }
+  .cort-scale-btn small { display: none; }
+  .cort-choice-grid2 { grid-template-columns: 1fr; }
+  .cort-radar-layout { grid-template-columns: 1fr; }
+  .cort-reco-grid { grid-template-columns: 1fr; }
+  .cort-progress { position: static; }
+}
+</style>
+
+<!-- ═══════════════════════════ SCRIPT ═══════════════════════════ -->
+<script>
+const TOTAL_Q = 20;
+const REF_CURVE = [85,95,88,78,68,58,50,44,38,34,30,27,25,24,23,22,22,24,26,28,28,26,22,18];
+const DIM_NAMES = ['Stress perçu','Rythme & sommeil','Signaux physiques','Régulation émotionnelle','Comportements'];
+const DIM_COLORS = ['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444'];
+
+const PROFILS = [
+  {
+    id: 'equilibre', label: 'Profil',
+    name: 'Axe HPA équilibré', icon: '🟢',
+    bg: '#dcfce7', iconBg: '#86efac', nameCss: '#15803d',
+    desc: "Votre axe HPA fonctionne dans des paramètres proches de la normale. Le stress perçu est géré, le rythme circadien est respecté, les signaux physiques sont discrets. Un profil de base sain.",
+    insights: [
+      { icon: '✓', title: 'Rythme circadien intact', text: "Votre courbe cortisol suit le schéma physiologique attendu : pic matinal, déclin progressif, plancher nocturne bas.", color: '#15803d' },
+      { icon: '→', title: 'Piste de vigilance', text: "Même avec un profil équilibré, le stress chronique s'installe progressivement. Réévaluez dans 2-3 mois.", color: '#0f766e' }
+    ]
+  },
+  {
+    id: 'alerte', label: 'Profil',
+    name: 'Dérégulation débutante', icon: '🟡',
+    bg: '#fef3c7', iconBg: '#fcd34d', nameCss: '#b45309',
+    desc: "Une ou deux dimensions sont perturbées. L'axe HPA montre des signes de surmenage localisé. Ce profil est réversible — c'est précisément le bon moment d'agir.",
+    insights: [
+      { icon: '⚡', title: 'Pic de cortisol décalé', text: "Le niveau de cortisol tarde à redescendre dans l'après-midi — signe d'une stimulation chronique de l'axe HPA sans récupération suffisante.", color: '#b45309' },
+      { icon: '→', title: 'Priorité : récupération active', text: "Des pauses de 10-15 min à 14h-15h (respiration lente, marche calme) peuvent significativement abaisser le cortisol de l'après-midi.", color: '#0f766e' }
+    ]
+  },
+  {
+    id: 'eleve', label: 'Profil',
+    name: 'Hypercortisolémie probable', icon: '🟠',
+    bg: '#ffedd5', iconBg: '#fdba74', nameCss: '#c2410c',
+    desc: "Plusieurs dimensions convergent vers un cortisol chroniquement élevé. Le corps est en mode alerte prolongé. Une consultation médicale est recommandée pour écarter une cause organique.",
+    insights: [
+      { icon: '⚠', title: 'Activation HPA persistante', text: "Votre profil suggère un cortisol élevé sur l'ensemble du cycle — particulièrement nocturne. Le cortisol du soir devrait être à son minimum.", color: '#c2410c' },
+      { icon: '⚠', title: 'Signal métabolique', text: "La combinaison fatigue + fringales sucrées + prise abdominale est caractéristique de l'hypercortisolémie chronique.", color: '#9a3412' },
+      { icon: '→', title: 'Action prioritaire', text: "Consulter un médecin pour un dosage cortisol salivaire ou sanguin. En parallèle : réduction des stimulants, coucher avant 23h.", color: '#0f766e' }
+    ]
+  },
+  {
+    id: 'epuisement', label: 'Profil',
+    name: 'Épuisement surrénalien', icon: '🔴',
+    bg: '#fee2e2', iconBg: '#fca5a5', nameCss: '#b91c1c',
+    desc: "Paradoxe clinique : scores faibles sur stress perçu mais score élevé sur épuisement physique, incapacité à récupérer, absence d'énergie même après sommeil. Ce profil peut indiquer un cortisol bas par épuisement de l'axe HPA.",
+    insights: [
+      { icon: '⚠', title: 'Courbe aplatie', text: "L'axe HPA peut produire moins de cortisol après une période prolongée de surmenage. La courbe perd son amplitude — elle se platifie.", color: '#b91c1c' },
+      { icon: '⚠', title: 'Ne pas confondre avec l\'équilibre', text: "Un score d'épuisement est différent d'un score sain. L'absence de stress perçu peut refléter une désensibilisation.", color: '#991b1b' },
+      { icon: '→', title: 'Consultation recommandée', text: "Ce profil mérite une exploration médicale (dosage cortisol matinal, test de stimulation). En première intention : sommeil prioritaire, réduction de toutes les charges.", color: '#0f766e' }
+    ]
+  }
+];
+
+// ── État ──
+let answers = {};
+let wakeTime = null;
+const Q_SECTION = {0:0,1:0,2:0,3:0,4:1,5:1,6:1,7:1,8:2,9:2,10:2,11:2,12:2,13:3,14:3,15:3,16:3,17:4,18:4,19:4};
+const SECTION_QS = {0:[0,1,2,3],1:[4,5,6,7],2:[8,9,10,11,12],3:[13,14,15,16],4:[17,18,19]};
+
+function $id(id) { return document.getElementById(id); }
+
+// ── Progression ──
+function updateProgress(count, dimIdx, dimName) {
+  $id('cort-prog-fill').style.width = (count / TOTAL_Q * 100) + '%';
+  $id('prog-count').textContent = count + ' / ' + TOTAL_Q;
+  $id('prog-dim-label').textContent = dimName || 'Résultats';
+  document.querySelectorAll('.cort-prog-step').forEach((el, i) => {
+    el.classList.toggle('active', i === dimIdx);
+    el.classList.toggle('done', i < dimIdx);
+  });
+}
+
+// ── Navigation entre sections ──
+function showSection(id) {
+  document.querySelectorAll('.cort-section').forEach(s => s.classList.add('hidden'));
+  const target = $id(id);
+  target.classList.remove('hidden');
+  // Scroll vers le haut de la section, sous la progress bar sticky
+  requestAnimationFrame(() => {
+    const prog = $id('cort-progress');
+    const progBottom = prog ? prog.getBoundingClientRect().bottom + window.scrollY + 16 : 80;
+    const targetTop = target.getBoundingClientRect().top + window.scrollY - 16;
+    window.scrollTo({ top: Math.max(0, targetTop - 80), behavior: 'smooth' });
+  });
+}
+
+// ── Scroll vers une nouvelle question ──
+function scrollToCard(card) {
+  requestAnimationFrame(() => {
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+}
+
+// ── Intro ──
+document.querySelectorAll('#q-intro .cort-choice-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#q-intro .cort-choice-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    wakeTime = btn.dataset.val;
+    setTimeout(() => {
+      showSection('section-0');
+      updateProgress(0, 0, DIM_NAMES[0]);
+    }, 280);
+  });
+});
+
+// ── Réponse à une question ──
+function handleAnswer(qid, val) {
+  answers[qid] = val;
+  const sectionIdx = Q_SECTION[qid];
+  const sectionQs = SECTION_QS[sectionIdx];
+  const pos = sectionQs.indexOf(qid);
+  const nextQid = sectionQs[pos + 1];
+
+  if (nextQid !== undefined) {
+    const nextCard = $id('q-' + nextQid);
+    if (nextCard) {
+      nextCard.classList.remove('hidden');
+      scrollToCard(nextCard);
+    }
+  } else {
+    const nextBtn = $id('next-' + sectionIdx);
+    if (nextBtn) {
+      nextBtn.classList.remove('hidden');
+      scrollToCard(nextBtn);
+    }
+  }
+  updateProgress(Object.keys(answers).length, sectionIdx, DIM_NAMES[sectionIdx]);
+}
+
+// ── Scale buttons ──
+document.querySelectorAll('.cort-scale-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.cort-q-card');
+    const qid = parseInt(card.dataset.qid);
+    // Désélectionner dans cette card seulement
+    card.querySelectorAll('.cort-scale-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    handleAnswer(qid, parseInt(btn.dataset.val));
+  });
+});
+
+// ── Choice buttons ──
+document.querySelectorAll('.cort-choice-v .cort-choice-btn, .cort-choice-grid2 .cort-choice-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Skip intro (handled separately)
+    const card = btn.closest('.cort-q-card');
+    if (!card || !card.dataset.qid) return;
+    const qid = parseInt(card.dataset.qid);
+    card.querySelectorAll('.cort-choice-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    handleAnswer(qid, parseInt(btn.dataset.val));
+  });
+});
+
+// ── Next section buttons ──
+document.querySelectorAll('.cort-next-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const next = btn.dataset.nextSection;
+    if (next === 'results') {
+      computeAndShowResults();
+    } else {
+      const nIdx = parseInt(next);
+      showSection('section-' + nIdx);
+      updateProgress(Object.keys(answers).length, nIdx, DIM_NAMES[nIdx]);
+    }
+  });
+});
+
+// ── Calcul scores ──
+function computeDimScores() {
+  const weights = {0:1.2,1:1.0,2:1.0,3:0.8,4:1.5,5:1.2,6:1.2,7:1.0,8:1.3,9:1.1,10:1.0,11:1.2,12:0.9,13:1.1,14:1.2,15:1.0,16:0.9,17:1.1,18:1.0,19:1.1};
+  return [[0,1,2,3],[4,5,6,7],[8,9,10,11,12],[13,14,15,16],[17,18,19]].map(qs => {
+    let sum = 0, max = 0;
+    qs.forEach(qid => { const w = weights[qid]; sum += (answers[qid]||0)*w; max += 4*w; });
+    return Math.round(sum/max*100);
+  });
+}
+
+function detectProfile(scores) {
+  const global = Math.round(scores.reduce((a,b)=>a+b,0)/scores.length);
+  if (scores[1] > 65 && scores[2] > 55 && scores[0] < 50) return {profile: PROFILS[3], global};
+  if (global >= 60) return {profile: PROFILS[2], global};
+  if (global >= 35) return {profile: PROFILS[1], global};
+  return {profile: PROFILS[0], global};
+}
+
+function buildEstimatedCurve(scores, profile) {
+  const stress = scores[0]/100, sleep = scores[1]/100, emo = scores[3]/100, behav = scores[4]/100;
+  return REF_CURVE.map((v, i) => {
+    let mod = v;
+    if (i < 6 && profile.id !== 'epuisement') mod = v * (1 + .12*stress);
+    if (i < 6 && profile.id === 'epuisement') mod = v * .55;
+    if (i >= 6 && i <= 14) mod = v * (1 + .28*(stress*.5+emo*.3+behav*.2));
+    if (i >= 15) {
+      if (profile.id === 'eleve') mod = v * (1 + .55*(stress*.4+emo*.4));
+      if (profile.id === 'epuisement') mod = v * .65;
+      if (behav > .5) mod *= (1 + .18*behav);
+    }
+    return Math.min(130, Math.max(5, Math.round(mod)));
+  });
+}
+
+// ── Dessin courbe — haute résolution ──
+function drawLineChart(canvasId, refCurve, yourCurve) {
+  const canvas = $id(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.parentElement.clientWidth - 32;
+  const cssH = 220;
+  canvas.style.width = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = cssW, H = cssH;
+  const PAD = {top:18, right:18, bottom:34, left:38};
+  const gW = W - PAD.left - PAD.right;
+  const gH = H - PAD.top - PAD.bottom;
+  const N = 24, maxV = 110;
+  const xPos = i => PAD.left + (i/(N-1))*gW;
+  const yPos = v => PAD.top + gH - (v/maxV)*gH;
+  ctx.clearRect(0,0,W,H);
+
+  // Zones
+  const zones = [{s:0,e:6,c:'rgba(255,235,180,.22)'},{s:6,e:14,c:'rgba(200,225,255,.16)'},{s:14,e:20,c:'rgba(220,210,255,.13)'},{s:20,e:24,c:'rgba(180,190,230,.15)'}];
+  const zoneLabels = ['Matin','Journée','Après-midi · Soir','Nuit'];
+  zones.forEach((z,i) => {
+    ctx.fillStyle = z.c;
+    ctx.fillRect(xPos(z.s), PAD.top, xPos(z.e)-xPos(z.s), gH);
+    ctx.fillStyle = 'rgba(0,0,0,.18)';
+    ctx.font = `600 8px Mulish, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(zoneLabels[i], (xPos(z.s)+xPos(z.e))/2, PAD.top + 10);
+  });
+
+  // Grille
+  [0,25,50,75,100].forEach(v => {
+    const y = yPos(v);
+    ctx.strokeStyle = 'rgba(0,0,0,.07)'; ctx.lineWidth = 1;
+    ctx.setLineDash([3,4]);
+    ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(PAD.left+gW,y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#b0a898'; ctx.font = '9px Mulish, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(v, PAD.left-5, y+3);
+  });
+
+  // Axe X
+  ['6h','8h','10h','12h','14h','16h','18h','20h','22h','0h','2h','4h'].forEach((h,i) => {
+    const x = xPos(i*2);
+    ctx.fillStyle = '#b0a898'; ctx.font = '9px Mulish, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(h, x, H-7);
+  });
+
+  function smoothLine(data, color, lw, dash=[]) {
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.setLineDash(dash);
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    data.forEach((v,i) => {
+      const x=xPos(i), y=yPos(v);
+      if(i===0){ctx.moveTo(x,y);return;}
+      const px=xPos(i-1), py=yPos(data[i-1]), cpx=(px+x)/2;
+      ctx.bezierCurveTo(cpx,py,cpx,y,x,y);
+    });
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+
+  // Zone fill
+  ctx.beginPath();
+  ctx.fillStyle = 'rgba(46,125,224,.08)';
+  yourCurve.forEach((v,i) => {
+    const x=xPos(i), y=yPos(v);
+    if(i===0){ctx.moveTo(x,y);return;}
+    const px=xPos(i-1), py=yPos(yourCurve[i-1]), cpx=(px+x)/2;
+    ctx.bezierCurveTo(cpx,py,cpx,y,x,y);
+  });
+  ctx.lineTo(xPos(N-1), PAD.top+gH); ctx.lineTo(xPos(0), PAD.top+gH);
+  ctx.closePath(); ctx.fill();
+
+  smoothLine(refCurve, '#c4cdd8', 1.5, [4,4]);
+  smoothLine(yourCurve, '#2e7de0', 2.5);
+
+  // Points clés
+  [0,5,9,15,20].forEach(i => {
+    ctx.beginPath();
+    ctx.arc(xPos(i), yPos(yourCurve[i]), 4, 0, Math.PI*2);
+    ctx.fillStyle = '#2e7de0'; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke();
+  });
+}
+
+// ── Radar haute résolution ──
+function drawRadar(canvasId, scores) {
+  const canvas = $id(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const cssSize = Math.min(canvas.parentElement.clientWidth - 24, 300);
+  canvas.style.width = cssSize + 'px';
+  canvas.style.height = cssSize + 'px';
+  canvas.width = cssSize * dpr;
+  canvas.height = cssSize * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const S = cssSize;
+  const cx = S/2, cy = S/2, R = S*0.34;
+  const N = 5;
+  const angle = i => (i/N)*Math.PI*2 - Math.PI/2;
+  const pt = (i, r) => ({x: cx+r*Math.cos(angle(i)), y: cy+r*Math.sin(angle(i))});
+  ctx.clearRect(0,0,S,S);
+
+  // Grilles
+  [.25,.5,.75,1].forEach(f => {
+    ctx.beginPath();
+    for(let i=0;i<N;i++){const p=pt(i,R*f); i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}
+    ctx.closePath();
+    ctx.strokeStyle = f===1?'rgba(0,0,0,.14)':'rgba(0,0,0,.07)';
+    ctx.lineWidth = f===1?1.3:1;
+    ctx.stroke();
+  });
+  // Axes
+  for(let i=0;i<N;i++){
+    const p=pt(i,R);
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle='rgba(0,0,0,.09)'; ctx.lineWidth=1; ctx.stroke();
+  }
+
+  // Data zone
+  ctx.beginPath();
+  scores.forEach((s,i)=>{const p=pt(i,R*(s/100)); i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+  ctx.closePath();
+  ctx.fillStyle='rgba(46,125,224,.12)'; ctx.fill();
+  ctx.strokeStyle='#2e7de0'; ctx.lineWidth=2; ctx.stroke();
+
+  // Points colorés par dimension
+  scores.forEach((s,i)=>{
+    const p=pt(i,R*(s/100));
+    ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2);
+    ctx.fillStyle=DIM_COLORS[i]; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+  });
+
+  // Labels
+  const SHORT=['Stress','Rythme','Physique','Émotions','Comportements'];
+  scores.forEach((s,i)=>{
+    const p=pt(i,R*1.26);
+    ctx.fillStyle='#4a4540';
+    ctx.font=`700 ${S<260?9:10}px Mulish, sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(SHORT[i], p.x, p.y);
+    // Score
+    const ps=pt(i,R*1.46);
+    const col = s>65?'#dc2626':s>40?'#d97706':'#16a34a';
+    ctx.fillStyle=col; ctx.font=`700 ${S<260?8:9}px Mulish, sans-serif`;
+    ctx.fillText(s+'%', ps.x, ps.y);
+  });
+}
+
+// ── Recommandations personnalisées ──
+function buildRecommendations(scores, profile, wakeTime) {
+  // Banque de recommandations par dimension et niveau
+  const RECOS = {
+    // DIM 0 — Stress perçu
+    stress_high: [
+      {
+        ico: '🧘', cat: 'Régulation du stress', color: '#6366f1',
+        titre: "Cohérence cardiaque · 5 min × 3",
+        text: "La respiration à 6 cycles/min (5s inspiration, 5s expiration) pendant 5 min réduit le cortisol salivaire de façon mesurable. Pratiquer le matin, à 14h et avant le coucher maximise l'effet sur l'axe HPA.",
+        ref: "Lehrer & Gevirtz, 2014 · Applied Psychophysiology and Biofeedback"
+      },
+      {
+        ico: '📓', cat: 'Charge cognitive', color: '#6366f1',
+        titre: "Externalisation de la charge mentale",
+        text: "Tenir un journal de décharge en fin de journée (10 min, écriture libre des préoccupations) réduit la rumination nocturne et abaisse le cortisol du lendemain matin. L'effet est mesurable dès 3 semaines.",
+        ref: "Smyth et al., 1998 · Journal of the American Medical Association"
+      }
+    ],
+    stress_mid: [
+      {
+        ico: '🚶', cat: 'Mouvement', color: '#6366f1',
+        titre: "Marche de décompression post-travail",
+        text: "20-30 min de marche à intensité modérée en fin de journée accélère la baisse du cortisol du soir. L'exposition à la lumière naturelle renforce l'effet chronobiologique.",
+        ref: "Mikkelsen et al., 2017 · Brain Plasticity"
+      }
+    ],
+    // DIM 1 — Rythme & sommeil
+    sleep_high: [
+      {
+        ico: '🌅', cat: 'Chronobiologie', color: '#0ea5e9',
+        titre: "Lumière matinale · Ancrage circadien",
+        text: "S'exposer à la lumière naturelle dans les 30 min suivant le réveil (même par temps couvert) synchronise l'horloge biologique, amplifie le pic de cortisol matinal et améliore la qualité du sommeil nocturne. Effet mesurable sur le CAR (Cortisol Awakening Response).",
+        ref: "Leproult et al., 2001 · Sleep · Wehr et al., 2001"
+      },
+      {
+        ico: '🌙', cat: 'Hygiène du sommeil', color: '#0ea5e9',
+        titre: "Régulation thermique nocturne",
+        text: "Une baisse de température corporelle est nécessaire à l'endormissement. Maintenir la chambre à 18-20°C, prendre une douche tiède 1h avant le coucher accélère la transition veille-sommeil et réduit le cortisol nocturne.",
+        ref: "Lack et al., 2008 · Sleep Medicine Reviews"
+      },
+      {
+        ico: '📵', cat: 'Lumière bleue', color: '#0ea5e9',
+        titre: "Coupure écrans 90 min avant le coucher",
+        text: "La lumière bleue des écrans supprime la mélatonine et maintient le cortisol élevé. Une coupure 90 min avant le coucher est le seuil à partir duquel l'effet sur la qualité du sommeil profond devient significatif.",
+        ref: "Chang et al., 2015 · PNAS"
+      }
+    ],
+    sleep_mid: [
+      {
+        ico: '⏰', cat: 'Ancrage circadien', color: '#0ea5e9',
+        titre: "Heures de réveil constantes",
+        text: "Se lever à la même heure 7j/7, même le week-end, est le levier chronobiologique le plus puissant. La régularité stabilise le pic de cortisol matinal et améliore la qualité du sommeil en 2-3 semaines.",
+        ref: "Roenneberg et al., 2012 · Current Biology"
+      }
+    ],
+    // DIM 2 — Signaux physiques
+    phys_high: [
+      {
+        ico: '🥗', cat: 'Alimentation', color: '#10b981',
+        titre: "Indice glycémique et cortisol",
+        text: "Les pics glycémiques déclenchent une réponse cortisolique. Privilégier des repas à IG bas, riches en fibres et en protéines stabilise la glycémie et réduit les pics de cortisol post-prandiaux. L'ashwagandha (300-600mg/j) a montré une réduction de 30% du cortisol en 8 semaines.",
+        ref: "Chandrasekhar et al., 2012 · Indian J Psychol Med"
+      },
+      {
+        ico: '💊', cat: 'Micronutrition', color: '#10b981',
+        titre: "Magnésium & Vitamine C",
+        text: "Les glandes surrénales consomment massivement la vitamine C lors de la synthèse du cortisol. Un apport de 1-3g/j de vitamine C réduit le cortisol post-exercice. Le magnésium (glycinate ou bisglycinate, 300-400mg/j) régule l'axe HPA en modulant le récepteur NMDA.",
+        ref: "Brody et al., 2002 · Psychopharmacology · Golf et al., 2000"
+      }
+    ],
+    phys_mid: [
+      {
+        ico: '🏃', cat: 'Exercice', color: '#10b981',
+        titre: "Exercice modéré vs intensif",
+        text: "L'exercice à haute intensité >70% VO2max élève temporairement le cortisol. À intensité modérée (50-65% VO2max), l'exercice régulier réduit le cortisol basal et améliore la sensibilité des récepteurs glucocorticoïdes. 150 min/semaine est le seuil documenté.",
+        ref: "Hackney, 2006 · Current Sports Medicine Reports"
+      }
+    ],
+    // DIM 3 — Régulation émotionnelle
+    emo_high: [
+      {
+        ico: '🧠', cat: 'Neurosciences', color: '#f59e0b',
+        titre: "NSDR · Non-Sleep Deep Rest",
+        text: "20 min de Yoga Nidra ou de protocole NSDR (ex. Huberman) en début d'après-midi réduit significativement le cortisol et restaure les niveaux de dopamine striatale. Plus efficace que la sieste courte sur la régulation émotionnelle.",
+        ref: "Sharpe et al., 2021 · Sleep Science · Kjaer et al., 2002 · Nature Neuroscience"
+      },
+      {
+        ico: '🫂', cat: 'Connexion sociale', color: '#f59e0b',
+        titre: "Oxytocine et axe HPA",
+        text: "Les interactions sociales positives (contact physique, conversations significatives) libèrent de l'ocytocine qui inhibe directement l'axe HPA et réduit le cortisol. L'isolement social est l'un des prédicteurs les plus robustes de l'hypercortisolémie chronique.",
+        ref: "Heinrichs et al., 2003 · Biological Psychiatry"
+      }
+    ],
+    emo_mid: [
+      {
+        ico: '🎵', cat: 'Régulation', color: '#f59e0b',
+        titre: "Musique et cortisol",
+        text: "L'écoute de musique à tempo lent (<60 bpm) pendant 30 min réduit le cortisol salivaire de façon mesurable. La musique choisie par le sujet lui-même (vs imposée) est plus efficace — l'effet passe par le sentiment de contrôle et d'autonomie.",
+        ref: "Thoma et al., 2013 · PLOS ONE"
+      }
+    ],
+    // DIM 4 — Comportements
+    behav_high: [
+      {
+        ico: '☕', cat: 'Stimulants', color: '#ef4444',
+        titre: "Fenêtre caféine · Décaler de 90 min",
+        text: "La caféine consommée dans les 90 min suivant le réveil coïncide avec le pic naturel de cortisol et amplifie l'anxiété sans bénéfice énergétique supplémentaire. Décaler la première prise à 90-120 min post-réveil maximise l'effet et réduit la dépendance à long terme.",
+        ref: "Lovallo et al., 2005 · Psychosomatic Medicine"
+      },
+      {
+        ico: '🍷', cat: 'Régulation vespérale', color: '#ef4444',
+        titre: "Substituts de décompression",
+        text: "L'alcool et les écrans donnent l'illusion de décompression tout en maintenant le cortisol nocturne élevé et dégradant les phases de sommeil profond. Les substituts efficaces documentés : bain chaud (élévation puis chute thermique), lecture papier, étirements doux.",
+        ref: "Thakkar et al., 2015 · Alcohol · Cajochen et al., 2011 · Journal of Sleep Research"
+      }
+    ],
+    behav_mid: [
+      {
+        ico: '🌿', cat: 'Phytothérapie', color: '#ef4444',
+        titre: "Adaptogènes documentés",
+        text: "L'Ashwagandha (KSM-66, 300mg × 2/j), la Rhodiola rosea (200-400mg/j) et le Phosphatidylsérine (400-800mg/j) ont des études contrôlées montrant une réduction du cortisol post-stress de 20-30%. Action sur le récepteur glucocorticoïde hypothalamique.",
+        ref: "Olsson et al., 2009 · Planta Medica · Starks et al., 2008 · JISSN"
+      }
+    ],
+    // Recommandation universelle
+    universal: {
+      ico: '😴', cat: 'Fondamental', color: '#2e7de0',
+      titre: "Le sommeil est le levier n°1",
+      text: "Chaque dimension du profil cortisol est modulée par la qualité du sommeil. 7-9h de sommeil régulier est la seule intervention qui agit simultanément sur les 5 dimensions. Avant toute autre piste, sécuriser la fenêtre de sommeil est la priorité absolue.",
+      ref: "Walker, 2017 · Why We Sleep · Van Cauter et al., 2000 · Sleep"
+    }
+  };
+
+  const recos = [];
+
+  // Sélection selon les scores
+  if (scores[0] > 55) recos.push(...RECOS.stress_high);
+  else if (scores[0] > 30) recos.push(...RECOS.stress_mid);
+
+  if (scores[1] > 50) recos.push(...RECOS.sleep_high.slice(0, 2));
+  else if (scores[1] > 25) recos.push(...RECOS.sleep_mid);
+
+  if (scores[2] > 50) recos.push(RECOS.phys_high[0]);
+  else if (scores[2] > 25) recos.push(...RECOS.phys_mid);
+
+  if (scores[3] > 50) recos.push(RECOS.emo_high[0]);
+  else if (scores[3] > 25) recos.push(...RECOS.emo_mid);
+
+  if (scores[4] > 50) recos.push(...RECOS.behav_high);
+  else if (scores[4] > 25) recos.push(...RECOS.behav_mid);
+
+  // Toujours afficher l'universelle si profil non-équilibré
+  if (profile.id !== 'equilibre') recos.push(RECOS.universal);
+
+  // Limiter à 6 max, diversifiées
+  return recos.slice(0, 6);
+}
+
+// ── Résultats ──
+function computeAndShowResults() {
+  const scores = computeDimScores();
+  const {profile} = detectProfile(scores);
+  const estCurve = buildEstimatedCurve(scores, profile);
+
+  showSection('section-results');
+  updateProgress(TOTAL_Q, 5, 'Résultats');
+  document.querySelectorAll('.cort-prog-step').forEach(el => el.classList.add('done'));
+
+  // Profil
+  const icon = $id('profil-icon');
+  icon.textContent = profile.icon;
+  icon.style.background = profile.iconBg;
+  $id('profil-label').textContent = profile.label;
+  $id('profil-name').textContent = profile.name;
+  $id('profil-name').style.color = profile.nameCss;
+  $id('profil-desc').textContent = profile.desc;
+
+  // Courbe
+  setTimeout(() => drawLineChart('cortisol-chart', REF_CURVE, estCurve), 80);
+
+  // Annotations
+  const ann = [];
+  if (profile.id === 'equilibre') ann.push({text:'Amplitude normale', bg:'#dcfce7', color:'#15803d', border:'#86efac'});
+  if (profile.id === 'eleve' || scores[0] > 60) ann.push({text:'Pic matinal élevé', bg:'#fee2e2', color:'#b91c1c', border:'#fca5a5'});
+  if (scores[1] > 55) ann.push({text:'Déclin insuffisant', bg:'#fef3c7', color:'#b45309', border:'#fcd34d'});
+  if (profile.id === 'epuisement') ann.push({text:'Courbe aplatie', bg:'#fee2e2', color:'#b91c1c', border:'#fca5a5'});
+  if (scores[4] > 50) ann.push({text:'Plancher nocturne élevé', bg:'#fef3c7', color:'#b45309', border:'#fcd34d'});
+  if (!ann.length) ann.push({text:'Rythme circadien cohérent', bg:'#eff6ff', color:'#1d4ed8', border:'#bfdbfe'});
+  $id('courbe-annot').innerHTML = ann.map(a =>
+    `<span class="cort-annot-tag" style="background:${a.bg};color:${a.color};border-color:${a.border}">${a.text}</span>`
+  ).join('');
+
+  // Radar
+  setTimeout(() => drawRadar('radar-chart', scores), 120);
+
+  // Dimensions
+  const dimsEl = $id('dims-grid');
+  dimsEl.innerHTML = scores.map((s,i) => {
+    const col = s>65?'#dc2626':s>40?'#d97706':'#16a34a';
+    return `<div class="cort-dim-row">
+      <div class="cort-dim-row-top">
+        <span class="cort-dim-row-name" style="color:${DIM_COLORS[i]}">${DIM_NAMES[i]}</span>
+        <span class="cort-dim-row-score" style="color:${col}">${s}%</span>
+      </div>
+      <div class="cort-dim-bar"><div class="cort-dim-bar-fill" style="width:${s}%;background:${col}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Insights
+  const insEl = $id('cort-insights');
+  insEl.innerHTML = profile.insights.map(ins => `
+    <div class="cort-insight" style="border-left-color:${ins.color}">
+      <span class="cort-insight-ico">${ins.icon}</span>
+      <div>
+        <p class="cort-insight-title">${ins.title}</p>
+        <p class="cort-insight-text">${ins.text}</p>
+      </div>
+    </div>`).join('');
+
+  // Insight réveil tardif
+  if (wakeTime === 'very-late' && scores[1] > 40) {
+    insEl.innerHTML += `<div class="cort-insight" style="border-left-color:#0ea5e9">
+      <span class="cort-insight-ico">🕐</span>
+      <div>
+        <p class="cort-insight-title">Réveil tardif & rythme cortisol</p>
+        <p class="cort-insight-text">Le cortisol atteint son pic dans les 30-60 min post-réveil (CAR). Un réveil après 9h30 décale l'ensemble du cycle circadien, ce qui perturbe le métabolisme énergétique et la qualité du sommeil nocturne.</p>
+      </div>
+    </div>`;
+  }
+
+  // Recommandations personnalisées
+  const recos = buildRecommendations(scores, profile, wakeTime);
+  const recoGrid = $id('reco-grid');
+  if (recoGrid) {
+    recoGrid.innerHTML = recos.map((r, idx) => `
+      <div class="cort-reco-card" style="animation-delay:${idx * 0.08}s">
+        <div class="cort-reco-bar" style="background:${r.color}"></div>
+        <div class="cort-reco-body">
+          <div class="cort-reco-ico" style="background:${r.color}20">${r.ico}</div>
+          <div class="cort-reco-meta">
+            <span class="cort-reco-cat" style="color:${r.color}">${r.cat}</span>
+            <p class="cort-reco-titre">${r.titre}</p>
+          </div>
+          <p class="cort-reco-text">${r.text}</p>
+          <div class="cort-reco-ref">
+            <span class="cort-reco-ref-dot" style="background:${r.color}"></span>
+            <span>${r.ref}</span>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+// ── Recommencer ──
+$id('btn-refaire')?.addEventListener('click', () => {
+  answers = {}; wakeTime = null;
+  document.querySelectorAll('.cort-scale-btn, .cort-choice-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.cort-q-card').forEach(el => {
+    const qid = parseInt(el.dataset.qid);
+    if (isNaN(qid)) return;
+    const sIdx = Q_SECTION[qid];
+    el.classList.toggle('hidden', SECTION_QS[sIdx][0] !== qid);
+  });
+  document.querySelectorAll('.cort-next-btn').forEach(b => b.classList.add('hidden'));
+  $id('cort-prog-fill').style.width = '0';
+  $id('prog-count').textContent = '0 / 20';
+  $id('prog-dim-label').textContent = 'Début';
+  document.querySelectorAll('.cort-prog-step').forEach(el => el.classList.remove('active','done'));
+  document.querySelectorAll('.cort-prog-step')[0]?.classList.add('active');
+  showSection('section-intro');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+// Init
+document.querySelectorAll('.cort-section').forEach(s => s.classList.add('hidden'));
+$id('section-intro')?.classList.remove('hidden');
+</script>
+
+
+<style is:global>
+/* ── Recommandations cortisol — styles globaux (classes préfixées cort-reco-) ── */
+/* Pas d'impact sur le reste du site : toutes les classes sont uniques (préfixe cort-reco-) */
+
+.cort-reco-section {
+  margin-bottom: 1.1rem;
+}
+.cort-reco-intro {
+  font-family: 'Mulish', sans-serif;
+  font-size: .82rem; color: #9a9189; font-weight: 300;
+  line-height: 1.68; margin-bottom: 1.3rem;
+}
+.cort-reco-intro em { font-style: italic; color: #5a534c; }
+
+.cort-reco-grid {
+  display: flex; flex-direction: column; gap: .7rem;
+}
+
+.cort-reco-card {
+  font-family: 'Mulish', sans-serif;
+  background: #fdfcfa;
+  border: 1px solid #ddd6c8;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid !important;
+  grid-template-columns: 5px 1fr !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  transition: box-shadow .2s, transform .2s;
+  animation: cortRecoIn .32s ease both;
+}
+.cort-reco-card:hover {
+  box-shadow: 0 5px 20px rgba(0,0,0,.1);
+  transform: translateY(-2px);
+}
+@keyframes cortRecoIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cort-reco-bar {
+  width: 5px;
+  display: block;
+}
+
+.cort-reco-body {
+  padding: 1.1rem 1.3rem 1.1rem 1.15rem;
+  display: grid !important;
+  grid-template-columns: 48px 1fr !important;
+  grid-template-rows: auto auto auto !important;
+  gap: 0 .85rem;
+  min-width: 0;
+}
+
+.cort-reco-ico {
+  grid-column: 1 !important;
+  grid-row: 1 / 3 !important;
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex !important;
+  align-items: center; justify-content: center;
+  font-size: 1.35rem; line-height: 1;
+  align-self: start;
+  flex-shrink: 0;
+}
+
+.cort-reco-meta {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  padding-bottom: .35rem;
+}
+.cort-reco-cat {
+  display: block;
+  font-size: .58rem; font-weight: 800; letter-spacing: .2em;
+  text-transform: uppercase; margin-bottom: .22rem;
+  font-family: 'Mulish', sans-serif;
+}
+.cort-reco-titre {
+  font-family: 'Libre Baskerville', Georgia, serif !important;
+  font-size: .92rem !important; font-weight: 700 !important;
+  color: #1a1714 !important; line-height: 1.35;
+  margin: 0 !important;
+}
+
+.cort-reco-text {
+  grid-column: 1 / 3 !important;
+  grid-row: 2 !important;
+  font-size: .79rem; font-weight: 300;
+  color: #5a534c; line-height: 1.7;
+  margin: .25rem 0 .7rem !important;
+  padding: 0 !important;
+  font-family: 'Mulish', sans-serif;
+}
+
+.cort-reco-ref {
+  grid-column: 1 / 3 !important;
+  grid-row: 3 !important;
+  display: flex !important; align-items: flex-start; gap: .45rem;
+  font-size: .63rem; color: #9a9189;
+  font-weight: 500; font-style: normal; line-height: 1.45;
+  padding-top: .6rem !important; padding-bottom: 0 !important;
+  border-top: 1px solid #ddd6c8;
+  margin: 0 !important;
+  font-family: 'Mulish', sans-serif;
+}
+.cort-reco-ref-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  flex-shrink: 0; margin-top: .38rem;
+}
+</style>
+
+</Base>

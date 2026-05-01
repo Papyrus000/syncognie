@@ -32,21 +32,17 @@ const recents = [...allArticles, ...allCarnet, ...allFenetres]
 // Premier épisode de Vies (épisode 1)
 const premierEpisodeVies = [...serieDialogues].sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0))[0];
 
-// Tous les outils — ordre inverse (dernier ajouté en premier)
-const outilsSommaire = [
-  { titre: "Générateur d'ancres",          desc: 'Ancres matinales personnalisées',                  icone: '◎', couleur: '#9a9189', lien: '/outils/ancres',              statut: 'idee' },
-  { titre: 'Journal de gratifications',    desc: 'Conscience du circuit, sans culpabilité',          icone: '◎', couleur: '#9a9189', lien: '/outils/journal',             statut: 'idee' },
-  { titre: 'Minuteur de décompression',    desc: 'Pauses intentionnelles, ancrées en neuroscience',  icone: '◎', couleur: '#9a9189', lien: '/outils/minuteur',            statut: 'idee' },
-  { titre: 'Tableau de bord homéostatique',desc: 'Équilibre stimuli / récupération en temps réel',   icone: '◎', couleur: '#2ecc71', lien: '/outils/homeostasie',         statut: 'bientot' },
-  { titre: 'Les deux mondes',              desc: 'La thèse de McGilchrist vécue en quatre actes',    icone: '◈', couleur: '#5c3a1e', lien: '/outils/mcgilchrist',         statut: 'disponible' },
-  { titre: 'La Boussole épistémique',      desc: '46 modèles, 14 domaines — naviguer par question',  icone: '◈', couleur: '#c4993a', lien: '/outils/boussole-epistemique',statut: 'disponible' },
-  { titre: 'Strates',                      desc: "Penseurs organisés par la question qu'ils éclairent", icone: '◈', couleur: '#b8922a', lien: '/outils/strates',         statut: 'disponible' },
-  { titre: 'Constellation',               desc: '28 penseurs, leurs concepts et filiations',         icone: '✦', couleur: '#c4993a', lien: '/outils/constellation',       statut: 'disponible' },
-  { titre: 'Récits conceptuels',           desc: 'Comprendre en lisant, pas en étudiant',            icone: '◈', couleur: '#c4993a', lien: '/outils/recits',              statut: 'disponible' },
-  { titre: 'Boussole dopaminergique',      desc: "Charge nerveuse & pistes d'équilibre",            icone: '◈', couleur: '#6b7fb8', lien: '/outils/boussole',            statut: 'disponible' },
-  { titre: "Tracker d'habitudes",          desc: 'Trois ancres. Intensité 1–3. Mémoire 7 jours.',    icone: '◉', couleur: '#e8724a', lien: '/outils/tracker',             statut: 'disponible' },
-  { titre: 'Baromètre de charge',          desc: 'Ce que tu portes — physique, mental, émotionnel',  icone: '⊕', couleur: '#3ab87a', lien: '/outils/barometre',           statut: 'disponible' },
-];
+// Tous les outils — dérivés automatiquement depuis src/data/outils.ts
+import { outils as tousOutils } from '../data/outils';
+const STATUT_SOMMAIRE: Record<string, string> = { 'actif': 'disponible', 'en-cours': 'disponible', 'bientot': 'bientot', 'idee': 'idee' };
+const outilsSommaire = [...tousOutils].reverse().map(o => ({
+  titre:   o.titre,
+  desc:    o.desc,
+  icone:   o.icone,
+  couleur: o.color,
+  lien:    o.lien,
+  statut:  STATUT_SOMMAIRE[o.statut] ?? o.statut,
+}));
 
 function stadeLabel(stade?: string) {
   if (stade === 'pousse') return '🌿 Pousse';
