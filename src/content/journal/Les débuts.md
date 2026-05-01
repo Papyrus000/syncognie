@@ -1,8 +1,10 @@
 ---
-title: Les débuts
+title: "Les débuts : origine d’un projet et exploration d’un système"
 date: 2026-04-26
 stade: graine
-type: Notes
+type: journal
+description: Retour sur la genèse d’un projet mêlant écriture, IA et exploration personnelle, entre expérimentation, structuration et émergence d’un système.
+lecture: 3
 ---
 Tout a démarré à partir d'un post sur X. 
 
