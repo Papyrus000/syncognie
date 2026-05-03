@@ -7,6 +7,8 @@ const allCarnet   = await getCollection('carnet');
 const allFenetres = await getCollection('fenetres');
 const allJournal  = await getCollection('journal', ({ data }) => !data.draft);
 const journalEntries = allJournal.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allNouvelles = await getCollection('nouvelles', ({ data }) => !data.draft);
+const nouvellesEntries = allNouvelles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const serieNotes = allArticles
   .filter(a => a.data.serie === "Notes d'un modèle en construction")
@@ -400,7 +402,7 @@ function formatDateShort(date: Date) {
           </li>
 
           <!-- ── VI. CARNET ── -->
-          <li class="toc-section toc-section--last">
+          <li class="toc-section">
             <a class="toc-row toc-row--section" href="/carnet">
               <span class="toc-n">VI</span>
               <span class="toc-name">Carnet</span>
@@ -421,6 +423,41 @@ function formatDateShort(date: Date) {
                   </a>
                 </li>
               ))}
+            </ul>
+          </li>
+
+          <!-- ── VII. NOUVELLES ── -->
+          <li class="toc-section toc-section--last">
+            <a class="toc-row toc-row--section" href="/nouvelles">
+              <span class="toc-n">VII</span>
+              <span class="toc-name">Nouvelles</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Courtes fictions, fragments narratifs</span>
+              <span class="toc-ct">{nouvellesEntries.length} nouvelle{nouvellesEntries.length > 1 ? 's' : ''}</span>
+            </a>
+
+            <ul class="toc-mecanique">
+              {nouvellesEntries.slice(0, 6).map((entry) => (
+                <li>
+                  <a class="toc-mec-item" href={`/nouvelles/${entry.id}`}>
+                    <span class="toc-mec-date">
+                      {entry.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                    <span class="toc-mec-titre">{entry.data.title}</span>
+                    <span class="toc-mec-arr">→</span>
+                  </a>
+                </li>
+              ))}
+              {nouvellesEntries.length > 6 && (
+                <li>
+                  <a class="toc-mec-item" href="/nouvelles">
+                    <span class="toc-mec-date"></span>
+                    <span class="toc-mec-titre" style="font-style:italic;opacity:.6">
+                      Voir toutes les nouvelles ({nouvellesEntries.length}) →
+                    </span>
+                  </a>
+                </li>
+              )}
             </ul>
           </li>
 

@@ -1,6 +1,6 @@
 ---
-// src/layouts/JournalLayout.astro
-// Layout Journal — lisibilité maximale, isolé du style global du site
+// src/layouts/NouvellesLayout.astro
+// Layout Nouvelles — identique à JournalLayout, adapté pour la fiction courte
 
 import Base from './Base.astro';
 
@@ -9,14 +9,14 @@ export interface Props {
   date:         Date;
   description?: string;
   lecture?:     number;
-  type?:        string;
+  genre?:       string;
   stade?:       'graine' | 'pousse' | 'arbre';
   slug:         string;
   prev?:        { slug: string; title: string };
   next?:        { slug: string; title: string };
 }
 
-const { title, date, description, lecture, type, stade, slug, prev, next } = Astro.props;
+const { title, date, description, lecture, genre, stade, slug, prev, next } = Astro.props;
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -26,9 +26,18 @@ function stadeLabel(s?: string) {
   if (s === 'arbre')  return '🌳 Arbre';
   return '🌱 Graine';
 }
+
+const genreLabels: Record<string, string> = {
+  fragment: 'Fragment',
+  conte:    'Conte',
+  recit:    'Récit',
+  fable:    'Fable',
+  prose:    'Prose poétique',
+};
+const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
 ---
 
-<Base title={`${title} — Journal · Syncognie`} description={description}>
+<Base title={`${title} — Nouvelles · Syncognie`} description={description}>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -108,29 +117,16 @@ function stadeLabel(s?: string) {
     }
   }
 
-  /* Titres — hiérarchie visuelle claire */
-  /* h1 dans .jl-body = # Obsidian → section principale (grand) */
-  /* h2 = ## → sous-section (moyen) */
-  /* h3 = ### → point de détail (petites caps) */
-  .jl-body h1,
+  /* Titres */
   .jl-body h2,
   .jl-body h3 { scroll-margin-top: 76px; }
 
-  .jl-body h1 {
-    font-family: var(--jl-serif) !important;
-    font-size: 1.45rem !important;
-    font-weight: 600 !important;
-    color: var(--jl-ink) !important;
-    margin: 3.5rem 0 1.1rem !important;
-    letter-spacing: -.02em;
-    line-height: 1.2 !important;
-  }
   .jl-body h2 {
     font-family: var(--jl-serif) !important;
-    font-size: 1.15rem !important;
+    font-size: 1.25rem !important;
     font-weight: 600 !important;
     color: var(--jl-ink) !important;
-    margin: 2.8rem 0 .9rem !important;
+    margin: 3rem 0 1rem !important;
     letter-spacing: -.015em;
     line-height: 1.25 !important;
   }
@@ -223,24 +219,6 @@ function stadeLabel(s?: string) {
     transition: color .18s, border-color .18s, background .18s;
     border-radius: 0 2px 2px 0;
   }
-  /* h1 dans le ToC : section principale, légèrement mis en avant */
-  .jl-toc a[data-level="1"] {
-    font-size: .7rem !important;
-    font-weight: 500 !important;
-    color: var(--jl-ink-soft) !important;
-    padding-left: .5rem;
-    margin-top: .25rem;
-  }
-  /* h2 dans le ToC : indenté */
-  .jl-toc a[data-level="2"] {
-    padding-left: 1rem;
-  }
-  /* h3 dans le ToC : encore plus indenté, encore plus discret */
-  .jl-toc a[data-level="3"] {
-    padding-left: 1.6rem;
-    font-size: .63rem !important;
-    opacity: .8;
-  }
   .jl-toc a:hover {
     color: var(--jl-ink-soft) !important;
     border-left-color: var(--jl-border) !important;
@@ -297,27 +275,25 @@ function stadeLabel(s?: string) {
 <div class="jl-wrap" id="jl-wrap">
 
   <!-- Sidebar -->
-  <aside class="jl-aside" aria-label="Navigation dans l'article">
+  <aside class="jl-aside" aria-label="Navigation dans la nouvelle">
     <div class="jl-aside-inner">
-      <a class="jl-back" href="/journal">
+      <a class="jl-back" href="/nouvelles">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <polyline points="15 18 9 12 15 6"/>
         </svg>
-        Journal
+        Nouvelles
       </a>
       <div class="jl-aside-sep"></div>
       <nav class="jl-toc" id="jl-toc" aria-label="Sections"></nav>
-      <!-- Progression — ancrée en bas, toujours visible -->
-      <div class="jl-aside-footer">
-        <div class="jl-aside-sep" style="margin-bottom:.75rem"></div>
-        <div class="jl-read-stat">
-          <span class="jl-read-pct" id="jl-read-pct">0%</span>
-          <span class="jl-read-label">lu</span>
-          <span class="jl-time-left" id="jl-time-left" style="display:none">
-            · <span class="jl-time-val" id="jl-time-val">—</span>
-            <span class="jl-read-label">restant</span>
-          </span>
-        </div>
+      <div class="jl-aside-sep" style="margin-top:1.5rem"></div>
+      <div class="jl-read-stat">
+        <span class="jl-read-pct" id="jl-read-pct">0%</span>
+        <span class="jl-read-label">lu</span>
+      </div>
+      <!-- Temps restant -->
+      <div class="jl-time-left" id="jl-time-left" style="display:none">
+        <span class="jl-time-val" id="jl-time-val">—</span>
+        <span class="jl-read-label">restant</span>
       </div>
     </div>
   </aside>
@@ -327,12 +303,13 @@ function stadeLabel(s?: string) {
 
     <header class="jl-header">
       <div class="jl-meta">
-        {type && <span class="jl-tag">{type}</span>}
+        {genreLabel && <span class="jl-tag">{genreLabel}</span>}
         <time class="jl-date" datetime={date.toISOString()}>{formatDate(date)}</time>
         {lecture && <span class="jl-read-time">· {lecture} min</span>}
         {stade && <span class="jl-stade">{stadeLabel(stade)}</span>}
       </div>
       <h1 class="jl-titre">{title}</h1>
+      {description && <p class="jl-subtitle">{description}</p>}
       <div class="jl-rule"></div>
     </header>
 
@@ -342,17 +319,17 @@ function stadeLabel(s?: string) {
 
     <!-- Navigation prev/next -->
     {(prev || next) && (
-      <nav class="jl-nav" aria-label="Articles précédent et suivant">
+      <nav class="jl-nav" aria-label="Nouvelles précédente et suivante">
         <div class="jl-nav-inner">
           {prev ? (
-            <a class="jl-nav-item jl-nav-item--prev" href={`/journal/${prev.slug}`}>
-              <span class="jl-nav-dir">← Plus ancien</span>
+            <a class="jl-nav-item jl-nav-item--prev" href={`/nouvelles/${prev.slug}`}>
+              <span class="jl-nav-dir">← Précédente</span>
               <span class="jl-nav-title">{prev.title}</span>
             </a>
           ) : <div />}
           {next ? (
-            <a class="jl-nav-item jl-nav-item--next" href={`/journal/${next.slug}`}>
-              <span class="jl-nav-dir">Plus récent →</span>
+            <a class="jl-nav-item jl-nav-item--next" href={`/nouvelles/${next.slug}`}>
+              <span class="jl-nav-dir">Suivante →</span>
               <span class="jl-nav-title">{next.title}</span>
             </a>
           ) : <div />}
@@ -361,7 +338,7 @@ function stadeLabel(s?: string) {
     )}
 
     <footer class="jl-footer">
-      <a class="jl-footer-back" href="/journal">← Retour au journal</a>
+      <a class="jl-footer-back" href="/nouvelles">← Retour aux nouvelles</a>
     </footer>
 
   </article>
@@ -432,11 +409,8 @@ function stadeLabel(s?: string) {
   .jl-aside-inner {
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 6rem);
-    overflow: hidden;
   }
   .jl-back {
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: .4rem;
@@ -460,35 +434,14 @@ function stadeLabel(s?: string) {
     display: flex;
     flex-direction: column;
     gap: .1rem;
-    overflow-y: auto;
-    flex: 1;
-    min-height: 0;
-    /* scrollbar discrète */
-    scrollbar-width: thin;
-    scrollbar-color: var(--jl-border) transparent;
-  }
-  .jl-toc::-webkit-scrollbar { width: 3px; }
-  .jl-toc::-webkit-scrollbar-track { background: transparent; }
-  .jl-toc::-webkit-scrollbar-thumb { background: var(--jl-border); border-radius: 2px; }
-
-  /* Stats ancrées en bas, hors du flux du ToC */
-  .jl-aside-footer {
-    flex-shrink: 0;
-    margin-top: auto;
   }
 
-  .jl-read-stat {
+  .jl-read-stat,
+  .jl-time-left {
     display: flex;
     align-items: baseline;
-    flex-wrap: wrap;
     gap: .3rem;
     padding: .2rem .5rem;
-    flex-shrink: 0;
-  }
-  .jl-time-left {
-    display: inline-flex;
-    align-items: baseline;
-    gap: .25rem;
   }
   .jl-read-pct,
   .jl-time-val {
@@ -673,7 +626,7 @@ function stadeLabel(s?: string) {
   const wUp     = document.getElementById('jl-w-up');
   const nightBtn= document.getElementById('jl-night');
 
-  const STORAGE_KEY = 'jl_pos_' + slug;
+  const STORAGE_KEY = 'nv_pos_' + slug;
 
   // ── Taille de texte ──
   let fontSize = parseInt(localStorage.getItem('jl_fontsize') || '19', 10);
@@ -715,7 +668,6 @@ function stadeLabel(s?: string) {
   });
 
   // ── Mémorisation de position ──
-  // Restaurer position après chargement
   window.addEventListener('load', () => {
     const saved = sessionStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -723,7 +675,6 @@ function stadeLabel(s?: string) {
       if (pos > 200) window.scrollTo({ top: pos, behavior: 'instant' });
     }
   });
-  // Sauvegarder position au scroll (throttle 500ms)
   let saveTimer;
   window.addEventListener('scroll', () => {
     clearTimeout(saveTimer);
@@ -737,14 +688,11 @@ function stadeLabel(s?: string) {
   let readFired = false;
 
   function onScroll() {
-    // Calcul précis : 0% au haut de l'article, 100% quand le bas de l'article passe le bas de l'écran
     const article = document.getElementById('jl-article');
     let pct = 0;
     if (article) {
       const articleTop    = article.offsetTop;
       const articleBottom = articleTop + article.offsetHeight;
-      // 0% quand scrollY atteint le haut de l'article
-      // 100% quand scrollY atteint le bas de l'article (moins la hauteur fenêtre)
       const scrollable = articleBottom - articleTop - window.innerHeight;
       const scrolled   = Math.max(0, window.scrollY - articleTop);
       pct = scrollable > 0
@@ -757,7 +705,6 @@ function stadeLabel(s?: string) {
     if (bar)   bar.style.width = pct + '%';
     if (pctEl) pctEl.textContent = pct + '%';
 
-    // Temps restant
     if (pct > 5 && timeEl && timeVal) {
       timeEl.style.display = 'flex';
       const remaining = Math.max(0, Math.round(totalMin * (1 - pct / 100)));
@@ -766,35 +713,31 @@ function stadeLabel(s?: string) {
 
     if (pct >= 80 && !readFired) {
       readFired = true;
-      window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/journal/' + slug } }));
+      window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/nouvelles/' + slug } }));
     }
   }
   window.addEventListener('scroll', onScroll, { passive: true });
 
   // ── ToC automatique ──
   if (body && toc) {
-    const headings = body.querySelectorAll('h1, h2, h3');
+    const headings = body.querySelectorAll('h2, h3');
     const links = [];
     headings.forEach((h, i) => {
       if (!h.id) h.id = 'jl-h-' + i;
       const a = document.createElement('a');
       a.href = '#' + h.id;
       a.textContent = h.textContent || '';
-      const level = parseInt(h.tagName[1], 10); // 1, 2 ou 3
-      a.dataset.level = String(level);
+      if (h.tagName === 'H3') a.style.paddingLeft = '.9rem';
       a.addEventListener('click', (e) => {
         e.preventDefault();
         const target = document.getElementById(h.id);
         if (target) {
-          // Mettre à jour l'actif immédiatement au clic, sans attendre l'observer
           links.forEach(l => l.a.classList.remove('jl-toc-active'));
           a.classList.add('jl-toc-active');
-          // Désactiver l'observer pendant le scroll animé
           scrolling = true;
           clearTimeout(scrollingTimer);
           const top = target.getBoundingClientRect().top + window.scrollY - 52 - 24;
           window.scrollTo({ top, behavior: 'smooth' });
-          // Réactiver après la fin du scroll (smooth dure ~500ms max)
           scrollingTimer = setTimeout(() => { scrolling = false; }, 700);
         }
       });
@@ -804,15 +747,12 @@ function stadeLabel(s?: string) {
     let scrolling = false;
     let scrollingTimer;
     const io = new IntersectionObserver(entries => {
-      if (scrolling) return; // ignorer les intersections pendant le scroll programmé
+      if (scrolling) return;
       entries.forEach(e => {
         if (e.isIntersecting) {
           links.forEach(l => l.a.classList.remove('jl-toc-active'));
           const found = links.find(l => l.el === e.target);
-          if (found) {
-            found.a.classList.add('jl-toc-active');
-            found.a.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-          }
+          if (found) found.a.classList.add('jl-toc-active');
         }
       });
     }, { rootMargin: '-20% 0px -70% 0px' });
@@ -821,7 +761,7 @@ function stadeLabel(s?: string) {
 
   // ── Tracking 15s ──
   setTimeout(() => {
-    window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/journal/' + slug } }));
+    window.dispatchEvent(new CustomEvent('article:read', { detail: { slug: '/nouvelles/' + slug } }));
   }, 15000);
 })();
 </script>

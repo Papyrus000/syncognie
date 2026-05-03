@@ -105,4 +105,21 @@ const journal = defineCollection({
   }),
 });
 
-export const collections = { articles, fenetres, carnet, atelier, planches, journal };
+// ── Collection NOUVELLE : nouvelles ──
+// Chaque fichier = une courte fiction, classée par date
+const nouvelles = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/nouvelles' }),
+  schema: z.object({
+    title:       z.string(),
+    date:        z.coerce.date(),
+    description: z.string().optional(),
+    genre:       z.enum(['fragment', 'conte', 'recit', 'fable', 'prose']).default('fragment'),
+    lecture:     z.number().optional(),
+    // Stade du jardin numérique
+    stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
+    draft:       z.boolean().optional(),
+    tags:        z.array(z.string()).optional(),
+  }),
+});
+
+export const collections = { articles, fenetres, carnet, atelier, planches, journal, nouvelles };
