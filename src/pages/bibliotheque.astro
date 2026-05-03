@@ -1,0 +1,1188 @@
+---
+import BaseLayout from '../layouts/Base.astro';
+---
+
+<BaseLayout
+  title="Bibliothèque — Syncognie"
+  description="Index dense des concepts, penseurs et mécanismes — 8 convergences thématiques."
+>
+
+<div class="bib-wrap">
+
+  <!-- ══ BREADCRUMB ══ -->
+  <nav class="bib-breadcrumb">
+    <a href="/" class="bib-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Accueil
+    </a>
+    <span class="bib-sep">·</span>
+    <span>Bibliothèque</span>
+  </nav>
+
+  <!-- ══ HEADER condensé ══ -->
+  <header class="bib-header">
+    <div class="bib-header-left">
+      <h1 class="bib-titre">Bibliothèque</h1>
+      <p class="bib-sous">8 convergences · concepts, penseurs, définitions.</p>
+    </div>
+    <div class="bib-header-meta">
+      <span class="bib-chip">8 convergences</span>
+      <span class="bib-chip" id="chip-penseurs">33+ penseurs</span>
+      <span class="bib-chip" id="chip-concepts">60+ concepts</span>
+    </div>
+  </header>
+
+  <!-- ══ RECHERCHE ══ -->
+  <div class="bib-search-wrap">
+    <div class="bib-search-field">
+      <svg class="bib-search-ico" width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <input
+        id="bib-search"
+        class="bib-search-input"
+        type="search"
+        placeholder="Chercher un concept, un penseur…"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Rechercher dans la bibliothèque"
+      />
+      <kbd class="bib-search-kbd" id="bib-search-kbd">⌃K</kbd>
+      <button class="bib-search-clear" id="bib-search-clear" aria-label="Effacer" hidden>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="bib-search-status" id="bib-search-status" aria-live="polite"></div>
+  </div>
+
+  <!-- ══ RÉSULTATS RECHERCHE ══ -->
+  <div class="bib-search-empty" id="bib-search-empty" hidden>
+    <p id="bib-empty-msg"></p>
+  </div>
+
+  <!-- ══ LAYOUT PRINCIPAL ══ -->
+  <div class="bib-layout" id="bib-layout">
+
+    <!-- ── NAV STICKY ── -->
+    <nav class="bib-nav" aria-label="Convergences">
+      <p class="bib-nav-label">Convergences</p>
+      <ol class="bib-nav-list">
+        <li><a href="#s1" class="bib-nav-lien" data-s="1"><span class="bib-nav-n">01</span><span class="bib-nav-txt">Système</span></a></li>
+        <li><a href="#s2" class="bib-nav-lien" data-s="2"><span class="bib-nav-n">02</span><span class="bib-nav-txt">Corps</span></a></li>
+        <li><a href="#s3" class="bib-nav-lien" data-s="3"><span class="bib-nav-n">03</span><span class="bib-nav-txt">Émotion</span></a></li>
+        <li><a href="#s4" class="bib-nav-lien" data-s="4"><span class="bib-nav-n">04</span><span class="bib-nav-txt">Automatisme</span></a></li>
+        <li><a href="#s5" class="bib-nav-lien" data-s="5"><span class="bib-nav-n">05</span><span class="bib-nav-txt">Narration</span></a></li>
+        <li><a href="#s6" class="bib-nav-lien" data-s="6"><span class="bib-nav-n">06</span><span class="bib-nav-txt">Communication</span></a></li>
+        <li><a href="#s7" class="bib-nav-lien" data-s="7"><span class="bib-nav-n">07</span><span class="bib-nav-txt">Attention</span></a></li>
+        <li><a href="#s8" class="bib-nav-lien" data-s="8"><span class="bib-nav-n">08</span><span class="bib-nav-txt">Sens</span></a></li>
+      </ol>
+    </nav>
+
+    <!-- ── CONTENU ── -->
+    <main class="bib-main">
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  01 — SYSTÈME
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s1" data-s="1">
+        <div class="bib-sec-hd" style="--sc:var(--dim0)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">01</span>
+            <div>
+              <h2 class="bib-sec-titre">Système</h2>
+              <p class="bib-sec-essence">Une relation est une boucle — pas une chaîne de causes.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim0)">
+            <span>Meadows</span><span>Watzlawick</span><span>Gottman</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim0)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Pensée systémique</td>
+                <td class="bib-penseur">Donella Meadows</td>
+                <td class="bib-def">Voir les interdépendances et les boucles plutôt que les chaînes linéaires cause-effet. Tout système a des propriétés qui n'existent dans aucun de ses éléments séparément.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Boucles de rétroaction</td>
+                <td class="bib-penseur">Meadows · Wiener</td>
+                <td class="bib-def">Mécanisme par lequel une sortie du système revient en entrée — renforçant (positive) ou stabilisant (négative) son comportement. La plupart des dynamiques relationnelles en sont faites.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Points de levier</td>
+                <td class="bib-penseur">Donella Meadows</td>
+                <td class="bib-def">Endroits d'un système où une petite intervention produit un grand changement. Meadows en identifie 12 — du moins profond (chiffres) au plus profond (paradigme, objectif du système).</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Circularité des interactions</td>
+                <td class="bib-penseur">Paul Watzlawick</td>
+                <td class="bib-def">Dans une relation, A ne cause pas simplement B : A répond à B qui répondait à A. La causalité est circulaire. Chercher "qui a commencé" est une illusion structurelle.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Ponctuation des séquences</td>
+                <td class="bib-penseur">Paul Watzlawick</td>
+                <td class="bib-def">Dans un échange continu, chaque acteur "ponctue" — il découpe arbitrairement la séquence pour se poser comme celui qui réagit ("je crie parce que tu te tais / je me tais parce que tu cries"). La ponctuation est le découpage subjectif d'un flux sans début ni fin. Le conflit naît souvent de deux ponctations incompatibles du même échange : chacun se vit comme répondant à l'autre, personne ne se vit comme ayant commencé. Mot-clé : <em>il n'y a pas de premier</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Ratio 5:1</td>
+                <td class="bib-penseur">John Gottman</td>
+                <td class="bib-def">Dans les couples stables, les interactions positives l'emportent sur les négatives dans un rapport d'au moins 5 pour 1. Ce ratio prédit la longévité relationnelle avec une précision remarquable.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Réparation relationnelle</td>
+                <td class="bib-penseur">John Gottman</td>
+                <td class="bib-def">Ce qui distingue les couples stables n'est pas l'absence de conflit, mais la capacité à réparer — à sortir de l'escalade et restaurer le lien après la rupture. La réparation peut être verbale ("je m'emballe, laisse-moi recommencer"), physique (un geste), ou humoristique. Elle n'efface pas le conflit — elle empêche qu'il devienne l'histoire permanente de la relation. Mot-clé : <em>réparer vite, pas parfaitement</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Co-régulation</td>
+                <td class="bib-penseur">Schore · Porges</td>
+                <td class="bib-def">Les systèmes nerveux de deux personnes en interaction s'influencent mutuellement. Être proche d'une personne régulée aide à se réguler — et inversement. Le lien est un régulateur physiologique.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  02 — CORPS
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s2" data-s="2">
+        <div class="bib-sec-hd" style="--sc:var(--dim1)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">02</span>
+            <div>
+              <h2 class="bib-sec-titre">Corps</h2>
+              <p class="bib-sec-essence">La régulation du corps précède la lucidité de l'esprit.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim1)">
+            <span>Damasio</span><span>Siegel</span><span>Porges</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim1)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Marqueurs somatiques</td>
+                <td class="bib-penseur">Antonio Damasio</td>
+                <td class="bib-def">Signaux corporels (rythme cardiaque, tension, nausée) qui orientent la décision avant que la raison intervienne. L'émotion n'est pas un biais — c'est une intelligence rapide encodée dans le corps.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Fenêtre de tolérance</td>
+                <td class="bib-penseur">Dan Siegel</td>
+                <td class="bib-def">Zone d'activation du système nerveux où la pensée, l'émotion et le comportement fonctionnent de façon intégrée. En dehors : hyperactivation (panique, réaction explosive) ou hypoactivation (gel, dissociation).</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Théorie polyvagale</td>
+                <td class="bib-penseur">Stephen Porges</td>
+                <td class="bib-def">Trois modes hiérarchiques du système nerveux autonome : engagement social (sécurité), mobilisation (combat/fuite), immobilité (gel). La sécurité relationnelle active le premier et inhibe les deux autres.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Homéostasie</td>
+                <td class="bib-penseur">Bernard · Cannon</td>
+                <td class="bib-def">Capacité d'un système biologique à maintenir ses variables internes dans des limites viables malgré les perturbations extérieures. Modèle fondamental pour comprendre la régulation du stress.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Allostasie</td>
+                <td class="bib-penseur">Sterling · McEwen</td>
+                <td class="bib-def">Extension de l'homéostasie : l'organisme anticipe les demandes futures et ajuste ses paramètres de base. La charge allostatique désigne le coût cumulé de ces ajustements répétés sur le long terme.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Hormèse</td>
+                <td class="bib-penseur">biologie du stress</td>
+                <td class="bib-def">Principe biologique selon lequel la relation dose-réponse est en <em>U inversé</em> : une faible dose de stress est bénéfique et renforce le système, une dose excessive le détruit, et l'absence totale de stress fragilise autant que l'excès. L'organisme s'adapte et se renforce précisément parce qu'il a été sollicité. Exemples : l'exercice physique, le jeûne intermittent, l'exposition progressive à l'anxiété. S'applique aussi aux systèmes relationnels — un lien sans friction ne se solidifie pas. Mot-clé : <em>dose-réponse non linéaire</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Interoception</td>
+                <td class="bib-penseur">Damasio · Barrett</td>
+                <td class="bib-def">Perception des signaux internes du corps — battements cardiaques, respiration, tension viscérale. Fondement de la conscience émotionnelle et de la régulation. Elle se cultive par la pratique attentionnelle.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  03 — ÉMOTION
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s3" data-s="3">
+        <div class="bib-sec-hd" style="--sc:var(--dim2)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">03</span>
+            <div>
+              <h2 class="bib-sec-titre">Émotion</h2>
+              <p class="bib-sec-essence">Ressentir dépend aussi de nommer et d'interpréter.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim2)">
+            <span>Barrett</span><span>Friston</span><span>Berridge</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim2)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Théorie des émotions construites</td>
+                <td class="bib-penseur">Lisa Feldman Barrett</td>
+                <td class="bib-def">Les émotions ne sont pas des réponses fixes câblées dans le cerveau — elles sont construites en temps réel à partir des signaux corporels, du contexte et des concepts disponibles. Pas de circuits émotionnels universels.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Granularité émotionnelle</td>
+                <td class="bib-penseur">Lisa Feldman Barrett</td>
+                <td class="bib-def">Capacité à distinguer finement ses états émotionnels. Haute granularité : "anxieux-anticipatoire" plutôt que "mal". Plus la distinction est fine, meilleure est la régulation — et moins le recours à l'alcool, la violence ou la rumination.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Cerveau prédictif</td>
+                <td class="bib-penseur">Karl Friston · Barrett</td>
+                <td class="bib-def">Le cerveau ne perçoit pas passivement — il prédit en permanence ce qui va arriver et ajuste quand l'erreur de prédiction est trop grande. L'émotion est en partie une prédiction sur l'état du corps.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Recatégorisation émotionnelle</td>
+                <td class="bib-penseur">Lisa Feldman Barrett</td>
+                <td class="bib-def">Nommer différemment une émotion change l'expérience qu'on en a. "Je tremble d'excitation" et "je tremble de peur" activent des cascades physiologiques et comportementales distinctes.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Affect labeling</td>
+                <td class="bib-penseur">Lieberman et al.</td>
+                <td class="bib-def">Mettre des mots sur une émotion en réduit l'intensité mesurable en IRMf. L'activation de l'amygdale baisse. Pas une intellectualisation — un mécanisme de régulation neurobiologique réel.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Wanting / Liking</td>
+                <td class="bib-penseur">Kent Berridge</td>
+                <td class="bib-def">Dissociation entre désirer (wanting, dopaminergique) et apprécier (liking, opioïde). On peut vouloir intensément sans apprécier. La plupart des addictions sont un wanting découplé du liking.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  04 — AUTOMATISME
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s4" data-s="4">
+        <div class="bib-sec-hd" style="--sc:var(--dim3)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">04</span>
+            <div>
+              <h2 class="bib-sec-titre">Automatisme</h2>
+              <p class="bib-sec-essence">Sous stress, le cerveau simplifie, accuse, et croit trop vite ses propres histoires.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim3)">
+            <span>Kahneman</span><span>Fonagy</span><span>Beck</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim3)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Système 1 / Système 2</td>
+                <td class="bib-penseur">Daniel Kahneman</td>
+                <td class="bib-def">Deux modes cognitifs. S1 : rapide, automatique, heuristique — le défaut. S2 : lent, délibéré, coûteux en énergie. Sous stress ou fatigue, S1 prend le relais et ses raccourcis génèrent des erreurs systématiques.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Biais de négativité</td>
+                <td class="bib-penseur">psychologie évolutionnaire</td>
+                <td class="bib-def">Le cerveau traite les informations menaçantes avec plus d'intensité, de rapidité et de persistance que les informations positives. La menace coûte plus cher à manquer qu'une opportunité à rater.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Lecture de pensée</td>
+                <td class="bib-penseur">Aaron Beck · TCC</td>
+                <td class="bib-def">Distorsion cognitive : croire savoir ce que l'autre pense, ressent ou veut — sans vérifier. Source majeure de conflit inutile. S'active automatiquement sous tension relationnelle.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Attribution hostile</td>
+                <td class="bib-penseur">psychologie sociale</td>
+                <td class="bib-def">Tendance à interpréter les comportements ambigus de l'autre comme intentionnellement malveillants. Plus fréquent en contexte de stress, d'insécurité d'attachement ou d'historique de trahison.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Perte de mentalisation</td>
+                <td class="bib-penseur">Peter Fonagy</td>
+                <td class="bib-def">La capacité à se représenter les états mentaux de l'autre se dégrade sous activation émotionnelle intense. L'autre cesse d'être un sujet complexe pour devenir une menace ou un objet à neutraliser.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Réaction vs réponse</td>
+                <td class="bib-penseur">Frankl · Épictète</td>
+                <td class="bib-def">Entre le stimulus et la réaction, il existe un espace — plus ou moins large selon l'entraînement. La réponse choisie dans cet espace est le lieu de la liberté et de la responsabilité.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Résignation apprise</td>
+                <td class="bib-penseur">Martin Seligman</td>
+                <td class="bib-def">Expérience répétée d'un manque de contrôle qui conduit à cesser d'agir — même quand l'action redevient possible. La passivité devient une réponse apprise, transférable à des domaines sans rapport.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  05 — NARRATION
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s5" data-s="5">
+        <div class="bib-sec-hd" style="--sc:var(--dim4)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">05</span>
+            <div>
+              <h2 class="bib-sec-titre">Narration</h2>
+              <p class="bib-sec-essence">On ne réagit pas aux événements, mais à ce qu'ils racontent sur soi, l'autre, le lien.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim4)">
+            <span>McAdams</span><span>Bowlby</span><span>Young</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim4)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Identité narrative</td>
+                <td class="bib-penseur">McAdams · Ricoeur</td>
+                <td class="bib-def">L'identité n'est pas une essence fixe — c'est l'histoire que l'on se raconte de soi-même, intégrant passé, présent et futur imaginé. Changer de récit, c'est potentiellement changer d'identité.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Schémas précoces</td>
+                <td class="bib-penseur">Jeffrey Young</td>
+                <td class="bib-def">Patterns cognitifs-émotionnels profonds formés dans l'enfance pour s'adapter à un environnement donné. Activés à l'âge adulte par des situations similaires, ils colorent la perception à l'insu de soi.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Modèles internes opérants</td>
+                <td class="bib-penseur">John Bowlby</td>
+                <td class="bib-def">Représentations mentales de soi et de l'autre construites dans la relation précoce avec les figures d'attachement — "suis-je quelqu'un qui mérite d'être aimé ?", "l'autre est-il fiable ?". Ces modèles fonctionnent comme des cartes implicites activées automatiquement dans les nouvelles relations : on perçoit, anticipe et réagit à travers eux sans s'en rendre compte. Ils se modifient lentement via des expériences relationnelles répétées qui contredisent les prédictions du modèle. Mot-clé : <em>carte relationnelle inconsciente héritée</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Attachement (4 styles)</td>
+                <td class="bib-penseur">Bowlby · Ainsworth</td>
+                <td class="bib-def">Style d'attachement formé dans l'enfance selon la disponibilité et la prévisibilité de la figure d'attachement. Quatre profils :
+                  <ul class="bib-list">
+                    <li><strong>Sécurisé</strong> — base sûre intériorisée ; exploration du monde possible sans anxiété excessive ; retour au lien facile après conflit.</li>
+                    <li><strong>Anxieux</strong> — hypervigilance au lien ; peur de l'abandon ; recherche constante de réassurance ; intensification des signaux émotionnels pour retenir l'autre.</li>
+                    <li><strong>Évitant</strong> — minimisation du besoin de lien ; auto-suffisance défensive ; inconfort avec la proximité et la dépendance mutuelle.</li>
+                    <li><strong>Désorganisé</strong> — la figure d'attachement est simultanément source de soin et de peur ; le système d'attachement s'active et se désactive en même temps, générant une confusion profonde.</li>
+                  </ul>
+                  Les styles se reproduisent dans les relations adultes via les modèles internes opérants — et peuvent évoluer par des expériences relationnelles réparatrices.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Rumination</td>
+                <td class="bib-penseur">psychologie clinique</td>
+                <td class="bib-def">Répétition cyclique d'une pensée ou d'un scénario passé sans résolution. Consomme de l'énergie cognitive, maintient l'état émotionnel négatif actif, et renforce les schémas au lieu de les dissoudre.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Sens donné à l'expérience</td>
+                <td class="bib-penseur">Viktor Frankl</td>
+                <td class="bib-def">La même expérience peut être vécue comme absurde ou porteuse de sens selon l'interprétation construite. Cette construction n'est pas un luxe — c'est un mécanisme de survie et de résilience.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  06 — COMMUNICATION
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s6" data-s="6">
+        <div class="bib-sec-hd" style="--sc:var(--dim5)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">06</span>
+            <div>
+              <h2 class="bib-sec-titre">Communication</h2>
+              <p class="bib-sec-essence">Tout comportement est un message — ce qui détruit n'est pas toujours les mots.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim5)">
+            <span>Watzlawick</span><span>Rosenberg</span><span>Rogers</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim5)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">On ne peut pas ne pas communiquer</td>
+                <td class="bib-penseur">Paul Watzlawick</td>
+                <td class="bib-def">Tout comportement, y compris le silence, le retrait et l'immobilité, est porteur d'un message dans un contexte relationnel. Il n'existe pas de non-communication. Se taire est déjà communiquer.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Les 4 Cavaliers</td>
+                <td class="bib-penseur">John Gottman</td>
+                <td class="bib-def">Quatre comportements prédicteurs de rupture : critique (attaque la personne), mépris (dévalorisation — le plus toxique), défensivité (contre-attaque), dérobade / stonewalling (retrait total). Chacun a son antidote précis.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Double contrainte</td>
+                <td class="bib-penseur">Bateson · Watzlawick</td>
+                <td class="bib-def">Injonction paradoxale : deux messages contradictoires dont aucun ne peut être satisfait sans violer l'autre, dans un contexte où le silence est impossible. Terrain de la confusion identitaire profonde.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">CNV — Observation · Sentiment · Besoin · Demande</td>
+                <td class="bib-penseur">Marshall Rosenberg</td>
+                <td class="bib-def">Cadre de communication qui sépare le factuel de l'interprétation, relie le sentiment à un besoin, et formule une demande concrète non contraignante. Réduit l'escalade défensive en rendant les besoins visibles.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Contenu vs relation</td>
+                <td class="bib-penseur">Paul Watzlawick</td>
+                <td class="bib-def">Toute communication a deux niveaux : ce qui est dit (contenu) et comment ce message définit le rapport entre les personnes (relation). Les conflits sont souvent relationnels habillés en débats de contenu.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Congruence · Regard inconditionnel · Empathie</td>
+                <td class="bib-penseur">Carl Rogers</td>
+                <td class="bib-def">Les trois conditions nécessaires et suffisantes au changement selon Rogers. Chacune est distincte :
+                  <ul class="bib-list">
+                    <li><strong>Congruence</strong> — être authentique, sans façade ; ce qu'on ressent et ce qu'on exprime sont alignés. L'aidant n'est pas un rôle, il est une personne réelle.</li>
+                    <li><strong>Regard positif inconditionnel</strong> — accueillir l'autre sans évaluer, sans condition, sans juger. La valeur de la personne ne dépend pas de son comportement.</li>
+                    <li><strong>Empathie</strong> — comprendre l'autre de l'intérieur, percevoir son cadre de référence comme si c'était le sien, sans se perdre dans ce "comme si".</li>
+                  </ul>
+                  Ces trois conditions sont transférables à tout contexte relationnel. Leur absence suffit à bloquer le changement même quand la technique est parfaite.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Mentalisation</td>
+                <td class="bib-penseur">Peter Fonagy</td>
+                <td class="bib-def">Capacité à se représenter soi-même et l'autre comme des êtres avec des états mentaux distincts. Fondement de la relation saine. Se dégrade sous activation émotionnelle intense et se renforce par la sécurité.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  07 — ATTENTION
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s7" data-s="7">
+        <div class="bib-sec-hd" style="--sc:var(--dim6)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">07</span>
+            <div>
+              <h2 class="bib-sec-titre">Attention</h2>
+              <p class="bib-sec-essence">La qualité du regard change ce qu'on perçoit — et ce qu'on devient.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim6)">
+            <span>McGilchrist</span><span>Kabat-Zinn</span><span>Hasson</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim6)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Attention ouverte vs étroite</td>
+                <td class="bib-penseur">Iain McGilchrist</td>
+                <td class="bib-def">L'hémisphère droit maintient une attention ouverte sur le tout — contexte, ambiguïté, vivant. L'hémisphère gauche focalise sur le détail et catégorise. Les deux sont nécessaires ; la civilisation contemporaine suractive le gauche.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">DMN — Réseau du mode par défaut</td>
+                <td class="bib-penseur">neuroscience cognitive</td>
+                <td class="bib-def">Réseau cérébral actif au repos — rumination, projection dans le futur, pensée sociale, récit de soi. Hyperactivité associée à la dépression et à l'anxiété. La pleine conscience et l'action le régulent.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Pleine conscience (mindfulness)</td>
+                <td class="bib-penseur">Jon Kabat-Zinn</td>
+                <td class="bib-def">Attention portée à l'expérience présente, sans jugement. Entraînement de la capacité à observer sans être immédiatement emporté. Effets documentés sur la régulation émotionnelle, le stress et les relations.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Présence</td>
+                <td class="bib-penseur">traditions contemplatives</td>
+                <td class="bib-def">Qualité d'attention où l'on est pleinement disponible à ce qui se passe — en soi, dans l'autre, entre les deux — sans être absorbé par le passé ou le futur. Différente de la concentration (fermée sur un objet) et de la pleine conscience (pratique formelle) : la présence est relationnelle, elle s'exerce <em>dans</em> l'échange. Être présent pour quelqu'un, c'est lui offrir une attention sans agenda, sans défense, sans interprétation préemptive. C'est ce que Hasson mesure neurologiquement sous le nom de synchronisation. Mot-clé : <em>disponibilité sans agenda</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Synchronisation narrative</td>
+                <td class="bib-penseur">Uri Hasson</td>
+                <td class="bib-def">Quand quelqu'un raconte une histoire à quelqu'un qui écoute vraiment, leurs activités cérébrales se couplent en temps réel. La communication réelle est un phénomène neurologique, pas seulement un échange d'information.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Suspension du jugement</td>
+                <td class="bib-penseur">Épictète · Bohm</td>
+                <td class="bib-def">Capacité à observer sans catégoriser immédiatement. Fondement du dialogue de Bohm et du stoïcisme. Ce qui perturbe n'est pas l'événement mais le jugement qu'on en fait — et ce jugement peut être suspendu.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  08 — SENS
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s8" data-s="8">
+        <div class="bib-sec-hd" style="--sc:var(--dim7)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">08</span>
+            <div>
+              <h2 class="bib-sec-titre">Sens</h2>
+              <p class="bib-sec-essence">Les valeurs orientent la réponse quand le contrôle manque.</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim7)">
+            <span>Frankl</span><span>Épictète</span><span>Hayes</span>
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim7)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="bib-concept">Volonté de sens</td>
+                <td class="bib-penseur">Viktor Frankl</td>
+                <td class="bib-def">Motivation fondamentale humaine : trouver un sens à l'existence. Pas le plaisir (Freud) ni le pouvoir (Adler) — le sens. Même dans la souffrance extrême, il reste accessible. La logothérapie en découle directement.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Liberté entre stimulus et réponse</td>
+                <td class="bib-penseur">Viktor Frankl</td>
+                <td class="bib-def">"Entre le stimulus et la réponse, il y a un espace. Dans cet espace réside notre pouvoir de choisir notre réponse." L'espace peut être infime, mais il existe toujours — c'est là que se joue la liberté intérieure.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Dichotomie du contrôle</td>
+                <td class="bib-penseur">Épictète · stoïcisme</td>
+                <td class="bib-def">Distinguer ce qui dépend de nous (jugements, désirs, impulsions) de ce qui n'en dépend pas (corps, réputation, événements). La souffrance naît de confondre les deux catégories.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">ACT — Acceptation et engagement</td>
+                <td class="bib-penseur">Steven Hayes</td>
+                <td class="bib-def">Thérapie comportementale de 3e vague fondée sur deux mouvements complémentaires : l'<em>acceptation</em> (accueillir les pensées et émotions difficiles sans les combattre ni s'y soumettre) et l'<em>engagement</em> (agir dans la direction de valeurs choisies, même en présence de la souffrance). Concept central : la <em>défusion cognitive</em> — prendre de la distance par rapport à ses pensées plutôt que de les croire littéralement. "Je remarque que j'ai la pensée que je suis nul" ≠ "je suis nul". L'ACT ne cherche pas à réduire la souffrance directement — elle cherche à augmenter la flexibilité psychologique. Mot-clé : <em>flexibilité psychologique, défusion, valeurs</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Valeurs comme boussole</td>
+                <td class="bib-penseur">Hayes · Frankl · stoïcisme</td>
+                <td class="bib-def">Les valeurs ne sont pas des objectifs — un objectif s'atteint ou non, après quoi il disparaît. Une valeur est une <em>direction</em> dans laquelle on peut toujours se déplacer, qu'importe la distance parcourue. "Être un parent présent" est une valeur ; "lire une histoire ce soir" est un objectif. La valeur survit à l'échec de l'objectif et donne un critère de choix indépendant des circonstances et des émotions du moment. Quand les émotions submergent ou que le contrôle fait défaut, la valeur reste opérationnelle comme boussole. Mot-clé : <em>direction permanente, non atteint mais suivi</em>.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Auto-compassion</td>
+                <td class="bib-penseur">Kristin Neff</td>
+                <td class="bib-def">Se traiter avec la bienveillance qu'on offrirait à un ami en difficulté : reconnaître la souffrance, voir son appartenance à la condition humaine commune, sans sur-identification ni négation. Plus stable que l'estime de soi.</td>
+              </tr>
+              <tr>
+                <td class="bib-concept">Entropie relationnelle</td>
+                <td class="bib-penseur">Shannon · Clausius — appliqués</td>
+                <td class="bib-def">Sans attention, régulation et réparation actives, les systèmes relationnels tendent naturellement vers le bruit, l'automatisme et la désorganisation. L'ordre relationnel coûte de l'énergie — son maintien est actif, jamais passif.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</div>
+
+<style>
+/* ══════════════════════════════════════════════
+   VARIABLES — palette cortisol adaptée
+══════════════════════════════════════════════ */
+.bib-wrap {
+  --surface:    #fdfcfa;
+  --surface2:   #f0ece5;
+  --border:     #ddd6c8;
+  --border2:    #c8c0b4;
+
+  --dim0: #6366f1;
+  --dim1: #0ea5e9;
+  --dim2: #10b981;
+  --dim3: #f59e0b;
+  --dim4: #ef4444;
+  --dim5: #8b5cf6;
+  --dim6: #06b6d4;
+  --dim7: #c4993a;
+
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+}
+
+/* ══ BREADCRUMB ══ */
+.bib-breadcrumb {
+  display: flex; align-items: center; gap: .45rem;
+  padding: 1.5rem 0 0;
+  font-family: 'Mulish', sans-serif;
+  font-size: .72rem; color: var(--ink-soft);
+}
+.bib-back {
+  display: flex; align-items: center; gap: .3rem;
+  color: var(--ink-soft); text-decoration: none;
+  transition: color .15s;
+}
+.bib-back:hover { color: var(--accent); }
+.bib-sep { color: var(--border2); }
+
+/* ══ HEADER ══ */
+.bib-header {
+  display: flex; align-items: baseline;
+  justify-content: space-between; gap: 1rem;
+  padding: 1.4rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+@media (max-width: 580px) {
+  .bib-header { flex-direction: column; gap: .6rem; padding: 1.2rem 0 1.2rem; }
+}
+
+.bib-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700; color: var(--ink);
+  letter-spacing: -.02em; line-height: 1; margin: 0;
+}
+.bib-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 300;
+  color: var(--ink-soft); margin-top: .25rem;
+}
+.bib-header-meta { display: flex; gap: .35rem; flex-wrap: wrap; flex-shrink: 0; }
+.bib-chip {
+  font-family: 'Mulish', sans-serif;
+  font-size: .60rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: .22rem .55rem; border-radius: 20px;
+  background: rgba(139,94,60,.07);
+  border: 1px solid rgba(139,94,60,.18);
+  color: var(--accent); white-space: nowrap;
+}
+
+/* ══ LAYOUT 2 COLONNES ══ */
+.bib-layout {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0; align-items: start;
+}
+@media (max-width: 680px) {
+  .bib-layout { grid-template-columns: 1fr; }
+  .bib-nav { display: none; }
+}
+
+/* ══ NAV STICKY ══ */
+.bib-nav {
+  position: sticky; top: 4rem;
+  padding: 1.5rem .5rem 1.5rem 0;
+  border-right: 1px solid var(--border);
+  align-self: start;
+}
+.bib-nav-label {
+  font-family: 'Mulish', sans-serif;
+  font-size: .54rem; font-weight: 700;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--ink-soft); opacity: .45;
+  padding: 0 0 .55rem .2rem;
+  margin-bottom: .25rem;
+  border-bottom: 1px solid var(--border);
+}
+.bib-nav-list {
+  list-style: none; margin: 0; padding: .4rem 0 0;
+  display: flex; flex-direction: column; gap: 0;
+}
+.bib-nav-lien {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .3rem .45rem .3rem .25rem;
+  text-decoration: none; border-radius: 3px;
+  transition: background .12s;
+  position: relative;
+}
+.bib-nav-lien::before {
+  content: ''; position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 2px; height: 55%; border-radius: 1px;
+  background: var(--sc, var(--accent));
+  transition: transform .18s cubic-bezier(.16,.84,.44,1);
+}
+.bib-nav-lien:hover,
+.bib-nav-lien.active { background: rgba(0,0,0,.04); }
+.bib-nav-lien:hover::before,
+.bib-nav-lien.active::before { transform: translateY(-50%) scaleY(1); }
+
+.bib-nav-n {
+  font-family: 'Mulish', sans-serif;
+  font-size: .56rem; font-weight: 600;
+  letter-spacing: .04em; color: var(--ink-soft); opacity: .4;
+  flex-shrink: 0; min-width: 1.3rem;
+}
+.bib-nav-txt {
+  font-family: 'Mulish', sans-serif;
+  font-size: .74rem; font-weight: 400;
+  color: var(--ink-mid); transition: color .15s;
+}
+.bib-nav-lien:hover .bib-nav-txt,
+.bib-nav-lien.active .bib-nav-txt { color: var(--ink); font-weight: 600; }
+
+/* ══ MAIN ══ */
+.bib-main { padding: 0 0 0 1.75rem; min-width: 0; }
+
+/* ══ SECTION ══ */
+.bib-section {
+  padding: 1.5rem 0 0;
+  scroll-margin-top: 4.5rem;
+}
+.bib-section + .bib-section { border-top: 1px solid var(--border); }
+
+/* En-tête section */
+.bib-sec-hd {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 1rem;
+  padding-bottom: .9rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--sc) 45%, transparent);
+  margin-bottom: 0;
+}
+.bib-sec-hd-left { display: flex; align-items: flex-start; gap: .7rem; }
+.bib-sec-n {
+  font-family: 'Libre Baskerville', serif;
+  font-size: .68rem; font-style: italic;
+  color: var(--sc); opacity: .7;
+  flex-shrink: 0; padding-top: .2rem; min-width: 1.5rem;
+}
+.bib-sec-titre {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--ink); letter-spacing: -.01em; margin-bottom: .2rem;
+}
+.bib-sec-essence {
+  font-family: 'Mulish', sans-serif;
+  font-size: .76rem; font-weight: 300; font-style: italic;
+  color: var(--ink-soft); line-height: 1.45; max-width: 52ch;
+}
+.bib-sec-penseurs-mini {
+  display: flex; gap: .25rem; flex-wrap: wrap;
+  flex-shrink: 0; align-items: flex-start; padding-top: .18rem;
+}
+.bib-sec-penseurs-mini span {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem; font-weight: 600; letter-spacing: .05em;
+  padding: .12rem .38rem; border-radius: 20px;
+  background: color-mix(in srgb, var(--sc) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sc) 25%, transparent);
+  color: color-mix(in srgb, var(--sc) 85%, #1a1714);
+  white-space: nowrap;
+}
+
+/* ══ TABLE ══ */
+.bib-table-wrap {
+  overflow-x: auto;
+  padding-bottom: 1.5rem;
+}
+.bib-table-wrap::-webkit-scrollbar { height: 3px; }
+.bib-table-wrap::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.bib-table {
+  width: 100%; border-collapse: collapse;
+  font-family: 'Mulish', sans-serif;
+  min-width: 500px;
+}
+
+.bib-table thead tr { border-bottom: 1px solid var(--border); }
+.bib-table thead th {
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-soft); opacity: .5;
+  padding: .6rem .7rem .45rem;
+  text-align: left;
+  background: var(--surface);
+}
+.bib-table th:nth-child(1) { width: 20%; }
+.bib-table th:nth-child(2) { width: 16%; }
+.bib-table th:nth-child(3) { width: 64%; }
+
+.bib-table tbody tr {
+  border-bottom: 1px solid rgba(221,214,200,.5);
+  transition: background .12s;
+}
+.bib-table tbody tr:last-child { border-bottom: none; }
+.bib-table tbody tr:hover { background: color-mix(in srgb, var(--sc) 4%, var(--surface)); }
+
+.bib-table td { padding: .6rem .7rem; vertical-align: top; }
+
+.bib-concept {
+  font-size: .80rem; font-weight: 700;
+  color: var(--ink); line-height: 1.35;
+}
+
+.bib-penseur {
+  font-size: .72rem; font-weight: 400; font-style: italic;
+  color: var(--ink-soft); line-height: 1.45;
+}
+
+.bib-def {
+  font-size: .88rem; font-weight: 300;
+  color: var(--ink-mid); line-height: 1.72;
+}
+
+/* Listes dans les définitions enrichies */
+.bib-list {
+  margin: .5rem 0 .35rem .2rem;
+  padding-left: 1rem;
+  list-style: none;
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.bib-list li {
+  position: relative;
+  padding-left: .6rem;
+  font-size: .84rem; line-height: 1.6;
+}
+.bib-list li::before {
+  content: '—';
+  position: absolute; left: -.55rem;
+  color: var(--sc, var(--border2));
+  opacity: .6; font-weight: 400;
+}
+.bib-list li strong {
+  font-weight: 700; color: var(--ink);
+}
+
+/* indicateur couleur au hover sur concept */
+.bib-table td.bib-concept { position: relative; padding-left: .9rem; }
+.bib-table td.bib-concept::before {
+  content: '';
+  position: absolute; left: 0; top: .7rem;
+  bottom: .5rem; width: 2px; border-radius: 1px;
+  background: var(--sc, var(--border2));
+  opacity: 0; transition: opacity .15s;
+}
+.bib-table tbody tr:hover td.bib-concept::before { opacity: .7; }
+
+/* ══ MOBILE — cartes ══ */
+@media (max-width: 540px) {
+  .bib-table-wrap { overflow: visible; }
+  .bib-table, .bib-table thead, .bib-table tbody,
+  .bib-table tr, .bib-table td, .bib-table th { display: block; width: 100%; }
+  .bib-table thead { display: none; }
+  .bib-table tbody tr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid color-mix(in srgb, var(--sc) 55%, transparent);
+    border-radius: 4px;
+    margin-bottom: .55rem;
+    padding: .1rem 0;
+  }
+  .bib-table tbody tr:hover { background: var(--surface); }
+  .bib-concept { font-size: .83rem; padding: .5rem .7rem .1rem .9rem; }
+  .bib-concept::before { display: none; }
+  .bib-penseur { padding: 0 .7rem .28rem .9rem; font-size: .70rem; }
+  .bib-def { padding: .28rem .7rem .55rem .9rem; font-size: .86rem; }
+}
+
+/* ══ RECHERCHE ══ */
+.bib-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .9rem 0 .85rem;
+  border-bottom: 1px solid var(--border);
+}
+.bib-search-field {
+  display: flex; align-items: center; gap: .5rem;
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .5rem .75rem;
+  transition: border-color .18s, box-shadow .18s;
+}
+.bib-search-field:focus-within {
+  border-color: var(--border2);
+  box-shadow: 0 0 0 3px rgba(139,94,60,.08);
+}
+.bib-search-ico {
+  color: var(--ink-soft); opacity: .45; flex-shrink: 0;
+}
+.bib-search-input {
+  flex: 1; border: none; background: transparent;
+  font-family: 'Mulish', sans-serif;
+  font-size: .86rem; font-weight: 300;
+  color: var(--ink); outline: none;
+  min-width: 0;
+}
+.bib-search-input::placeholder { color: var(--ink-soft); opacity: .5; }
+.bib-search-input::-webkit-search-cancel-button { display: none; }
+.bib-search-kbd {
+  font-family: 'Mulish', sans-serif;
+  font-size: .60rem; font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--ink-soft); opacity: .45;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: .12rem .32rem;
+  flex-shrink: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+}
+.bib-search-kbd[hidden] { display: none; }
+.bib-search-clear {
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--ink-soft); opacity: .45;
+  display: flex; align-items: center;
+  transition: opacity .15s;
+  flex-shrink: 0;
+}
+.bib-search-clear:hover { opacity: .8; }
+.bib-search-status {
+  font-family: 'Mulish', sans-serif;
+  font-size: .70rem; font-weight: 400;
+  color: var(--ink-soft); opacity: .6;
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* ══ RÉSULTATS — filtrage in-place ══ */
+
+/* Ligne masquée par la recherche */
+.bib-row-hidden { display: none !important; }
+
+/* Section entière masquée si aucun résultat dedans */
+.bib-section-hidden { display: none !important; }
+
+/* Highlight des termes trouvés */
+mark.bib-hl {
+  background: rgba(232,184,50,.38);
+  color: inherit; border-radius: 2px; padding: 0 .06em;
+}
+
+/* Message aucun résultat / nb résultats */
+.bib-search-empty {
+  padding: .75rem 0 0 1.75rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .84rem; font-weight: 300; font-style: italic;
+  color: #9a9189;
+}
+.bib-search-empty[hidden] { display: none; }
+
+
+.bib-nav-lien[data-s="1"] { --sc: var(--dim0); }
+.bib-nav-lien[data-s="2"] { --sc: var(--dim1); }
+.bib-nav-lien[data-s="3"] { --sc: var(--dim2); }
+.bib-nav-lien[data-s="4"] { --sc: var(--dim3); }
+.bib-nav-lien[data-s="5"] { --sc: var(--dim4); }
+.bib-nav-lien[data-s="6"] { --sc: var(--dim5); }
+.bib-nav-lien[data-s="7"] { --sc: var(--dim6); }
+.bib-nav-lien[data-s="8"] { --sc: var(--dim7); }
+</style>
+
+<script>
+(function () {
+
+  /* ══ 0. AUTOMATISATIONS AU CHARGEMENT ══ */
+
+  // Utilitaire : extraire les noms de famille depuis une cellule penseur
+  function extractNoms(text) {
+    return text.split(/·|,/).map(p => {
+      const t = p.trim();
+      if (!t) return null;
+      // Dernier mot = nom de famille (ex: "Donella Meadows" → "Meadows")
+      const parts = t.split(/\s+/);
+      return parts[parts.length - 1].replace(/\.$/, '');
+    }).filter(Boolean);
+  }
+
+  // A — Décompte dynamique penseurs uniques + concepts
+  const allConcepts  = document.querySelectorAll('.bib-concept');
+  const penseurNoms  = new Set();
+  document.querySelectorAll('.bib-penseur').forEach(el => {
+    extractNoms(el.textContent).forEach(n => penseurNoms.add(n.toLowerCase()));
+  });
+  const chipPenseurs = document.getElementById('chip-penseurs');
+  const chipConcepts = document.getElementById('chip-concepts');
+  if (chipPenseurs) chipPenseurs.textContent = `${penseurNoms.size} penseurs`;
+  if (chipConcepts) chipConcepts.textContent = `${allConcepts.length} concepts`;
+
+  // B — Bulles : statiques, pas besoin de les recalculer
+
+  // C — Badge ⌃K : masquer quand input actif ou rempli
+  const kbdEl = document.getElementById('bib-search-kbd');
+  const input = document.getElementById('bib-search');
+  if (kbdEl && input) {
+    const updateKbd = () => {
+      kbdEl.hidden = document.activeElement === input || input.value.length > 0;
+    };
+    input.addEventListener('focus',  updateKbd);
+    input.addEventListener('blur',   updateKbd);
+    input.addEventListener('input',  updateKbd);
+  }
+
+  /* ══ 1. SCROLL SPY ══ */
+  const sections  = document.querySelectorAll('.bib-section[data-s]');
+  const navLinks  = document.querySelectorAll('.bib-nav-lien[data-s]');
+  if (sections.length && navLinks.length) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const s = e.target.dataset.s;
+          navLinks.forEach(l => l.classList.toggle('active', l.dataset.s === s));
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px' });
+    sections.forEach(s => spy.observe(s));
+  }
+
+  /* ══ 2. INDEX — construire une fois au chargement ══ */
+  // Pour chaque <tr> on stocke : l'élément DOM, les textes searchables,
+  // et les innerHTML originaux des 3 cellules (pour restauration après highlight)
+  const rows = [];
+  sections.forEach(sec => {
+    sec.querySelectorAll('tbody tr').forEach(tr => {
+      const cEl = tr.querySelector('.bib-concept');
+      const pEl = tr.querySelector('.bib-penseur');
+      const dEl = tr.querySelector('.bib-def');
+      if (!cEl) return;
+      rows.push({
+        tr,
+        section: sec,
+        // textes normalisés pour la recherche
+        cText: normalise(cEl.textContent || ''),
+        pText: normalise(pEl?.textContent || ''),
+        dText: normalise(dEl?.textContent  || ''),
+        // innerHTML originaux pour restauration
+        cHTML: cEl.innerHTML,
+        pHTML: pEl?.innerHTML || '',
+        dHTML: dEl?.innerHTML  || '',
+        cEl, pEl, dEl,
+      });
+    });
+  });
+
+  /* ══ 3. UTILITAIRES ══ */
+  function normalise(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function escapeRe(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  // Highlight : remplace dans le textContent uniquement (pas dans les balises HTML)
+  // pour ne pas casser les <ul><li><strong> des définitions enrichies
+  function highlightHTML(originalHTML, raw) {
+    if (!raw) return originalHTML;
+    // On wrap dans un div temporaire, on traverse les TextNode, on remplace
+    const tmp = document.createElement('div');
+    tmp.innerHTML = originalHTML;
+    highlightNode(tmp, new RegExp(`(${escapeRe(normalise(raw))})`, 'gi'), raw);
+    return tmp.innerHTML;
+  }
+
+  function highlightNode(node, reNorm, raw) {
+    node.childNodes.forEach(child => {
+      if (child.nodeType === Node.TEXT_NODE) {
+        const norm = normalise(child.textContent);
+        if (reNorm.test(norm)) {
+          // Reconstruire en préservant la casse originale
+          const re = new RegExp(`(${escapeRe(raw)})`, 'gi');
+          const wrapped = child.textContent.replace(re, '<mark class="bib-hl">$1</mark>');
+          const frag = document.createRange().createContextualFragment(wrapped);
+          child.replaceWith(frag);
+        }
+      } else if (child.nodeType === Node.ELEMENT_NODE && child.tagName !== 'MARK') {
+        highlightNode(child, reNorm, raw);
+      }
+    });
+  }
+
+  /* ══ 4. DOM ══ */
+  const clearBtn = document.getElementById('bib-search-clear');
+  const status   = document.getElementById('bib-search-status');
+  const emptyEl  = document.getElementById('bib-search-empty');
+  const emptyMsg = document.getElementById('bib-empty-msg');
+  const kbd      = document.getElementById('bib-search-kbd');
+  if (!input) return;
+
+  /* ══ 5. ÉTAT ══ */
+  let activeQuery = '';
+
+  /* ══ 6. RESET — restaure le DOM à l'état original ══ */
+  function reset() {
+    rows.forEach(r => {
+      r.tr.classList.remove('bib-row-hidden');
+      r.cEl.innerHTML = r.cHTML;
+      if (r.pEl) r.pEl.innerHTML = r.pHTML;
+      if (r.dEl) r.dEl.innerHTML = r.dHTML;
+    });
+    sections.forEach(s => s.classList.remove('bib-section-hidden'));
+    emptyEl.hidden = true;
+    status.textContent = '';
+    clearBtn.hidden = true;
+    if (kbd) kbd.hidden = false;
+    activeQuery = '';
+  }
+
+  /* ══ 7. SEARCH ══ */
+  function search(raw) {
+    const q   = raw.trim();
+    const qn  = normalise(q);
+
+    // Toujours d'abord restaurer les HTML originaux
+    rows.forEach(r => {
+      r.cEl.innerHTML = r.cHTML;
+      if (r.pEl) r.pEl.innerHTML = r.pHTML;
+      if (r.dEl) r.dEl.innerHTML = r.dHTML;
+    });
+
+    if (!qn) { reset(); return; }
+
+    clearBtn.hidden = false;
+    if (kbd) kbd.hidden = true;
+    activeQuery = q;
+
+    let visibleCount = 0;
+
+    rows.forEach(r => {
+      const matches = r.cText.includes(qn)
+                   || r.pText.includes(qn)
+                   || r.dText.includes(qn);
+
+      if (matches) {
+        r.tr.classList.remove('bib-row-hidden');
+        visibleCount++;
+        // Highlight dans chaque cellule
+        r.cEl.innerHTML = highlightHTML(r.cHTML, q);
+        if (r.pEl) r.pEl.innerHTML = highlightHTML(r.pHTML, q);
+        if (r.dEl) r.dEl.innerHTML = highlightHTML(r.dHTML, q);
+      } else {
+        r.tr.classList.add('bib-row-hidden');
+      }
+    });
+
+    // Masquer les sections entières sans résultat visible
+    sections.forEach(sec => {
+      const hasVisible = sec.querySelector('tbody tr:not(.bib-row-hidden)');
+      sec.classList.toggle('bib-section-hidden', !hasVisible);
+    });
+
+    // Statut
+    if (visibleCount === 0) {
+      emptyMsg.textContent = `Aucun résultat pour « ${q} ».`;
+      emptyEl.hidden = false;
+      status.textContent = '0 résultat';
+    } else {
+      emptyEl.hidden = true;
+      status.textContent = visibleCount === 1 ? '1 résultat' : `${visibleCount} résultats`;
+    }
+  }
+
+  /* ══ 8. ÉVÉNEMENTS ══ */
+  input.addEventListener('input', e => search(e.target.value));
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
+    reset();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && input.value) {
+      input.value = '';
+      reset();
+    }
+    if ((e.key === '/' || (e.ctrlKey && e.key === 'k')) && document.activeElement !== input) {
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
+
+})();
+</script>
+
+</BaseLayout>

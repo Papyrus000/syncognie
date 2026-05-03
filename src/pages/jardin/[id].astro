@@ -1,0 +1,262 @@
+---
+// src/pages/jardin/[id].astro
+import BaseLayout from '../../layouts/Base.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  let notes = [];
+  try { notes = await getCollection('jardin'); } catch (e) {}
+  return notes.map(note => ({ params: { id: note.id } }));
+}
+
+const { id } = Astro.params;
+const note = await getEntry('jardin', id);
+
+if (!note) return Astro.redirect('/jardin');
+
+const { Content } = await render(note);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+const stadeLabel = (s: string) => ({ graine: 'Graine', pousse: 'Pousse', arbre: 'Arbre' }[s] ?? s);
+const stadeEmoji = (s: string) => ({ graine: '🌱', pousse: '🌿', arbre: '🌳' }[s] ?? '🌱');
+---
+
+<BaseLayout
+  title={`${note.data.titre} — Le Jardin`}
+  description={note.data.description ?? `Note de jardin : ${note.data.titre}`}
+>
+
+<article class="jnote-page">
+
+  <!-- FIL D'ARIANE -->
+  <nav class="jn-fil">
+    <a href="/jardin" class="jn-fil-lien">← Jardin</a>
+  </nav>
+
+  <!-- EN-TÊTE -->
+  <header class="jn-header">
+
+    <div class="jn-meta-haut">
+      <span class="jn-stade" title={stadeLabel(note.data.stade)}>
+        {stadeEmoji(note.data.stade)} {stadeLabel(note.data.stade)}
+      </span>
+      {note.data.tags.map(tag => (
+        <span class="jn-tag">{tag}</span>
+      ))}
+    </div>
+
+    <h1 class="jn-titre">{note.data.titre}</h1>
+
+    {note.data.description && (
+      <p class="jn-desc">{note.data.description}</p>
+    )}
+
+    <time class="jn-date" datetime={note.data.date.toISOString()}>
+      {formatDate(note.data.date)}
+    </time>
+
+  </header>
+
+  <!-- CONTENU MARKDOWN -->
+  <div class="jn-corps">
+    <Content />
+  </div>
+
+  <!-- PIED -->
+  <footer class="jn-pied">
+    <a href="/jardin" class="jn-retour">← Retour au jardin</a>
+  </footer>
+
+</article>
+
+<style>
+/* ── Page ── */
+.jnote-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.8rem 1.75rem 6rem;
+}
+
+/* ── Fil d'ariane ── */
+.jn-fil {
+  margin-bottom: 2.2rem;
+}
+.jn-fil-lien {
+  font-family: 'Mulish', sans-serif;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color .15s;
+}
+.jn-fil-lien:hover { color: var(--ink); }
+
+/* ── En-tête ── */
+.jn-header {
+  margin-bottom: 2.8rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.jn-meta-haut {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem .7rem;
+  margin-bottom: 1.1rem;
+}
+
+.jn-stade {
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.jn-tag {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem;
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: .6;
+  padding: .15rem .5rem;
+  border: 1px solid rgba(0,0,0,.1);
+  border-radius: 2px;
+}
+
+.jn-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin-bottom: .8rem;
+}
+
+.jn-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .92rem;
+  font-weight: 300;
+  color: var(--ink-mid);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  max-width: 52ch;
+}
+
+.jn-date {
+  font-family: 'Mulish', sans-serif;
+  font-size: .65rem;
+  font-weight: 300;
+  letter-spacing: .07em;
+  color: var(--ink-soft);
+  opacity: .5;
+}
+
+/* ── Corps markdown ── */
+.jn-corps {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .95rem;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.jn-corps h2 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  margin: 2.4rem 0 .8rem;
+  padding-bottom: .4rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.jn-corps h3 {
+  font-family: 'Mulish', sans-serif;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 1.8rem 0 .6rem;
+}
+
+.jn-corps p {
+  margin-bottom: 1.2rem;
+}
+
+.jn-corps p:last-child { margin-bottom: 0; }
+
+.jn-corps strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.jn-corps em {
+  font-style: italic;
+}
+
+.jn-corps hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.2rem 0;
+}
+
+.jn-corps ul, .jn-corps ol {
+  padding-left: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+.jn-corps li {
+  margin-bottom: .4rem;
+}
+
+.jn-corps a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.jn-corps blockquote {
+  border-left: 2px solid var(--rule);
+  padding-left: 1.2rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--ink-mid);
+  opacity: .85;
+}
+
+/* ── Pied ── */
+.jn-pied {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.jn-retour {
+  font-family: 'Mulish', sans-serif;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color .15s;
+}
+.jn-retour:hover { color: var(--ink); }
+
+/* ── Responsive ── */
+@media (max-width: 500px) {
+  .jnote-page { padding: 2rem 1.25rem 4rem; }
+  .jn-titre { font-size: 1.4rem; }
+}
+</style>
+
+</BaseLayout>

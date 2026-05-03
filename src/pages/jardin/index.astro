@@ -1,0 +1,418 @@
+---
+// src/pages/jardin/index.astro
+import BaseLayout from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+// Récupère toutes les notes du jardin, triées par date décroissante
+let notes = [];
+try {
+  const raw = await getCollection('jardin');
+  notes = raw.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+} catch (e) {
+  // Collection vide ou inexistante — la page s'affiche quand même
+}
+
+// Regroupe les tags uniques pour les filtres
+const tousLesTags = [...new Set(notes.flatMap(n => n.data.tags))].sort();
+
+// Compte par stade
+const nbGraine = notes.filter(n => n.data.stade === 'graine').length;
+const nbPousse = notes.filter(n => n.data.stade === 'pousse').length;
+const nbArbre  = notes.filter(n => n.data.stade === 'arbre').length;
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function stadeEmoji(stade: string) {
+  if (stade === 'pousse') return '🌿';
+  if (stade === 'arbre')  return '🌳';
+  return '🌱';
+}
+---
+
+<BaseLayout
+  title="Le Jardin de Syncognie — Notes en croissance"
+  description="Un espace de notes vivantes. Aucune catégorie imposée. Des concepts qui poussent, se connectent, évoluent."
+>
+
+<!-- ══ EN-TÊTE DU JARDIN ══ -->
+<section class="jardin-hero">
+  <div class="jardin-hero-inner">
+
+    <div class="jardin-eyebrow">
+      <span class="jardin-eyebrow-dot"></span>
+      Le Jardin de Syncognie
+    </div>
+
+    <h1 class="jardin-titre">
+      Des notes qui poussent.<br>
+      <em>Rien n'est terminé ici.</em>
+    </h1>
+
+    <p class="jardin-sous">
+      Un espace de pensée ouvert. Les concepts arrivent en vrac, s'étiquettent,
+      mûrissent. Les connexions émergent d'elles-mêmes au fil du temps.
+    </p>
+
+    <!-- Compteurs stades -->
+    {notes.length > 0 && (
+      <div class="jardin-stats">
+        <span class="jstat">
+          <span class="jstat-emoji">🌱</span>
+          <span class="jstat-n">{nbGraine}</span>
+          <span class="jstat-lbl">graine{nbGraine > 1 ? 's' : ''}</span>
+        </span>
+        <span class="jstat-sep">·</span>
+        <span class="jstat">
+          <span class="jstat-emoji">🌿</span>
+          <span class="jstat-n">{nbPousse}</span>
+          <span class="jstat-lbl">pousse{nbPousse > 1 ? 's' : ''}</span>
+        </span>
+        <span class="jstat-sep">·</span>
+        <span class="jstat">
+          <span class="jstat-emoji">🌳</span>
+          <span class="jstat-n">{nbArbre}</span>
+          <span class="jstat-lbl">arbre{nbArbre > 1 ? 's' : ''}</span>
+        </span>
+      </div>
+    )}
+
+  </div>
+</section>
+
+<!-- ══ ÉTAT VIDE ══ -->
+{notes.length === 0 && (
+  <section class="jardin-vide">
+    <div class="jardin-vide-inner">
+      <div class="jardin-vide-glyph">✦</div>
+      <p class="jardin-vide-txt">
+        Le jardin est vide pour l'instant.<br>
+        La première note est en chemin.
+      </p>
+    </div>
+  </section>
+)}
+
+<!-- ══ FILTRES PAR TAG ══ -->
+{tousLesTags.length > 0 && (
+  <div class="jardin-filtres">
+    <button class="jfiltres-btn jfiltres-btn--actif" data-tag="tous">Tout</button>
+    {tousLesTags.map(tag => (
+      <button class="jfiltres-btn" data-tag={tag}>{tag}</button>
+    ))}
+  </div>
+)}
+
+<!-- ══ GRILLE DE NOTES ══ -->
+{notes.length > 0 && (
+  <div class="jardin-grille" id="jardin-grille">
+    {notes.map((note, i) => (
+      <a
+        class={`jnote jnote--${note.data.stade}`}
+        href={`/jardin/${note.id}`}
+        data-tags={note.data.tags.join(',')}
+        style={`animation-delay: ${i * 0.06}s`}
+      >
+        <!-- Barre de stade -->
+        <div class="jnote-barre"></div>
+
+        <!-- En-tête -->
+        <div class="jnote-hd">
+          <span class="jnote-stade">{stadeEmoji(note.data.stade)}</span>
+          <div class="jnote-tags">
+            {note.data.tags.map(tag => (
+              <span class="jnote-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Contenu -->
+        <h2 class="jnote-titre">{note.data.titre}</h2>
+
+        {note.data.description && (
+          <p class="jnote-desc">{note.data.description}</p>
+        )}
+
+        <!-- Pied -->
+        <div class="jnote-pied">
+          <span class="jnote-date">{formatDate(note.data.date)}</span>
+          <span class="jnote-lire">Lire →</span>
+        </div>
+
+      </a>
+    ))}
+  </div>
+)}
+
+<style>
+/* ── Variables ── */
+:root {
+  --max: 740px;
+  --jardin-vert:    #3a7c4e;
+  --jardin-vert-bg: rgba(46,122,74,.06);
+  --jardin-or:      #c4993a;
+  --jardin-or-bg:   rgba(196,153,58,.07);
+  --jardin-bleu:    #3a6a9a;
+  --jardin-bleu-bg: rgba(58,106,154,.07);
+}
+
+/* ══ HERO ══ */
+.jardin-hero {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 3.4rem 1.75rem 2rem;
+}
+.jardin-hero-inner { max-width: 52ch; }
+
+.jardin-eyebrow {
+  display: flex; align-items: center; gap: .6rem;
+  font-family: 'Mulish', sans-serif;
+  font-size: .70rem; font-weight: 700;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--jardin-vert); opacity: .8;
+  margin-bottom: 1.1rem;
+}
+.jardin-eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--jardin-vert);
+  animation: dot-pulse 2.8s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: .5; }
+}
+
+.jardin-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 700; line-height: 1.18;
+  color: var(--ink); letter-spacing: -.02em;
+  margin-bottom: .9rem;
+}
+.jardin-titre em {
+  font-style: italic; font-weight: 400;
+  color: var(--jardin-vert);
+}
+
+.jardin-sous {
+  font-family: 'Mulish', sans-serif;
+  font-size: .88rem; font-weight: 300;
+  color: var(--ink-soft); line-height: 1.8;
+  max-width: 48ch; margin-bottom: 1.4rem;
+}
+
+/* Compteurs stades */
+.jardin-stats {
+  display: flex; align-items: center; gap: .7rem;
+  flex-wrap: wrap;
+}
+.jstat {
+  display: flex; align-items: center; gap: .3rem;
+  font-family: 'Mulish', sans-serif; font-size: .78rem;
+}
+.jstat-emoji { font-size: .85rem; }
+.jstat-n     { font-weight: 700; color: var(--ink); }
+.jstat-lbl   { font-weight: 300; color: var(--ink-soft); }
+.jstat-sep   { color: var(--ink-soft); opacity: .35; }
+
+/* ══ ÉTAT VIDE ══ */
+.jardin-vide {
+  max-width: var(--max); margin: 2.8rem auto 4rem;
+  padding: 0 1.75rem;
+}
+.jardin-vide-inner {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1rem; padding: 3.5rem 2rem;
+  border: 1px dashed rgba(46,122,74,.25);
+  border-radius: 10px;
+  background: linear-gradient(160deg,
+    rgba(245,249,245,.6) 0%,
+    rgba(237,247,239,.4) 100%
+  );
+}
+.jardin-vide-glyph {
+  font-size: 1.4rem; color: var(--jardin-vert); opacity: .3;
+  animation: dot-pulse 3s ease-in-out infinite;
+}
+.jardin-vide-txt {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .9rem; font-style: italic;
+  color: var(--ink-soft); text-align: center; line-height: 1.7;
+  opacity: .7;
+}
+
+/* ══ FILTRES ══ */
+.jardin-filtres {
+  max-width: var(--max); margin: 2.8rem auto 1.6rem;
+  padding: 0 1.75rem;
+  display: flex; gap: .45rem; flex-wrap: wrap;
+}
+.jfiltres-btn {
+  font-family: 'Mulish', sans-serif;
+  font-size: .64rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .28rem .72rem; border-radius: 2px;
+  border: 1px solid rgba(46,122,74,.22);
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background .18s, color .18s, border-color .18s;
+}
+.jfiltres-btn:hover,
+.jfiltres-btn--actif {
+  background: var(--jardin-vert-bg);
+  color: var(--jardin-vert);
+  border-color: rgba(46,122,74,.4);
+}
+
+/* ══ GRILLE ══ */
+.jardin-grille {
+  max-width: var(--max); margin: 0 auto 4rem;
+  padding: 0 1.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: .9rem;
+}
+
+/* ══ CARTE NOTE ══ */
+.jnote {
+  position: relative;
+  display: flex; flex-direction: column;
+  text-decoration: none; color: inherit;
+  border-radius: 7px;
+  border: 1px solid #e8e2d8;
+  background: #faf8f4;
+  padding: 1.1rem 1.1rem .9rem;
+  overflow: hidden;
+  transition: transform .25s cubic-bezier(.16,.84,.44,1),
+              box-shadow .25s, border-color .25s;
+  animation: note-apparait .5s cubic-bezier(.16,.84,.44,1) both;
+}
+@keyframes note-apparait {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.jnote:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(60,40,20,.1);
+}
+
+/* Barre colorée selon stade */
+.jnote-barre {
+  position: absolute; top: 0; left: 0; right: 0; height: 2.5px;
+}
+.jnote--graine .jnote-barre { background: #7ac898; }
+.jnote--pousse .jnote-barre { background: #4aaa6a; }
+.jnote--arbre  .jnote-barre { background: #2e7a4a; }
+
+/* Teinte de fond subtile selon stade */
+.jnote--graine { background: #faf8f4; border-color: #e8e2d8; }
+.jnote--pousse { background: #f6faf6; border-color: rgba(74,170,106,.18); }
+.jnote--arbre  { background: #f3f8f4; border-color: rgba(46,122,74,.22); }
+
+.jnote--graine:hover { border-color: #c8bc9a; }
+.jnote--pousse:hover { border-color: rgba(74,170,106,.35); }
+.jnote--arbre:hover  { border-color: rgba(46,122,74,.38); }
+
+/* En-tête de la carte */
+.jnote-hd {
+  display: flex; align-items: center; gap: .5rem;
+  margin-bottom: .65rem;
+  flex-wrap: wrap;
+}
+.jnote-stade { font-size: .85rem; line-height: 1; flex-shrink: 0; }
+.jnote-tags  { display: flex; gap: .3rem; flex-wrap: wrap; }
+.jnote-tag {
+  font-family: 'Mulish', sans-serif;
+  font-size: .58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .14rem .4rem; border-radius: 2px;
+  background: rgba(46,122,74,.07);
+  color: #3a7c4e;
+  border: 1px solid rgba(46,122,74,.18);
+}
+
+/* Titre */
+.jnote-titre {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: .92rem; font-weight: 700;
+  color: var(--ink); line-height: 1.3;
+  letter-spacing: -.01em; margin-bottom: .45rem;
+  flex: 1;
+  transition: color .18s;
+}
+.jnote:hover .jnote-titre { color: var(--jardin-vert); }
+
+/* Description */
+.jnote-desc {
+  font-family: 'Mulish', sans-serif;
+  font-size: .78rem; font-weight: 300;
+  color: var(--ink-soft); line-height: 1.6;
+  margin-bottom: .7rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Pied */
+.jnote-pied {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: .65rem;
+  border-top: 1px solid rgba(0,0,0,.05);
+}
+.jnote-date {
+  font-family: 'Mulish', sans-serif;
+  font-size: .64rem; font-weight: 300;
+  letter-spacing: .06em;
+  color: var(--ink-soft); opacity: .55;
+}
+.jnote-lire {
+  font-family: 'Mulish', sans-serif;
+  font-size: .64rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--jardin-vert); opacity: 0;
+  transition: opacity .18s;
+}
+.jnote:hover .jnote-lire { opacity: 1; }
+@media (hover: none) { .jnote-lire { opacity: .7; } }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 560px) {
+  .jardin-hero  { padding: 2rem 1.1rem 1.5rem; }
+  .jardin-grille,
+  .jardin-filtres { padding: 0 1rem; }
+  .jardin-grille { grid-template-columns: 1fr; }
+}
+</style>
+
+<script>
+// Filtrage par tag — côté client, sans rechargement
+(function () {
+  const btns   = document.querySelectorAll('.jfiltres-btn');
+  const notes  = document.querySelectorAll('.jnote');
+  if (!btns.length) return;
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.tag;
+
+      // Mise à jour des boutons
+      btns.forEach(b => b.classList.remove('jfiltres-btn--actif'));
+      btn.classList.add('jfiltres-btn--actif');
+
+      // Affichage / masquage des notes
+      notes.forEach(note => {
+        const noteTags = note.dataset.tags?.split(',') ?? [];
+        const visible  = tag === 'tous' || noteTags.includes(tag);
+        (note as HTMLElement).style.display = visible ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>
+
+</BaseLayout>

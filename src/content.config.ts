@@ -122,4 +122,18 @@ const nouvelles = defineCollection({
   }),
 });
 
-export const collections = { articles, fenetres, carnet, atelier, planches, journal, nouvelles };
+// ── Collection NOUVELLE : jardin ──
+// Notes libres, sans catégorie imposée. Tags et stade émergent au fil du temps.
+const jardin = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/jardin' }),
+  schema: z.object({
+    id:          z.string(),
+    titre:       z.string(),
+    tags:        z.array(z.string()).default([]),
+    stade:       z.enum(['graine', 'pousse', 'arbre']).default('graine'),
+    date:        z.coerce.date(),
+    description: z.string().optional(),
+  }),
+});
+
+export const collections = { articles, fenetres, carnet, atelier, planches, journal, nouvelles, jardin };

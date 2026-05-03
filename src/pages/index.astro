@@ -10,6 +10,11 @@ const journalEntries = allJournal.sort((a, b) => b.data.date.valueOf() - a.data.
 const allNouvelles = await getCollection('nouvelles', ({ data }) => !data.draft);
 const nouvellesEntries = allNouvelles.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+// Jardin — notes libres, triées par date décroissante
+let allJardin = [];
+try { allJardin = await getCollection('jardin'); } catch (e) {}
+const jardinNotes = allJardin.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
 const serieNotes = allArticles
   .filter(a => a.data.serie === "Notes d'un modèle en construction")
   .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0)); // ordre des épisodes croissant
@@ -427,7 +432,7 @@ function formatDateShort(date: Date) {
           </li>
 
           <!-- ── VII. NOUVELLES ── -->
-          <li class="toc-section toc-section--last">
+          <li class="toc-section">
             <a class="toc-row toc-row--section" href="/nouvelles">
               <span class="toc-n">VII</span>
               <span class="toc-name">Nouvelles</span>
@@ -459,6 +464,50 @@ function formatDateShort(date: Date) {
                 </li>
               )}
             </ul>
+          </li>
+
+          <!-- ── VIII. JARDIN ── -->
+          <li class="toc-section">
+            <a class="toc-row toc-row--section" href="/jardin">
+              <span class="toc-n">VIII</span>
+              <span class="toc-name">Jardin</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Notes en croissance — concepts, fragments, connexions qui émergent</span>
+              <span class="toc-ct">{jardinNotes.length} note{jardinNotes.length !== 1 ? 's' : ''}</span>
+            </a>
+
+            <ul class="toc-mecanique">
+              {jardinNotes.slice(0, 3).map((note) => (
+                <li>
+                  <a class="toc-mec-item" href={`/jardin/${note.id}`}>
+                    <span class="toc-mec-date">
+                      {note.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                    <span class="toc-mec-titre">{note.data.titre}</span>
+                    <span class="toc-mec-arr">→</span>
+                  </a>
+                </li>
+              ))}
+              {jardinNotes.length === 0 && (
+                <li>
+                  <span class="toc-mec-item" style="opacity:.4;cursor:default;pointer-events:none">
+                    <span class="toc-mec-date"></span>
+                    <span class="toc-mec-titre" style="font-style:italic">Le jardin pousse…</span>
+                  </span>
+                </li>
+              )}
+            </ul>
+          </li>
+
+          <!-- ── IX. BIBLIOTHÈQUE ── -->
+          <li class="toc-section toc-section--last">
+            <a class="toc-row toc-row--section" href="/bibliotheque">
+              <span class="toc-n">IX</span>
+              <span class="toc-name">Bibliothèque</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Tous les concepts, penseurs et mécanismes — index dense</span>
+              <span class="toc-ct">index</span>
+            </a>
           </li>
 
         </ul>
