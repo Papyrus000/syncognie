@@ -1882,6 +1882,71 @@ function formatDateShort(date: Date) {
   opacity: .65; transition: opacity .2s;
 }
 .cn-all:hover { opacity: 1; }
+
+/* ══════════════════════════════════════
+   MOBILE PORTRAIT — max 560px
+   Aucun impact au-dessus de 560px
+══════════════════════════════════════ */
+@media (max-width: 560px) {
+
+  /* ── Hero ── */
+  .hero-left {
+    padding: 2rem 1.25rem 1.6rem;
+  }
+  .hero-titre {
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
+  }
+
+  /* ── Sections — padding latéral réduit ── */
+  .explorer,
+  .pubs-layout,
+  .portes-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* ── Portes (Vies / Cartes) ── */
+  .porte-inner {
+    padding: 22px 18px 18px 20px;
+  }
+  .dial-rp {
+    grid-template-columns: auto 1fr;
+    gap: .4rem;
+  }
+  .penseur {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  /* ── Sommaire TOC ── */
+  .toc-row--section {
+    flex-wrap: wrap;
+    gap: .3rem .5rem;
+  }
+  .toc-dots {
+    display: none;
+  }
+  .toc-desc {
+    display: none;
+  }
+  .toc-mec-date {
+    min-width: 4.5rem;
+  }
+
+  /* ── Plancher de lisibilité typographique ── */
+  .jardin-stade-desc,
+  .engage-desc,
+  .toc-sub-ct,
+  .article-date {
+    font-size: .72rem;
+  }
+  .cadre-lbl,
+  .cadre-lnk,
+  .jardin-eyebrow,
+  .engage-eyebrow {
+    font-size: .62rem;
+  }
+
+}
 </style>
 
 <script>
