@@ -4,7 +4,7 @@ date: 2026-05-02
 genre: fragment
 description: "Léna est technicienne en neuroimagerie. Son travail : surveiller les scanners d'une étude sur le sommeil. Des nuits seule, devant des cerveaux qui dorment..."
 stade: graine
-illustration: /images/nouvelles/lena-v1.png
+illustration: /images/nouvelles/lena-v2.png
 ---
 ## Le service de nuit
 
