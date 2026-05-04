@@ -5,17 +5,18 @@
 import Base from './Base.astro';
 
 export interface Props {
-  title:        string;
-  date:         Date;
-  lecture?:     number;
-  genre?:       string;
-  stade?:       'graine' | 'pousse' | 'arbre';
-  slug:         string;
-  prev?:        { slug: string; title: string };
-  next?:        { slug: string; title: string };
+  title:         string;
+  date:          Date;
+  lecture?:      number;
+  genre?:        string;
+  stade?:        'graine' | 'pousse' | 'arbre';
+  slug:          string;
+  illustration?: string;
+  prev?:         { slug: string; title: string };
+  next?:         { slug: string; title: string };
 }
 
-const { title, date, lecture, genre, stade, slug, prev, next } = Astro.props;
+const { title, date, lecture, genre, stade, slug, illustration, prev, next } = Astro.props;
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -309,6 +310,11 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
       </div>
       <h1 class="jl-titre">{title}</h1>
       <div class="jl-rule"></div>
+      {illustration && (
+        <div class="jl-illustration">
+          <img src={illustration} alt={title} />
+        </div>
+      )}
     </header>
 
     <div class="jl-body" id="jl-body">
@@ -529,6 +535,23 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     background: var(--jl-accent);
     opacity: .5;
     margin-bottom: 2.2rem;
+  }
+  .jl-illustration {
+    margin: 0 -4rem 2.8rem;
+    overflow: hidden;
+    border-radius: 2px;
+    border-bottom: 1px solid var(--jl-border);
+  }
+  .jl-illustration img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+    object-position: center top;
+  }
+  @media (max-width: 520px) {
+    .jl-illustration { margin: 0 -1.5rem 2rem; }
   }
 
   /* ── NAVIGATION PREV / NEXT ── */

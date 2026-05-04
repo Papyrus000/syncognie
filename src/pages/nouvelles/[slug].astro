@@ -36,6 +36,7 @@ const readTime = entry.data.lecture ?? estimateLecture(entry.body ?? '');
   genre={entry.data.genre}
   stade={entry.data.stade}
   slug={entry.id}
+  illustration={entry.data.illustration}
   prev={prev ? { slug: prev.id, title: prev.data.title } : undefined}
   next={next ? { slug: next.id, title: next.data.title } : undefined}
 >
