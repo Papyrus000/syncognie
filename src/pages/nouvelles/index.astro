@@ -1,6 +1,5 @@
 ---
 // src/pages/nouvelles/index.astro
-// Index des Nouvelles — design cohérent avec le Journal
 
 import BaseLayout from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
@@ -16,6 +15,9 @@ entries.forEach(e => {
   byYear[y].push(e);
 });
 const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+// Nouvelles avec illustration pour le carrousel
+const slides = entries.filter(e => e.data.illustration);
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
@@ -48,6 +50,75 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
   <div class="jidx-rule"></div>
   <p class="jidx-count">{entries.length} nouvelle{entries.length > 1 ? 's' : ''}</p>
 </section>
+
+{slides.length > 0 && (
+  <div class="jidx-carousel" id="jidx-carousel">
+
+    <div class="jidx-carousel-track" id="jidx-track">
+      {slides.map((entry, i) => (
+        <div class="jidx-slide" data-index={i}>
+          <a class="jidx-slide-link" href={`/nouvelles/${entry.id}`} tabindex={i === 0 ? '0' : '-1'}>
+            <div class="jidx-slide-media">
+              <img
+                class="jidx-slide-img"
+                src={entry.data.illustration}
+                alt={entry.data.title}
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+              {entry.data.video && (
+                <video
+                  class="jidx-slide-video"
+                  src={entry.data.video}
+                  muted loop playsinline preload="metadata"
+                  data-slide-video
+                />
+              )}
+              <div class="jidx-slide-overlay"></div>
+            </div>
+            <div class="jidx-slide-content">
+              <div class="jidx-slide-meta">
+                {entry.data.genre && (
+                  <span class="jidx-slide-genre">
+                    {genreLabels[entry.data.genre] ?? entry.data.genre}
+                  </span>
+                )}
+                <span class="jidx-slide-badge">À lire</span>
+              </div>
+              <p class="jidx-slide-titre">{entry.data.title}</p>
+              {entry.data.description && (
+                <p class="jidx-slide-desc">{entry.data.description}</p>
+              )}
+              <span class="jidx-slide-cta">
+                Lire la nouvelle <span class="jidx-slide-arr">→</span>
+              </span>
+            </div>
+          </a>
+        </div>
+      ))}
+    </div>
+
+    {slides.length > 1 && (
+      <div class="jidx-carousel-dots" id="jidx-dots" role="tablist" aria-label="Slides">
+        {slides.map((_, i) => (
+          <button
+            class={`jidx-dot${i === 0 ? ' jidx-dot--active' : ''}`}
+            data-dot={i}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-label={`Slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    )}
+
+    {slides.length > 1 && (
+      <div class="jidx-carousel-progress" aria-hidden="true">
+        <div class="jidx-carousel-progress-bar" id="jidx-progress-bar"></div>
+      </div>
+    )}
+
+  </div>
+)}
 
 <div class="jidx-list">
   {years.map(year => (
@@ -89,7 +160,7 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
 
   {entries.length === 0 && (
     <div class="jidx-empty">
-      <p class="jidx-empty-txt">Les premières nouvelles arrivent bientôt. Un espace pour les histoires courtes.</p>
+      <p class="jidx-empty-txt">Les premières nouvelles arrivent bientôt.</p>
     </div>
   )}
 </div>
@@ -97,16 +168,14 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
 </BaseLayout>
 
 <style>
-  /* ── Polices ── */
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
-  /* ── Variables locales ── */
   :root {
-    --ji-accent:    #8b5e3c;
-    --ji-hl:        #E8D5C4;
-    --ji-serif:     'Lora', 'Libre Baskerville', Georgia, serif;
-    --ji-sans:      'DM Sans', 'Mulish', sans-serif;
-    --max:          740px;
+    --ji-accent:  #8b5e3c;
+    --ji-hl:      #E8D5C4;
+    --ji-serif:   'Lora', 'Libre Baskerville', Georgia, serif;
+    --ji-sans:    'DM Sans', 'Mulish', sans-serif;
+    --max:        740px;
   }
 
   /* ── HERO ── */
@@ -157,21 +226,198 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
     letter-spacing: .08em;
   }
 
+  /* ── CARROUSEL ── */
+  .jidx-carousel {
+    max-width: var(--max);
+    margin: 0 auto 3rem;
+    padding: 0 1.75rem;
+  }
+
+  .jidx-carousel-track {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .jidx-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+  }
+
+  .jidx-slide-link {
+    display: block;
+    text-decoration: none;
+  }
+
+  .jidx-slide-media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #1a1410;
+    overflow: hidden;
+    border-radius: 6px;
+  }
+
+  .jidx-slide-img,
+  .jidx-slide-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    display: block;
+  }
+
+  .jidx-slide-video {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .5s ease;
+  }
+  .jidx-slide-link:hover .jidx-slide-video { opacity: 1; }
+
+  .jidx-slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 25%,
+      rgba(12, 8, 4, 0.5) 60%,
+      rgba(12, 8, 4, 0.85) 100%
+    );
+    pointer-events: none;
+  }
+
+  .jidx-slide-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.4rem 1.6rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+
+  .jidx-slide-meta {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .1rem;
+  }
+  .jidx-slide-genre {
+    font-family: var(--ji-sans);
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.5);
+  }
+  .jidx-slide-badge {
+    font-family: var(--ji-sans);
+    font-size: .56rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ji-accent);
+    background: rgba(139, 94, 60, .18);
+    border: 1px solid rgba(139, 94, 60, .4);
+    padding: .18em .55em;
+    border-radius: 2px;
+  }
+  .jidx-slide-titre {
+    font-family: var(--ji-serif);
+    font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(255,255,255,.93);
+    line-height: 1.25;
+    letter-spacing: -.01em;
+  }
+  .jidx-slide-desc {
+    font-family: var(--ji-sans);
+    font-size: .74rem;
+    font-weight: 300;
+    color: rgba(255,255,255,.42);
+    line-height: 1.5;
+  }
+  .jidx-slide-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .25rem;
+    font-family: var(--ji-sans);
+    font-size: .63rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.45);
+    transition: color .2s;
+  }
+  .jidx-slide-link:hover .jidx-slide-cta { color: rgba(255,255,255,.85); }
+  .jidx-slide-arr {
+    color: var(--ji-accent);
+    transition: transform .25s cubic-bezier(.16,.84,.44,1);
+    display: inline-block;
+  }
+  .jidx-slide-link:hover .jidx-slide-arr { transform: translateX(5px); }
+
+  .jidx-slide-img {
+    transition: transform .6s ease;
+  }
+  .jidx-slide-link:hover .jidx-slide-img { transform: scale(1.025); }
+
+  /* ── POINTS ── */
+  .jidx-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    margin-top: .9rem;
+  }
+  .jidx-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    border: none;
+    background: var(--rule, #ddd);
+    cursor: pointer;
+    padding: 0;
+    transition: background .25s, transform .25s;
+    opacity: .45;
+  }
+  .jidx-dot--active {
+    background: var(--ji-accent);
+    transform: scale(1.35);
+    opacity: 1;
+  }
+
+  /* ── BARRE DE PROGRESSION ── */
+  .jidx-carousel-progress {
+    height: 2px;
+    background: rgba(139, 94, 60, .12);
+    border-radius: 1px;
+    margin-top: .6rem;
+    overflow: hidden;
+  }
+  .jidx-carousel-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--ji-accent);
+    border-radius: 1px;
+  }
+
   /* ── LISTE ── */
   .jidx-list {
     max-width: var(--max);
     margin: 0 auto;
     padding: 0 1.75rem 5rem;
   }
-
-  /* ── Groupe par année ── */
   .jidx-year-group {
     display: grid;
     grid-template-columns: 3.5rem 1fr;
     gap: 0 2rem;
     margin-bottom: .5rem;
   }
-
   .jidx-year-label {
     font-family: var(--ji-sans);
     font-size: .68rem;
@@ -183,15 +429,12 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
     text-align: right;
     white-space: nowrap;
   }
-
   .jidx-entries {
     list-style: none;
     border-left: 1px solid var(--rule);
     padding-left: 1.5rem;
     margin-left: 0;
   }
-
-  /* ── Entrée ── */
   .jidx-item { list-style: none; }
   .jidx-link {
     display: grid;
@@ -207,8 +450,7 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
   .jidx-link::before {
     content: '';
     position: absolute;
-    left: -1.55rem;
-    top: 1.55rem;
+    left: -1.55rem; top: 1.55rem;
     width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--rule);
@@ -247,7 +489,6 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
     border-radius: 2px;
     width: fit-content;
   }
-
   .jidx-item-centre { min-width: 0; }
   .jidx-item-titre {
     font-family: var(--ji-serif);
@@ -270,7 +511,6 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
   .jidx-item-right {
     display: flex;
     flex-direction: column;
@@ -295,11 +535,7 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
     transition: opacity .18s, transform .2s cubic-bezier(.16,.84,.44,1);
   }
 
-  /* ── Vide ── */
-  .jidx-empty {
-    padding: 3rem 0;
-    border-top: 1px solid var(--rule);
-  }
+  .jidx-empty { padding: 3rem 0; border-top: 1px solid var(--rule); }
   .jidx-empty-txt {
     font-family: var(--ji-serif);
     font-style: italic;
@@ -309,7 +545,6 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
     line-height: 1.6;
   }
 
-  /* ── Responsive ── */
   @media (max-width: 580px) {
     .jidx-year-group { grid-template-columns: 1fr; gap: 0; }
     .jidx-year-label { text-align: left; padding-top: 1.5rem; padding-bottom: .2rem; }
@@ -322,5 +557,133 @@ un personnage saisi à l'instant exact où quelque chose bascule.</p>
       font-family: var(--ji-sans);
       font-weight: 300;
     }
+    .jidx-carousel-track { aspect-ratio: 16 / 9; }
+    .jidx-slide-content { padding: 1rem 1.1rem 1.2rem; }
   }
 </style>
+
+<script>
+(function () {
+  const carousel = document.getElementById('jidx-carousel');
+  if (!carousel) return;
+
+  const track       = document.getElementById('jidx-track') as HTMLElement;
+  const dotsWrap    = document.getElementById('jidx-dots');
+  const progressBar = document.getElementById('jidx-progress-bar') as HTMLElement | null;
+  const slides      = Array.from(track.querySelectorAll('.jidx-slide')) as HTMLElement[];
+  const dots        = dotsWrap ? Array.from(dotsWrap.querySelectorAll('.jidx-dot')) as HTMLButtonElement[] : [];
+  const count       = slides.length;
+
+  if (count <= 1) return;
+
+  const DURATION = 10000;
+  let current = 0;
+  let autoTimer: ReturnType<typeof setTimeout> | null = null;
+  let rafId: number | null = null;
+  let progStart = 0;
+  let paused = false;
+
+  // Positionner tous les slides via translateX
+  slides.forEach((s, i) => {
+    s.style.transform = `translateX(${i * 100}%)`;
+    s.style.transition = 'transform 0.6s cubic-bezier(0.77, 0, 0.175, 1)';
+  });
+
+  function goTo(idx: number) {
+    const prev = current;
+    current = ((idx % count) + count) % count;
+    if (prev === current) return;
+
+    // Arrêter la vidéo précédente
+    const oldVid = slides[prev].querySelector('[data-slide-video]') as HTMLVideoElement | null;
+    if (oldVid) { oldVid.pause(); oldVid.currentTime = 0; }
+
+    // Déplacer toutes les slides
+    slides.forEach((s, i) => {
+      s.style.transform = `translateX(${(i - current) * 100}%)`;
+    });
+
+    // Accessibilité
+    slides.forEach((s, i) => {
+      const a = s.querySelector('.jidx-slide-link') as HTMLAnchorElement | null;
+      if (a) a.tabIndex = i === current ? 0 : -1;
+    });
+
+    // Points
+    dots.forEach((d, i) => {
+      d.classList.toggle('jidx-dot--active', i === current);
+      d.setAttribute('aria-selected', i === current ? 'true' : 'false');
+    });
+
+    resetProgress();
+  }
+
+  // ── Barre de progression ──
+  function resetProgress() {
+    if (!progressBar) return;
+    if (rafId) cancelAnimationFrame(rafId);
+    progressBar.style.transition = 'none';
+    progressBar.style.width = '0%';
+    progStart = performance.now();
+
+    function tick(now: number) {
+      if (paused) return;
+      const pct = Math.min(100, ((now - progStart) / DURATION) * 100);
+      progressBar!.style.width = pct + '%';
+      if (pct < 100) rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  // ── Auto-play ──
+  function schedule() {
+    if (autoTimer) clearTimeout(autoTimer);
+    autoTimer = setTimeout(() => {
+      if (!paused) goTo(current + 1);
+      schedule();
+    }, DURATION);
+  }
+
+  // ── Pause au survol — vidéo au survol ──
+  carousel.addEventListener('mouseenter', () => {
+    paused = true;
+    if (autoTimer) clearTimeout(autoTimer);
+    if (rafId) cancelAnimationFrame(rafId);
+    const vid = slides[current].querySelector('[data-slide-video]') as HTMLVideoElement | null;
+    if (vid) vid.play().catch(() => {});
+  });
+
+  carousel.addEventListener('mouseleave', () => {
+    paused = false;
+    const vid = slides[current].querySelector('[data-slide-video]') as HTMLVideoElement | null;
+    if (vid) { vid.pause(); vid.currentTime = 0; }
+    resetProgress();
+    schedule();
+  });
+
+  // ── Clic sur les points ──
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      if (autoTimer) clearTimeout(autoTimer);
+      goTo(i);
+      schedule();
+    });
+  });
+
+  // ── Swipe tactile ──
+  let tx = 0;
+  track.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = tx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 40) {
+      if (autoTimer) clearTimeout(autoTimer);
+      goTo(dx > 0 ? current + 1 : current - 1);
+      schedule();
+    }
+  });
+
+  // ── Démarrage ──
+  resetProgress();
+  schedule();
+})();
+</script>

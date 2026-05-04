@@ -7,7 +7,6 @@ import Base from './Base.astro';
 export interface Props {
   title:        string;
   date:         Date;
-  description?: string;
   lecture?:     number;
   genre?:       string;
   stade?:       'graine' | 'pousse' | 'arbre';
@@ -16,7 +15,7 @@ export interface Props {
   next?:        { slug: string; title: string };
 }
 
-const { title, date, description, lecture, genre, stade, slug, prev, next } = Astro.props;
+const { title, date, lecture, genre, stade, slug, prev, next } = Astro.props;
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -37,7 +36,7 @@ const genreLabels: Record<string, string> = {
 const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
 ---
 
-<Base title={`${title} — Nouvelles · Syncognie`} description={description}>
+<Base title={`${title} — Nouvelles · Syncognie`}>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -309,7 +308,6 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
         {stade && <span class="jl-stade">{stadeLabel(stade)}</span>}
       </div>
       <h1 class="jl-titre">{title}</h1>
-      {description && <p class="jl-subtitle">{description}</p>}
       <div class="jl-rule"></div>
     </header>
 

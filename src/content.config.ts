@@ -119,6 +119,8 @@ const nouvelles = defineCollection({
     stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
     draft:       z.boolean().optional(),
     tags:        z.array(z.string()).optional(),
+    illustration: z.string().optional(),
+    video:        z.string().optional(),
   }),
 });
 
