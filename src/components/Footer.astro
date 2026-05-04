@@ -40,10 +40,15 @@ const currentPath = Astro.url.pathname;
     </div>
 
     <div class="footer-bottom">
-      <div class="footer-signature">
-        <span class="footer-logo-text">syncognie</span>
-        <span class="footer-tagline">Synergie · Cognition · Dialogue</span>
-      </div>
+      <a href="/" class="footer-signature" aria-label="Syncognie — retour à l'accueil">
+        <div class="footer-logo-icon">
+          <div class="footer-logo-dot"></div>
+        </div>
+        <div class="footer-signature-text">
+          <span class="footer-logo-text">syncognie</span>
+          <span class="footer-tagline">Synergie · Cognition · Dialogue</span>
+        </div>
+      </a>
       <div class="footer-copy">
         © {new Date().getFullYear()} Syncognie
         <span class="footer-version">{version}</span>
@@ -154,8 +159,45 @@ const currentPath = Astro.url.pathname;
 
   .footer-signature {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .6rem;
+    text-decoration: none;
+    opacity: .55;
+    transition: opacity .3s;
+  }
+  .footer-signature:hover {
+    opacity: .9;
+  }
+
+  .footer-signature-text {
+    display: flex;
     flex-direction: column;
     gap: .2rem;
+  }
+
+  /* Logo écho — cercle animé, plus lent que le header */
+  .footer-logo-icon {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 1.5px solid rgba(245,240,232,.15);
+    position: relative; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .footer-logo-icon::after {
+    content: ''; position: absolute; inset: -1.5px; border-radius: 50%;
+    border: 1.5px solid transparent;
+    border-top-color: #c4993a; border-left-color: rgba(196,153,58,.3);
+    animation: footer-logo-spin 8s linear infinite;
+  }
+  .footer-logo-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(245,240,232,.5);
+    animation: footer-logo-orbit 7s ease-in-out infinite;
+  }
+  @keyframes footer-logo-spin  { to { transform: rotate(360deg); } }
+  @keyframes footer-logo-orbit {
+    0%,100% { transform: translateY(-4px) translateX(1px);  opacity: .35; }
+    50%      { transform: translateY(4px)  translateX(-1px); opacity: .8; }
   }
 
   .footer-logo-text {
