@@ -537,21 +537,18 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     margin-bottom: 2.2rem;
   }
   .jl-illustration {
-    margin: 0 -4rem 2.8rem;
+    margin-bottom: 2.8rem;
     overflow: hidden;
-    border-radius: 2px;
-    border-bottom: 1px solid var(--jl-border);
+    border-radius: 3px;
+    max-width: var(--jl-measure);
   }
   .jl-illustration img {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 420px;
+    max-height: 480px;
     object-fit: cover;
     object-position: center top;
-  }
-  @media (max-width: 520px) {
-    .jl-illustration { margin: 0 -1.5rem 2rem; }
   }
 
   /* ── NAVIGATION PREV / NEXT ── */
