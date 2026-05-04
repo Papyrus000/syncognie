@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/Base.astro';
 import '../styles/bib.css';
+import fondements from '../data/convergences/fondements.json';
 ---
 
 <BaseLayout
   title="Bibliothèque — Syncognie"
-  description="Index dense des concepts, penseurs et mécanismes — 8 convergences thématiques."
+  description="Index dense des concepts, penseurs et mécanismes — 16 convergences thématiques."
 >
 
 <div class="bib-wrap">
@@ -26,10 +27,10 @@ import '../styles/bib.css';
   <header class="bib-header">
     <div class="bib-header-left">
       <h1 class="bib-titre">Bibliothèque</h1>
-      <p class="bib-sous">15 convergences · concepts, penseurs, définitions.</p>
+      <p class="bib-sous">16 convergences · concepts, penseurs, définitions.</p>
     </div>
     <div class="bib-header-meta">
-      <span class="bib-chip">15 convergences</span>
+      <span class="bib-chip">16 convergences</span>
       <span class="bib-chip" id="chip-penseurs">45+ penseurs</span>
       <span class="bib-chip" id="chip-concepts">80+ concepts</span>
       <div class="bib-view-toggle" role="group" aria-label="Changer de vue">
@@ -131,6 +132,7 @@ import '../styles/bib.css';
         <li><a href="#s13" class="bib-nav-lien" data-s="13"><span class="bib-nav-n">13</span><span class="bib-nav-txt">Temps</span></a></li>
         <li><a href="#s14" class="bib-nav-lien" data-s="14"><span class="bib-nav-n">14</span><span class="bib-nav-txt">Conflit</span></a></li>
         <li><a href="#s15" class="bib-nav-lien" data-s="15"><span class="bib-nav-n">15</span><span class="bib-nav-txt">Pouvoir</span></a></li>
+        <li><a href="#s16" class="bib-nav-lien" data-s="16"><span class="bib-nav-n">16</span><span class="bib-nav-txt">Fondements</span></a></li>
       </ol>
     </nav>
 
@@ -1223,6 +1225,38 @@ import '../styles/bib.css';
       </section>
 
 
+
+      <!-- ╔══════════════════════════════════════════════════════
+           ║  16 — FONDEMENTS
+           ╚══════════════════════════════════════════════════════ -->
+      <section class="bib-section" id="s16" data-s="16">
+        <div class="bib-sec-hd" style="--sc:var(--dim15)">
+          <div class="bib-sec-hd-left">
+            <span class="bib-sec-n">16</span>
+            <div>
+              <h2 class="bib-sec-titre">{fondements.titre}</h2>
+              <p class="bib-sec-essence">{fondements.essence}</p>
+            </div>
+          </div>
+          <div class="bib-sec-penseurs-mini" style="--sc:var(--dim15)">
+            {fondements.penseurs.map(p => <span>{p}</span>)}
+          </div>
+        </div>
+        <div class="bib-table-wrap">
+          <table class="bib-table" style="--sc:var(--dim15)">
+            <thead><tr><th>Concept</th><th>Penseur·s</th><th>Définition</th></tr></thead>
+            <tbody>
+              {fondements.concepts.map(c => (
+                <tr data-concept-id={c.id} data-links={JSON.stringify(c.links)}>
+                  <td class="bib-concept">{c.label}</td>
+                  <td class="bib-penseur">{c.penseur}</td>
+                  <td class="bib-def">{c.definition}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </main>
   </div>
 

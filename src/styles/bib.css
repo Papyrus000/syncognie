@@ -23,6 +23,7 @@
   --dim12: #dc2626;
   --dim13: #eab308;
   --dim14: #ec4899;
+  --dim15: #14b8a6;
 
   max-width: 960px;
   margin: 0 auto;
@@ -423,6 +424,7 @@ mark.bib-hl {
 .bib-nav-lien[data-s="13"] { --sc: var(--dim12); }
 .bib-nav-lien[data-s="14"] { --sc: var(--dim13); }
 .bib-nav-lien[data-s="15"] { --sc: var(--dim14); }
+.bib-nav-lien[data-s="16"] { --sc: var(--dim15); }
 
 /* ══════════════════════════════════════════════
    PANNEAU CONNEXIONS

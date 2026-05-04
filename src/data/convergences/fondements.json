@@ -1,0 +1,70 @@
+{
+  "id": "s16",
+  "numero": "16",
+  "titre": "Fondements",
+  "couleur": "var(--dim15)",
+  "essence": "Avant les dynamiques, les conditions qui les rendent possibles.",
+  "penseurs": ["Aristote", "Spinoza", "Heidegger", "Husserl", "Merleau-Ponty", "Varela"],
+  "concepts": [
+    {
+      "id": "teleologie",
+      "label": "Téléologie",
+      "penseur": "Aristote",
+      "definition": "Toute chose tend vers une fin qui lui est propre. L'action n'est pas seulement causée par le passé — elle est orientée vers un but qui l'organise de l'intérieur.",
+      "links": [
+        { "id": "desir-manque", "label": "Désir comme manque", "conv": "Désir", "note": "Le désir aristotélicien est déjà téléologique — il tend vers ce qui manque." },
+        { "id": "recit-identitaire", "label": "Récit identitaire", "conv": "Narration", "note": "Toute narration de soi présuppose une fin vers laquelle le personnage se dirige." }
+      ]
+    },
+    {
+      "id": "conatus",
+      "label": "Conatus",
+      "penseur": "Spinoza",
+      "definition": "Effort de chaque être pour persévérer dans son existence. Ni instinct, ni volonté consciente — une puissance d'agir qui traverse le corps et la pensée sans les séparer.",
+      "links": [
+        { "id": "systeme-nerveux-autonome", "label": "Système nerveux autonome", "conv": "Corps", "note": "Le conatus trouve son substrat physiologique dans la régulation autonome." },
+        { "id": "cerveau-predictif", "label": "Cerveau prédictif", "conv": "Émotion", "note": "La prédiction perpétuelle du cerveau est une forme de conatus — maintenir l'intégrité du modèle interne." }
+      ]
+    },
+    {
+      "id": "etre-au-monde",
+      "label": "Être-au-monde",
+      "penseur": "Heidegger",
+      "definition": "On n'observe pas le monde depuis un poste extérieur — on y est déjà engagé, situé, concerné. La compréhension précède la réflexion.",
+      "links": [
+        { "id": "affordances", "label": "Affordances", "conv": "Corps", "note": "Les affordances sont la version empirique de l'être-au-monde : le corps perçoit directement les possibilités d'action." },
+        { "id": "attention-situee", "label": "Attention orientée", "conv": "Attention", "note": "L'attention n'est jamais neutre — elle est toujours déjà orientée par notre engagement dans le monde." }
+      ]
+    },
+    {
+      "id": "intentionnalite",
+      "label": "Intentionnalité",
+      "penseur": "Husserl",
+      "definition": "Toute conscience est conscience de quelque chose. Il n'y a pas d'état mental pur, sans objet — chaque acte mental vise, pointe, constitue un monde.",
+      "links": [
+        { "id": "attention-selective", "label": "Attention sélective", "conv": "Attention", "note": "L'attention est la forme active de l'intentionnalité : choisir vers quoi la conscience se tourne." },
+        { "id": "cerveau-predictif", "label": "Cerveau prédictif", "conv": "Émotion", "note": "Le cerveau prédictif est une version mécaniste de l'intentionnalité : il construit l'objet autant qu'il le reçoit." }
+      ]
+    },
+    {
+      "id": "corps-propre",
+      "label": "Corps propre",
+      "penseur": "Merleau-Ponty",
+      "definition": "Le corps n'est pas un objet parmi les objets — il est le sujet de la perception. On ne perçoit pas avec son corps, on perçoit depuis lui. La motricité précède la représentation.",
+      "links": [
+        { "id": "memoire-corporelle", "label": "Mémoire corporelle", "conv": "Corps", "note": "La mémoire du corps est exactement ce que Merleau-Ponty décrit : un savoir-faire antérieur à toute représentation." },
+        { "id": "schema-corporel", "label": "Schéma corporel", "conv": "Corps", "note": "Le schéma corporel est le corrélat neurologique du corps propre phénoménologique." }
+      ]
+    },
+    {
+      "id": "enaction",
+      "label": "Énaction",
+      "penseur": "Varela",
+      "definition": "La cognition n'est pas traitement d'information — elle est action incarnée dans un environnement. Le sens émerge de l'interaction entre un organisme et son monde, pas d'une représentation interne.",
+      "links": [
+        { "id": "pensee-systemique", "label": "Pensée systémique", "conv": "Système", "note": "L'énaction radicalise la pensée systémique : le système cognitif et son environnement se co-définissent." },
+        { "id": "corps-propre", "label": "Corps propre", "conv": "Fondements", "note": "Varela prolonge Merleau-Ponty en lui donnant une base biologique et cognitive." }
+      ]
+    }
+  ]
+}
