@@ -31,6 +31,23 @@ import BaseLayout from '../layouts/Base.astro';
       <span class="bib-chip">15 convergences</span>
       <span class="bib-chip" id="chip-penseurs">45+ penseurs</span>
       <span class="bib-chip" id="chip-concepts">80+ concepts</span>
+      <div class="bib-view-toggle" role="group" aria-label="Changer de vue">
+        <button id="btn-vue-liste" class="bib-vtoggle bib-vtoggle--on" aria-pressed="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M1 2.5h10M1 6h10M1 9.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Liste
+        </button>
+        <button id="btn-vue-graphe" class="bib-vtoggle" aria-pressed="false">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <circle cx="2" cy="6" r="1.6" stroke="currentColor" stroke-width="1.2"/>
+            <circle cx="10" cy="2.5" r="1.6" stroke="currentColor" stroke-width="1.2"/>
+            <circle cx="10" cy="9.5" r="1.6" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M3.5 5.4L8.5 3M3.5 6.6L8.5 9" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+          </svg>
+          Graphe
+        </button>
+      </div>
     </div>
   </header>
 
@@ -63,6 +80,32 @@ import BaseLayout from '../layouts/Base.astro';
   <!-- ══ RÉSULTATS RECHERCHE ══ -->
   <div class="bib-search-empty" id="bib-search-empty" hidden>
     <p id="bib-empty-msg"></p>
+  </div>
+
+  <!-- ══ VUE GRAPHE ══ -->
+  <div id="bib-graphe-wrap" class="bib-graphe-wrap" hidden>
+    <div class="bib-graph-toolbar">
+      <div class="bib-graph-filters" id="bib-graph-filters">
+        <!-- boutons générés par JS -->
+      </div>
+      <div class="bib-graph-right">
+        <span id="bib-graph-stats" class="bib-graph-stats"></span>
+        <div class="bib-graph-search">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M8 8l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          <input id="bib-graph-search" type="search" placeholder="Concept, penseur…" autocomplete="off" spellcheck="false"/>
+        </div>
+      </div>
+    </div>
+    <div class="bib-graph-body">
+      <svg id="bib-graph-svg"></svg>
+      <div class="bib-graph-panel" id="bib-graph-panel">
+        <!-- panneau détail, généré par JS -->
+      </div>
+      <div class="bib-graph-hint">Clic · survol · drag · scroll</div>
+    </div>
   </div>
 
   <!-- ══ LAYOUT PRINCIPAL ══ -->
@@ -1759,6 +1802,158 @@ tr.bib-row-active > td:first-child {
 tr.bib-flash-target td {
   animation: bib-flash 1.2s ease-out both;
 }
+
+/* ══ TOGGLE LISTE / GRAPHE ══ */
+.bib-view-toggle {
+  display: flex; align-items: center; gap: 2px;
+  margin-left: .6rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px;
+  flex-shrink: 0;
+}
+.bib-vtoggle {
+  display: flex; align-items: center; gap: 5px;
+  padding: .25rem .55rem;
+  background: none; border: none; cursor: pointer;
+  font-family: 'Mulish', sans-serif;
+  font-size: .68rem; font-weight: 600;
+  color: var(--ink-soft);
+  border-radius: 4px;
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.bib-vtoggle:hover { background: rgba(0,0,0,.05); color: var(--ink); }
+.bib-vtoggle--on {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+/* ══ CONTENEUR GRAPHE ══ */
+.bib-graphe-wrap {
+  width: 100%;
+  margin: .5rem 0 2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.bib-graphe-wrap[hidden] { display: none !important; }
+
+/* toolbar */
+.bib-graph-toolbar {
+  display: flex; align-items: center;
+  gap: .5rem; flex-wrap: wrap;
+  padding: .6rem .9rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.bib-graph-filters {
+  display: flex; align-items: center; gap: 4px; flex-wrap: wrap; flex: 1;
+}
+.bib-gf-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: .22rem .55rem;
+  background: none; border: 1px solid var(--border);
+  border-radius: 20px; cursor: pointer;
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; font-weight: 600;
+  color: var(--ink-soft);
+  transition: background .12s, border-color .12s, color .12s;
+  white-space: nowrap; line-height: 1;
+}
+.bib-gf-btn:hover { background: var(--surface2); color: var(--ink); }
+.bib-gf-btn--on {
+  color: var(--surface);
+  border-color: transparent;
+}
+.bib-gf-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+}
+.bib-graph-right {
+  display: flex; align-items: center; gap: .6rem; flex-shrink: 0;
+}
+.bib-graph-stats {
+  font-family: 'Mulish', sans-serif;
+  font-size: .62rem; color: var(--ink-soft); white-space: nowrap;
+}
+.bib-graph-search {
+  display: flex; align-items: center; gap: 6px;
+  padding: .25rem .6rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--ink-soft);
+}
+.bib-graph-search input {
+  border: none; background: none; outline: none;
+  font-family: 'Mulish', sans-serif;
+  font-size: .7rem; color: var(--ink);
+  width: 160px;
+}
+.bib-graph-search input::placeholder { color: var(--ink-soft); opacity: .6; }
+
+/* corps SVG + panel */
+.bib-graph-body {
+  position: relative;
+  height: calc(100vh - 16rem);
+  min-height: 480px;
+}
+#bib-graph-svg {
+  width: 100%; height: 100%; display: block;
+}
+.bib-graph-hint {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  font-family: 'Mulish', sans-serif;
+  font-size: .6rem; font-weight: 600; letter-spacing: .04em;
+  color: var(--ink-soft); opacity: .5;
+  pointer-events: none; white-space: nowrap;
+}
+
+/* panneau détail */
+.bib-graph-panel {
+  position: absolute; top: 0; right: 0;
+  width: 260px; height: 100%;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform .22s cubic-bezier(.16,.84,.44,1);
+  padding: 14px 15px 20px;
+  box-sizing: border-box;
+}
+.bib-graph-panel.open { transform: translateX(0); }
+.bib-graph-panel::-webkit-scrollbar { width: 3px; }
+.bib-graph-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* nœuds SVG */
+.bib-node { cursor: pointer; }
+.bib-node circle.outer {
+  transition: r .15s, opacity .15s;
+}
+.bib-node text {
+  pointer-events: none;
+  transition: opacity .12s;
+}
+.bib-edge {
+  transition: stroke-opacity .12s, stroke-width .12s;
+}
+
+@keyframes bib-graph-fade { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+.bib-graph-panel.open .bib-panel-content { animation: bib-graph-fade .18s ease both; }
+
+@media (max-width: 680px) {
+  .bib-graph-body { height: calc(100vh - 12rem); }
+  .bib-graph-panel { width: 100%; height: 50%; top: auto; bottom: 0; right: 0;
+    border-left: none; border-top: 1px solid var(--border);
+    transform: translateY(100%); }
+  .bib-graph-panel.open { transform: translateY(0); }
+  .bib-graph-search input { width: 110px; }
+  .bib-view-toggle { margin-left: 0; }
+}
 </style>
 
 <script>
@@ -2167,6 +2362,617 @@ tr.bib-flash-target td {
   });
 
 })();
+
+/* ══════════════════════════════════════════════
+   TOGGLE LISTE / GRAPHE
+══════════════════════════════════════════════ */
+(function () {
+  const btnListe   = document.getElementById('btn-vue-liste');
+  const btnGraphe  = document.getElementById('btn-vue-graphe');
+  const grapheWrap = document.getElementById('bib-graphe-wrap');
+  const listeLayout = document.getElementById('bib-layout');
+  const searchWrap  = document.querySelector('.bib-search-wrap');
+  const searchEmpty = document.getElementById('bib-search-empty');
+  if (!btnListe || !btnGraphe) return;
+
+  let grapheInited = false;
+
+  function setVue(vue) {
+    const isGraphe = vue === 'graphe';
+    btnListe.classList.toggle('bib-vtoggle--on', !isGraphe);
+    btnGraphe.classList.toggle('bib-vtoggle--on', isGraphe);
+    btnListe.setAttribute('aria-pressed', String(!isGraphe));
+    btnGraphe.setAttribute('aria-pressed', String(isGraphe));
+    listeLayout.hidden  = isGraphe;
+    grapheWrap.hidden   = !isGraphe;
+    if (searchWrap)  searchWrap.hidden  = isGraphe;
+    if (searchEmpty) searchEmpty.hidden = true;
+    if (isGraphe && !grapheInited) { initGraph(); grapheInited = true; }
+    try { sessionStorage.setItem('bib-vue', vue); } catch {}
+  }
+
+  btnListe.addEventListener('click',  () => setVue('liste'));
+  btnGraphe.addEventListener('click', () => setVue('graphe'));
+  try { if (sessionStorage.getItem('bib-vue') === 'graphe') setVue('graphe'); } catch {}
+})();
+
+/* ══════════════════════════════════════════════
+   GRAPHE D3 — force-directed
+══════════════════════════════════════════════ */
+function initGraph() {
+
+  /* ── 0. DATA ── */
+  const CONV = [
+    { id:'s1',  n:'01', label:'Système',      color:'#6366f1' },
+    { id:'s2',  n:'02', label:'Corps',         color:'#0ea5e9' },
+    { id:'s3',  n:'03', label:'Émotion',       color:'#10b981' },
+    { id:'s4',  n:'04', label:'Automatisme',   color:'#f59e0b' },
+    { id:'s5',  n:'05', label:'Attention',     color:'#f43f5e' },
+    { id:'s6',  n:'06', label:'Sens',          color:'#8b5cf6' },
+    { id:'s7',  n:'07', label:'Narration',     color:'#06b6d4' },
+    { id:'s8',  n:'08', label:'Attachement',   color:'#c4993a' },
+    { id:'s9',  n:'09', label:'Communication', color:'#e11d7a' },
+    { id:'s10', n:'10', label:'Langage',       color:'#3b82f6' },
+    { id:'s11', n:'11', label:'Désir',         color:'#7c3aed' },
+    { id:'s12', n:'12', label:'Identité',      color:'#f97316' },
+    { id:'s13', n:'13', label:'Temps',         color:'#dc2626' },
+    { id:'s14', n:'14', label:'Conflit',       color:'#eab308' },
+    { id:'s15', n:'15', label:'Pouvoir',       color:'#ec4899' },
+  ];
+
+  const RAW = [
+    // 01 Système
+    { id:'pensee-systemique',      label:'Pensée systémique',          penseur:'Donella Meadows',           conv:'Système',      links:['boucles-retroaction','cerveau-predictif','points-levier'] },
+    { id:'boucles-retroaction',    label:'Boucles de rétroaction',     penseur:'Meadows · Wiener',          conv:'Système',      links:['pensee-systemique','circularite','co-regulation'] },
+    { id:'points-levier',          label:'Points de levier',           penseur:'Donella Meadows',           conv:'Système',      links:['pensee-systemique','dichotomie-controle','acte-langage'] },
+    { id:'circularite',            label:'Circularité des interactions',penseur:'Paul Watzlawick',          conv:'Système',      links:['boucles-retroaction','ponctuation','lecture-pensee'] },
+    { id:'ponctuation',            label:'Ponctuation des séquences',  penseur:'Paul Watzlawick',           conv:'Système',      links:['circularite','recategorisation','jeux-langage'] },
+    { id:'ratio-5-1',              label:'Ratio 5:1',                  penseur:'John Gottman',              conv:'Système',      links:['reparation-relationnelle','entropie-relationnelle','temporalite-reparation'] },
+    { id:'reparation-relationnelle',label:'Réparation relationnelle',  penseur:'John Gottman',              conv:'Système',      links:['ratio-5-1','performatifs','temporalite-reparation'] },
+    { id:'co-regulation',          label:'Co-régulation',              penseur:'Schore · Porges',           conv:'Système',      links:['theorie-polyvagale','fenetre-tolerance','base-secure'] },
+    // 02 Corps
+    { id:'marqueurs-somatiques',   label:'Marqueurs somatiques',       penseur:'Antonio Damasio',           conv:'Corps',        links:['interoception','cerveau-predictif','affect-labeling'] },
+    { id:'fenetre-tolerance',      label:'Fenêtre de tolérance',       penseur:'Dan Siegel',                conv:'Corps',        links:['theorie-polyvagale','co-regulation','attachement-desorganise'] },
+    { id:'theorie-polyvagale',     label:'Théorie polyvagale',         penseur:'Stephen Porges',            conv:'Corps',        links:['fenetre-tolerance','co-regulation','base-secure'] },
+    { id:'homeostasie',            label:'Homéostasie',                penseur:'Bernard · Cannon',          conv:'Corps',        links:['allostasie','hormese','entropie-relationnelle'] },
+    { id:'allostasie',             label:'Allostasie',                 penseur:'Sterling · McEwen',         conv:'Corps',        links:['homeostasie','cerveau-predictif','perspective-temporelle'] },
+    { id:'hormese',                label:'Hormèse',                    penseur:'biologie du stress',        conv:'Corps',        links:['homeostasie','entropie-relationnelle','act'] },
+    { id:'interoception',          label:'Interoception',              penseur:'Damasio · Barrett',         conv:'Corps',        links:['marqueurs-somatiques','granularite-emotionnelle','pleine-conscience'] },
+    // 03 Émotion
+    { id:'cerveau-predictif',      label:'Cerveau prédictif',          penseur:'Friston · Barrett',         conv:'Émotion',      links:['allostasie','modeles-internes','granularite-emotionnelle'] },
+    { id:'granularite-emotionnelle',label:'Granularité émotionnelle',  penseur:'Lisa Feldman Barrett',      conv:'Émotion',      links:['cerveau-predictif','affect-labeling','interoception'] },
+    { id:'affect-labeling',        label:'Affect labeling',            penseur:'Matthew Lieberman',         conv:'Émotion',      links:['granularite-emotionnelle','marqueurs-somatiques','recategorisation'] },
+    { id:'recategorisation',       label:'Recatégorisation émotionnelle',penseur:'Lisa Feldman Barrett',    conv:'Émotion',      links:['affect-labeling','ponctuation','cerveau-predictif'] },
+    // 04 Automatisme
+    { id:'systeme1-2',             label:'Système 1 / Système 2',      penseur:'Daniel Kahneman',           conv:'Automatisme',  links:['biais-negativite','mentalisation','attribution-hostile'] },
+    { id:'biais-negativite',       label:'Biais de négativité',        penseur:'Kahneman · Baumeister',     conv:'Automatisme',  links:['systeme1-2','rumination','influence-sociale'] },
+    { id:'attribution-hostile',    label:'Attribution hostile',        penseur:'Kenneth Dodge',             conv:'Automatisme',  links:['lecture-pensee','schemas-precoces','styles-attachement'] },
+    { id:'lecture-pensee',         label:'Lecture de pensée',          penseur:'psychologie cognitive',     conv:'Automatisme',  links:['attribution-hostile','circularite','mentalisation'] },
+    { id:'mentalisation',          label:'Mentalisation',              penseur:'Peter Fonagy',              conv:'Automatisme',  links:['lecture-pensee','systeme1-2','rogers-3-conditions'] },
+    { id:'resignation-apprise',    label:'Résignation apprise',        penseur:'Martin Seligman',           conv:'Automatisme',  links:['biais-negativite','attachement-desorganise','double-contrainte'] },
+    // 05 Attention
+    { id:'pleine-conscience',      label:'Pleine conscience',          penseur:'Kabat-Zinn',                conv:'Attention',    links:['interoception','dmn','suspension-jugement'] },
+    { id:'dmn',                    label:'DMN — Mode par défaut',      penseur:'Marcus Raichle',            conv:'Attention',    links:['pleine-conscience','rumination','duree-psychologique'] },
+    { id:'suspension-jugement',    label:'Suspension du jugement',     penseur:'Bohm · Gadamer',            conv:'Attention',    links:['pleine-conscience','mentalisation','jeux-langage'] },
+    { id:'presence',               label:'Présence',                   penseur:'Buber · Varela',            conv:'Attention',    links:['suspension-jugement','rogers-3-conditions','base-secure'] },
+    // 06 Sens
+    { id:'volonte-sens',           label:'Volonté de sens',            penseur:'Viktor Frankl',             conv:'Sens',         links:['valeurs-boussole','identite-narrative','sens-experience'] },
+    { id:'dichotomie-controle',    label:'Dichotomie du contrôle',     penseur:'Épictète',                  conv:'Sens',         links:['points-levier','valeurs-boussole','act'] },
+    { id:'act',                    label:'ACT — Acceptation',          penseur:'Steven Hayes',              conv:'Sens',         links:['dichotomie-controle','pleine-conscience','valeurs-boussole'] },
+    { id:'valeurs-boussole',       label:'Valeurs comme boussole',     penseur:'Hayes · Frankl',            conv:'Sens',         links:['act','volonte-sens','dichotomie-controle'] },
+    { id:'auto-compassion',        label:'Auto-compassion',            penseur:'Kristin Neff',              conv:'Sens',         links:['rogers-3-conditions','granularite-emotionnelle','secure-acquis'] },
+    { id:'entropie-relationnelle', label:'Entropie relationnelle',     penseur:'Shannon · Clausius',        conv:'Sens',         links:['homeostasie','ratio-5-1','reparation-relationnelle'] },
+    // 07 Narration
+    { id:'identite-narrative',     label:'Identité narrative',         penseur:'McAdams · Ricoeur',         conv:'Narration',    links:['modeles-internes','moi-remembrant','perspective-temporelle'] },
+    { id:'schemas-precoces',       label:'Schémas précoces',           penseur:'Jeffrey Young',             conv:'Narration',    links:['modeles-internes','attribution-hostile','styles-attachement'] },
+    { id:'modeles-internes',       label:'Modèles internes opérants',  penseur:'John Bowlby',               conv:'Narration',    links:['schemas-precoces','theorie-attachement','cerveau-predictif'] },
+    { id:'rumination',             label:'Rumination',                 penseur:'psychologie clinique',      conv:'Narration',    links:['biais-negativite','dmn','pleine-conscience'] },
+    { id:'sens-experience',        label:"Sens donné à l'expérience",  penseur:'Viktor Frankl',             conv:'Narration',    links:['volonte-sens','identite-narrative','valeurs-boussole'] },
+    // 08 Attachement
+    { id:'theorie-attachement',    label:"Théorie de l'attachement",   penseur:'John Bowlby',               conv:'Attachement',  links:['co-regulation','modeles-internes','theorie-polyvagale'] },
+    { id:'base-secure',            label:'Base sécure',                penseur:'Bowlby · Ainsworth',        conv:'Attachement',  links:['co-regulation','presence','rogers-3-conditions'] },
+    { id:'styles-attachement',     label:"Styles d'attachement",       penseur:'Mary Ainsworth',            conv:'Attachement',  links:['modeles-internes','schemas-precoces','attribution-hostile'] },
+    { id:'attachement-adulte',     label:'Attachement adulte romantique',penseur:'Hazan · Shaver',          conv:'Attachement',  links:['styles-attachement','contenu-relation','temporalite-reparation'] },
+    { id:'attachement-desorganise',label:'Attachement désorganisé',    penseur:'Main · Solomon',            conv:'Attachement',  links:['double-contrainte','fenetre-tolerance','resignation-apprise'] },
+    { id:'secure-acquis',          label:'Attachement sécure acquis',  penseur:'Mary Main',                 conv:'Attachement',  links:['auto-compassion','identite-narrative','rogers-3-conditions'] },
+    // 09 Communication
+    { id:'ne-pas-communiquer',     label:'On ne peut pas ne pas communiquer',penseur:'Paul Watzlawick',     conv:'Communication',links:['contenu-relation','acte-langage','theorie-polyvagale'] },
+    { id:'quatre-cavaliers',       label:'Les 4 Cavaliers',            penseur:'John Gottman',              conv:'Communication',links:['ratio-5-1','mentalisation','reparation-relationnelle'] },
+    { id:'double-contrainte',      label:'Double contrainte',          penseur:'Bateson · Watzlawick',      conv:'Communication',links:['attachement-desorganise','ponctuation','resignation-apprise'] },
+    { id:'cnv',                    label:'CNV',                        penseur:'Marshall Rosenberg',        conv:'Communication',links:['affect-labeling','granularite-emotionnelle','acte-langage'] },
+    { id:'contenu-relation',       label:'Contenu vs relation',        penseur:'Paul Watzlawick',           conv:'Communication',links:['ne-pas-communiquer','jeux-langage','styles-attachement'] },
+    { id:'rogers-3-conditions',    label:'Congruence · Regard · Empathie',penseur:'Carl Rogers',            conv:'Communication',links:['mentalisation','base-secure','presence'] },
+    // 10 Langage
+    { id:'acte-langage',           label:'Actes de langage',           penseur:'Austin · Searle',           conv:'Langage',      links:['performatifs','cnv','points-levier'] },
+    { id:'performatifs',           label:'Performatifs',               penseur:'J.L. Austin',               conv:'Langage',      links:['acte-langage','reparation-relationnelle','langage-realite'] },
+    { id:'jeux-langage',           label:'Jeux de langage',            penseur:'Ludwig Wittgenstein',       conv:'Langage',      links:['langage-realite','suspension-jugement','contenu-relation'] },
+    { id:'langage-realite',        label:'Langage et réalité sociale', penseur:'Searle · Berger',           conv:'Langage',      links:['jeux-langage','performatifs','pouvoir-discipline'] },
+    // 11 Désir
+    { id:'desir-mimetique',        label:'Désir mimétique',            penseur:'René Girard',               conv:'Désir',        links:['influence-sociale','identite-narrative','rivalite-mimetique'] },
+    { id:'rivalite-mimetique',     label:'Rivalité mimétique',         penseur:'René Girard',               conv:'Désir',        links:['desir-mimetique','escalade-conflit','capital-social'] },
+    { id:'manque-objet',           label:'Objet et manque',            penseur:'Lacan',                     conv:'Désir',        links:['desir-mimetique','identite-narrative','attachement-adulte'] },
+    // 12 Identité
+    { id:'soi-miroir',             label:'Soi-miroir',                 penseur:'William James · Cooley',    conv:'Identité',     links:['identite-narrative','styles-attachement','capital-social'] },
+    { id:'estime-soi',             label:'Estime de soi',              penseur:'Branden · Rosenberg',       conv:'Identité',     links:['auto-compassion','schemas-precoces','soi-miroir'] },
+    // 13 Temps
+    { id:'moi-remembrant',         label:'Moi remémorant',             penseur:'Daniel Kahneman',           conv:'Temps',        links:['identite-narrative','regle-pic-fin','perspective-temporelle'] },
+    { id:'perspective-temporelle', label:'Perspective temporelle',     penseur:'Philip Zimbardo',           conv:'Temps',        links:['moi-remembrant','allostasie','identite-narrative'] },
+    { id:'regle-pic-fin',          label:'Règle du pic et de la fin',  penseur:'Kahneman · Fredrickson',    conv:'Temps',        links:['moi-remembrant','reparation-relationnelle','ratio-5-1'] },
+    { id:'duree-psychologique',    label:'Durée psychologique',        penseur:'William James',             conv:'Temps',        links:['presence','dmn','pleine-conscience'] },
+    { id:'tempo-social',           label:'Tempo social',               penseur:'Robert Levine',             conv:'Temps',        links:['co-regulation','fenetre-tolerance','jeux-langage'] },
+    { id:'temporalite-reparation', label:'Temporalité de la réparation',penseur:'Gottman · Frankl',        conv:'Temps',        links:['reparation-relationnelle','moi-remembrant','styles-attachement'] },
+    // 14 Conflit
+    { id:'escalade-conflit',       label:'Escalade du conflit',        penseur:'Gottman · Simmel',          conv:'Conflit',      links:['boucles-retroaction','quatre-cavaliers','fenetre-tolerance'] },
+    { id:'gridlock',               label:'Gridlock',                   penseur:'John Gottman',              conv:'Conflit',      links:['schemas-precoces','valeurs-boussole','identite-narrative'] },
+    { id:'cycle-poursuite-retrait',label:'Cycle poursuite-retrait',    penseur:'Sue Johnson · EFT',         conv:'Conflit',      links:['styles-attachement','circularite','co-regulation'] },
+    { id:'negotiation-raisonnee',  label:'Négociation raisonnée',      penseur:'Fisher · Ury',              conv:'Conflit',      links:['contenu-relation','dichotomie-controle','acte-langage'] },
+    { id:'rupture-lien',           label:'Rupture-réparation',         penseur:'Tronick · Johnson',         conv:'Conflit',      links:['reparation-relationnelle','temporalite-reparation','attachement-desorganise'] },
+    { id:'conflit-constructif',    label:'Conflit constructif',        penseur:'Gottman · Lerner',          conv:'Conflit',      links:['ratio-5-1','cnv','suspension-jugement'] },
+    // 15 Pouvoir
+    { id:'pouvoir-discipline',     label:'Pouvoir disciplinaire',      penseur:'Michel Foucault',           conv:'Pouvoir',      links:['jeux-langage','identite-narrative','langage-realite'] },
+    { id:'influence-sociale',      label:"Principes d'influence",      penseur:'Robert Cialdini',           conv:'Pouvoir',      links:['biais-negativite','systeme1-2','lecture-pensee'] },
+    { id:'obeissance-autorite',    label:"Obéissance à l'autorité",    penseur:'Stanley Milgram',           conv:'Pouvoir',      links:['resignation-apprise','influence-sociale','double-contrainte'] },
+    { id:'dependance-pouvoir',     label:'Asymétrie de pouvoir',       penseur:'Emerson · French',          conv:'Pouvoir',      links:['attachement-adulte','resignation-apprise','schemas-precoces'] },
+    { id:'emprise',                label:'Emprise et manipulation',    penseur:'Hirigoyen · Bancroft',      conv:'Pouvoir',      links:['double-contrainte','attachement-desorganise','identite-narrative'] },
+    { id:'capital-social',         label:'Capital social et symbolique',penseur:'Pierre Bourdieu',          conv:'Pouvoir',      links:['ponctuation','identite-narrative','tempo-social'] },
+  ];
+
+  /* ── couleur par convergence ── */
+  const convColor = {};
+  CONV.forEach(c => { convColor[c.label] = c.color; });
+  const nodes = RAW.map(r => ({ ...r, color: convColor[r.conv] || '#888' }));
+  const nodeMap = new Map(nodes.map(n => [n.id, n]));
+
+  /* ── arêtes dédupliquées ── */
+  const edgeSet = new Set();
+  const edges = [];
+  nodes.forEach(n => {
+    n.links.forEach(lid => {
+      if (!nodeMap.has(lid)) return;
+      const key = [n.id, lid].sort().join('--');
+      if (!edgeSet.has(key)) { edgeSet.add(key); edges.push({ s: n.id, t: lid }); }
+    });
+  });
+
+  /* ── DOM refs ── */
+  const svgEl   = document.getElementById('bib-graph-svg');
+  const panel   = document.getElementById('bib-graph-panel');
+  const filterC = document.getElementById('bib-graph-filters');
+  const statsEl = document.getElementById('bib-graph-stats');
+  const searchEl= document.getElementById('bib-graph-search');
+  if (!svgEl) return;
+
+  /* ── état ── */
+  let activeFilter = 'all';
+  let activeSearch = '';
+  let selectedId   = null;
+
+  /* ── dimensions ── */
+  function W() { return svgEl.clientWidth  || svgEl.getBoundingClientRect().width  || 800; }
+  function H() { return svgEl.clientHeight || svgEl.getBoundingClientRect().height || 500; }
+
+  /* ── SVG setup ── */
+  const NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs = {}) {
+    const e = document.createElementNS(NS, tag);
+    Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, v));
+    return e;
+  }
+
+  const defs = el('defs');
+  svgEl.appendChild(defs);
+
+  /* zoom group */
+  const gZoom  = el('g'); svgEl.appendChild(gZoom);
+  const gEdges = el('g'); gZoom.appendChild(gEdges);
+  const gNodes = el('g'); gZoom.appendChild(gNodes);
+
+  /* ── zoom/pan vanilla ── */
+  let tx = 0, ty = 0, scale = 1;
+  let isPanning = false, panSX = 0, panSY = 0, panTX = 0, panTY = 0;
+
+  function applyTransform() {
+    gZoom.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`);
+  }
+
+  svgEl.addEventListener('wheel', e => {
+    e.preventDefault();
+    const rect = svgEl.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const delta = e.deltaY < 0 ? 1.12 : 0.89;
+    const ns = Math.min(Math.max(scale * delta, 0.2), 4);
+    tx = mx - (mx - tx) * (ns / scale);
+    ty = my - (my - ty) * (ns / scale);
+    scale = ns;
+    applyTransform();
+  }, { passive: false });
+
+  svgEl.addEventListener('mousedown', e => {
+    if (e.target !== svgEl && !e.target.closest('g.zoom-bg')) return;
+    isPanning = true; panSX = e.clientX; panSY = e.clientY; panTX = tx; panTY = ty;
+    svgEl.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isPanning) return;
+    tx = panTX + (e.clientX - panSX);
+    ty = panTY + (e.clientY - panSY);
+    applyTransform();
+  });
+  window.addEventListener('mouseup', () => { isPanning = false; svgEl.style.cursor = ''; });
+
+  /* ── nœud data (positions initiales) ── */
+  nodes.forEach(n => {
+    n.x = W() / 2 + (Math.random() - 0.5) * 200;
+    n.y = H() / 2 + (Math.random() - 0.5) * 200;
+    n.vx = 0; n.vy = 0;
+    n.fx = null; n.fy = null;
+  });
+
+  const edgeObjs = edges.map(e => ({
+    source: nodeMap.get(e.s),
+    target: nodeMap.get(e.t),
+  })).filter(e => e.source && e.target);
+
+  /* ── SVG éléments ── */
+  const edgeEls = {};
+  edgeObjs.forEach((e, i) => {
+    const line = el('line', { class: 'bib-edge', stroke: e.source.color + '55', 'stroke-width': '1.2' });
+    gEdges.appendChild(line);
+    edgeEls[i] = line;
+  });
+
+  const nodeEls = {}; // id → { g, outer, dot, label }
+  nodes.forEach(n => {
+    const g = el('g', { class: 'bib-node', 'data-id': n.id });
+
+    const outer = el('circle', { r: '10', fill: n.color + '22', stroke: n.color, 'stroke-width': '1.8', class: 'outer' });
+    const dot   = el('circle', { r: '3.5', fill: n.color });
+    const label = el('text', { dy: '19', 'text-anchor': 'middle', fill: '#3d3530',
+      style: 'font-family:Mulish,sans-serif;font-size:8px;font-weight:600;pointer-events:none;' });
+    const short = n.label.length > 18 ? n.label.slice(0, 17) + '…' : n.label;
+    label.textContent = short;
+
+    g.appendChild(outer); g.appendChild(dot); g.appendChild(label);
+    gNodes.appendChild(g);
+    nodeEls[n.id] = { g, outer, dot, label };
+  });
+
+  /* ── drag sur les nœuds ── */
+  Object.entries(nodeEls).forEach(([id, els]) => {
+    const n = nodeMap.get(id);
+    let dragging = false, ox = 0, oy = 0;
+
+    els.g.addEventListener('mousedown', e => {
+      e.stopPropagation();
+      dragging = true;
+      const rect = svgEl.getBoundingClientRect();
+      ox = (e.clientX - rect.left - tx) / scale - n.x;
+      oy = (e.clientY - rect.top  - ty) / scale - n.y;
+      n.fx = n.x; n.fy = n.y;
+      alpha = Math.max(alpha, 0.3);
+    });
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      const rect = svgEl.getBoundingClientRect();
+      n.fx = (e.clientX - rect.left - tx) / scale - ox;
+      n.fy = (e.clientY - rect.top  - ty) / scale - oy;
+    });
+    window.addEventListener('mouseup', () => {
+      if (dragging) { dragging = false; n.fx = null; n.fy = null; }
+    });
+  });
+
+  /* ── simulation force ── */
+  let alpha = 1;
+  const IDEAL = 95, K_LINK = 0.3, K_CHARGE = 260, K_CENTER = 0.03, K_COLL = 28;
+
+  function tick() {
+    const w = W(), h = H();
+    // reset forces
+    nodes.forEach(n => { n.fx !== null || (n.ax = 0); n.fy !== null || (n.ay = 0); });
+    nodes.forEach(n => { n.ax = 0; n.ay = 0; });
+
+    // links
+    edgeObjs.forEach(({ source: s, target: t }) => {
+      const dx = t.x - s.x, dy = t.y - s.y;
+      const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+      const f  = (d - IDEAL) * K_LINK;
+      const fx = (dx / d) * f, fy = (dy / d) * f;
+      s.ax += fx; s.ay += fy;
+      t.ax -= fx; t.ay -= fy;
+    });
+
+    // repulsion (Barnes-Hut approx — simple O(n²) pour ~75 nœuds)
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d2 = dx*dx + dy*dy || 1;
+        if (d2 > 160000) continue;
+        const d  = Math.sqrt(d2);
+        const f  = K_CHARGE / d2;
+        const fx = (dx / d) * f, fy = (dy / d) * f;
+        a.ax -= fx; a.ay -= fy;
+        b.ax += fx; b.ay += fy;
+      }
+    }
+
+    // center
+    nodes.forEach(n => {
+      n.ax += (w / 2 - n.x) * K_CENTER;
+      n.ay += (h / 2 - n.y) * K_CENTER;
+    });
+
+    // collision
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+        if (d < K_COLL) {
+          const push = (K_COLL - d) / d * 0.5;
+          a.x -= dx * push; a.y -= dy * push;
+          b.x += dx * push; b.y += dy * push;
+        }
+      }
+    }
+
+    // integrate
+    nodes.forEach(n => {
+      if (n.fx !== null) { n.x = n.fx; n.y = n.fy; n.vx = 0; n.vy = 0; return; }
+      n.vx = (n.vx + n.ax * alpha) * 0.7;
+      n.vy = (n.vy + n.ay * alpha) * 0.7;
+      n.x += n.vx; n.y += n.vy;
+    });
+
+    alpha *= 0.98;
+    if (alpha < 0.005) alpha = 0;
+  }
+
+  function render() {
+    edgeObjs.forEach(({ source: s, target: t }, i) => {
+      const line = edgeEls[i];
+      line.setAttribute('x1', s.x); line.setAttribute('y1', s.y);
+      line.setAttribute('x2', t.x); line.setAttribute('y2', t.y);
+    });
+    nodes.forEach(n => {
+      const { g } = nodeEls[n.id];
+      g.setAttribute('transform', `translate(${n.x},${n.y})`);
+    });
+  }
+
+  function loop() {
+    if (alpha > 0) tick();
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  /* centrer le graphe au départ */
+  tx = W() / 2; ty = H() / 2; scale = 0.78;
+  tx = W() * (1 - scale) / 2; ty = H() * (1 - scale) / 2;
+  applyTransform();
+  loop();
+
+  /* ── visibilité nœuds / arêtes ── */
+  function nodeVisible(n) {
+    const fOk = activeFilter === 'all' || n.conv === activeFilter;
+    const q   = activeSearch.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const sOk = !q || [n.label, n.penseur, n.conv].some(t =>
+      t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(q)
+    );
+    return fOk && sOk;
+  }
+
+  function applyVisibility() {
+    let vis = 0;
+    nodes.forEach(n => {
+      const ok = nodeVisible(n);
+      if (ok) vis++;
+      const { g } = nodeEls[n.id];
+      g.style.opacity = ok ? '1' : '0.06';
+    });
+    edgeObjs.forEach(({ source: s, target: t }, i) => {
+      edgeEls[i].style.opacity = (nodeVisible(s) && nodeVisible(t)) ? '1' : '0.04';
+    });
+    if (statsEl) statsEl.textContent = `${vis} concepts · ${edges.length} liens`;
+  }
+
+  applyVisibility();
+
+  /* ── hover ── */
+  nodes.forEach(n => {
+    const { g, outer, label } = nodeEls[n.id];
+
+    g.addEventListener('mouseenter', () => {
+      if (selectedId) return;
+      const conn = new Set([n.id]);
+      edgeObjs.forEach(e => {
+        if (e.source.id === n.id) conn.add(e.target.id);
+        if (e.target.id === n.id) conn.add(e.source.id);
+      });
+      nodes.forEach(m => {
+        const { outer: o, label: l } = nodeEls[m.id];
+        if (m.id === n.id) { o.setAttribute('r', '13'); }
+        else if (conn.has(m.id)) { o.setAttribute('r', '11'); o.setAttribute('fill-opacity', '0.25'); }
+        else { o.setAttribute('r', '9'); o.style.opacity = '0.25'; l.style.opacity = '0.2'; }
+      });
+      edgeObjs.forEach(({ source: s, target: t }, i) => {
+        const active = s.id === n.id || t.id === n.id;
+        edgeEls[i].setAttribute('stroke-opacity', active ? '0.9' : '0.05');
+        edgeEls[i].setAttribute('stroke-width',   active ? '2.2' : '0.7');
+        if (active) edgeEls[i].setAttribute('stroke', n.color);
+      });
+    });
+
+    g.addEventListener('mouseleave', () => {
+      if (selectedId) return;
+      resetHighlight();
+    });
+  });
+
+  function resetHighlight() {
+    nodes.forEach(m => {
+      const { outer: o, label: l } = nodeEls[m.id];
+      o.setAttribute('r', '10'); o.style.opacity = ''; l.style.opacity = '';
+      o.setAttribute('fill-opacity', '');
+    });
+    edgeObjs.forEach(({ source: s }, i) => {
+      edgeEls[i].setAttribute('stroke-opacity', '0.45');
+      edgeEls[i].setAttribute('stroke-width', '1.2');
+      edgeEls[i].setAttribute('stroke', s.color + '55');
+    });
+  }
+
+  /* ── clic — panneau détail ── */
+  nodes.forEach(n => {
+    nodeEls[n.id].g.addEventListener('click', e => {
+      e.stopPropagation();
+      if (selectedId === n.id) { closePanel(); return; }
+      openPanel(n);
+    });
+  });
+
+  svgEl.addEventListener('click', closePanel);
+
+  function openPanel(n) {
+    selectedId = n.id;
+    alpha = Math.max(alpha, 0.05);
+
+    // highlight permanent
+    const conn = new Set([n.id]);
+    edgeObjs.forEach(e => {
+      if (e.source.id === n.id) conn.add(e.target.id);
+      if (e.target.id === n.id) conn.add(e.source.id);
+    });
+    nodes.forEach(m => {
+      const { outer: o, label: l } = nodeEls[m.id];
+      if (m.id === n.id) { o.setAttribute('r', '13'); o.style.opacity = ''; }
+      else if (conn.has(m.id)) { o.setAttribute('r', '11'); o.style.opacity = ''; l.style.opacity = ''; }
+      else { o.setAttribute('r', '9'); o.style.opacity = '0.18'; l.style.opacity = '0.15'; }
+    });
+    edgeObjs.forEach(({ source: s, target: t }, i) => {
+      const active = s.id === n.id || t.id === n.id;
+      edgeEls[i].setAttribute('stroke-opacity', active ? '0.9' : '0.04');
+      edgeEls[i].setAttribute('stroke-width',   active ? '2.2' : '0.7');
+      if (active) edgeEls[i].setAttribute('stroke', n.color);
+    });
+
+    // connexions
+    const connNodes = [];
+    edgeObjs.forEach(({ source: s, target: t }) => {
+      if (s.id === n.id) connNodes.push(t);
+      if (t.id === n.id) connNodes.push(s);
+    });
+    const convInfo = CONV.find(c => c.label === n.conv);
+
+    panel.innerHTML = `<div class="bib-panel-content">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+        <button id="bib-panel-close" style="background:none;border:none;cursor:pointer;color:#aaa;padding:2px 4px;line-height:1;border-radius:3px;">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:${n.color};display:inline-block;flex-shrink:0;"></span>
+        <span style="font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:${n.color};font-family:Mulish,sans-serif;">${n.conv}</span>
+      </div>
+      <h2 style="font-family:'Libre Baskerville',serif;font-size:.92rem;font-weight:700;color:#1a1714;margin:0 0 4px;line-height:1.3;">${n.label}</h2>
+      <p style="font-size:.7rem;color:#7d6e61;font-style:italic;margin:0 0 14px;font-family:Mulish,sans-serif;">${n.penseur}</p>
+      <div style="border-top:1px solid #e8e0d5;padding-top:12px;">
+        <p style="font-size:.54rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#b09e8e;margin:0 0 8px;font-family:Mulish,sans-serif;">
+          ${connNodes.length} connexion${connNodes.length > 1 ? 's' : ''}
+        </p>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          ${connNodes.map(cn => `
+            <button class="bib-panel-cx" data-target="${cn.id}"
+              style="display:flex;align-items:center;gap:8px;padding:7px 9px;background:#f5f0ea;border:1px solid ${cn.color}33;border-radius:6px;cursor:pointer;text-align:left;width:100%;transition:background .12s;font-family:Mulish,sans-serif;">
+              <span style="width:6px;height:6px;border-radius:50%;background:${cn.color};flex-shrink:0;"></span>
+              <div style="min-width:0;">
+                <div style="font-size:.7rem;font-weight:700;color:#1a1714;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cn.label}</div>
+                <div style="font-size:.57rem;color:${cn.color};font-weight:700;letter-spacing:.06em;text-transform:uppercase;">${cn.conv}</div>
+              </div>
+            </button>`).join('')}
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:9px 11px;background:#f0ece5;border-radius:6px;">
+        <p style="font-size:.62rem;color:#7d6e61;margin:0;line-height:1.6;font-family:Mulish,sans-serif;">
+          <strong style="color:#1a1714;">Degré :</strong> ${connNodes.length} liens<br>
+          <strong style="color:#1a1714;">Section :</strong> ${convInfo?.n} ${n.conv}
+        </p>
+      </div>
+    </div>`;
+
+    panel.classList.add('open');
+
+    document.getElementById('bib-panel-close')?.addEventListener('click', e => {
+      e.stopPropagation(); closePanel();
+    });
+    panel.querySelectorAll('.bib-panel-cx').forEach(btn => {
+      btn.addEventListener('mouseenter', () => { btn.style.background = nodeMap.get(btn.dataset.target)?.color + '18' || '#f5f0ea'; });
+      btn.addEventListener('mouseleave', () => { btn.style.background = '#f5f0ea'; });
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const target = nodeMap.get(btn.dataset.target);
+        if (target) openPanel(target);
+      });
+    });
+  }
+
+  function closePanel() {
+    selectedId = null;
+    panel.classList.remove('open');
+    panel.innerHTML = '';
+    resetHighlight();
+    applyVisibility();
+  }
+
+  /* ── filtres convergences ── */
+  const allBtn = document.createElement('button');
+  allBtn.className = 'bib-gf-btn bib-gf-btn--on';
+  allBtn.textContent = 'Toutes';
+  allBtn.style.cssText = `background:#1a1714;color:#fdfcfa;border-color:#1a1714;`;
+  filterC.appendChild(allBtn);
+
+  CONV.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'bib-gf-btn';
+    btn.innerHTML = `<span class="bib-gf-dot" style="background:${c.color};"></span>${c.n} ${c.label}`;
+    btn.dataset.conv = c.label;
+    filterC.appendChild(btn);
+  });
+
+  filterC.addEventListener('click', e => {
+    const btn = e.target.closest('.bib-gf-btn');
+    if (!btn) return;
+    const conv = btn.dataset.conv || 'all';
+    activeFilter = conv;
+    filterC.querySelectorAll('.bib-gf-btn').forEach(b => {
+      const isThis = b === btn;
+      b.classList.toggle('bib-gf-btn--on', isThis);
+      if (isThis && conv !== 'all') {
+        b.style.cssText = `background:${CONV.find(c=>c.label===conv)?.color};color:#fff;border-color:transparent;`;
+      } else if (isThis) {
+        b.style.cssText = `background:#1a1714;color:#fdfcfa;border-color:#1a1714;`;
+      } else {
+        b.style.cssText = '';
+      }
+    });
+    closePanel();
+    applyVisibility();
+  });
+
+  /* ── recherche ── */
+  if (searchEl) {
+    searchEl.addEventListener('input', e => {
+      activeSearch = e.target.value;
+      closePanel();
+      applyVisibility();
+    });
+  }
+
+  /* ── stats initiales ── */
+  if (statsEl) statsEl.textContent = `${nodes.length} concepts · ${edges.length} liens`;
+}
 </script>
 
 </BaseLayout>
