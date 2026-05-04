@@ -120,6 +120,7 @@ const nouvelles = defineCollection({
     draft:       z.boolean().optional(),
     tags:        z.array(z.string()).optional(),
     illustration: z.string().optional(),
+    illustration_teaser: z.string().optional(),
     video:        z.string().optional(),
   }),
 });

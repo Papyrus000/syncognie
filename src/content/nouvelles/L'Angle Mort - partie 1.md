@@ -4,7 +4,8 @@ date: 2026-05-04
 genre: fragment
 description: Le cerveau humain consacre environ 20% de son énergie totale au réseau en mode par défaut — le DMN — qui s'active quand on ne fait rien. Une chercheuse développe une technique non-invasive qui réduit temporairement l'activité du DMN. Les sujets fonctionnent parfaitement. Mieux, même — plus rapides, plus précis, moins d'hésitation. Ils rapportent tous la même chose, pendant la durée du protocole, ils agissaient, mais personne ne regardait.
 stade: graine
-illustration: /images/nouvelles/alma-voss-v1.png
+illustration_teaser: /images/nouvelles/alma-voss-v1.png
+illustration: /images/nouvelles/Alma-v1-1.png
 video: /videos/nouvelles/alma-voss.mp4
 ---
 ## Chapitre 1 : Avant

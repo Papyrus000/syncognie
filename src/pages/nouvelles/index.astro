@@ -17,7 +17,7 @@ entries.forEach(e => {
 const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
 
 // Nouvelles avec illustration pour le carrousel
-const slides = entries.filter(e => e.data.illustration);
+const slides = entries.filter(e => e.data.illustration_teaser || e.data.illustration);
 
 function formatDate(d: Date) {
   return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
@@ -60,7 +60,7 @@ const genreLabels: Record<string, string> = {
             <div class="jidx-slide-media">
               <img
                 class="jidx-slide-img"
-                src={entry.data.illustration}
+                src={entry.data.illustration_teaser ?? entry.data.illustration}
                 alt={entry.data.title}
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
