@@ -240,7 +240,7 @@
 }
 
 .bib-penseur {
-  font-size: .72rem; font-weight: 400; font-style: italic;
+  font-size: .82rem; font-weight: 400; font-style: italic;
   color: var(--ink-soft); line-height: 1.45;
 }
 
@@ -726,4 +726,20 @@ tr.bib-flash-target td {
   .bib-graph-panel.open { transform: translateY(0); }
   .bib-graph-search input { width: 110px; }
   .bib-view-toggle { margin-left: 0; }
+}
+
+/* ══ PORTÉE ÉPISTÉMIQUE ══ */
+.bib-portee {
+  display: block;
+  font-size: .65rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  margin-top: .25rem;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.bib-table tbody tr:hover .bib-portee {
+  opacity: 1;
 }

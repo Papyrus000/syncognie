@@ -1248,7 +1248,10 @@ import fondements from '../data/convergences/fondements.json';
             <tbody>
               {fondements.concepts.map(c => (
                 <tr data-concept-id={c.id} data-links={JSON.stringify(c.links)}>
-                  <td class="bib-concept">{c.label}</td>
+                  <td class="bib-concept">
+                    {c.label}
+                    {c.portee && <span class="bib-portee">{c.portee}</span>}
+                  </td>
                   <td class="bib-penseur">{c.penseur}</td>
                   <td class="bib-def">{c.definition}</td>
                 </tr>
