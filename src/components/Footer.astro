@@ -4,39 +4,40 @@ const currentPath = Astro.url.pathname;
 ---
 
 <footer class="site-footer" role="contentinfo">
-
   <div class="footer-inner">
 
-    <nav class="footer-nav" aria-label="Navigation secondaire">
-      <div class="footer-nav-group">
-        <span class="footer-group-label">Explorer</span>
-        <a href="/vies"   class={`footer-link ${currentPath.startsWith('/vies')   ? 'footer-link--active' : ''}`}>Vies</a>
-        <a href="/cartes" class={`footer-link ${currentPath.startsWith('/cartes') ? 'footer-link--active' : ''}`}>Cartes</a>
-        <a href="/outils" class={`footer-link ${currentPath.startsWith('/outils') ? 'footer-link--active' : ''}`}>Outils</a>
-      </div>
-      <div class="footer-nav-group">
-        <span class="footer-group-label">À propos</span>
-        <a href="/apropos"  class={`footer-link ${currentPath === '/apropos'  ? 'footer-link--active' : ''}`}>À propos</a>
-        <a href="/contact"  class={`footer-link ${currentPath === '/contact'  ? 'footer-link--active' : ''}`}>Contact</a>
-        <a href="/stades"   class={`footer-link ${currentPath === '/stades'   ? 'footer-link--active' : ''}`}>Stades</a>
-      </div>
-      <div class="footer-nav-group">
-        <span class="footer-group-label">Archives</span>
-        <a href="/articles" class={`footer-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'footer-link--active' : ''}`}>Tous les articles</a>
-        <a href="/notes"  class={`footer-link ${currentPath === '/notes'  ? 'footer-link--active' : ''}`}>Journal de genèse</a>
-        <a href="/carte"    class={`footer-link ${currentPath === '/carte'    ? 'footer-link--active' : ''}`}>Carte du site</a>
-      </div>
-    </nav>
+    <div class="footer-top">
+      <nav class="footer-nav" aria-label="Navigation secondaire">
+        <div class="footer-nav-group">
+          <span class="footer-group-label">Explorer</span>
+          <a href="/vies"   class={`footer-link ${currentPath.startsWith('/vies')   ? 'footer-link--active' : ''}`}>Vies</a>
+          <a href="/cartes" class={`footer-link ${currentPath.startsWith('/cartes') ? 'footer-link--active' : ''}`}>Cartes</a>
+          <a href="/outils" class={`footer-link ${currentPath.startsWith('/outils') ? 'footer-link--active' : ''}`}>Outils</a>
+        </div>
+        <div class="footer-nav-group">
+          <span class="footer-group-label">À propos</span>
+          <a href="/apropos"  class={`footer-link ${currentPath === '/apropos'  ? 'footer-link--active' : ''}`}>À propos</a>
+          <a href="/contact"  class={`footer-link ${currentPath === '/contact'  ? 'footer-link--active' : ''}`}>Contact</a>
+          <a href="/stades"   class={`footer-link ${currentPath === '/stades'   ? 'footer-link--active' : ''}`}>Stades</a>
+        </div>
+        <div class="footer-nav-group">
+          <span class="footer-group-label">Archives</span>
+          <a href="/articles" class={`footer-link ${currentPath.startsWith('/articles') || currentPath.startsWith('/series') ? 'footer-link--active' : ''}`}>Tous les articles</a>
+          <a href="/notes"    class={`footer-link ${currentPath === '/notes'    ? 'footer-link--active' : ''}`}>Journal de genèse</a>
+          <a href="/carte"    class={`footer-link ${currentPath === '/carte'    ? 'footer-link--active' : ''}`}>Carte du site</a>
+        </div>
+      </nav>
 
-     <div class="footer-disclaimer">
-      <span class="footer-disclaimer-symbol">✦</span>
-      <p class="footer-disclaimer-text">
-        Syncognie est un jardin numérique qui évolue, pas une clinique.<br />
-        Son créateur est un curieux qui lit, croise, se trompe et recommence.<br />
-        Les IA coopèrent à la réflexion, au code et à l'écriture du site.<br />
-        Ce que tu trouves ici ne sont pas des conseils mais des pistes pour réfléchir et s'interroger.
-      </p>
-    </div>   
+      <div class="footer-disclaimer">
+        <span class="footer-disclaimer-symbol">✦</span>
+        <p class="footer-disclaimer-text">
+          Syncognie est un jardin numérique qui évolue, pas une clinique.<br />
+          Son créateur est un curieux qui lit, croise, se trompe et recommence.<br />
+          Les IA coopèrent à la réflexion, au code et à l'écriture du site.<br />
+          Ce que tu trouves ici ne sont pas des conseils mais des pistes pour réfléchir et s'interroger.
+        </p>
+      </div>
+    </div>
 
     <div class="footer-bottom">
       <div class="footer-signature">
@@ -49,30 +50,37 @@ const currentPath = Astro.url.pathname;
       </div>
     </div>
 
-
-
   </div>
-
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--rule);
+    background-color: transparent;
     margin-top: 4rem;
   }
 
   .footer-inner {
     max-width: var(--max, 740px);
     margin: 0 auto;
-    padding: 2.2rem 1.75rem 2rem;
+    padding: 3rem 1.75rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
   }
 
-  /* Navigation en groupes */
+  /* Ligne du haut : nav + disclaimer côte à côte */
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  /* Navigation */
   .footer-nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    margin-bottom: 2rem;
   }
 
   .footer-nav-group {
@@ -101,35 +109,36 @@ const currentPath = Astro.url.pathname;
     transition: color .18s;
     width: fit-content;
   }
-  .footer-link:hover       { color: var(--accent); }
-  .footer-link--active     { color: var(--ink-mid); }
+  .footer-link:hover   { color: var(--accent); }
+  .footer-link--active { color: var(--ink-mid); }
 
-  /* Note d'intention */
+  /* Disclaimer — note marginale */
   .footer-disclaimer {
     display: flex;
     align-items: baseline;
-    gap: .6rem;
-    padding: 1.25rem 0 1.5rem;
-    border-top: 1px solid var(--rule);
-    margin-top: 1.5rem;
+    gap: .5rem;
+    max-width: 17rem;
+    opacity: .5;
+    transition: opacity .3s;
+  }
+  .footer-disclaimer:hover {
+    opacity: .8;
   }
 
   .footer-disclaimer-symbol {
-    font-size: .6rem;
+    font-size: .55rem;
     color: var(--accent);
-    opacity: .7;
     flex-shrink: 0;
-    margin-top: .1rem;
+    margin-top: .15rem;
   }
 
   .footer-disclaimer-text {
     font-family: 'Mulish', sans-serif;
-    font-size: .8rem;
+    font-size: .7rem;
     font-weight: 300;
-    letter-spacing: .05em;
-    line-height: 1.7;
+    letter-spacing: .04em;
+    line-height: 1.75;
     color: var(--ink-soft);
-    opacity: .6;
     margin: 0;
     font-style: italic;
   }
@@ -140,8 +149,6 @@ const currentPath = Astro.url.pathname;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--rule);
     flex-wrap: wrap;
   }
 
@@ -165,7 +172,7 @@ const currentPath = Astro.url.pathname;
     font-weight: 300;
     letter-spacing: .12em;
     color: var(--ink-soft);
-    opacity: .65;
+    opacity: .55;
   }
 
   .footer-copy {
@@ -174,7 +181,7 @@ const currentPath = Astro.url.pathname;
     font-weight: 300;
     letter-spacing: .06em;
     color: var(--ink-soft);
-    opacity: .7;
+    opacity: .6;
     display: flex;
     align-items: center;
     gap: .55rem;
@@ -182,6 +189,16 @@ const currentPath = Astro.url.pathname;
 
   .footer-version {
     font-size: .65rem;
+  }
+
+  @media (max-width: 680px) {
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .footer-disclaimer {
+      max-width: 100%;
+    }
   }
 
   @media (max-width: 560px) {
