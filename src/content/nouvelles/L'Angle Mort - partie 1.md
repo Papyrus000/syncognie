@@ -2,7 +2,7 @@
 title: L'Angle Mort - partie 1
 date: 2026-05-04
 genre: fragment
-description: Le cerveau humain consacre environ 20% de son énergie totale au réseau en mode par défaut — le DMN — qui s'active quand on ne fait rien. Une chercheuse développe une technique non-invasive qui réduit temporairement l'activité du DMN. Les sujets fonctionnent parfaitement. Mieux, même — plus rapides, plus précis, moins d'hésitation. Ils rapportent tous la même chose, pendant la durée du protocole, ils agissaient, mais personne ne regardait.
+description: Le cerveau humain consacre environ 20% de son énergie totale au réseau du mode par défaut — le DMN — qui s'active quand on ne fait rien. Une chercheuse développe une technique non-invasive qui réduit temporairement l'activité du DMN. Les sujets fonctionnent parfaitement. Mieux, même. Plus rapides, plus précis, moins d'hésitation. Ils rapportent tous la même chose. Pendant la durée du protocole, ils agissaient mais personne ne regardait...
 stade: graine
 illustration_teaser: /images/nouvelles/alma-voss-v1.png
 illustration: /images/nouvelles/Alma-v1-1.png
@@ -12,25 +12,39 @@ video: /videos/nouvelles/alma-voss.mp4
 
 Sept heures douze. Le réveil n'a pas sonné ou elle ne l'a pas entendu.
 
-Alma reste allongée une minute, pas pour se reposer, elle ne se repose jamais vraiment, son cerveau redémarre avant le reste mais parce qu'il y a ce moment, juste là, entre le sommeil et la conscience pleine, où la voix n'est pas encore revenue. Trente secondes peut-être. Le corps sait qui il est. Le reste suit dans la foulée, fidèle, automatique : _tu as une réunion à neuf heures, tu as oublié de rappeler Marchand, tu as vingt-huit ans et tu n'as pas fini le papier de juin._
+Alma reste encore allongée quelques minutes dans le lit. Le temps d'émerger. De revenir dans sa vie. 
 
-Voilà. Elle est là. La voix. Le premier spectateur.
+Elle apprécie ces moments, fugaces, entre le sommeil et la pleine conscience où tous ses repères sont encore diffus. Dans ces moments, elle ne pense pas. Elle n'est pas encore vraiment elle. Sa petite voix n'est pas encore revenue de la nuit. 
 
-Alma se lève.
+Quelques dizaines de secondes parfois, plus à d'autres moments. Peut-être à cause de la fatigue...
 
----
+Et juste après, ses pensées l'assaillent. _Réunion à neuf heures, ne pas oublier de rappeler Marchand... vingt-neuf ans dans quelques semaines... le papier à rédiger pour juin, les compte-rendus non transmis... le protocole, le DMN..._
 
-Elle fait le café comme elle fait tout, vite, et en pensant à autre chose. La cafetière gronde. Dehors, Grenoble est grise, froide et indifférente, ce qu'elle lui reproche rarement parce qu'elle l'est aussi, grise, froide et indifférente, du moins c'est ce que ses collègues pensent et elle ne les corrige pas. Ça simplifie les choses. Pendant que le café passe, elle pense à la réunion de neuf heures, au papier de juin, à Marchand qu'elle ne rappellera probablement pas avant jeudi, et simultanément, juste en dessous, comme un ronron de fond qu'on n'entend plus vraiment : _qui est en train de penser à tout ça ?_
-
-Ce n'est pas une question qu'elle se pose. C'est une question qu'elle _est_. Depuis huit ans, peut-être plus. Depuis le jour où elle a réalisé dans un scanner, la tête immobilisée, les données défilant sur l'écran que le cerveau au repos n'est pas silencieux. Qu'il travaille. Qu'il raconte quelque chose sans arrêt, à quelqu'un, et que ce quelqu'un et ce narrateur sont peut-être la même chose, peut-être pas, et qu'elle ne sait pas comment trancher.
-
-Le café déborde légèrement. Elle l'essuie sans y penser.
+Alma se lève pour taire la liste, pour taire la voix intérieure. Elle prend soin de ne pas réveiller Simon. 
 
 ---
 
-Luc dort encore. Elle peut l'entendre. Pas le souffle, juste l'absence de bruit organisé qui signifie qu'il n'est pas levé. Elle aime ça, ces vingt minutes le matin où l'appartement lui appartient entièrement, où elle peut être dans sa tête sans avoir à en sortir pour répondre à une question, sourire, être présente. Luc dit qu'elle est la seule personne qu'il connaisse capable d'être à la fois complètement là et complètement ailleurs. Il le dit avec tendresse. Elle reçoit le compliment et pense : _tu ne sais pas à quel point._
+Elle attrape une dosette et démarre la cafetière. Elle le fait vite et en pensant à autre chose.
 
-Elle boit son café debout, face à la fenêtre qui ne ferme plus tout à fait. Courant d'air frais sur sa cheville gauche. Elle note le courant d'air, note qu'elle l'a noté, se demande si noter qu'on note quelque chose a une fin ou si c'est des miroirs en face à face jusqu'à l'infini, et rit toute seule, sans bruit. Ce rire intérieur qui ne remonte jamais complètement à la surface.
+Le café coule. Dehors, la ville est grise, froide et indifférente derrière les rideaux. Ce qu'elle lui reproche rarement parce qu'elle l'est aussi selon l'image décrite au lycée ou les commentaires de ses collègues. Quelques uns ne le lui disent pas mais ils n'en pensent pas moins. Elle n'a pas de doute à ce sujet. 
+
+Alors depuis quelques mois elle a décidé de rompre avec son style vestimentaire d'étudiante. Au départ le changement suscita des réactions. Des regards. Elle persista. Au bout de quelques semaines le comportement des autres retourna à la normale. Son comportement rappelait à tous qu'elle n'avait pas complètement changé.
+
+Ce retour ne la dérangea pas. Ça simplifiait les choses en fin de compte. Plus de temps pour ses recherches.
+
+Pendant que le café coulait, elle pensait aux dossiers des six sujets de l'expérience, et simultanément, juste en dessous, comme un ronron de fond qu'on n'entend plus vraiment : _qui est en train de penser à tout ça ? ce sont des pensées automatiques ? mon cortex préfrontal ?_
+
+Ce ne sont pas de nouvelles questions qu'elle se posait. Elles étaient là depuis des mois. Depuis le jour où elle a réalisé dans un scanner, la tête immobilisée, les données défilant sur l'écran que le cerveau au repos n'est pas silencieux. Qu'il travaille. Qu'il raconte quelque chose sans arrêt, à quelqu'un, et que ce quelqu'un et ce narrateur sont peut-être la même chose, peut-être pas, et qu'elle ne sait pas comment trancher.
+
+Le café déborda légèrement de la tasse. Elle l'essuya machinalement.
+
+---
+
+Simon dormait encore. Elle pensa quelques minutes à leur relation. C'était le seul à la comprendre.  Elle aimait ça. Elle pouvait être elle avec lui, vraiment elle. Simon dit qu'elle est la seule personne qu'il connaisse capable d'être à la fois complètement là et complètement ailleurs. Il le dit avec tendresse. Elle recevait le compliment et pensait : _tu ne sais pas à quel point._
+
+Elle bu son café debout, face à la fenêtre en regardant les voitures et les passants s'activer au bas de l'immeuble. 
+
+Un léger courant d'air frais venant de dehors sur sa cheville gauche. Elle nota le courant d'air, nota qu'elle l'avait noté, se demanda si noter qu'on note quelque chose a une fin ou si c'est des miroirs en face à face jusqu'à l'infini, et rit toute seule, sans bruit. Ce rire intérieur qui ne remonte jamais complètement à la surface.
 
 _Qui rit ?_
 
@@ -38,13 +52,13 @@ Voilà. Encore.
 
 ---
 
-Elle a un nom pour ça maintenant. Enfin, pas elle. Marcus Raichle, neurologue à Washington University, a mis un nom dessus en 2001 dans un article que personne n'attendait. Alma l'a lu à l'époque, première année de thèse, sans mesurer le poids. Elle l'a relu six ans plus tard avec la sensation physique de reconnaître, après des années, la voix d'un inconnu. Le _Default Mode Network (DMN)_. Le réseau en mode par défaut. Le narrateur permanent. Celui qui tourne en arrière-plan quand vous ne faites rien, ou plutôt celui qui est convaincu qu'il y a un _vous_ pour qui tourner.
+Elle a un nom pour ça maintenant. Enfin, pas elle. Marcus Raichle, neurologue à Washington University, a mis un nom dessus en 2001 dans un article que personne n'attendait. Alma l'avait lu à l'époque, première année de thèse, sans mesurer le poids. Elle l'a relu six ans plus tard avec la sensation physique de reconnaître, après des années, la voix d'un inconnu. Le _Default Mode Network (DMN)_. Le réseau en mode par défaut. Le narrateur permanent. Celui qui tourne en arrière-plan quand vous ne faites rien, ou plutôt celui qui est convaincu qu'il y a un _vous_ pour qui tourner.
 
-Elle pose sa tasse. Prend son manteau. Cherche ses clés sous le journal, toujours sous le journal et sort dans Grenoble froide et grise pendant que derrière elle Luc dort encore et que dans sa tête la voix reprend son monologue habituel, inventoriant, commentant, reliant hier à demain, construisant à chaque instant la fiction cohérente d'une femme qui sait qui elle est.
+Elle posa sa tasse. Pris son manteau. Chercha ses clés et sortit. Dans sa tête la voix reprit son monologue habituel, inventoriant, commentant, reliant hier à demain, construisant à chaque instant la fiction cohérente d'une femme qui sait qui elle est.
 
-Alma marche. Écoute. Prend des notes mentales.
+Alma marchait. Écoutait. Prennait des notes mentales.
 
-Elle a une hypothèse.
+Elle avait une hypothèse...
 
 ## Chapitre 2 : Le protocole
 
@@ -56,7 +70,7 @@ Alma a mis trois ans à affiner le protocole. Un an de plus pour convaincre le c
 
 ---
 
-Les six premiers sujets sont des volontaires recrutés dans le personnel universitaire. Chercheurs, doctorants, un ingénieur de maintenance qui s'est présenté parce que, dit-il, il veut savoir à quoi ça ressemble. Alma apprécie ça. L'honnêteté de la curiosité brute, sans hypothèse préalable.
+Les six premiers sujets sont des volontaires recrutés dans le personnel universitaire. Chercheurs, doctorants, un ingénieur de maintenance qui s'est présenté parce que, dit-il, il veut savoir à quoi ça ressemble. Alma appréciait ça. L'honnêteté de la curiosité brute, sans hypothèse préalable.
 
 La durée des sessions : deux heures. Puis quatre. Puis six, pour les trois derniers.
 
@@ -66,23 +80,23 @@ Les données cognitives sont propres. Mieux que propres, les temps de réaction 
 
 ---
 
-C'est dans les questionnaires que quelque chose accroche.
+C'est dans les questionnaires que quelque chose accrochait.
 
 Alma les lit le soir, dans son bureau, après que tout le monde soit parti. Elle a l'habitude des questionnaires post-protocole. La fatigue, les maux de tête, parfois une légère désorientation temporelle. Elle sait lire entre les cases cochées, entendre ce que les gens ne savent pas formuler.
 
 Ce qu'elle lit cette fois-là est différent.
 
-Sujet 2, chercheur en physique des matériaux, quarante et un ans, pas de pratique méditative, pas d'antécédents psychiatriques : _J'agissais normalement. Je répondais aux tests. Je savais ce que je faisais. Mais il n'y avait personne pour le regarder. Je ne dis pas que je me sentais mal. Je dis qu'il n'y avait pas de spectateur._
+Sujet 2, chercheur en physique des matériaux, quarante et un ans, pas de pratique méditative, pas d'antécédents psychiatriques : _J'agissais normalement. Je répondais aux tests. Je savais ce que je faisais. Mais je n'avais pas l'impression d'être complètement là. Je ne dis pas que je me sentais mal. Je dis que je ne me sentais pas complètement présent._
 
 Sujet 4, ingénieur de maintenance, trente-six ans : _C'était efficace. C'était propre. Quelque chose manquait mais je ne sais pas si c'est une perte._
 
-Sujet 6, doctorante en linguistique, vingt-neuf ans : _Je cherche le mot exact depuis hier. Ce n'est pas l'absence. C'est l'absence de l'absence. Comme si la question n'avait plus d'objet._
+Sujet 6, doctorante en linguistique, vingt-neuf ans : _Je cherche le mot exact depuis hier. Ce n'est pas l'absence. Car je ne le sentais pas. C'est le soi. Il n'était plus présent pendant l'expérience._
 
 Alma pose les feuilles sur le bureau. Regarde le plafond. La voix dans sa tête, fidèle, automatique, commence immédiatement à construire une grille d'analyse, cherche les biais, formule les contrôles nécessaires.
 
 Elle la laisse faire.
 
-Mais quelque chose, en dessous, ne bouge pas.
+Mais quelque chose, en dessous, la perturbe. Il y a un artefact. 
 
 ---
 
