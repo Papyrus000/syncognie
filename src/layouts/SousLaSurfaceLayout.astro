@@ -1149,6 +1149,8 @@ const sl = stadeLabel(stade);
   const readWrap = document.getElementById('sls-read-wrap');
   const totalMin = lecture || 4;
 
+  let readFired = false;
+
   function updateProgress() {
     const article = document.getElementById('sls-article');
     if (!article || !bar) return;
@@ -1165,8 +1167,22 @@ const sl = stadeLabel(stade);
       const remaining = Math.max(0, Math.round(totalMin * (1 - pct / 100)));
       timeEl.textContent = remaining < 1 ? '< 1 min' : remaining + ' min';
     }
+
+    if (pct >= 80 && !readFired) {
+      readFired = true;
+      window.dispatchEvent(new CustomEvent('article:read', {
+        detail: { slug: '/sous-la-surface/' + slug }
+      }));
+    }
   }
   window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // Dispatch après 15s de présence
+  setTimeout(() => {
+    window.dispatchEvent(new CustomEvent('article:read', {
+      detail: { slug: '/sous-la-surface/' + slug }
+    }));
+  }, 15000);
 
   // ── 2. Table des matières automatique ────────────────────────────────
   if (body && toc) {
