@@ -1,0 +1,1145 @@
+---
+// src/layouts/SousLaSurfaceLayout.astro
+// Format hybride interactif : scène + concepts annotés
+// Les passages de la scène s'illuminent quand on explore un concept.
+// Mobile-first, ToC latérale sur desktop.
+
+import Base from './Base.astro';
+
+export interface Props {
+  title:        string;
+  date:         Date;
+  description?: string;
+  personnages?: string;
+  concepts?:    string[];
+  lecture?:     number;
+  slug:         string;
+  prev?:        { slug: string; title: string };
+  next?:        { slug: string; title: string };
+  conceptsJson?: string;
+  stade?:       'graine' | 'pousse' | 'arbre';
+  illustration?: string;
+}
+
+const {
+  title, date, description, personnages,
+  concepts, lecture, slug, prev, next,
+  conceptsJson = '{}', stade, illustration
+} = Astro.props;
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function stadeLabel(s?: string) {
+  if (s === 'pousse') return { icon: '🌿', label: 'Pousse' };
+  if (s === 'arbre')  return { icon: '🌳', label: 'Arbre' };
+  return { icon: '🌱', label: 'Graine' };
+}
+const sl = stadeLabel(stade);
+---
+
+<Base title={`${title} — Sous la surface · Syncognie`}>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* ── Variables ── */
+  html:has(.sls-wrap) {
+    --sls-bg:        #F5F2EE;
+    --sls-paper:     #FAF8F4;
+    --sls-ink:       #1C1811;
+    --sls-ink-soft:  #4A4237;
+    --sls-ink-muted: #9A8F82;
+    --sls-blue:      #3d7a9a;
+    --sls-blue-s:    #5b8fa8;
+    --sls-blue-hl:   rgba(61,122,154,.08);
+    --sls-blue-hl2:  rgba(61,122,154,.18);
+    --sls-border:    #E4DDD4;
+    --sls-serif:     'Lora', Georgia, serif;
+    --sls-sans:      'DM Sans', sans-serif;
+    --sls-lh:        1.87;
+    --sls-measure:   64ch;
+    --sls-base:      18.5px;
+  }
+  body:has(.sls-wrap) {
+    background-color: var(--sls-bg) !important;
+    background-image: none !important;
+  }
+
+  /* ── Barre de progression ── */
+  .sls-progress {
+    position: fixed;
+    top: 52px; left: 0;
+    height: 2px; width: 0%;
+    background: var(--sls-blue);
+    box-shadow: 0 0 8px rgba(61,122,154,.4);
+    z-index: 500;
+    transition: width .08s linear;
+  }
+
+  /* ── Layout ── */
+  .sls-wrap {
+    display: grid;
+    grid-template-columns: 200px 1fr 280px;
+    grid-template-areas: "toc article panel";
+    gap: 0 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 6rem;
+    align-items: start;
+  }
+
+  /* ── Colonne ToC (gauche) ── */
+  .sls-toc-col {
+    grid-area: toc;
+    position: sticky;
+    top: 76px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+  }
+  .sls-toc-label {
+    font-family: var(--sls-sans);
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+    margin-bottom: .8rem;
+  }
+  .sls-toc-back {
+    display: block;
+    font-family: var(--sls-sans);
+    font-size: .65rem;
+    color: var(--sls-ink-muted);
+    text-decoration: none;
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--sls-border);
+    transition: color .18s;
+  }
+  .sls-toc-back:hover { color: var(--sls-blue); }
+
+  .sls-toc-sep {
+    height: 1px;
+    background: var(--sls-border);
+    margin: 1.2rem 0;
+  }
+  .sls-toc-stade {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    margin-bottom: .6rem;
+  }
+  .sls-toc-stade-icon { font-size: .85rem; }
+  .sls-toc-stade-lbl {
+    font-family: var(--sls-sans);
+    font-size: .62rem;
+    color: var(--sls-ink-muted);
+    letter-spacing: .06em;
+  }
+  .sls-toc-progress-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+  }
+  .sls-toc-pct {
+    font-family: var(--sls-sans);
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--sls-blue);
+  }
+  .sls-toc-time {
+    font-family: var(--sls-sans);
+    font-size: .75rem;
+    font-weight: 500;
+    color: var(--sls-blue);
+  }
+  .sls-toc-pct-lbl {
+    font-weight: 300;
+    font-size: .68rem;
+    color: var(--sls-ink-muted);
+  }
+
+  .sls-illustration {
+    margin-bottom: 2rem;
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: var(--sls-measure);
+  }
+  .sls-illustration img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+  }
+
+  #sls-toc a {
+    display: block;
+    font-family: var(--sls-sans);
+    font-size: .64rem;
+    line-height: 1.5;
+    color: var(--sls-ink-muted);
+    text-decoration: none;
+    padding: .26rem .5rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 2px 2px 0;
+    transition: color .18s, border-color .18s, background .18s;
+    cursor: pointer;
+  }
+  #sls-toc a:hover {
+    color: var(--sls-ink-soft);
+    border-left-color: var(--sls-border);
+  }
+  #sls-toc a.sls-toc-active {
+    color: var(--sls-blue);
+    border-left-color: var(--sls-blue);
+    background: var(--sls-blue-hl);
+  }
+
+  /* ── Article (centre) ── */
+  .sls-article {
+    grid-area: article;
+    min-width: 0;
+  }
+
+  /* ── En-tête article ── */
+  .sls-art-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--sls-border);
+  }
+  .sls-art-eyebrow {
+    font-family: var(--sls-sans);
+    font-size: .62rem;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--sls-blue-s);
+    margin-bottom: .8rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .sls-art-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 1.2rem;
+    height: 1px;
+    background: currentColor;
+    opacity: .5;
+  }
+  .sls-art-titre {
+    font-family: var(--sls-serif);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 600;
+    color: var(--sls-ink);
+    letter-spacing: -.02em;
+    line-height: 1.2;
+    margin-bottom: .8rem;
+  }
+  .sls-art-desc {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--sls-ink-soft);
+    line-height: 1.6;
+    max-width: 54ch;
+    margin-bottom: 1.2rem;
+  }
+  .sls-art-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem 1.2rem;
+  }
+  .sls-art-date {
+    font-family: var(--sls-sans);
+    font-size: .67rem;
+    color: var(--sls-ink-muted);
+    font-weight: 300;
+  }
+  .sls-art-perso {
+    font-family: var(--sls-sans);
+    font-size: .64rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--sls-blue-s);
+    background: var(--sls-blue-hl2);
+    padding: .18em .6em;
+    border-radius: 2px;
+  }
+  .sls-art-lecture {
+    font-family: var(--sls-sans);
+    font-size: .65rem;
+    color: var(--sls-ink-muted);
+  }
+
+  /* ── Consigne interactive ── */
+  .sls-hint {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    background: var(--sls-blue-hl);
+    border: 1px solid rgba(61,122,154,.15);
+    border-radius: 5px;
+    padding: .75rem 1rem;
+    margin-bottom: 2.5rem;
+    font-family: var(--sls-sans);
+    font-size: .75rem;
+    color: var(--sls-blue);
+    line-height: 1.5;
+  }
+  .sls-hint-icon { font-size: .9rem; flex-shrink: 0; }
+
+  /* ── Corps : scène ── */
+  .sls-body {
+    font-family: var(--sls-serif);
+    font-size: var(--sls-base);
+    line-height: var(--sls-lh);
+    color: var(--sls-ink-soft);
+    max-width: var(--sls-measure);
+  }
+  .sls-body p {
+    margin-bottom: 1.4rem;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  .sls-body h2 {
+    font-family: var(--sls-serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--sls-ink);
+    margin: 3rem 0 1rem;
+    letter-spacing: -.015em;
+    line-height: 1.25;
+    scroll-margin-top: 80px;
+  }
+  .sls-body h3 {
+    font-family: var(--sls-sans);
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+    margin: 2.5rem 0 .8rem;
+    scroll-margin-top: 80px;
+  }
+  .sls-body blockquote {
+    border-left: 2px solid var(--sls-blue);
+    margin: 2rem 0;
+    padding: .4rem 0 .4rem 1.4rem;
+  }
+  .sls-body blockquote p {
+    font-style: italic;
+    color: var(--sls-ink);
+    margin: 0;
+    text-align: left;
+  }
+  .sls-body em  { font-style: italic; }
+  .sls-body strong { font-weight: 600; color: var(--sls-ink); }
+  .sls-body hr {
+    border: none;
+    border-top: 1px solid var(--sls-border);
+    margin: 2.5rem 0;
+  }
+
+  /* ── Passages annotés (spans injectés via JS) ── */
+  .sls-anno {
+    background: linear-gradient(120deg, rgba(61,122,154,0) 0%, rgba(61,122,154,.12) 100%);
+    border-bottom: 1.5px solid rgba(61,122,154,.35);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    border-radius: 1px;
+    padding: 0 .05em;
+  }
+  .sls-anno:hover,
+  .sls-anno.sls-anno--hover {
+    background: rgba(61,122,154,.18);
+    border-color: var(--sls-blue);
+  }
+  .sls-anno.sls-anno--active {
+    background: rgba(61,122,154,.22);
+    border-color: var(--sls-blue);
+    box-shadow: 0 1px 0 var(--sls-blue);
+  }
+
+  /* ── Panneau concept (droite) ── */
+  .sls-panel {
+    grid-area: panel;
+    position: sticky;
+    top: 76px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+  }
+  .sls-panel-placeholder {
+    border: 1px dashed var(--sls-border);
+    border-radius: 6px;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+  }
+  .sls-panel-placeholder-icon {
+    font-size: 1.5rem;
+    color: var(--sls-blue-s);
+    opacity: .2;
+    display: block;
+    margin-bottom: .8rem;
+  }
+  .sls-panel-placeholder-txt {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: .82rem;
+    color: var(--sls-ink-muted);
+    line-height: 1.6;
+  }
+
+  /* Carte concept affichée */
+  .sls-concept-card {
+    background: var(--sls-paper);
+    border: 1px solid var(--sls-border);
+    border-radius: 6px;
+    overflow: hidden;
+    animation: sls-slide-in .25s cubic-bezier(.16,.84,.44,1) both;
+  }
+  @keyframes sls-slide-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .sls-concept-card-hd {
+    background: var(--sls-blue-hl);
+    border-bottom: 1px solid var(--sls-border);
+    padding: 1rem 1.25rem .85rem;
+  }
+  .sls-concept-card-penseur {
+    font-family: var(--sls-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sls-blue-s);
+    margin-bottom: .4rem;
+  }
+  .sls-concept-card-nom {
+    font-family: var(--sls-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--sls-ink);
+    line-height: 1.2;
+    letter-spacing: -.015em;
+  }
+  .sls-concept-card-body {
+    padding: 1.1rem 1.25rem 1.25rem;
+    font-family: var(--sls-serif);
+    font-size: .85rem;
+    color: var(--sls-ink-soft);
+    line-height: 1.72;
+  }
+  .sls-concept-card-body p { margin-bottom: .9rem; }
+  .sls-concept-card-body p:last-child { margin-bottom: 0; }
+  .sls-concept-card-extrait {
+    border-top: 1px solid var(--sls-border);
+    padding: .9rem 1.25rem;
+    background: rgba(250,248,244,.7);
+  }
+  .sls-concept-card-extrait-lbl {
+    font-family: var(--sls-sans);
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+    margin-bottom: .45rem;
+  }
+  .sls-concept-card-extrait-txt {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: .81rem;
+    color: var(--sls-ink-soft);
+    line-height: 1.6;
+    border-left: 2px solid var(--sls-blue-s);
+    padding-left: .8rem;
+  }
+  .sls-concept-card-action {
+    font-family: var(--sls-sans);
+    font-size: .72rem;
+    font-weight: 500;
+    color: var(--sls-blue-s);
+    background: var(--sls-blue-hl);
+    border: 1px solid rgba(61,122,154,.18);
+    border-radius: 3px;
+    padding: .55rem 1rem;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    margin-top: .75rem;
+    transition: background .18s, border-color .18s;
+  }
+  .sls-concept-card-action:hover {
+    background: var(--sls-blue-hl2);
+    border-color: var(--sls-blue-s);
+  }
+
+  /* Compteur d'activation */
+  .sls-brain-bar {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--sls-paper);
+    border: 1px solid var(--sls-border);
+    border-radius: 6px;
+  }
+  .sls-brain-bar-lbl {
+    font-family: var(--sls-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+    margin-bottom: .7rem;
+  }
+  .sls-brain-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .45rem;
+  }
+  .sls-brain-key {
+    font-family: var(--sls-sans);
+    font-size: .65rem;
+    color: var(--sls-ink-muted);
+    width: 100px;
+    flex-shrink: 0;
+  }
+  .sls-brain-track {
+    flex: 1;
+    height: 4px;
+    background: var(--sls-border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .sls-brain-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--sls-blue);
+    width: 0%;
+    transition: width .6s cubic-bezier(.16,.84,.44,1);
+  }
+  .sls-brain-val {
+    font-family: var(--sls-sans);
+    font-size: .62rem;
+    color: var(--sls-blue);
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ── Navigation prev/next ── */
+  .sls-nav {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--sls-border);
+    max-width: var(--sls-measure);
+  }
+  .sls-nav-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .sls-nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    padding: .9rem 1rem;
+    border: 1px solid var(--sls-border);
+    border-radius: 4px;
+    text-decoration: none;
+    background: var(--sls-bg);
+    transition: border-color .2s, background .2s;
+  }
+  .sls-nav-item:hover {
+    border-color: var(--sls-blue);
+    background: var(--sls-blue-hl);
+  }
+  .sls-nav-item--next { text-align: right; }
+  .sls-nav-dir {
+    font-family: var(--sls-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+  }
+  .sls-nav-titre {
+    font-family: var(--sls-serif);
+    font-size: .9rem;
+    color: var(--sls-ink);
+    line-height: 1.3;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1080px) {
+    .sls-wrap {
+      grid-template-columns: 160px 1fr 240px;
+      gap: 0 2rem;
+    }
+  }
+  @media (max-width: 860px) {
+    .sls-wrap {
+      grid-template-columns: 1fr;
+      grid-template-areas: "article";
+      padding: 2rem 1.5rem 4rem;
+    }
+    .sls-toc-col,
+    .sls-panel { display: none; }
+    /* Sur mobile, les cartes concept apparaissent inline */
+    .sls-mobile-panel { display: block; }
+  }
+  @media (min-width: 861px) {
+    .sls-mobile-panel { display: none; }
+  }
+  @media (max-width: 520px) {
+    .sls-art-titre { font-size: 1.3rem; }
+  }
+</style>
+
+<style is:global>
+  /* ToC — liens créés dynamiquement par JS */
+  #sls-toc a {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .64rem;
+    line-height: 1.5;
+    color: #9A8F82;
+    text-decoration: none !important;
+    padding: .26rem .5rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 2px 2px 0;
+    transition: color .18s, border-color .18s, background .18s;
+    cursor: pointer;
+  }
+  #sls-toc a:hover {
+    color: #4A4237;
+    border-left-color: #E4DDD4;
+    text-decoration: none !important;
+  }
+  #sls-toc a.sls-toc-active {
+    color: #3d7a9a;
+    border-left-color: #3d7a9a;
+    background: rgba(61,122,154,.08);
+    text-decoration: none !important;
+  }
+
+  /* Corps article — contenu du slot (MDX) */
+  .sls-body p {
+    font-family: 'Lora', Georgia, serif;
+    font-size: var(--sls-base, 18.5px);
+    line-height: var(--sls-lh, 1.87);
+    color: #4A4237;
+    margin-bottom: 1.4rem;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    max-width: var(--sls-measure, 64ch);
+  }
+  .sls-body h2 {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1C1811;
+    margin: 3rem 0 1rem;
+    letter-spacing: -.015em;
+    line-height: 1.25;
+    scroll-margin-top: 80px;
+  }
+  .sls-body h3 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #9A8F82;
+    margin: 2.5rem 0 .8rem;
+    scroll-margin-top: 80px;
+  }
+  .sls-body blockquote {
+    border-left: 2px solid #3d7a9a;
+    margin: 2rem 0;
+    padding: .4rem 0 .4rem 1.4rem;
+  }
+  .sls-body blockquote p {
+    font-style: italic;
+    color: #1C1811;
+    margin: 0;
+    text-align: left;
+  }
+  .sls-body em  { font-style: italic; }
+  .sls-body strong { font-weight: 600; color: #1C1811; }
+  .sls-body hr {
+    border: none;
+    border-top: 1px solid #E4DDD4;
+    margin: 2.5rem 0;
+  }
+
+  /* Passages annotés */
+  .sls-anno {
+    background: linear-gradient(120deg, rgba(61,122,154,0) 0%, rgba(61,122,154,.12) 100%);
+    border-bottom: 1.5px solid rgba(61,122,154,.35);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    border-radius: 1px;
+    padding: 0 .05em;
+  }
+  .sls-anno:hover,
+  .sls-anno.sls-anno--hover {
+    background: rgba(61,122,154,.18);
+    border-color: #3d7a9a;
+  }
+  .sls-anno.sls-anno--active {
+    background: rgba(61,122,154,.22);
+    border-color: #3d7a9a;
+    box-shadow: 0 1px 0 #3d7a9a;
+  }
+
+  /* ── Panneau concept (injecté par JS) ── */
+  .sls-concept-card {
+    background: #FAF8F4;
+    border: 1px solid #E4DDD4;
+    border-radius: 6px;
+    overflow: hidden;
+    animation: sls-slide-in .25s cubic-bezier(.16,.84,.44,1) both;
+  }
+  @keyframes sls-slide-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .sls-concept-card-hd {
+    background: rgba(61,122,154,.08);
+    border-bottom: 1px solid #E4DDD4;
+    padding: 1rem 1.25rem .85rem;
+  }
+  .sls-concept-card-penseur {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #5b8fa8;
+    margin-bottom: .4rem;
+  }
+  .sls-concept-card-nom {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1C1811;
+    line-height: 1.2;
+    letter-spacing: -.015em;
+  }
+  .sls-concept-card-body {
+    padding: 1.1rem 1.25rem 1.25rem;
+    font-family: 'Lora', Georgia, serif;
+    font-size: .85rem;
+    color: #4A4237;
+    line-height: 1.72;
+  }
+  .sls-concept-card-body p { margin-bottom: .9rem; }
+  .sls-concept-card-body p:last-child { margin-bottom: 0; }
+  .sls-concept-card-extrait {
+    border-top: 1px solid #E4DDD4;
+    padding: .9rem 1.25rem;
+    background: rgba(250,248,244,.7);
+  }
+  .sls-concept-card-extrait-lbl {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #9A8F82;
+    margin-bottom: .45rem;
+  }
+  .sls-concept-card-extrait-txt {
+    font-family: 'Lora', Georgia, serif;
+    font-style: italic;
+    font-size: .81rem;
+    color: #4A4237;
+    line-height: 1.6;
+    border-left: 2px solid #5b8fa8;
+    padding-left: .8rem;
+  }
+
+  /* Jauges cérébrales */
+  .sls-brain-bar {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: #FAF8F4;
+    border: 1px solid #E4DDD4;
+    border-radius: 6px;
+  }
+  .sls-brain-bar-lbl {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #9A8F82;
+    margin-bottom: .7rem;
+  }
+  .sls-brain-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .45rem;
+  }
+  .sls-brain-key {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .65rem;
+    color: #9A8F82;
+    width: 120px;
+    flex-shrink: 0;
+  }
+  .sls-brain-track {
+    flex: 1;
+    height: 4px;
+    background: #E4DDD4;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .sls-brain-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: #3d7a9a;
+    width: 0%;
+    transition: width .6s cubic-bezier(.16,.84,.44,1);
+  }
+  .sls-brain-val {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .62rem;
+    color: #3d7a9a;
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+</style>
+
+<!-- Barre de progression -->
+<div class="sls-progress" id="sls-progress" aria-hidden="true" data-slug={slug} data-lecture={lecture ?? 4}></div>
+
+<div class="sls-wrap">
+
+  <!-- ── Colonne gauche : ToC ── -->
+  <aside class="sls-toc-col">
+    <a href="/sous-la-surface" class="sls-toc-back">← Sous la surface</a>
+    <div class="sls-toc-label">Dans cet article</div>
+    <nav id="sls-toc" aria-label="Table des matières"></nav>
+
+    <div class="sls-toc-sep"></div>
+
+    {stade && (
+      <div class="sls-toc-stade">
+        <span class="sls-toc-stade-icon">{sl.icon}</span>
+        <span class="sls-toc-stade-lbl">{sl.label}</span>
+      </div>
+    )}
+
+    <div class="sls-toc-progress-wrap" id="sls-read-wrap" style="display:none">
+      <div class="sls-toc-pct"><span id="sls-read-pct">0%</span> <span class="sls-toc-pct-lbl">lu</span></div>
+      <div class="sls-toc-time"><span id="sls-time-val">—</span> <span class="sls-toc-pct-lbl">restant</span></div>
+    </div>
+
+  </aside>
+
+  <!-- ── Centre : article ── -->
+  <main class="sls-article" id="sls-article">
+
+    <header class="sls-art-header">
+      <p class="sls-art-eyebrow">Sous la surface</p>
+      <h1 class="sls-art-titre">{title}</h1>
+      {description && <p class="sls-art-desc">{description}</p>}
+      <div class="sls-art-meta">
+        <time class="sls-art-date" datetime={date.toISOString()}>{formatDate(date)}</time>
+        {personnages && <span class="sls-art-perso">{personnages}</span>}
+        {lecture && <span class="sls-art-lecture">{lecture} min de lecture</span>}
+      </div>
+    </header>
+
+    {illustration && (
+      <div class="sls-illustration">
+        <img src={illustration} alt={title} loading="eager" />
+      </div>
+    )}
+
+    <!-- Consigne interactive -->
+    <div class="sls-hint" id="sls-hint">
+      <span class="sls-hint-icon">◉</span>
+      <span>
+        Lisez la scène. Les <strong>passages soulignés</strong> sont cliquables —
+        le concept associé s'ouvre à droite (ou en dessous sur mobile).
+      </span>
+    </div>
+
+    <!-- Corps de l'article -->
+    <div class="sls-body" id="sls-body">
+      <slot />
+    </div>
+
+    <!-- Navigation -->
+    {(prev || next) && (
+      <nav class="sls-nav" aria-label="Navigation articles">
+        <div class="sls-nav-grid">
+          {prev ? (
+            <a class="sls-nav-item" href={`/sous-la-surface/${prev.slug}`}>
+              <span class="sls-nav-dir">← Précédent</span>
+              <span class="sls-nav-titre">{prev.title}</span>
+            </a>
+          ) : <div />}
+          {next ? (
+            <a class="sls-nav-item sls-nav-item--next" href={`/sous-la-surface/${next.slug}`}>
+              <span class="sls-nav-dir">Suivant →</span>
+              <span class="sls-nav-titre">{next.title}</span>
+            </a>
+          ) : <div />}
+        </div>
+      </nav>
+    )}
+
+  </main>
+
+  <!-- ── Colonne droite : panneau concept ── -->
+  <aside class="sls-panel" id="sls-panel">
+
+    <!-- Placeholder initial -->
+    <div class="sls-panel-placeholder" id="sls-placeholder">
+      <span class="sls-panel-placeholder-icon">◎</span>
+      <p class="sls-panel-placeholder-txt">
+        Touchez un passage souligné dans la scène pour voir le concept associé.
+      </p>
+    </div>
+
+    <!-- Carte concept (injectée par JS) -->
+    <div id="sls-concept-slot"></div>
+
+    <!-- Jauges cérébrales (optionnelles, injectées par JS) -->
+    <div id="sls-brain-slot"></div>
+
+  </aside>
+
+</div>
+
+<div id="sls-concepts-data" hidden set:text={conceptsJson}></div>
+
+<script>
+(function () {
+  const _prog  = document.getElementById('sls-progress');
+  const slug   = _prog ? _prog.dataset.slug : '';
+  const lecture = _prog ? (parseInt(_prog.dataset.lecture) || 4) : 4;
+
+  // ── Annotations : utiliser data-sls='concept-id' sur les spans du MDX ──
+
+  const body        = document.getElementById('sls-body');
+  const panel       = document.getElementById('sls-panel');
+  const slot        = document.getElementById('sls-concept-slot');
+  const brainSlot   = document.getElementById('sls-brain-slot');
+  const placeholder = document.getElementById('sls-placeholder');
+  const toc         = document.getElementById('sls-toc');
+  const bar         = document.getElementById('sls-progress');
+
+  // ── 1. Barre de progression ──────────────────────────────────────────
+  const pctEl    = document.getElementById('sls-read-pct');
+  const timeEl   = document.getElementById('sls-time-val');
+  const readWrap = document.getElementById('sls-read-wrap');
+  const totalMin = lecture || 4;
+
+  function updateProgress() {
+    const article = document.getElementById('sls-article');
+    if (!article || !bar) return;
+    const top      = article.offsetTop;
+    const bottom   = top + article.offsetHeight;
+    const scrollable = bottom - top - window.innerHeight;
+    const scrolled   = Math.max(0, window.scrollY - top);
+    const pct = scrollable > 0 ? Math.min(100, (scrolled / scrollable) * 100) : 100;
+    bar.style.width = pct + '%';
+
+    if (pct > 2 && readWrap) readWrap.style.display = 'flex';
+    if (pctEl) pctEl.textContent = Math.round(pct) + '%';
+    if (timeEl) {
+      const remaining = Math.max(0, Math.round(totalMin * (1 - pct / 100)));
+      timeEl.textContent = remaining < 1 ? '< 1 min' : remaining + ' min';
+    }
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ── 2. Table des matières automatique ────────────────────────────────
+  if (body && toc) {
+    const headings = body.querySelectorAll('h2, h3');
+    const links = [];
+    headings.forEach((h, i) => {
+      if (!h.id) h.id = 'sls-h-' + i;
+      const a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent || '';
+      if (h.tagName === 'H3') a.style.paddingLeft = '.85rem';
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(h.id);
+        if (target) {
+          const top = target.getBoundingClientRect().top + window.scrollY - 80;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+      toc.appendChild(a);
+      links.push({ el: h, a });
+    });
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.a.classList.remove('sls-toc-active'));
+          const found = links.find(l => l.el === e.target);
+          if (found) found.a.classList.add('sls-toc-active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    links.forEach(l => io.observe(l.el));
+  }
+
+  // ── 3. Système d'annotations ─────────────────────────────────────────
+
+  let concepts = {};
+  try {
+    const el = document.getElementById('sls-concepts-data');
+    concepts = JSON.parse(el ? el.textContent : '{}');
+  } catch (e) { console.error('[sls] parse concepts:', e); }
+
+  // Récupérer tous les spans annotés [data-sls]
+  const annotations = body ? body.querySelectorAll('[data-sls]') : [];
+  let activeId = null;
+
+  // Ajouter les classes visuelles
+  annotations.forEach(el => {
+    el.classList.add('sls-anno');
+    const conceptId = el.getAttribute('data-sls');
+
+    el.addEventListener('mouseenter', () => {
+      el.classList.add('sls-anno--hover');
+      // Illuminer tous les spans du même concept
+      body.querySelectorAll(`[data-sls="${conceptId}"]`).forEach(s => {
+        s.classList.add('sls-anno--hover');
+      });
+    });
+    el.addEventListener('mouseleave', () => {
+      body.querySelectorAll(`[data-sls="${conceptId}"]`).forEach(s => {
+        s.classList.remove('sls-anno--hover');
+      });
+    });
+
+    el.addEventListener('click', () => {
+      // Désactiver le précédent
+      if (activeId) {
+        body.querySelectorAll(`[data-sls="${activeId}"]`).forEach(s => {
+          s.classList.remove('sls-anno--active');
+        });
+      }
+      // Si clic sur le même : fermer
+      if (activeId === conceptId) {
+        activeId = null;
+        showPlaceholder();
+        return;
+      }
+      activeId = conceptId;
+      body.querySelectorAll(`[data-sls="${conceptId}"]`).forEach(s => {
+        s.classList.add('sls-anno--active');
+      });
+      showConcept(conceptId);
+    });
+  });
+
+  function showPlaceholder() {
+    if (placeholder) placeholder.style.display = '';
+    if (slot) slot.innerHTML = '';
+    if (brainSlot) brainSlot.innerHTML = '';
+  }
+
+  function showConcept(id) {
+    const data = concepts[id];
+    if (!data) return;
+
+    if (placeholder) placeholder.style.display = 'none';
+
+    // ── Carte concept ──
+    const jaugesHtml = data.jauges ? `
+      <div class="sls-brain-bar">
+        <div class="sls-brain-bar-lbl">Ce qui se passe à cet instant</div>
+        ${Object.entries(data.jauges).map(([key, val]) => `
+          <div class="sls-brain-row">
+            <span class="sls-brain-key">${key}</span>
+            <div class="sls-brain-track">
+              <div class="sls-brain-fill" data-val="${val}" style="width:0%"></div>
+            </div>
+            <span class="sls-brain-val">${val}%</span>
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
+    const vieHtml = data.vie ? `
+      <div style="margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--sls-border)">
+        <div style="font-family:var(--sls-sans);font-size:.58rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sls-ink-muted);margin-bottom:.5rem;">Dans la vraie vie</div>
+        <p style="font-family:var(--sls-serif);font-size:.82rem;color:var(--sls-ink-soft);line-height:1.65;">${data.vie}</p>
+      </div>
+    ` : '';
+
+    slot.innerHTML = `
+      <div class="sls-concept-card">
+        <div class="sls-concept-card-hd">
+          <div class="sls-concept-card-penseur">${data.penseur || ''}</div>
+          <div class="sls-concept-card-nom">${data.nom || id}</div>
+        </div>
+        <div class="sls-concept-card-body">
+          <p>${data.corps || ''}</p>
+          ${vieHtml}
+        </div>
+        ${data.extrait ? `
+          <div class="sls-concept-card-extrait">
+            <div class="sls-concept-card-extrait-lbl">Dans la scène</div>
+            <div class="sls-concept-card-extrait-txt">${data.extrait}</div>
+          </div>
+        ` : ''}
+      </div>
+      ${jaugesHtml}
+    `;
+
+    // Animer les jauges après un micro-délai
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        slot.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
+          el.style.width = el.getAttribute('data-val') + '%';
+        });
+      });
+    });
+
+    // Sur mobile : scroll vers le slot
+    if (!(window.innerWidth > 860) && slot) {
+      setTimeout(() => {
+        slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
+    }
+  }
+
+  // ── 4. Masquer la consigne après premier clic ─────────────────────────
+  const hint = document.getElementById('sls-hint');
+  if (hint && annotations.length > 0) {
+    annotations[0].addEventListener('click', () => {
+      hint.style.opacity = '0';
+      hint.style.transition = 'opacity .4s';
+      setTimeout(() => { hint.style.display = 'none'; }, 400);
+    }, { once: true });
+  }
+
+})();
+</script>
+</Base>

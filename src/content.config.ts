@@ -1,5 +1,4 @@
 // src/content.config.ts
-// ── REMPLACE ton fichier existant ──
 
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
@@ -86,27 +85,21 @@ const planches = defineCollection({
   }),
 });
 
-// ── Collection NOUVELLE : journal ──
-// Chaque fichier = une entrée de journal, classée par date
+// ── Collection : journal ──
 const journal = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/journal' }),
   schema: z.object({
     title:       z.string(),
     date:        z.date(),
     description: z.string().optional(),
-    // Temps de lecture estimé (en minutes) — calculé auto si absent
     lecture:     z.number().optional(),
-    // Étiquette libre : 'réflexion', 'processus', 'observation', etc.
     type:        z.string().optional(),
-    // Stade du jardin numérique
     stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
-    // Masquer de l'index public
     draft:       z.boolean().optional(),
   }),
 });
 
-// ── Collection NOUVELLE : nouvelles ──
-// Chaque fichier = une courte fiction, classée par date
+// ── Collection : nouvelles ──
 const nouvelles = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/nouvelles' }),
   schema: z.object({
@@ -115,7 +108,6 @@ const nouvelles = defineCollection({
     description: z.string().optional(),
     genre:       z.enum(['fragment', 'conte', 'recit', 'fable', 'prose']).default('fragment'),
     lecture:     z.number().optional(),
-    // Stade du jardin numérique
     stade:       z.enum(['graine', 'pousse', 'arbre']).optional(),
     draft:       z.boolean().optional(),
     tags:        z.array(z.string()).optional(),
@@ -125,8 +117,7 @@ const nouvelles = defineCollection({
   }),
 });
 
-// ── Collection NOUVELLE : jardin ──
-// Notes libres, sans catégorie imposée. Tags et stade émergent au fil du temps.
+// ── Collection : jardin ──
 const jardin = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/jardin' }),
   schema: z.object({
@@ -139,4 +130,40 @@ const jardin = defineCollection({
   }),
 });
 
-export const collections = { articles, fenetres, carnet, atelier, planches, journal, nouvelles, jardin };
+// ── Collection NOUVELLE : sous-la-surface ──
+// Articles hybrides : scène narrative + analyse conceptuelle interactive.
+// Les passages de la scène sont annotés avec data-sls="conceptId" dans le MDX.
+const souslasurface = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/sous-la-surface' }),
+  schema: z.object({
+    title:        z.string(),
+    date:         z.coerce.date(),
+    description:  z.string().optional(),
+    // Personnages de la scène, ex. "Mélanie & Johan"
+    personnages:  z.string().optional(),
+    // Liste des concepts abordés dans l'article
+    concepts:     z.array(z.string()).optional(),
+    // Temps de lecture estimé (auto-calculé si absent)
+    lecture:      z.number().optional(),
+    // Stade du jardin numérique
+    stade:        z.enum(['graine', 'pousse', 'arbre']).optional(),
+    // Masquer de l'index
+    draft:        z.boolean().optional(),
+    // Image d'en-tête optionnelle
+    illustration: z.string().optional(),
+    // Nom du fichier JSON de concepts (sans extension), dans src/content/sous-la-surface/
+    concepts_data: z.string().optional(),
+  }),
+});
+
+export const collections = {
+  articles,
+  fenetres,
+  carnet,
+  atelier,
+  planches,
+  journal,
+  nouvelles,
+  jardin,
+  'sous-la-surface': souslasurface,
+};

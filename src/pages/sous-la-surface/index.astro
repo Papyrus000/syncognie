@@ -1,0 +1,465 @@
+---
+// src/pages/sous-la-surface/index.astro
+
+import BaseLayout from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+let allEntries = [];
+try {
+  allEntries = await getCollection('sous-la-surface', ({ data }) => !data.draft);
+} catch (e) {}
+
+const entries = allEntries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+
+<BaseLayout
+  title="Sous la surface — Syncognie"
+  description="Des scènes de vie ordinaire. Annotées par les concepts qui les éclairent. Lire autrement ce qu'on vit."
+>
+
+<!-- ══ HERO ══ -->
+<section class="sls-hero">
+  <div class="sls-hero-bg" aria-hidden="true">
+    <div class="sls-hero-orb sls-hero-orb--1"></div>
+    <div class="sls-hero-orb sls-hero-orb--2"></div>
+  </div>
+  <div class="sls-hero-inner">
+    <p class="sls-eyebrow">Syncognie · Lecture augmentée</p>
+    <h1 class="sls-titre">Sous la surface</h1>
+    <p class="sls-sous">
+      Une scène. Des concepts. Quand la vie ordinaire rencontre les outils qui permettent de la lire autrement.
+    </p>
+    <div class="sls-concept-band" aria-hidden="true">
+      <span>Fenêtre de tolérance</span>
+      <span class="sls-sep">·</span>
+      <span>Flooding</span>
+      <span class="sls-sep">·</span>
+      <span>Polyvagal</span>
+      <span class="sls-sep">·</span>
+      <span>Attachement</span>
+      <span class="sls-sep">·</span>
+      <span>Mentalisation</span>
+      <span class="sls-sep">·</span>
+      <span>Réparation</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPLAINER ══ -->
+<section class="sls-explainer">
+  <div class="sls-explainer-inner">
+    <div class="sls-step">
+      <div class="sls-step-icon">①</div>
+      <div class="sls-step-txt">
+        <strong>Lire la scène</strong>
+        <span>Une situation réelle, incarnée. Deux personnes dans un appartement un soir de semaine.</span>
+      </div>
+    </div>
+    <div class="sls-step-arr">→</div>
+    <div class="sls-step">
+      <div class="sls-step-icon">②</div>
+      <div class="sls-step-txt">
+        <strong>Toucher un passage</strong>
+        <span>Certains mots s'illuminent. Le concept associé apparaît en regard.</span>
+      </div>
+    </div>
+    <div class="sls-step-arr">→</div>
+    <div class="sls-step">
+      <div class="sls-step-icon">③</div>
+      <div class="sls-step-txt">
+        <strong>Comprendre par le vivant</strong>
+        <span>Le concept n'explique plus — il révèle. Ce que vous avez vécu, autrement lu.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ARTICLES ══ -->
+{entries.length > 0 ? (
+  <section class="sls-grille">
+    {entries.map((entry) => (
+      <a class="sls-carte" href={`/sous-la-surface/${entry.id}`}>
+        <div class="sls-carte-halo" aria-hidden="true"></div>
+        <div class="sls-carte-inner">
+          <div class="sls-carte-meta">
+            <time class="sls-carte-date" datetime={entry.data.date.toISOString()}>
+              {formatDate(entry.data.date)}
+            </time>
+            {entry.data.personnages && (
+              <span class="sls-carte-persos">{entry.data.personnages}</span>
+            )}
+          </div>
+          <h2 class="sls-carte-titre">{entry.data.title}</h2>
+          {entry.data.description && (
+            <p class="sls-carte-desc">{entry.data.description}</p>
+          )}
+          {entry.data.concepts && (
+            <div class="sls-carte-concepts">
+              {entry.data.concepts.slice(0, 4).map((c) => (
+                <span class="sls-tag">{c}</span>
+              ))}
+            </div>
+          )}
+          <span class="sls-carte-cta">
+            Lire et annoter <span class="sls-arr">→</span>
+          </span>
+        </div>
+      </a>
+    ))}
+  </section>
+) : (
+  <section class="sls-vide">
+    <div class="sls-vide-inner">
+      <div class="sls-vide-icon" aria-hidden="true">◎</div>
+      <p class="sls-vide-titre">Le premier article arrive bientôt.</p>
+      <p class="sls-vide-sous">
+        Une scène. Des concepts. Une lecture qui change la façon de voir.
+      </p>
+    </div>
+  </section>
+)}
+
+<!-- ══ RETOUR ══ -->
+<div class="sls-back">
+  <a href="/" class="sls-back-lnk">← Retour à l'accueil</a>
+</div>
+
+</BaseLayout>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
+  :root {
+    --sls-blue:      #3d7a9a;
+    --sls-blue-soft: #5b8fa8;
+    --sls-blue-hl:   #daeaf3;
+    --sls-ink:       var(--ink, #1a1a1a);
+    --sls-ink-mid:   var(--ink-mid, #4a4a4a);
+    --sls-ink-soft:  var(--ink-soft, #7a7a7a);
+    --sls-bg:        var(--bg, #f8f6f2);
+    --sls-serif:     'Lora', Georgia, serif;
+    --sls-sans:      'DM Sans', sans-serif;
+    --sls-max:       860px;
+  }
+
+  /* ── HERO ── */
+  .sls-hero {
+    position: relative;
+    padding: 5rem 1.75rem 3rem;
+    overflow: hidden;
+  }
+  .sls-hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .sls-hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .12;
+  }
+  .sls-hero-orb--1 {
+    width: 420px; height: 420px;
+    top: -120px; left: -80px;
+    background: var(--sls-blue);
+  }
+  .sls-hero-orb--2 {
+    width: 300px; height: 300px;
+    top: 60px; right: -60px;
+    background: #8b9fc2;
+  }
+  .sls-hero-inner {
+    position: relative;
+    max-width: var(--sls-max);
+    margin: 0 auto;
+  }
+  .sls-eyebrow {
+    font-family: var(--sls-sans);
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--sls-blue-soft);
+    margin-bottom: 1rem;
+  }
+  .sls-titre {
+    font-family: var(--sls-serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    color: var(--sls-ink);
+    letter-spacing: -.025em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .sls-sous {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--sls-ink-mid);
+    line-height: 1.7;
+    max-width: 54ch;
+    margin-bottom: 2rem;
+  }
+  .sls-concept-band {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem .8rem;
+    align-items: center;
+    font-family: var(--sls-sans);
+    font-size: .7rem;
+    letter-spacing: .06em;
+    color: var(--sls-blue-soft);
+    opacity: .6;
+  }
+  .sls-sep { opacity: .4; }
+
+  /* ── EXPLAINER ── */
+  .sls-explainer {
+    border-top: 1px solid var(--rule, #e8e4de);
+    border-bottom: 1px solid var(--rule, #e8e4de);
+    padding: 2rem 1.75rem;
+    margin-bottom: 3rem;
+  }
+  .sls-explainer-inner {
+    max-width: var(--sls-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .sls-step {
+    display: flex;
+    gap: .9rem;
+    flex: 1;
+    min-width: 180px;
+  }
+  .sls-step-icon {
+    font-family: var(--sls-serif);
+    font-size: 1.4rem;
+    color: var(--sls-blue-soft);
+    opacity: .5;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: .15rem;
+  }
+  .sls-step-txt {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+  .sls-step-txt strong {
+    font-family: var(--sls-sans);
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .04em;
+    color: var(--sls-ink);
+  }
+  .sls-step-txt span {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: .82rem;
+    color: var(--sls-ink-mid);
+    line-height: 1.55;
+  }
+  .sls-step-arr {
+    font-size: .9rem;
+    color: var(--sls-blue-soft);
+    opacity: .3;
+    padding-top: .2rem;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* ── GRILLE ── */
+  .sls-grille {
+    max-width: var(--sls-max);
+    margin: 0 auto;
+    padding: 0 1.75rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* ── CARTE ── */
+  .sls-carte {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    border: 1px solid var(--rule, #e8e4de);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--sls-bg);
+    transition: border-color .25s, transform .2s cubic-bezier(.16,.84,.44,1), box-shadow .25s;
+  }
+  .sls-carte:hover {
+    border-color: var(--sls-blue-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(61,122,154,.1);
+  }
+  .sls-carte-halo {
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--sls-blue);
+    filter: blur(60px);
+    opacity: 0;
+    transition: opacity .4s;
+    pointer-events: none;
+  }
+  .sls-carte:hover .sls-carte-halo { opacity: .06; }
+
+  .sls-carte-inner {
+    position: relative;
+    padding: 1.75rem;
+  }
+  .sls-carte-meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .9rem;
+  }
+  .sls-carte-date {
+    font-family: var(--sls-sans);
+    font-size: .67rem;
+    font-weight: 300;
+    color: var(--sls-ink-soft);
+    letter-spacing: .04em;
+  }
+  .sls-carte-persos {
+    font-family: var(--sls-sans);
+    font-size: .65rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--sls-blue-soft);
+    background: var(--sls-blue-hl);
+    padding: .18em .6em;
+    border-radius: 2px;
+  }
+  .sls-carte-titre {
+    font-family: var(--sls-serif);
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: var(--sls-ink);
+    line-height: 1.3;
+    margin-bottom: .65rem;
+    letter-spacing: -.01em;
+  }
+  .sls-carte-desc {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: .88rem;
+    color: var(--sls-ink-mid);
+    line-height: 1.6;
+    margin-bottom: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .sls-carte-concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin-bottom: 1.2rem;
+  }
+  .sls-tag {
+    font-family: var(--sls-sans);
+    font-size: .6rem;
+    font-weight: 400;
+    letter-spacing: .06em;
+    color: var(--sls-blue-soft);
+    border: 1px solid var(--sls-blue-hl);
+    padding: .22em .65em;
+    border-radius: 20px;
+    transition: background .18s, border-color .18s;
+  }
+  .sls-carte:hover .sls-tag {
+    background: var(--sls-blue-hl);
+    border-color: var(--sls-blue-soft);
+  }
+  .sls-carte-cta {
+    font-family: var(--sls-sans);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    color: var(--sls-blue-soft);
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+  }
+  .sls-arr {
+    transition: transform .2s cubic-bezier(.16,.84,.44,1);
+  }
+  .sls-carte:hover .sls-arr { transform: translateX(4px); }
+
+  /* ── VIDE ── */
+  .sls-vide {
+    max-width: var(--sls-max);
+    margin: 0 auto;
+    padding: 5rem 1.75rem;
+  }
+  .sls-vide-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    border: 1px dashed var(--rule, #e8e4de);
+    border-radius: 8px;
+    padding: 3.5rem 2rem;
+  }
+  .sls-vide-icon {
+    font-size: 2rem;
+    color: var(--sls-blue-soft);
+    opacity: .3;
+    line-height: 1;
+  }
+  .sls-vide-titre {
+    font-family: var(--sls-serif);
+    font-size: 1rem;
+    color: var(--sls-ink-mid);
+    margin: 0;
+  }
+  .sls-vide-sous {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: .88rem;
+    color: var(--sls-ink-soft);
+    max-width: 40ch;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── RETOUR ── */
+  .sls-back {
+    max-width: var(--sls-max);
+    margin: 0 auto;
+    padding: 1rem 1.75rem 4rem;
+    border-top: 1px solid var(--rule, #e8e4de);
+  }
+  .sls-back-lnk {
+    font-family: var(--sls-sans);
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--sls-ink-soft);
+    text-decoration: none;
+    transition: color .18s;
+  }
+  .sls-back-lnk:hover { color: var(--sls-blue); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .sls-grille { grid-template-columns: 1fr; padding: 0 1.25rem 2rem; }
+    .sls-explainer-inner { flex-direction: column; }
+    .sls-step-arr { display: none; }
+  }
+</style>

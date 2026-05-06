@@ -15,6 +15,11 @@ let allJardin = [];
 try { allJardin = await getCollection('jardin'); } catch (e) {}
 const jardinNotes = allJardin.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+// Sous la surface — articles interactifs
+let allSousLaSurface = [];
+try { allSousLaSurface = await getCollection('sous-la-surface', ({ data }) => !data.draft); } catch (e) {}
+const slsEntries = allSousLaSurface.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
 const serieNotes = allArticles
   .filter(a => a.data.serie === "Notes d'un modèle en construction")
   .sort((a, b) => (a.data.episode ?? 0) - (b.data.episode ?? 0)); // ordre des épisodes croissant
@@ -500,7 +505,7 @@ function formatDateShort(date: Date) {
           </li>
 
           <!-- ── IX. BIBLIOTHÈQUE ── -->
-          <li class="toc-section toc-section--last">
+          <li class="toc-section">
             <a class="toc-row toc-row--section" href="/bibliotheque">
               <span class="toc-n">IX</span>
               <span class="toc-name">Bibliothèque</span>
@@ -508,6 +513,38 @@ function formatDateShort(date: Date) {
               <span class="toc-desc">Tous les concepts, penseurs et mécanismes — index dense</span>
               <span class="toc-ct">index</span>
             </a>
+          </li>
+
+          <!-- ── X. SOUS LA SURFACE ── -->
+          <li class="toc-section toc-section--last">
+            <a class="toc-row toc-row--section" href="/sous-la-surface">
+              <span class="toc-n" style="color:#5b8fa8">X</span>
+              <span class="toc-name">Sous la surface</span>
+              <span class="toc-dots"></span>
+              <span class="toc-desc">Scènes annotées — concepts qui s'illuminent sur la vie réelle</span>
+              <span class="toc-ct">{slsEntries.length > 0 ? `${slsEntries.length} article${slsEntries.length > 1 ? 's' : ''}` : 'nouveau'}</span>
+            </a>
+            <ul class="toc-mecanique">
+              {slsEntries.slice(0, 5).map((entry) => (
+                <li>
+                  <a class="toc-mec-item" href={`/sous-la-surface/${entry.id}`}>
+                    <span class="toc-mec-date">
+                      {entry.data.date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                    <span class="toc-mec-titre">{entry.data.title}</span>
+                    <span class="toc-mec-arr">→</span>
+                  </a>
+                </li>
+              ))}
+              {slsEntries.length === 0 && (
+                <li>
+                  <span class="toc-mec-item" style="opacity:.4;cursor:default;pointer-events:none">
+                    <span class="toc-mec-date"></span>
+                    <span class="toc-mec-titre" style="font-style:italic">Premier article bientôt…</span>
+                  </span>
+                </li>
+              )}
+            </ul>
           </li>
 
         </ul>

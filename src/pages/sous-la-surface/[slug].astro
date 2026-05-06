@@ -1,0 +1,59 @@
+---
+// src/pages/sous-la-surface/[slug].astro
+
+import SousLaSurfaceLayout from '../../layouts/SousLaSurfaceLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  let entries = [];
+  try {
+    entries = await getCollection('sous-la-surface', ({ data }) => !data.draft);
+  } catch (e) {}
+  const sorted = entries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return sorted.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      prev: sorted[i + 1] ?? null,
+      next: sorted[i - 1] ?? null,
+    },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content } = await render(entry);
+
+function estimateLecture(body) {
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 180));
+}
+
+const readTime = entry.data.lecture ?? estimateLecture(entry.body ?? '');
+
+// Charger le JSON de concepts depuis src/data/sous-la-surface/
+const allData = import.meta.glob('/src/data/sous-la-surface/*.json', { eager: true });
+let conceptsJson = '{}';
+if (entry.data.concepts_data) {
+  const key = `/src/data/sous-la-surface/${entry.data.concepts_data}.json`;
+  const mod = allData[key];
+  if (mod) conceptsJson = JSON.stringify(mod.default ?? mod);
+}
+---
+
+<SousLaSurfaceLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  description={entry.data.description}
+  personnages={entry.data.personnages}
+  concepts={entry.data.concepts}
+  lecture={readTime}
+  slug={entry.id}
+  conceptsJson={conceptsJson}
+  stade={entry.data.stade}
+  illustration={entry.data.illustration}
+  prev={prev ? { slug: prev.id, title: prev.data.title } : undefined}
+  next={next ? { slug: next.id, title: next.data.title } : undefined}
+>
+  <Content />
+</SousLaSurfaceLayout>

@@ -1,0 +1,80 @@
+{
+  "fenetre": {
+    "penseur": "Dan Siegel · Neurosciences interpersonnelles",
+    "nom": "La fenêtre de tolérance",
+    "corps": "Il existe une zone d'activation optimale du système nerveux à l'intérieur de laquelle nous pouvons fonctionner, ressentir, penser et entrer en relation. Au-dessus : la suractivation — colère, anxiété, agitation. En dessous : l'engourdissement, le retrait, la dissociation. Dans la fenêtre : on peut penser et ressentir en même temps.",
+    "extrait": "Quelque chose se contracte dans la poitrine de Mélanie. Pas la colère encore. Avant la colère. Ce que la colère protège.",
+    "vie": "Reconnaître où on en est, neurologiquement, avant une conversation importante. Je suis épuisée ce soir, je suis déjà près du bord — cette conscience seule modifie ce qui va suivre.",
+    "jauges": {
+      "Activation nerveux": 72,
+      "Capacité à penser": 45,
+      "Tolérance inconfort": 38,
+      "Connexion possible": 52
+    }
+  },
+  "flooding": {
+    "penseur": "John Gottman · 40 ans d'observation de couples",
+    "nom": "Le flooding",
+    "corps": "État physiologique de submersion : rythme cardiaque au-dessus de 100 bpm, cortisol et adrénaline dans le sang. Dans cet état, continuer la conversation ne sert à rien — le cerveau ne peut plus traiter l'information de façon nuancée. Il est en mode survie.",
+    "extrait": "— T'es sûre ? — Johan. Je viens de dire oui. Il y a quelque chose dans son ton qui ressemble à une porte qui se ferme à clé.",
+    "vie": "Apprendre à reconnaître ses propres signaux avant que la conversation déraille. Si vous sentez votre rythme cardiaque monter fortement, demandez une pause de vingt minutes — pas pour bouder, mais pour laisser le système nerveux redescendre.",
+    "jauges": {
+      "Rythme cardiaque": 88,
+      "Cortisol": 75,
+      "Nuance possible": 18,
+      "Mode survie": 82
+    }
+  },
+  "polyvagal": {
+    "penseur": "Stephen Porges · Théorie polyvagale",
+    "nom": "La régulation mutuelle",
+    "corps": "Nous nous régulons mutuellement, par le corps, avant même les mots. La voix de l'autre, son regard, sa posture, sa façon de respirer — ces signaux sont captés par la neuroception, une détection inconsciente qui évalue en permanence : suis-je en sécurité avec cette personne, en ce moment ?",
+    "extrait": "Johan se lève du canapé. Il ne traverse pas la pièce pour la prendre dans ses bras. Il vient juste s'asseoir sur l'accoudoir du fauteuil, à côté d'elle. Leurs bras se touchent.",
+    "vie": "Prendre au sérieux les signaux non-verbaux dans les moments de tension. Baisser la voix quand l'autre est agité. Ne pas croiser les bras. Ces ajustements envoient des signaux de sécurité réels au système nerveux.",
+    "jauges": {
+      "Sécurité perçue": 78,
+      "Système menace ↓": 62,
+      "Connexion sociale": 71,
+      "Voie vagale ventrale": 68
+    }
+  },
+  "attachement": {
+    "penseur": "Bowlby · Ainsworth · Sue Johnson",
+    "nom": "La question d'attachement cachée",
+    "corps": "La plupart des disputes de couple sont des disputes d'attachement déguisées. Ce qu'on se dit en surface : \"Tu n'écoutes jamais.\" Ce qu'on essaie vraiment de dire : \"Est-ce que je compte pour toi ? Est-ce que je peux te faire confiance ?\"",
+    "extrait": "— Ça va ? — Oui. Le oui de quelqu'un à qui ça ne va pas mais qui n'a pas encore décidé si elle va le dire.",
+    "vie": "Apprendre à nommer les besoins d'attachement directement. Non pas \"tu n'es jamais là\" (reproche) mais \"j'avais besoin de toi ce soir et j'avais peur que tu ne le voies pas\" (vulnérabilité).",
+    "jauges": {
+      "Besoin de connexion": 91,
+      "Peur du rejet": 78,
+      "Lien sécure": 44,
+      "Question cachée": 95
+    }
+  },
+  "reparation": {
+    "penseur": "Edward Tronick · Still Face Experiment",
+    "nom": "La réparation répétée",
+    "corps": "Ce qui construit la sécurité dans une relation, ce n'est pas la synchronie parfaite. C'est la réparation répétée. Même les couples les plus attentifs ne sont synchronisés qu'environ 30% du temps. La question n'est pas d'éviter toute rupture — c'est : est-ce qu'on sait revenir ?",
+    "extrait": "Johan pose son téléphone sur le coussin à côté de lui, face vers le bas. Geste petit. Délibéré. — J'ai regardé mon téléphone pendant une heure, dit-il. Ce n'est pas une question. Ce n'est pas non plus une excuse. C'est juste un fait qu'il nomme à voix haute.",
+    "vie": "Enlever la pression de la connexion permanente. Ce qui se cultive, c'est le réflexe de réparation. Et ça s'apprend — même tard, même après des années de mauvaises habitudes.",
+    "jauges": {
+      "Rupture reconnue": 88,
+      "Geste de retour": 92,
+      "Cycle de réparation": 80,
+      "Sécurité reconstruite": 75
+    }
+  },
+  "mentalisation": {
+    "penseur": "Peter Fonagy · Mentalisation",
+    "nom": "Voir l'autre comme une personne",
+    "corps": "La mentalisation est la capacité à percevoir que soi et les autres ont des états mentaux internes. Sous stress, elle s'effondre : l'autre n'est plus une personne complexe, il devient un rôle ou une menace. Retrouver la mentalisation, c'est redonner à l'autre sa complexité.",
+    "extrait": "— T'avais quelque chose à me dire ce soir. Pas une question. Il l'a su depuis le début du dîner — il y avait quelque chose dans sa façon de couper les légumes, dans sa façon d'écouter un peu trop attentivement.",
+    "vie": "Dans une dispute, se poser une question simple : \"Qu'est-ce qui se passe pour lui / pour elle en ce moment ?\" Cette question seule peut suffire à rouvrir la fenêtre.",
+    "jauges": {
+      "Mentalisation active": 85,
+      "Vision de l'autre": 80,
+      "Empathie disponible": 78,
+      "Sortie du reproche": 82
+    }
+  }
+}
