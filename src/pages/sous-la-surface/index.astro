@@ -492,9 +492,25 @@ function formatDate(d: Date) {
   .sls-back-lnk:hover { color: var(--sls-blue); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .sls-grille { grid-template-columns: 1fr; padding: 0 1.25rem 2rem; }
-    .sls-explainer-inner { flex-direction: column; }
+  @media (max-width: 768px) {
+    .sls-hero { padding: 3.5rem 1.25rem 2.5rem; }
+    .sls-explainer { padding: 1.75rem 1.25rem; margin-bottom: 2rem; }
+    .sls-explainer-inner { flex-direction: column; gap: 1.25rem; }
     .sls-step-arr { display: none; }
+    .sls-step { min-width: unset; }
+    .sls-grille { padding: 0 1.25rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .sls-grille { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+    .sls-hero { padding: 3rem 1rem 2rem; }
+    .sls-explainer { padding: 1.5rem 1rem; }
+    .sls-back { padding: 1rem 1rem 3rem; }
+  }
+  @media (max-width: 430px) {
+    .sls-titre { font-size: clamp(1.7rem, 8vw, 2.2rem); }
+    .sls-sous { font-size: .97rem; }
+    .sls-carte-inner { padding: 1.25rem 1.25rem 0.5rem; }
+    .sls-carte-footer { padding: 0.5rem 1.25rem 1.25rem; }
+    .sls-carte-illus { padding: 0 1.25rem; }
   }
 </style>

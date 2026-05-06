@@ -638,22 +638,83 @@ const sl = stadeLabel(stade);
       gap: 0 2rem;
     }
   }
+
+  /* ── Tablette portrait (768px – 860px) ── */
   @media (max-width: 860px) {
     .sls-wrap {
       grid-template-columns: 1fr;
-      grid-template-areas: "article";
-      padding: 2rem 1.5rem 4rem;
+      grid-template-areas:
+        "article"
+        "mobile-panel";
+      padding: 2rem 1.75rem 4rem;
+      gap: 0;
     }
     .sls-toc-col,
     .sls-panel { display: none; }
-    /* Sur mobile, les cartes concept apparaissent inline */
+    /* Zone concept inline */
     .sls-mobile-panel { display: block; }
   }
+
+  /* ── Grand mobile / paysage (max 600px) ── */
+  @media (max-width: 600px) {
+    .sls-wrap {
+      padding: 1.5rem 1.25rem 4rem;
+    }
+    .sls-hint {
+      font-size: .8rem;
+      padding: .7rem .9rem;
+    }
+    .sls-nav-grid {
+      grid-template-columns: 1fr;
+    }
+    .sls-nav-item--next {
+      text-align: left;
+    }
+  }
+
+  /* ── Mobile portrait (max 430px) ── */
+  @media (max-width: 430px) {
+    .sls-wrap {
+      padding: 1.25rem 1rem 3.5rem;
+    }
+    .sls-art-titre {
+      font-size: clamp(1.2rem, 6vw, 1.5rem);
+    }
+    .sls-art-desc {
+      font-size: .93rem;
+    }
+    .sls-art-meta {
+      flex-wrap: wrap;
+      gap: .4rem .8rem;
+    }
+    .sls-hint {
+      font-size: .75rem;
+      gap: .5rem;
+    }
+    /* Texte : désactiver justify sur petit écran (évite espaces disgracieux) */
+    .sls-body p {
+      text-align: left;
+      hyphens: none;
+      -webkit-hyphens: none;
+    }
+    /* Barre jauges : key moins large */
+    .sls-brain-key {
+      width: 90px;
+      font-size: .6rem;
+    }
+    .sls-brain-val {
+      width: 24px;
+      font-size: .58rem;
+    }
+    /* Boutons config plus faciles à tapper */
+    .sls-cfg-btn {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
   @media (min-width: 861px) {
     .sls-mobile-panel { display: none; }
-  }
-  @media (max-width: 520px) {
-    .sls-art-titre { font-size: 1.3rem; }
   }
 
   /* ── Cadre de configuration ── */
@@ -1228,8 +1289,11 @@ const sl = stadeLabel(stade);
     font-family: 'DM Sans', sans-serif;
     font-size: .65rem;
     color: #9A8F82;
-    width: 120px;
+    width: 110px;
     flex-shrink: 0;
+  }
+  @media (max-width: 430px) {
+    .sls-brain-key { width: 90px; font-size: .6rem; }
   }
   .sls-brain-track {
     flex: 1;
@@ -1313,6 +1377,26 @@ const sl = stadeLabel(stade);
     border-color: #4a9e7f;
     box-shadow: 0 1px 0 #4a9e7f;
   }
+
+  /* ── Panneau mobile inline ── */
+  .sls-mobile-panel {
+    display: none;
+    margin: 2rem 0 0;
+    animation: sls-slide-in .25s cubic-bezier(.16,.84,.44,1) both;
+  }
+  /* Barre de contrôle lecture sur mobile — flottante en bas */
+  @media (max-width: 860px) {
+    .sls-mobile-panel {
+      display: block;
+    }
+    .sls-mobile-panel:empty {
+      display: none;
+    }
+    /* Panel config flottant accessible sur mobile */
+    #sls-config {
+      margin-top: 1.5rem;
+    }
+  }
 </style>
 
 <!-- Barre de progression -->
@@ -1371,6 +1455,9 @@ const sl = stadeLabel(stade);
     <div class="sls-body" id="sls-body">
       <slot />
     </div>
+
+    <!-- Panneau concept inline (mobile/tablette uniquement) -->
+    <div class="sls-mobile-panel" id="sls-mobile-panel" aria-live="polite"></div>
 
     <!-- Navigation -->
     {(prev || next) && (
@@ -1471,8 +1558,11 @@ const sl = stadeLabel(stade);
   const slot        = document.getElementById('sls-concept-slot');
   const brainSlot   = document.getElementById('sls-brain-slot');
   const placeholder = document.getElementById('sls-placeholder');
+  const mobilePanel = document.getElementById('sls-mobile-panel');
   const toc         = document.getElementById('sls-toc');
   const bar         = document.getElementById('sls-progress');
+
+  function isMobile() { return window.innerWidth <= 860; }
 
   // ── 0. Contrôles de configuration ────────────────────────────────────
   const szDown   = document.getElementById('sls-sz-down');
@@ -1648,6 +1738,7 @@ const sl = stadeLabel(stade);
     if (placeholder) placeholder.style.display = '';
     if (slot) slot.innerHTML = '';
     if (brainSlot) brainSlot.innerHTML = '';
+    if (mobilePanel) mobilePanel.innerHTML = '';
   }
 
   function showConcept(id, mode) {
@@ -1718,8 +1809,18 @@ const sl = stadeLabel(stade);
         });
       });
 
-      if (!(window.innerWidth > 860) && slot) {
-        setTimeout(() => { slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+      // Sur mobile : dupliquer dans le panel inline et scroller dessus
+      if (isMobile() && mobilePanel) {
+        mobilePanel.innerHTML = slot.innerHTML;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            mobilePanel.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
+              el.style.width = el.getAttribute('data-val') + '%';
+            });
+          });
+        });
+        setTimeout(() => { mobilePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+        enrichirMotsCles(mobilePanel);
       }
       // Enrichir les mots-clés avec le registre convergences
       enrichirMotsCles(slot);
@@ -1777,10 +1878,17 @@ const sl = stadeLabel(stade);
       });
     });
 
-    if (!(window.innerWidth > 860) && slot) {
-      setTimeout(() => {
-        slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 100);
+    // Sur mobile : dupliquer dans le panel inline et scroller dessus
+    if (isMobile() && mobilePanel) {
+      mobilePanel.innerHTML = slot.innerHTML;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          mobilePanel.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
+            el.style.width = el.getAttribute('data-val') + '%';
+          });
+        });
+      });
+      setTimeout(() => { mobilePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
     }
   }
 
