@@ -643,16 +643,12 @@ const sl = stadeLabel(stade);
   @media (max-width: 860px) {
     .sls-wrap {
       grid-template-columns: 1fr;
-      grid-template-areas:
-        "article"
-        "mobile-panel";
+      grid-template-areas: "article";
       padding: 2rem 1.75rem 4rem;
       gap: 0;
     }
     .sls-toc-col,
     .sls-panel { display: none; }
-    /* Zone concept inline */
-    .sls-mobile-panel { display: block; }
   }
 
   /* ── Grand mobile / paysage (max 600px) ── */
@@ -713,9 +709,7 @@ const sl = stadeLabel(stade);
     }
   }
 
-  @media (min-width: 861px) {
-    .sls-mobile-panel { display: none; }
-  }
+
 
   /* ── Cadre de configuration ── */
   .sls-config {
@@ -1378,24 +1372,123 @@ const sl = stadeLabel(stade);
     box-shadow: 0 1px 0 #4a9e7f;
   }
 
-  /* ── Panneau mobile inline ── */
-  .sls-mobile-panel {
+  /* ── Drawer mobile (concept panel) ── */
+
+  .sls-drawer-overlay {
     display: none;
-    margin: 2rem 0 0;
-    animation: sls-slide-in .25s cubic-bezier(.16,.84,.44,1) both;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,24,17,0);
+    z-index: 800;
+    transition: background .3s ease;
+    -webkit-tap-highlight-color: transparent;
   }
-  /* Barre de contrôle lecture sur mobile — flottante en bas */
-  @media (max-width: 860px) {
-    .sls-mobile-panel {
-      display: block;
-    }
-    .sls-mobile-panel:empty {
-      display: none;
-    }
-    /* Panel config flottant accessible sur mobile */
-    #sls-config {
-      margin-top: 1.5rem;
-    }
+  .sls-drawer-overlay.sls-drawer--open {
+    display: block;
+    background: rgba(28,24,17,.45);
+  }
+
+  .sls-drawer {
+    display: none;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 900;
+    max-height: 82vh;
+    background: var(--sls-paper, #FAF8F4);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 40px rgba(28,24,17,.18);
+    transform: translateY(100%);
+    transition: transform .35s cubic-bezier(.32,.72,0,1);
+    will-change: transform;
+    overflow: hidden;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .sls-drawer.sls-drawer--open {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(0);
+  }
+
+  .sls-drawer-handle {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .85rem 0 .5rem;
+    cursor: grab;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sls-drawer-handle::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: var(--sls-border, #E4DDD4);
+    border-radius: 2px;
+  }
+
+  .sls-drawer-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem .75rem;
+    border-bottom: 1px solid var(--sls-border, #E4DDD4);
+  }
+  .sls-drawer-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted, #9A8F82);
+  }
+  .sls-drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    background: none;
+    border: 1px solid var(--sls-border, #E4DDD4);
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--sls-ink-muted, #9A8F82);
+    transition: color .15s, border-color .15s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sls-drawer-close:hover,
+  .sls-drawer-close:active {
+    color: var(--sls-ink, #1C1811);
+    border-color: var(--sls-ink-soft, #4A4237);
+    background: var(--sls-blue-hl, rgba(61,122,154,.08));
+  }
+  .sls-drawer-close svg {
+    width: 11px; height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .sls-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  body.sls-night-mode .sls-drawer {
+    background: #2a2720;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.45);
+  }
+  body.sls-night-mode .sls-drawer-handle::before { background: #3e3830; }
+  body.sls-night-mode .sls-drawer-header { border-bottom-color: #3e3830; }
+  body.sls-night-mode .sls-drawer-close { border-color: #3e3830; color: #9a9080; }
+  body.sls-night-mode .sls-drawer-overlay.sls-drawer--open { background: rgba(0,0,0,.6); }
+
+  @media (min-width: 861px) {
+    .sls-drawer, .sls-drawer-overlay { display: none !important; }
   }
 </style>
 
@@ -1455,9 +1548,6 @@ const sl = stadeLabel(stade);
     <div class="sls-body" id="sls-body">
       <slot />
     </div>
-
-    <!-- Panneau concept inline (mobile/tablette uniquement) -->
-    <div class="sls-mobile-panel" id="sls-mobile-panel" aria-live="polite"></div>
 
     <!-- Navigation -->
     {(prev || next) && (
@@ -1542,6 +1632,19 @@ const sl = stadeLabel(stade);
 
 </div>
 
+<!-- ── Drawer mobile (concept) ── -->
+<div class="sls-drawer-overlay" id="sls-drawer-overlay" aria-hidden="true"></div>
+<div class="sls-drawer" id="sls-drawer" role="dialog" aria-modal="true" aria-label="Concept associé">
+  <div class="sls-drawer-handle" id="sls-drawer-handle" aria-hidden="true"></div>
+  <div class="sls-drawer-header">
+    <span class="sls-drawer-label" id="sls-drawer-label">Concept</span>
+    <button class="sls-drawer-close" id="sls-drawer-close" aria-label="Fermer">
+      <svg viewBox="0 0 11 11"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8"/></svg>
+    </button>
+  </div>
+  <div class="sls-drawer-body" id="sls-drawer-body"></div>
+</div>
+
 <div id="sls-concepts-data" hidden set:text={conceptsJson}></div>
 <div id="sls-registre-data" hidden set:text={slsRegistreJson}></div>
 
@@ -1558,11 +1661,114 @@ const sl = stadeLabel(stade);
   const slot        = document.getElementById('sls-concept-slot');
   const brainSlot   = document.getElementById('sls-brain-slot');
   const placeholder = document.getElementById('sls-placeholder');
-  const mobilePanel = document.getElementById('sls-mobile-panel');
   const toc         = document.getElementById('sls-toc');
   const bar         = document.getElementById('sls-progress');
 
+  // ── Drawer mobile ─────────────────────────────────────────────────────
+  const drawer        = document.getElementById('sls-drawer');
+  const drawerOverlay = document.getElementById('sls-drawer-overlay');
+  const drawerBody    = document.getElementById('sls-drawer-body');
+  const drawerClose   = document.getElementById('sls-drawer-close');
+  const drawerHandle  = document.getElementById('sls-drawer-handle');
+  const drawerLabel   = document.getElementById('sls-drawer-label');
+
   function isMobile() { return window.innerWidth <= 860; }
+
+  // Sauvegarde de la position de scroll avant ouverture
+  let _savedScrollY = 0;
+
+  function drawerOpen(labelTxt) {
+    _savedScrollY = window.scrollY;
+    if (drawerLabel) drawerLabel.textContent = labelTxt || 'Concept';
+    drawer?.classList.add('sls-drawer--open');
+    drawerOverlay?.classList.add('sls-drawer--open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function drawerClose_fn() {
+    drawer?.classList.remove('sls-drawer--open');
+    drawerOverlay?.classList.remove('sls-drawer--open');
+    document.body.style.overflow = '';
+    // Remettre exactement là où on était
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: _savedScrollY, behavior: 'instant' });
+    });
+  }
+
+  // Fermeture par bouton ×
+  drawerClose?.addEventListener('click', () => {
+    drawerClose_fn();
+    // Désactiver l'annotation active
+    if (activeId) {
+      body?.querySelectorAll(`[data-sls="${activeId}"]`).forEach(s => {
+        s.classList.remove('sls-anno--active');
+      });
+      activeId   = null;
+      activeMode = null;
+    }
+    showPlaceholder();
+  });
+
+  // Fermeture par tap sur l'overlay
+  drawerOverlay?.addEventListener('click', () => {
+    drawerClose_fn();
+    if (activeId) {
+      body?.querySelectorAll(`[data-sls="${activeId}"]`).forEach(s => {
+        s.classList.remove('sls-anno--active');
+      });
+      activeId   = null;
+      activeMode = null;
+    }
+    showPlaceholder();
+  });
+
+  // Drag-to-dismiss sur le handle
+  let _dragStart = 0;
+  let _dragCurrent = 0;
+  drawerHandle?.addEventListener('touchstart', (e) => {
+    _dragStart = e.touches[0].clientY;
+    _dragCurrent = 0;
+    if (drawer) drawer.style.transition = 'none';
+  }, { passive: true });
+  drawerHandle?.addEventListener('touchmove', (e) => {
+    const delta = e.touches[0].clientY - _dragStart;
+    _dragCurrent = delta;
+    if (delta > 0 && drawer) {
+      drawer.style.transform = `translateY(${delta}px)`;
+    }
+  }, { passive: true });
+  drawerHandle?.addEventListener('touchend', () => {
+    if (drawer) drawer.style.transition = '';
+    if (_dragCurrent > 80) {
+      drawerClose_fn();
+      if (activeId) {
+        body?.querySelectorAll(`[data-sls="${activeId}"]`).forEach(s => {
+          s.classList.remove('sls-anno--active');
+        });
+        activeId   = null;
+        activeMode = null;
+      }
+      showPlaceholder();
+      if (drawer) drawer.style.transform = '';
+    } else {
+      if (drawer) drawer.style.transform = '';
+    }
+  });
+
+  // Fermeture par touche Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer?.classList.contains('sls-drawer--open')) {
+      drawerClose_fn();
+      if (activeId) {
+        body?.querySelectorAll(`[data-sls="${activeId}"]`).forEach(s => {
+          s.classList.remove('sls-anno--active');
+        });
+        activeId   = null;
+        activeMode = null;
+      }
+      showPlaceholder();
+    }
+  });
 
   // ── 0. Contrôles de configuration ────────────────────────────────────
   const szDown   = document.getElementById('sls-sz-down');
@@ -1717,12 +1923,13 @@ const sl = stadeLabel(stade);
           s.classList.remove('sls-anno--active');
         });
       }
-      // Si clic sur le même : fermer
+      // Si clic sur le même : fermer (+ fermer le drawer sur mobile)
       const clickedMode = el.getAttribute('data-sls-mode') || 'explain';
       if (activeId === conceptId && activeMode === clickedMode) {
         activeId   = null;
         activeMode = null;
         showPlaceholder();
+        if (isMobile()) drawerClose_fn();
         return;
       }
       activeId   = conceptId;
@@ -1738,7 +1945,7 @@ const sl = stadeLabel(stade);
     if (placeholder) placeholder.style.display = '';
     if (slot) slot.innerHTML = '';
     if (brainSlot) brainSlot.innerHTML = '';
-    if (mobilePanel) mobilePanel.innerHTML = '';
+    if (drawerBody) drawerBody.innerHTML = '';
   }
 
   function showConcept(id, mode) {
@@ -1809,20 +2016,22 @@ const sl = stadeLabel(stade);
         });
       });
 
-      // Sur mobile : dupliquer dans le panel inline et scroller dessus
-      if (isMobile() && mobilePanel) {
-        mobilePanel.innerHTML = slot.innerHTML;
-        requestAnimationFrame(() => {
+      // Sur mobile : ouvrir le drawer avec le contenu
+      if (isMobile()) {
+        if (drawerBody) {
+          drawerBody.innerHTML = slot.innerHTML;
           requestAnimationFrame(() => {
-            mobilePanel.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
-              el.style.width = el.getAttribute('data-val') + '%';
+            requestAnimationFrame(() => {
+              drawerBody.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
+                el.style.width = el.getAttribute('data-val') + '%';
+              });
             });
           });
-        });
-        setTimeout(() => { mobilePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
-        enrichirMotsCles(mobilePanel);
+          enrichirMotsCles(drawerBody);
+        }
+        drawerOpen(data.nom || 'Fiche synthèse');
       }
-      // Enrichir les mots-clés avec le registre convergences
+      // Enrichir les mots-clés avec le registre convergences (desktop)
       enrichirMotsCles(slot);
       return;
     }
@@ -1878,17 +2087,19 @@ const sl = stadeLabel(stade);
       });
     });
 
-    // Sur mobile : dupliquer dans le panel inline et scroller dessus
-    if (isMobile() && mobilePanel) {
-      mobilePanel.innerHTML = slot.innerHTML;
-      requestAnimationFrame(() => {
+    // Sur mobile : ouvrir le drawer avec le contenu
+    if (isMobile()) {
+      if (drawerBody) {
+        drawerBody.innerHTML = slot.innerHTML;
         requestAnimationFrame(() => {
-          mobilePanel.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
-            el.style.width = el.getAttribute('data-val') + '%';
+          requestAnimationFrame(() => {
+            drawerBody.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
+              el.style.width = el.getAttribute('data-val') + '%';
+            });
           });
         });
-      });
-      setTimeout(() => { mobilePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+      }
+      drawerOpen(data.nom || 'Concept');
     }
   }
 
