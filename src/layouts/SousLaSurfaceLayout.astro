@@ -5,6 +5,8 @@
 // Mobile-first, ToC latérale sur desktop.
 
 import Base from './Base.astro';
+import slsRegistreRaw from '../data/sls-registre.json';
+const slsRegistreJson = JSON.stringify(slsRegistreRaw);
 
 export interface Props {
   title:        string;
@@ -59,6 +61,10 @@ const sl = stadeLabel(stade);
     --sls-blue-s:    #74aec8;
     --sls-blue-hl:   rgba(61,122,154,.08);
     --sls-blue-hl2:  rgba(61,122,154,.18);
+    --sls-green:     #4a9e7f;
+    --sls-green-s:   #6ab89a;
+    --sls-green-hl:  rgba(74,158,127,.08);
+    --sls-green-hl2: rgba(74,158,127,.18);
     --sls-border:    #E4DDD4;
     --sls-serif:     'Lora', Georgia, serif;
     --sls-sans:      'DM Sans', sans-serif;
@@ -82,6 +88,10 @@ const sl = stadeLabel(stade);
     --sls-blue-s:    #74aec8 !important;
     --sls-blue-hl:   rgba(90,154,184,.12) !important;
     --sls-blue-hl2:  rgba(90,154,184,.22) !important;
+    --sls-green:     #3d8f6e !important;
+    --sls-green-s:   #5aaa88 !important;
+    --sls-green-hl:  rgba(61,143,110,.12) !important;
+    --sls-green-hl2: rgba(61,143,110,.22) !important;
     --sls-border:    #3e3830 !important;
     background-color: #1a1915 !important;
   }
@@ -716,9 +726,293 @@ const sl = stadeLabel(stade);
     stroke-linecap: round;
     stroke-linejoin: round;
   }
+
 </style>
 
 <style is:global>
+  /* Variables vertes — disponibles pour les éléments injectés par JS */
+  :root {
+    --sls-green:     #4a9e7f;
+    --sls-green-s:   #6ab89a;
+    --sls-green-hl:  rgba(74,158,127,.08);
+    --sls-green-hl2: rgba(74,158,127,.18);
+  }
+  body.sls-night-mode {
+    --sls-green:     #3d8f6e;
+    --sls-green-s:   #5aaa88;
+    --sls-green-hl:  rgba(61,143,110,.12);
+    --sls-green-hl2: rgba(61,143,110,.22);
+  }
+
+
+  /* ── Fiche synthèse (Partie II) ── */
+  .sls-fiche-card {
+    background: var(--sls-paper);
+    border: 1px solid rgba(74,158,127,.25);
+    border-radius: 6px;
+    overflow: hidden;
+    animation: sls-slide-in .25s cubic-bezier(.16,.84,.44,1) both;
+  }
+  .sls-fiche-card-hd {
+    background: var(--sls-green-hl);
+    border-bottom: 1px solid rgba(74,158,127,.2);
+    padding: 1rem 1.25rem .85rem;
+    border-left: 3px solid var(--sls-green);
+  }
+  .sls-fiche-card-penseur {
+    font-family: var(--sls-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sls-green-s);
+    margin-bottom: .4rem;
+  }
+  .sls-fiche-card-nom {
+    font-family: var(--sls-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--sls-ink);
+    line-height: 1.2;
+    letter-spacing: -.015em;
+  }
+  .sls-fiche-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    font-family: var(--sls-sans);
+    font-size: .55rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--sls-green);
+    background: rgba(74,158,127,.12);
+    border: 1px solid rgba(74,158,127,.25);
+    border-radius: 2px;
+    padding: .18em .55em;
+    margin-top: .55rem;
+  }
+  .sls-fiche-badge::before { content: "◈"; font-size: .6rem; }
+  .sls-fiche-essentiel {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--sls-border);
+  }
+  .sls-fiche-label {
+    font-family: var(--sls-sans);
+    font-size: .58rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--sls-green);
+    margin-bottom: .55rem;
+  }
+  .sls-fiche-essentiel-txt {
+    font-family: var(--sls-serif);
+    font-style: italic;
+    font-size: .98rem;
+    color: var(--sls-ink);
+    line-height: 1.72;
+    margin: 0;
+    border-left: 2px solid var(--sls-green);
+    padding-left: .85rem;
+  }
+  .sls-fiche-mots {
+    padding: .9rem 1.25rem;
+    border-bottom: 1px solid var(--sls-border);
+  }
+  .sls-fiche-mots-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sls-fiche-mots-list li {
+    font-family: var(--sls-sans);
+    font-size: .65rem;
+    font-weight: 500;
+    color: var(--sls-green);
+    background: var(--sls-green-hl);
+    border: 1px solid rgba(74,158,127,.22);
+    border-radius: 2px;
+    padding: .22em .65em;
+    letter-spacing: .02em;
+  }
+  .sls-fiche-jauges {
+    padding: .9rem 1.25rem;
+    border-bottom: 1px solid var(--sls-border);
+  }
+  .sls-fiche-jauges .sls-brain-fill { background: var(--sls-green); }
+  .sls-fiche-jauges .sls-brain-val  { color: var(--sls-green); }
+  .sls-fiche-usages {
+    padding: .9rem 1.25rem 1.1rem;
+  }
+  .sls-fiche-usages-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+  }
+  .sls-fiche-usages-list li {
+    font-family: var(--sls-serif);
+    font-size: .92rem;
+    color: var(--sls-ink-soft);
+    line-height: 1.62;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .sls-fiche-usages-list li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--sls-green);
+    font-size: .78rem;
+    top: .15em;
+    font-family: var(--sls-sans);
+  }
+
+
+  /* ── Popup définition convergences (mots-clés enrichis) ── */
+  .sls-motcle-enrichi {
+    cursor: pointer;
+    /* Soulignement pointillé — convention universelle "définition disponible" */
+    border-bottom: 1.5px dashed rgba(74,158,127,.6) !important;
+    border-color: rgba(74,158,127,.35) !important;
+    transition: background .15s, border-color .15s, color .15s;
+    position: relative;
+  }
+  /* Pas de ::after — le soulignement suffit comme signal */
+  .sls-motcle-enrichi:hover {
+    background: var(--sls-green-hl2) !important;
+    border-color: var(--sls-green) !important;
+    border-bottom-color: var(--sls-green) !important;
+    color: var(--sls-green) !important;
+  }
+  .sls-motcle-enrichi.sls-motcle--actif {
+    background: var(--sls-green-hl2) !important;
+    border-color: var(--sls-green) !important;
+    border-bottom: 1.5px solid var(--sls-green) !important;
+    color: var(--sls-green) !important;
+  }
+
+  /* Panneau définition — s'insère directement dans .sls-fiche-mots */
+  .sls-def-panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .35s cubic-bezier(.16,.84,.44,1), opacity .25s ease;
+    margin-top: 0;
+  }
+  .sls-def-panel.sls-def-panel--open {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: .65rem;
+  }
+  .sls-def-inner {
+    background: var(--sls-paper);
+    border: 1px solid rgba(74,158,127,.22);
+    border-left: 3px solid var(--sls-green);
+    border-radius: 5px;
+    padding: .85rem 1rem .9rem;
+    animation: sls-slide-in .2s cubic-bezier(.16,.84,.44,1) both;
+  }
+  .sls-def-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: .5rem;
+    margin-bottom: .55rem;
+  }
+  .sls-def-titre {
+    font-family: 'Lora', Georgia, serif;
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--sls-ink);
+    line-height: 1.25;
+    letter-spacing: -.01em;
+  }
+  .sls-def-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--sls-ink-muted);
+    padding: 2px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: color .15s;
+  }
+  .sls-def-close:hover { color: var(--sls-green); }
+  .sls-def-penseur {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--sls-green-s);
+    margin-bottom: .55rem;
+  }
+  .sls-def-body {
+    font-family: 'Lora', Georgia, serif;
+    font-size: .88rem;
+    color: var(--sls-ink-soft);
+    line-height: 1.68;
+    margin-bottom: .55rem;
+  }
+  .sls-def-source {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .56rem;
+    color: var(--sls-ink-muted);
+    letter-spacing: .06em;
+    border-top: 1px solid var(--sls-border);
+    padding-top: .45rem;
+    margin-top: .4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+  .sls-def-source-label { flex: 1; }
+  .sls-def-lien {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .56rem;
+    font-weight: 500;
+    color: var(--sls-green);
+    text-decoration: none;
+    padding: .18em .5em;
+    border: 1px solid rgba(74,158,127,.25);
+    border-radius: 2px;
+    background: var(--sls-green-hl);
+    transition: background .15s, border-color .15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sls-def-lien:hover {
+    background: var(--sls-green-hl2);
+    border-color: rgba(74,158,127,.5);
+  }
+  .sls-def-lien svg {
+    width: 8px; height: 8px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  /* Mode nuit — popup */
+  body.sls-night-mode .sls-def-inner {
+    background: #2a2720;
+    border-color: rgba(74,158,127,.18);
+    border-left-color: #3d8f6e;
+  }
+  body.sls-night-mode .sls-def-titre   { color: #f0ece4; }
+  body.sls-night-mode .sls-def-body    { color: #d8d0c2; }
+  body.sls-night-mode .sls-def-source  { border-top-color: #3e3830; }
+
   /* ToC — liens créés dynamiquement par JS */
   #sls-toc a {
     display: block;
@@ -993,6 +1287,32 @@ const sl = stadeLabel(stade);
   body.sls-night-mode .sls-brain-track    { background: #3e3830; }
   body.sls-night-mode .sls-brain-fill     { background: #5a9ab8; }
   body.sls-night-mode .sls-brain-val      { color: #5a9ab8; }
+
+  body.sls-night-mode .sls-fiche-card              { background: #2a2720; border-color: rgba(74,158,127,.2); }
+  body.sls-night-mode .sls-fiche-card-hd           { background: rgba(61,143,110,.1); border-bottom-color: rgba(74,158,127,.15); }
+  body.sls-night-mode .sls-fiche-card-penseur      { color: #5aaa88; }
+  body.sls-night-mode .sls-fiche-card-nom          { color: #f0ece4; }
+  body.sls-night-mode .sls-fiche-essentiel-txt     { color: #e8e0d4; border-left-color: #3d8f6e; }
+  body.sls-night-mode .sls-fiche-mots-list li      { color: #5aaa88; background: rgba(61,143,110,.12); border-color: rgba(61,143,110,.2); }
+  body.sls-night-mode .sls-fiche-usages-list li    { color: #d8d0c2; }
+  body.sls-night-mode .sls-fiche-jauges .sls-brain-fill { background: #3d8f6e; }
+  body.sls-night-mode .sls-fiche-jauges .sls-brain-val  { color: #5aaa88; }
+
+  /* Annotations vertes en Partie II */
+  .sls-anno--fiche {
+    background: linear-gradient(120deg, rgba(74,158,127,0) 0%, rgba(74,158,127,.1) 100%);
+    border-bottom: 1.5px solid rgba(74,158,127,.35);
+  }
+  .sls-anno--fiche:hover,
+  .sls-anno--fiche.sls-anno--hover {
+    background: rgba(74,158,127,.16);
+    border-color: #4a9e7f;
+  }
+  .sls-anno--fiche.sls-anno--active {
+    background: rgba(74,158,127,.2);
+    border-color: #4a9e7f;
+    box-shadow: 0 1px 0 #4a9e7f;
+  }
 </style>
 
 <!-- Barre de progression -->
@@ -1036,11 +1356,7 @@ const sl = stadeLabel(stade);
       </div>
     </header>
 
-    {illustration && (
-      <div class="sls-illustration">
-        <img src={illustration} alt={title} loading="eager" />
-      </div>
-    )}
+
 
     <!-- Consigne interactive -->
     <div class="sls-hint" id="sls-hint">
@@ -1140,6 +1456,7 @@ const sl = stadeLabel(stade);
 </div>
 
 <div id="sls-concepts-data" hidden set:text={conceptsJson}></div>
+<div id="sls-registre-data" hidden set:text={slsRegistreJson}></div>
 
 <script>
 (function () {
@@ -1280,12 +1597,15 @@ const sl = stadeLabel(stade);
 
   // Récupérer tous les spans annotés [data-sls]
   const annotations = body ? body.querySelectorAll('[data-sls]') : [];
-  let activeId = null;
+  let activeId   = null;
+  let activeMode = null;
 
   // Ajouter les classes visuelles
   annotations.forEach(el => {
     el.classList.add('sls-anno');
     const conceptId = el.getAttribute('data-sls');
+    const isFiche   = el.getAttribute('data-sls-mode') === 'fiche';
+    if (isFiche) el.classList.add('sls-anno--fiche');
 
     el.addEventListener('mouseenter', () => {
       el.classList.add('sls-anno--hover');
@@ -1308,16 +1628,19 @@ const sl = stadeLabel(stade);
         });
       }
       // Si clic sur le même : fermer
-      if (activeId === conceptId) {
-        activeId = null;
+      const clickedMode = el.getAttribute('data-sls-mode') || 'explain';
+      if (activeId === conceptId && activeMode === clickedMode) {
+        activeId   = null;
+        activeMode = null;
         showPlaceholder();
         return;
       }
-      activeId = conceptId;
+      activeId   = conceptId;
+      activeMode = clickedMode;
       body.querySelectorAll(`[data-sls="${conceptId}"]`).forEach(s => {
         s.classList.add('sls-anno--active');
       });
-      showConcept(conceptId);
+      showConcept(conceptId, clickedMode);
     });
   });
 
@@ -1327,13 +1650,83 @@ const sl = stadeLabel(stade);
     if (brainSlot) brainSlot.innerHTML = '';
   }
 
-  function showConcept(id) {
+  function showConcept(id, mode) {
     const data = concepts[id];
     if (!data) return;
 
     if (placeholder) placeholder.style.display = 'none';
 
-    // ── Carte concept ──
+    // ── Mode fiche synthèse (Partie II) ──────────────────────────────────
+    if (mode === 'fiche' && data.fiche) {
+      const f = data.fiche;
+
+      const jaugesHtml = data.jauges ? `
+        <div class="sls-fiche-jauges">
+          <div class="sls-fiche-label">Dans la scène</div>
+          ${Object.entries(data.jauges).map(([key, val]) => `
+            <div class="sls-brain-row">
+              <span class="sls-brain-key">${key}</span>
+              <div class="sls-brain-track">
+                <div class="sls-brain-fill" data-val="${val}" style="width:0%"></div>
+              </div>
+              <span class="sls-brain-val">${val}%</span>
+            </div>
+          `).join('')}
+        </div>
+      ` : '';
+
+      const motsHtml = f.mots_cles && f.mots_cles.length ? `
+        <div class="sls-fiche-mots">
+          <div class="sls-fiche-label">Mots-clés</div>
+          <ul class="sls-fiche-mots-list">
+            ${f.mots_cles.map(m => `<li>${m}</li>`).join('')}
+          </ul>
+        </div>
+      ` : '';
+
+      const usagesHtml = f.usages && f.usages.length ? `
+        <div class="sls-fiche-usages">
+          <div class="sls-fiche-label">Dans votre vie</div>
+          <ul class="sls-fiche-usages-list">
+            ${f.usages.map(u => `<li>${u}</li>`).join('')}
+          </ul>
+        </div>
+      ` : '';
+
+      slot.innerHTML = `
+        <div class="sls-fiche-card">
+          <div class="sls-fiche-card-hd">
+            <div class="sls-fiche-card-penseur">${data.penseur || ''}</div>
+            <div class="sls-fiche-card-nom">${data.nom || id}</div>
+            <div class="sls-fiche-badge">Fiche synthèse</div>
+          </div>
+          <div class="sls-fiche-essentiel">
+            <div class="sls-fiche-label">À retenir</div>
+            <p class="sls-fiche-essentiel-txt">${f.essentiel}</p>
+          </div>
+          ${motsHtml}
+          ${jaugesHtml}
+          ${usagesHtml}
+        </div>
+      `;
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          slot.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
+            el.style.width = el.getAttribute('data-val') + '%';
+          });
+        });
+      });
+
+      if (!(window.innerWidth > 860) && slot) {
+        setTimeout(() => { slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 100);
+      }
+      // Enrichir les mots-clés avec le registre convergences
+      enrichirMotsCles(slot);
+      return;
+    }
+
+    // ── Mode explication (Partie I) ───────────────────────────────────────
     const jaugesHtml = data.jauges ? `
       <div class="sls-brain-bar">
         <div class="sls-brain-bar-lbl">Ce qui se passe à cet instant</div>
@@ -1376,7 +1769,6 @@ const sl = stadeLabel(stade);
       ${jaugesHtml}
     `;
 
-    // Animer les jauges après un micro-délai
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         slot.querySelectorAll('.sls-brain-fill[data-val]').forEach(el => {
@@ -1385,12 +1777,167 @@ const sl = stadeLabel(stade);
       });
     });
 
-    // Sur mobile : scroll vers le slot
     if (!(window.innerWidth > 860) && slot) {
       setTimeout(() => {
         slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }, 100);
     }
+  }
+
+
+  // ── 5. Système de matching mots-clés ↔ registre convergences ────────────
+
+  // Charger le registre
+  let SLS_REGISTRE = {};
+  try {
+    const regEl = document.getElementById('sls-registre-data');
+    SLS_REGISTRE = JSON.parse(regEl ? regEl.textContent : '{}');
+  } catch(e) { console.warn('[sls] registre:', e); }
+
+  // Normalisation identique au script Python de génération
+  function slsNorm(s) {
+    return s.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[''"()]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // Recherche dans le registre : exact d'abord, puis inclusion partielle
+  function slsLookup(motcle) {
+    const nk = slsNorm(motcle);
+    // 1. Match exact
+    if (SLS_REGISTRE[nk]) return SLS_REGISTRE[nk];
+    // 2. Le mot-clé est contenu dans une clé du registre
+    for (const [key, val] of Object.entries(SLS_REGISTRE)) {
+      if (key.includes(nk) && nk.length > 3) return val;
+    }
+    // 3. Une clé du registre est contenue dans le mot-clé
+    for (const [key, val] of Object.entries(SLS_REGISTRE)) {
+      if (nk.includes(key) && key.length > 4) return val;
+    }
+    return null;
+  }
+
+  // ── Routing source → URL interne ───────────────────────────────────────
+  const SLS_CONV_MAP = {
+    'Système': '/bibliotheque#s1', 'Corps': '/bibliotheque#s2',
+    'Émotion': '/bibliotheque#s3', 'Automatisme': '/bibliotheque#s4',
+    'Attention': '/bibliotheque#s5', 'Sens': '/bibliotheque#s6',
+    'Narration': '/bibliotheque#s7', 'Attachement': '/bibliotheque#s8',
+    'Communication': '/bibliotheque#s9', 'Langage': '/bibliotheque#s10',
+    'Désir': '/bibliotheque#s11', 'Identité': '/bibliotheque#s12',
+    'Temps': '/bibliotheque#s13', 'Conflit': '/bibliotheque#s14',
+    'Pouvoir': '/bibliotheque#s15', 'Fondements': '/bibliotheque#s16',
+  };
+
+  function slsSourceUrl(source) {
+    if (!source) return null;
+    // "Convergences · Fondements" → /bibliotheque#s16
+    if (source.startsWith('Convergences')) {
+      const conv = source.replace('Convergences · ', '').trim();
+      return SLS_CONV_MAP[conv] || '/bibliotheque';
+    }
+    // Domaines YAML → bibliothèque générique
+    return '/bibliotheque';
+  }
+
+  function slsSourceLabel(source) {
+    if (!source) return '';
+    if (source.startsWith('Convergences')) return source.replace('Convergences · ', '');
+    // Domaine court
+    return source.split('/')[0].trim();
+  }
+
+  // ── Enrichir les mots-clés d'une fiche ──────────────────────────────────
+  // Panneau inséré directement dans .sls-fiche-mots, juste sous les badges
+  function enrichirMotsCles(slotEl) {
+    if (!slotEl) return;
+
+    const motsWrap = slotEl.querySelector('.sls-fiche-mots');
+    if (!motsWrap) return;
+
+    // Panneau unique injecté dans le bloc mots-clés
+    let defPanel = document.createElement('div');
+    defPanel.className = 'sls-def-panel';
+    defPanel.innerHTML = '<div class="sls-def-inner"></div>';
+    motsWrap.appendChild(defPanel);
+
+    const defInner   = defPanel.querySelector('.sls-def-inner');
+    let activeMotcle = null;
+
+    slotEl.querySelectorAll('.sls-fiche-mots-list li').forEach(li => {
+      const motcle = li.textContent.trim();
+      const entry  = slsLookup(motcle);
+      if (!entry) return;  // neutre
+
+      li.classList.add('sls-motcle-enrichi');
+      li.setAttribute('role', 'button');
+      li.setAttribute('tabindex', '0');
+      li.setAttribute('aria-label', `Définition : ${entry.t}`);
+
+      function openDef(e) {
+        e.stopPropagation();
+        const isSame = activeMotcle === motcle;
+
+        slotEl.querySelectorAll('.sls-motcle--actif').forEach(el =>
+          el.classList.remove('sls-motcle--actif')
+        );
+
+        if (isSame) {
+          activeMotcle = null;
+          defPanel.classList.remove('sls-def-panel--open');
+          return;
+        }
+
+        activeMotcle = motcle;
+        li.classList.add('sls-motcle--actif');
+
+        // Construire le lien vers la source
+        const url   = slsSourceUrl(entry.s);
+        const label = slsSourceLabel(entry.s);
+        const lienHtml = url ? `
+          <a href="${url}" class="sls-def-lien" target="_blank" rel="noopener"
+             title="Voir dans la bibliothèque">
+            <svg viewBox="0 0 12 12">
+              <path d="M5 2H2a1 1 0 00-1 1v7a1 1 0 001 1h7a1 1 0 001-1V7"/>
+              <path d="M8 1h3m0 0v3m0-3L5.5 6.5"/>
+            </svg>
+            ${label}
+          </a>` : '';
+
+        defInner.innerHTML = `
+          <div class="sls-def-header">
+            <div class="sls-def-titre">${entry.t}</div>
+            <button class="sls-def-close" aria-label="Fermer la définition">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+          ${entry.p ? `<div class="sls-def-penseur">${entry.p}</div>` : ''}
+          <div class="sls-def-body">${entry.d}</div>
+          <div class="sls-def-source">
+            <span class="sls-def-source-label">Source · ${entry.s.split('·').pop().trim()}</span>
+            ${lienHtml}
+          </div>
+        `;
+
+        defPanel.classList.add('sls-def-panel--open');
+
+        defInner.querySelector('.sls-def-close')?.addEventListener('click', e => {
+          e.stopPropagation();
+          activeMotcle = null;
+          li.classList.remove('sls-motcle--actif');
+          defPanel.classList.remove('sls-def-panel--open');
+        });
+      }
+
+      li.addEventListener('click', openDef);
+      li.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDef(e); }
+      });
+    });
   }
 
   // ── 4. Masquer la consigne après premier clic ─────────────────────────

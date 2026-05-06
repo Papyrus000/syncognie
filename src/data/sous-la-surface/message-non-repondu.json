@@ -5,6 +5,15 @@
     "corps": "L'angoisse ne vient pas toujours du contenu d'un événement, mais de l'espace laissé sans contour. Une phrase comme 'On peut parler ?' ouvre plusieurs mondes possibles en même temps. Le cerveau doit maintenir ces hypothèses actives, chercher un sens, préparer une réponse à une menace qui n'est pas encore définie. L'incertitude devient alors une menace en soi.",
     "extrait": "Le message apparaît pendant que Mélanie se brosse les dents.",
     "vie": "Ajouter du contexte aux messages chargés. Une phrase simple — 'rien de grave, je veux juste te parler d'hier' — peut éviter à l'autre une cascade d'hypothèses anxieuses.",
+    "fiche": {
+      "essentiel": "L'absence d'information devient elle-même une menace. Le cerveau maintient plusieurs mondes ouverts en même temps — un état coûteux que l'incertitude entretient plus longtemps que la mauvaise nouvelle elle-même.",
+      "mots_cles": ["Intolérance à l'incertitude", "Ambiguïté perçue", "Menace indéfinie", "Besoin de certitude", "IU (Intolerance of Uncertainty)"],
+      "usages": [
+        "Dans ses propres messages : ajouter une phrase de contexte ('rien de grave') quand le contenu est potentiellement chargé — ça coûte 5 secondes et évite à l'autre 15 minutes d'angoisse.",
+        "Quand on reçoit un message ambigu : nommer l'incertitude explicitement plutôt que de la remplir — 'je ne sais pas encore ce que ça signifie, j'attends'.",
+        "Reconnaître que l'angoisse peut précéder le contenu réel — ce n'est pas toujours le problème qui blesse, c'est l'espace sans contour."
+      ]
+    },
     "jauges": {
       "Ambiguïté perçue": 92,
       "Besoin de certitude": 86,
@@ -18,6 +27,15 @@
     "corps": "La prospection est la capacité à simuler l'avenir pour se préparer. Sous menace, elle devient anxieuse : l'esprit fabrique plusieurs scénarios négatifs et le corps commence à réagir comme si certains étaient déjà vrais. Imaginer n'est pas savoir, mais le système nerveux ne fait pas toujours clairement la différence quand l'enjeu affectif est fort.",
     "extrait": "Son cerveau commence à produire des versions. Il veut rompre. Il a appris quelque chose. Il va lui reprocher hier soir. Il a besoin d'aide.",
     "vie": "Nommer les scénarios comme des hypothèses, pas comme des faits. Écrire brièvement 'je ne sais pas encore' peut suffire à rendre au cerveau une marge entre simulation et réalité.",
+    "fiche": {
+      "essentiel": "Sous menace, la simulation du futur devient anxieuse : le corps réagit aux scénarios comme à des faits. Imaginer n'est pas savoir — mais le système nerveux ne fait pas toujours la différence.",
+      "mots_cles": ["Prospection", "Simulation anxieuse", "Préparation au pire", "Anticipation défensive", "Cerveau prédictif"],
+      "usages": [
+        "Quand plusieurs scénarios négatifs tournent en boucle : les écrire brièvement en les nommant explicitement comme hypothèses — 'scénario A : rupture / scénario B : reproche'.",
+        "Ajouter la formule 'je ne sais pas encore' après chaque scénario produit — ça crée une marge cognitive entre simulation et réalité.",
+        "Reconnaître que le corps réagit à la simulation comme à la réalité : la tension physique est réelle même si le contenu est imaginaire."
+      ]
+    },
     "jauges": {
       "Scénarios produits": 89,
       "Préparation au pire": 81,
@@ -31,6 +49,15 @@
     "corps": "Les technologies n'ont pas créé le besoin d'attachement : elles l'ont rendu permanent, mesurable, visible. Une bulle, une coche, une absence de réponse deviennent des indices de disponibilité affective. Les questions anciennes restent les mêmes : est-ce que je compte ? Est-ce que l'autre revient ? Est-ce que le lien tient quand je ne le vois pas ?",
     "extrait": "Ce n'est pas exactement Johan qu'elle attend. C'est le signal. Le signe qu'elle compte assez pour qu'il précise, qu'il revienne, qu'il réduise lui-même l'angoisse qu'il vient d'ouvrir.",
     "vie": "Ne pas confondre absence de réponse et absence de lien. Le texte appauvrit le contexte : il montre le silence, mais pas la fatigue, l'hésitation, le trajet ou la vie matérielle autour.",
+    "fiche": {
+      "essentiel": "Les écrans ont miniaturisé et accéléré l'attachement : une coche, un silence, une vibration deviennent des indicateurs de lien. Les questions d'attachement restent les mêmes — le support change.",
+      "mots_cles": ["Attachement numérique", "Disponibilité affective", "Signal de lien", "Peur du rejet", "Coches de lecture"],
+      "usages": [
+        "Ne pas confondre absence de réponse et absence de lien — les écrans appauvrissent le contexte : on voit le silence, pas la fatigue ou la vie matérielle autour.",
+        "Quand l'enjeu affectif est fort, privilégier la voix au texte — elle rétablit les correctifs corporels (ton, hésitation, respiration) que le texte efface.",
+        "Reconnaître quand on attend non pas l'information mais le signal de lien — cette distinction aide à calibrer l'urgence réelle de la réponse."
+      ]
+    },
     "jauges": {
       "Besoin de signe": 91,
       "Peur du rejet": 83,
@@ -44,6 +71,15 @@
     "corps": "Quand l'essentiel échappe, l'esprit s'accroche à ce qu'il peut encore décider. Ouvrir ou ne pas ouvrir. Répondre vite ou tard. Effacer un brouillon. Ces micro-gestes donnent une impression de reprise dans une situation relationnelle incertaine. Le contrôle protège temporairement de la vulnérabilité, mais il ne remplace pas le contact.",
     "extrait": "Elle laisse l'écran s'éteindre. C'est presque imperceptible, mais quelque chose en elle se redresse au moment où elle ne répond pas. Ne pas répondre devient la seule chose qu'elle contrôle.",
     "vie": "Se demander : j'attends parce que j'ai besoin de temps, ou parce que je veux reprendre du pouvoir ? La première option protège la clarté. La seconde prolonge souvent la menace.",
+    "fiche": {
+      "essentiel": "Quand l'essentiel échappe, l'esprit s'accroche aux micro-décisions disponibles. Ces gestes de contrôle protègent temporairement de la vulnérabilité — mais ne la remplacent pas par du contact.",
+      "mots_cles": ["Illusion de contrôle", "Micro-décisions", "Vulnérabilité évitée", "Temporalité stratégique", "Locus de contrôle"],
+      "usages": [
+        "Se poser la question : 'j'attends parce que j'ai besoin de temps, ou parce que je veux reprendre du pouvoir ?' Les deux peuvent coexister — mais la distinction compte.",
+        "Reconnaître les comportements de contrôle secondaire dans les situations d'incertitude relationnelle : ranger, effacer, retarder — autant de façons de négocier sans contact.",
+        "Le contrôle protège à court terme mais prolonge souvent la menace — l'exposition directe est généralement plus courte que l'évitement."
+      ]
+    },
     "jauges": {
       "Contrôle apparent": 74,
       "Vulnérabilité évitée": 82,
@@ -57,6 +93,15 @@
     "corps": "L'attente d'un signal imprévisible capte fortement l'attention. Peut-être maintenant, peut-être dans trente secondes, peut-être jamais. Le téléphone ne donne pas seulement de l'information : il organise l'attente. La vérification répétée ressemble à une action, mais elle maintient la dépendance au soulagement possible.",
     "extrait": "Mélanie pose le téléphone face contre table cette fois. Puis elle attend le deuxième message. Celui qui expliquerait le premier. Celui qui viendrait réduire l'espace. Celui qui ne vient pas.",
     "vie": "Éloigner physiquement le téléphone dans les moments chargés. Ce n'est pas une question de volonté faible : un objet visible continue de proposer une boucle attentionnelle.",
+    "fiche": {
+      "essentiel": "Un signal imprévisible capte l'attention plus fort qu'un signal certain. On ne vérifie pas pour avoir l'information — on vérifie pour être soulagé. Le renforcement intermittent maintient la boucle.",
+      "mots_cles": ["Renforcement intermittent", "Boucle habitude-récompense", "Dopamine anticipatoire", "Vérification compulsive", "Attente du signal"],
+      "usages": [
+        "Dans les moments d'attente chargée : éloigner physiquement le téléphone plutôt que de compter sur la volonté — un objet visible continue de proposer la boucle.",
+        "Reconnaître que la vérification répétée ressemble à une action mais maintient l'état d'activation — elle ne résout pas l'attente, elle la prolonge.",
+        "Distinguer l'action réelle (répondre, appeler) du comportement de boucle (vérifier sans agir) — seule la première sort du circuit."
+      ]
+    },
     "jauges": {
       "Attente du signal": 94,
       "Vérification compulsive": 79,
@@ -70,6 +115,15 @@
     "corps": "Sous stress, imaginer ce que l'autre pense peut devenir une fausse mentalisation. L'esprit croit comprendre, mais il remplit surtout les blancs. L'autre n'est plus une personne complexe : il devient une intention figée, un verdict, une menace. La distance numérique amplifie ce phénomène parce qu'elle retire les correctifs corporels : voix, visage, hésitation, respiration.",
     "extrait": "À force d'imaginer ce qu'il pense, elle ne voit plus Johan. Elle voit un tribunal. Une décision déjà prise.",
     "vie": "Quand une intention paraît certaine à partir d'un message ambigu, ajouter mentalement : 'je ne sais pas encore.' Cette phrase protège la relation contre les certitudes fabriquées par l'angoisse.",
+    "fiche": {
+      "essentiel": "Sous stress, on croit mentaliser l'autre mais on le réduit. Sans les correctifs corporels (voix, visage, hésitation), l'espace ambigu se remplit de certitudes projetées.",
+      "mots_cles": ["Fausse mentalisation", "Projection", "Certitude fabriquée", "Correctifs corporels", "Distance numérique"],
+      "usages": [
+        "Quand une intention semble certaine à partir d'un message ambigu : ajouter mentalement 'je ne sais pas encore' — cette discipline cognitive protège contre les certitudes projetées.",
+        "Reconnaître le signe d'une mentalisation effondrée : l'autre cesse d'être complexe et devient une fonction (celui qui va juger, partir, décider).",
+        "Préférer l'appel au texte quand l'enjeu affectif est fort — les correctifs corporels rétablissent la complexité de la personne que le texte efface."
+      ]
+    },
     "jauges": {
       "Projection": 87,
       "Nuance disponible": 22,

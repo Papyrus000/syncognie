@@ -130,9 +130,29 @@ const jardin = defineCollection({
   }),
 });
 
+// ── Schéma fiche synthèse — Partie II ──
+// Injecté dans le JSON de concepts via le champ `fiche` de chaque concept.
+const ficheSyntheseSchema = z.object({
+  essentiel:  z.string(),                  // Formule mémorable à retenir
+  mots_cles:  z.array(z.string()),         // 4-6 ancres conceptuelles
+  usages:     z.array(z.string()),         // 2-3 usages concrets quotidiens
+});
+
+// ── Schéma d'un concept individuel ──
+const conceptSchema = z.object({
+  penseur:  z.string(),
+  nom:      z.string(),
+  corps:    z.string(),
+  extrait:  z.string().optional(),
+  vie:      z.string().optional(),
+  fiche:    ficheSyntheseSchema.optional(), // Présent = fiche Partie II disponible
+  jauges:   z.record(z.number()).optional(),
+});
+
 // ── Collection NOUVELLE : sous-la-surface ──
 // Articles hybrides : scène narrative + analyse conceptuelle interactive.
-// Les passages de la scène sont annotés avec data-sls="conceptId" dans le MDX.
+// Partie I  — spans data-sls="conceptId"              → sidebar explication
+// Partie II — spans data-sls="conceptId" data-sls-mode="fiche" → fiche synthèse verte
 const souslasurface = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/sous-la-surface' }),
   schema: z.object({
@@ -152,6 +172,7 @@ const souslasurface = defineCollection({
     // Image d'en-tête optionnelle
     illustration: z.string().optional(),
     // Nom du fichier JSON de concepts (sans extension), dans src/content/sous-la-surface/
+    // Structure attendue : Record<conceptId, conceptSchema> — voir conceptSchema ci-dessus
     concepts_data: z.string().optional(),
   }),
 });

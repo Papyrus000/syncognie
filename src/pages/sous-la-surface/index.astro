@@ -97,6 +97,11 @@ function formatDate(d: Date) {
           {entry.data.description && (
             <p class="sls-carte-desc">{entry.data.description}</p>
           )}
+          {entry.data.illustration && (
+            <div class="sls-carte-illus">
+              <img src={entry.data.illustration} alt="" aria-hidden="true" loading="lazy" />
+            </div>
+          )}
           {entry.data.concepts && (
             <div class="sls-carte-concepts">
               {entry.data.concepts.slice(0, 4).map((c) => (
@@ -364,6 +369,22 @@ function formatDate(d: Date) {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  .sls-carte-illus {
+    margin-bottom: 1.1rem;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .sls-carte-illus img {
+    display: block;
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform .4s cubic-bezier(.16,.84,.44,1);
+  }
+  .sls-carte:hover .sls-carte-illus img {
+    transform: scale(1.03);
+  }
+
   .sls-carte-concepts {
     display: flex;
     flex-wrap: wrap;
