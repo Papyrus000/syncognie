@@ -1,0 +1,393 @@
+{
+  "id": "fenetre-tolerance-couple",
+  "version": "1.0",
+  "titre": "22h14",
+  "accroche": "Un appartement. Deux personnes qui dérivent. Ce soir, vous jouez Johan.",
+  "perspective": "johan",
+
+  "personnages": {
+    "johan": {
+      "nom": "Johan",
+      "besoins": ["connexion", "calme", "reconnaissance"],
+      "peurs": ["conflit", "inadéquation"],
+      "defenses": ["retrait", "rationalisation"]
+    },
+    "melanie": {
+      "nom": "Mélanie",
+      "besoins": ["être_vue", "sécurité_émotionnelle", "connexion"],
+      "peurs": ["ne_pas_compter", "abandon_émotionnel"],
+      "defenses": ["silence", "demande_indirecte"]
+    }
+  },
+
+  "statsInitiales": {
+    "amour": 68,
+    "confiance": 60,
+    "tension": 45,
+    "rancœur": 25,
+    "distance": 40,
+    "desirDeParler": 35,
+    "risqueRupture": 12
+  },
+
+  "scenes": [
+    {
+      "id": "scene-01",
+      "titre": "Le silence habité",
+      "acte": 1,
+      "narrateur": "L'appartement est dans cette lumière d'après-dîner. Ça fait vingt minutes que vous êtes sur votre téléphone. Mélanie range. Elle n'a rien dit. Le silence a une texture, une température.",
+      "signal": "Elle pose un verre dans le placard. Puis un autre. Ses gestes sont un peu trop précis.",
+      "conceptDeclenche": "fenetre",
+      "choix": [
+        {
+          "id": "c01a",
+          "label": "Poser le téléphone",
+          "texte": "Vous posez l'écran sur le coussin, face vers le bas. Aucun mot. Juste la présence.",
+          "effets": {
+            "base": { "tension": -5, "distance": -8, "confiance": 4, "desirDeParler": 12 },
+            "conditions": [
+              {
+                "si": { "rancœur": { "gte": 50 } },
+                "alors": { "desirDeParler": -5 },
+                "narrateur": "Elle le remarque. Mais quelque chose en elle résiste encore."
+              }
+            ]
+          },
+          "consequence": "Elle sent le changement dans la pièce. Quelque chose se dépose, légèrement.",
+          "sceneSuivante": "scene-02"
+        },
+        {
+          "id": "c01b",
+          "label": "Continuer à regarder l'écran",
+          "texte": "C'est une vidéo nulle. Vous restez dedans. Elle peut attendre.",
+          "effets": {
+            "base": { "tension": 8, "distance": 10, "rancœur": 6, "desirDeParler": -8 }
+          },
+          "consequence": "Elle finit de ranger. Elle prend son propre téléphone. Le silence devient du béton.",
+          "sceneSuivante": "scene-02"
+        },
+        {
+          "id": "c01c",
+          "label": "« T'as besoin d'un coup de main ? »",
+          "texte": "Vous posez la question depuis le canapé, sans vraiment vous lever.",
+          "effets": {
+            "base": { "tension": -2, "distance": -4, "desirDeParler": 6 }
+          },
+          "consequence": "— Non ça va. Sa voix est neutre. Ni froide ni chaude. Elle range encore.",
+          "sceneSuivante": "scene-02"
+        }
+      ]
+    },
+
+    {
+      "id": "scene-02",
+      "titre": "Tu regardes quoi ?",
+      "acte": 1,
+      "narrateur": "Elle s'est appuyée contre l'évier. Elle vous regarde maintenant.",
+      "signal": "— Tu regardes quoi ? Sa voix est sortie un peu plus plate qu'elle voulait. Neutre mais pas douce.",
+      "conceptDeclenche": "flooding",
+      "choix": [
+        {
+          "id": "c02a",
+          "label": "« Une vidéo, rien. » — et reposer les yeux sur l'écran",
+          "texte": "Vous dites ça avec le sourire encore sur le visage — le sourire de la vidéo. Vous le rangez vite.",
+          "effets": {
+            "base": { "tension": 10, "distance": 8, "rancœur": 8, "confiance": -5 }
+          },
+          "consequence": "Elle a vu le sourire. Elle retourne dans le salon, prend son téléphone. Elle le tient sans regarder l'écran.",
+          "sceneSuivante": "scene-03"
+        },
+        {
+          "id": "c02b",
+          "label": "Poser le téléphone et la regarder vraiment",
+          "texte": "Vous posez l'écran. Vous la regardez. — Rien d'important. T'as l'air fatiguée.",
+          "effets": {
+            "base": { "tension": -5, "distance": -10, "confiance": 6, "desirDeParler": 10 },
+            "conditions": [
+              {
+                "si": { "distance": { "gte": 55 } },
+                "alors": { "confiance": -3 },
+                "narrateur": "Elle vous regarde une seconde de trop. Comme si elle évaluait si c'est vrai."
+              }
+            ]
+          },
+          "consequence": "Quelque chose dans sa posture change. Pas beaucoup. Elle s'assoit dans le fauteuil.",
+          "sceneSuivante": "scene-03"
+        },
+        {
+          "id": "c02c",
+          "label": "« Pourquoi tu poses la question comme ça ? »",
+          "texte": "Vous avez entendu l'accusation implicite. Vous y répondez.",
+          "effets": {
+            "base": { "tension": 15, "rancœur": 10, "distance": 5, "confiance": -8 }
+          },
+          "consequence": "— Je pose pas de question « comme ça ». Je demande juste. La pièce s'est refroidie d'un degré.",
+          "sceneSuivante": "scene-03"
+        }
+      ]
+    },
+
+    {
+      "id": "scene-03",
+      "titre": "Ça va ?",
+      "acte": 2,
+      "narrateur": "Elle est dans le fauteuil. Vous êtes sur le canapé. La distance entre vous a la consistance d'une chose réelle.",
+      "signal": "Elle tient son téléphone sans regarder l'écran. Vous la regardez maintenant.",
+      "conceptDeclenche": "attachement",
+      "choix": [
+        {
+          "id": "c03a",
+          "label": "« Ça va ? »",
+          "texte": "Simple. Direct. Vous avez posé votre téléphone.",
+          "effets": {
+            "base": { "distance": -5, "desirDeParler": 8 }
+          },
+          "consequence": "— Oui. Le oui de quelqu'un à qui ça ne va pas mais qui n'a pas encore décidé si elle va le dire.",
+          "sceneSuivante": "scene-04"
+        },
+        {
+          "id": "c03b",
+          "label": "Retourner à votre téléphone",
+          "texte": "Elle a l'air de vouloir être seule. Vous respectez ça.",
+          "effets": {
+            "base": { "tension": 5, "distance": 15, "rancœur": 10, "desirDeParler": -15 },
+            "tags": ["evitement_confirme"]
+          },
+          "consequence": "Le silence s'installe pour de bon. Elle regarde le mur. Personne ne bouge.",
+          "sceneSuivante": "scene-04"
+        },
+        {
+          "id": "c03c",
+          "label": "Aller s'asseoir près d'elle",
+          "texte": "Vous vous levez du canapé. Vous allez vous asseoir sur l'accoudoir du fauteuil.",
+          "effets": {
+            "base": { "tension": -8, "distance": -18, "confiance": 8, "desirDeParler": 14 },
+            "conditions": [
+              {
+                "si": { "tension": { "gte": 60 } },
+                "alors": { "tension": 5 },
+                "narrateur": "Elle se raidit légèrement. Le geste est trop brusque pour l'état où elle est."
+              }
+            ]
+          },
+          "consequence": "Leurs bras se touchent. Elle ne dit rien. Mais elle ne s'écarte pas.",
+          "sceneSuivante": "scene-04"
+        }
+      ]
+    },
+
+    {
+      "id": "scene-04",
+      "titre": "T'es sûre ?",
+      "acte": 2,
+      "narrateur": "Elle a dit oui. Vous savez tous les deux que c'est faux. La question : qu'est-ce que vous faites de ça ?",
+      "signal": "Un silence. Court. Qui attend.",
+      "conceptDeclenche": "reparation",
+      "choix": [
+        {
+          "id": "c04a",
+          "label": "« T'es sûre ? » — avec le ton qui ferme",
+          "texte": "Vous insistez. Vous voulez qu'elle dise ce qui ne va pas. Maintenant.",
+          "effets": {
+            "base": { "tension": 12, "rancœur": 8, "distance": 6, "confiance": -6, "desirDeParler": -12 }
+          },
+          "consequence": "— Johan. Je viens de dire oui. Une porte qui se ferme à clé. Elle reprend son téléphone.",
+          "sceneSuivante": "scene-05"
+        },
+        {
+          "id": "c04b",
+          "label": "Laisser tomber — reprendre votre téléphone",
+          "texte": "Elle ne veut pas parler. Soit.",
+          "effets": {
+            "base": { "tension": 5, "distance": 14, "rancœur": 12, "desirDeParler": -18 },
+            "tags": ["evitement_double"]
+          },
+          "consequence": "Le silence devient du béton. Vous regardez l'écran. Elle regarde le mur. La soirée finit là.",
+          "sceneSuivante": "scene-05"
+        },
+        {
+          "id": "c04c",
+          "label": "Nommer ce que vous avez fait",
+          "texte": "— J'ai regardé mon téléphone pendant une heure. Pas une question. Pas une excuse. Un fait que vous posez dans la pièce.",
+          "effets": {
+            "base": { "tension": -10, "distance": -12, "confiance": 12, "rancœur": -6, "desirDeParler": 20 },
+            "conditions": [
+              {
+                "si": { "rancœur": { "gte": 45 } },
+                "alors": { "desirDeParler": -5, "confiance": -4 },
+                "narrateur": "Elle vous regarde. Quelque chose hésite en elle. La rancœur est là depuis plus longtemps que ce soir."
+              }
+            ],
+            "tags": ["reparation_amorcee"]
+          },
+          "consequence": "Elle vous regarde. Quelque chose se desserre dans sa gorge. Pas beaucoup. Juste un peu.",
+          "sceneSuivante": "scene-05"
+        }
+      ]
+    },
+
+    {
+      "id": "scene-05",
+      "titre": "T'avais quelque chose à me dire",
+      "acte": 3,
+      "narrateur": "La soirée bascule ici. Tout ce qui précède a du poids maintenant.",
+      "signal": "Vous dites — ou vous ne dites pas — ce que vous avez vu depuis le début du dîner.",
+      "conceptDeclenche": "mentalisation",
+      "conditionsEntree": [
+        {
+          "si": { "tags": ["evitement_double"] },
+          "narrateur": "Vous regardez votre téléphone. Elle regarde le mur. La conversation n'aura pas lieu ce soir.",
+          "versFinDirecte": "fin-distance"
+        }
+      ],
+      "choix": [
+        {
+          "id": "c05a",
+          "label": "« T'avais quelque chose à me dire ce soir. »",
+          "texte": "Pas une question. Vous l'avez su depuis le début du dîner — il y avait quelque chose dans sa façon de couper les légumes, d'écouter votre histoire à vous un peu trop attentivement.",
+          "effets": {
+            "base": { "tension": -12, "confiance": 14, "distance": -16, "desirDeParler": 22, "rancœur": -8 }
+          },
+          "consequence": "Mélanie sent quelque chose se desserrer dans sa gorge. — Mon chef a renvoyé le rapport. Avec des commentaires.",
+          "sceneSuivante": "scene-06"
+        },
+        {
+          "id": "c05b",
+          "label": "« Bonne nuit. » — aller vous coucher",
+          "texte": "Vous êtes fatigué. Demain sera mieux.",
+          "effets": {
+            "base": { "tension": -5, "distance": 20, "rancœur": 15, "confiance": -10, "desirDeParler": -25 },
+            "tags": ["fuite_nocturne"]
+          },
+          "consequence": "Elle vous regarde partir. — Bonne nuit. Avec le ton de quelqu'un qui range quelque chose dans une boîte.",
+          "sceneSuivante": "scene-06"
+        },
+        {
+          "id": "c05c",
+          "label": "Attendre. Juste rester là.",
+          "texte": "Vous ne dites rien. Vous êtes présent, dans la même pièce, sans fuir.",
+          "effets": {
+            "base": { "tension": -6, "distance": -8, "desirDeParler": 10 }
+          },
+          "consequence": "Le silence change de nature. Devient moins hostile. Elle pose son téléphone.",
+          "sceneSuivante": "scene-06"
+        }
+      ]
+    },
+
+    {
+      "id": "scene-06",
+      "titre": "Raconte",
+      "acte": 3,
+      "narrateur": "Tout dépend de maintenant. La façon dont vous accompagnez — ou pas — ce qu'elle a à dire.",
+      "signal": "— Mon chef a renvoyé le rapport avec des commentaires. Le genre qui font qu'on se demande si on est nul ou si c'est lui. Ce soir ? Que c'est moi.",
+      "conceptDeclenche": "polyvagal",
+      "conditionsEntree": [
+        {
+          "si": { "tags": ["fuite_nocturne"] },
+          "narrateur": "Vous êtes dans la chambre. Elle n'a rien dit. La conversation n'aura pas lieu.",
+          "versFinDirecte": "fin-distance"
+        }
+      ],
+      "choix": [
+        {
+          "id": "c06a",
+          "label": "« Raconte. »",
+          "texte": "Juste ça. Vous vous rapprochez. Vos bras se touchent.",
+          "effets": {
+            "base": { "tension": -15, "distance": -20, "confiance": 18, "amour": 8, "rancœur": -10, "desirDeParler": 25 }
+          },
+          "consequence": "Et elle raconte.",
+          "sceneSuivante": "fin-reparation"
+        },
+        {
+          "id": "c06b",
+          "label": "« Ton chef a toujours été comme ça. »",
+          "texte": "Vous connaissez l'histoire. Vous essayez d'aider en contextualisant.",
+          "effets": {
+            "base": { "tension": 5, "distance": 5, "desirDeParler": -10 },
+            "conditions": [
+              {
+                "si": { "confiance": { "lte": 45 } },
+                "alors": { "rancœur": 8, "distance": 8 },
+                "narrateur": "Elle s'arrête. — Je sais. Elle ne continue pas."
+              }
+            ]
+          },
+          "consequence": "— Ouais. Elle dit ça sans élan. La conversation s'aplatit.",
+          "sceneSuivante": "fin-statu-quo"
+        },
+        {
+          "id": "c06c",
+          "label": "« T'as répondu quoi ? »",
+          "texte": "Vous êtes curieux de la suite. Vous voulez savoir ce qu'elle a fait.",
+          "effets": {
+            "base": { "tension": -3, "distance": -5, "desirDeParler": 5 }
+          },
+          "consequence": "Elle répond. La conversation avance. Pas une réparation profonde — mais une connexion réelle, partielle.",
+          "sceneSuivante": "fin-statu-quo"
+        }
+      ]
+    }
+  ],
+
+  "fins": {
+    "fin-reparation": {
+      "id": "fin-reparation",
+      "titre": "Le retour possible",
+      "type": "positive",
+      "texte": "Ils n'ont pas résolu quoi que ce soit de fondamental. Mélanie a encore son rapport avec les commentaires en rouge. Johan a encore son client difficile. Mais deux systèmes nerveux qui dérivaient dans des directions opposées ont trouvé, l'espace d'un moment, le chemin pour revenir dans la même fenêtre.",
+      "conceptFinal": "reparation",
+      "messageJoueur": "Vous avez vu Mélanie avant qu'elle le demande. C'est rare. C'est ce qui compte."
+    },
+    "fin-statu-quo": {
+      "id": "fin-statu-quo",
+      "titre": "Cette nuit-là",
+      "type": "neutre",
+      "texte": "La soirée se termine. Rien n'a vraiment explosé. Rien n'a vraiment été dit non plus. Le rapport de Mélanie est toujours là. Johan s'endort sans savoir. Demain ils recommenceront — un peu plus loin l'un de l'autre, sans savoir exactement pourquoi.",
+      "conceptFinal": "fenetre",
+      "messageJoueur": "Vous étiez là. Mais pas tout à fait présent. La distance se construit comme ça — pas en une scène, mais en cent soirs comme celui-ci."
+    },
+    "fin-distance": {
+      "id": "fin-distance",
+      "titre": "Le silence de béton",
+      "type": "negative",
+      "texte": "Personne n'a crié. Personne n'est parti. C'est pire que ça — ils sont restés, dans le même appartement, dans deux solitudes parallèles. Mélanie a rangé ce qu'elle avait à dire dans une boîte. Elle sait comment faire. Elle a de la place.",
+      "conceptFinal": "attachement",
+      "messageJoueur": "Les relations ne meurent pas toujours dans les grandes scènes. Parfois elles meurent un soir de semaine, à 22h14, quand personne n'a rien fait de vraiment grave."
+    }
+  },
+
+  "conceptsJeu": {
+    "fenetre": {
+      "nom": "Fenêtre de tolérance",
+      "court": "Zone où penser et ressentir coexistent. Ce soir, Mélanie est déjà près du bord.",
+      "icone": "◎"
+    },
+    "flooding": {
+      "nom": "Flooding",
+      "court": "Au-dessus de 100 bpm, le cerveau n'est plus capable de nuance. La neutralité de sa voix était déjà un signal.",
+      "icone": "⚡"
+    },
+    "attachement": {
+      "nom": "Question d'attachement cachée",
+      "court": "Sous « ça va ? » se cache « est-ce que je compte pour toi ? »",
+      "icone": "◈"
+    },
+    "reparation": {
+      "nom": "Réparation",
+      "court": "Ce qui construit la sécurité, ce n'est pas la synchronie parfaite. C'est le réflexe de revenir.",
+      "icone": "⟲"
+    },
+    "mentalisation": {
+      "nom": "Mentalisation",
+      "court": "Voir l'autre comme une personne avec son propre intérieur. Pas comme un rôle ou une menace.",
+      "icone": "◇"
+    },
+    "polyvagal": {
+      "nom": "Régulation mutuelle",
+      "court": "Vous vous régulés mutuellement par le corps, avant les mots. Vos bras qui se touchent — c'est déjà du soin.",
+      "icone": "≋"
+    }
+  }
+}

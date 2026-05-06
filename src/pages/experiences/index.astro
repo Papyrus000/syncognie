@@ -1,0 +1,462 @@
+---
+// src/pages/experiences/index.astro
+
+import BaseLayout from '../../layouts/Base.astro';
+
+// Données statiques pour l'instant — pas de collection Astro
+// Quand tu auras d'autres expériences, ajouter ici
+const experiences = [
+  {
+    slug: 'fenetre-tolerance-couple',
+    titre: '22h14',
+    description: 'Un appartement. Deux personnes qui dérivent. Vos choix influencent la relation en temps réel.',
+    personnages: 'Mélanie & Johan',
+    concepts: ['Fenêtre de tolérance', 'Flooding', 'Attachement', 'Réparation'],
+    articleLie: '/sous-la-surface/fenetre-tolerance-couple',
+    date: new Date('2026-05-06'),
+  },
+];
+
+function formatDate(d: Date) {
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+---
+
+<BaseLayout
+  title="Expériences — Syncognie"
+  description="Des simulateurs narratifs interactifs. Jouez une scène, observez les conséquences, découvrez les concepts après coup."
+>
+
+<!-- ══ HERO ══ -->
+<section class="exp-hero">
+  <div class="exp-hero-bg" aria-hidden="true">
+    <div class="exp-hero-orb exp-hero-orb--1"></div>
+    <div class="exp-hero-orb exp-hero-orb--2"></div>
+  </div>
+  <div class="exp-hero-inner">
+    <p class="exp-eyebrow">Syncognie · Mode expérience</p>
+    <h1 class="exp-titre">Expériences</h1>
+    <p class="exp-sous">
+      Vous ne venez pas d'abord apprendre. Vous venez jouer, choisir, voir les conséquences.<br>
+      Le concept arrive après.
+    </p>
+    <div class="exp-concept-band" aria-hidden="true">
+      <span>Choix</span>
+      <span class="exp-sep">·</span>
+      <span>Conséquences</span>
+      <span class="exp-sep">·</span>
+      <span>Stats en temps réel</span>
+      <span class="exp-sep">·</span>
+      <span>Concepts débloqués</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ EXPLAINER ══ -->
+<section class="exp-explainer">
+  <div class="exp-explainer-inner">
+    <div class="exp-step">
+      <div class="exp-step-icon">①</div>
+      <div class="exp-step-txt">
+        <strong>Jouer la scène</strong>
+        <span>Vous êtes dans la situation. Chaque choix a des conséquences visibles.</span>
+      </div>
+    </div>
+    <div class="exp-step-arr">→</div>
+    <div class="exp-step">
+      <div class="exp-step-icon">②</div>
+      <div class="exp-step-txt">
+        <strong>Observer les stats</strong>
+        <span>Amour, tension, distance, rancœur — tout bouge en temps réel.</span>
+      </div>
+    </div>
+    <div class="exp-step-arr">→</div>
+    <div class="exp-step">
+      <div class="exp-step-icon">③</div>
+      <div class="exp-step-txt">
+        <strong>Découvrir le concept</strong>
+        <span>Ce que vous venez de vivre a un nom. Il s'éclaire après le jeu.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GRILLE ══ -->
+{experiences.length > 0 ? (
+  <section class="exp-grille">
+    {experiences.map((exp) => (
+      <a class="exp-carte" href={`/experiences/${exp.slug}`}>
+        <div class="exp-carte-halo" aria-hidden="true"></div>
+        <div class="exp-carte-inner">
+          <div class="exp-carte-meta">
+            <time class="exp-carte-date" datetime={exp.date.toISOString()}>
+              {formatDate(exp.date)}
+            </time>
+            {exp.personnages && (
+              <span class="exp-carte-persos">{exp.personnages}</span>
+            )}
+          </div>
+          <h2 class="exp-carte-titre">{exp.titre}</h2>
+          <p class="exp-carte-desc">{exp.description}</p>
+        </div>
+        <div class="exp-carte-footer">
+          <div class="exp-carte-concepts">
+            {exp.concepts.slice(0, 4).map((c) => (
+              <span class="exp-tag">{c}</span>
+            ))}
+          </div>
+          <span class="exp-carte-cta">
+            Jouer <span class="exp-arr">→</span>
+          </span>
+        </div>
+      </a>
+    ))}
+  </section>
+) : (
+  <section class="exp-vide">
+    <div class="exp-vide-inner">
+      <div class="exp-vide-icon" aria-hidden="true">◎</div>
+      <p class="exp-vide-titre">La première expérience arrive bientôt.</p>
+    </div>
+  </section>
+)}
+
+<!-- ══ RETOUR ══ -->
+<div class="exp-back">
+  <a href="/" class="exp-back-lnk">← Retour à l'accueil</a>
+</div>
+
+</BaseLayout>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+
+  :root {
+    --exp-gold:      #b8956a;
+    --exp-gold-soft: #c8a980;
+    --exp-gold-hl:   #f0e8d8;
+    --exp-ink:       var(--ink, #1a1a1a);
+    --exp-ink-mid:   var(--ink-mid, #4a4a4a);
+    --exp-ink-soft:  var(--ink-soft, #7a7a7a);
+    --exp-bg:        var(--bg, #f8f6f2);
+    --exp-serif:     'Lora', Georgia, serif;
+    --exp-sans:      'DM Sans', sans-serif;
+    --exp-max:       860px;
+  }
+
+  /* ── HERO ── */
+  .exp-hero {
+    position: relative;
+    padding: 5rem 1.75rem 3rem;
+    overflow: hidden;
+  }
+  .exp-hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .exp-hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .1;
+  }
+  .exp-hero-orb--1 {
+    width: 420px; height: 420px;
+    top: -120px; left: -80px;
+    background: var(--exp-gold);
+  }
+  .exp-hero-orb--2 {
+    width: 300px; height: 300px;
+    top: 60px; right: -60px;
+    background: #c49a6a;
+  }
+  .exp-hero-inner {
+    position: relative;
+    max-width: var(--exp-max);
+    margin: 0 auto;
+  }
+  .exp-eyebrow {
+    font-family: var(--exp-sans);
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--exp-gold-soft);
+    margin-bottom: 1rem;
+  }
+  .exp-titre {
+    font-family: var(--exp-serif);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    color: var(--exp-ink);
+    letter-spacing: -.025em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .exp-sous {
+    font-family: var(--exp-serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--exp-ink-mid);
+    line-height: 1.7;
+    max-width: 54ch;
+    margin-bottom: 2rem;
+  }
+  .exp-concept-band {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem .8rem;
+    align-items: center;
+    font-family: var(--exp-sans);
+    font-size: .7rem;
+    letter-spacing: .06em;
+    color: var(--exp-gold-soft);
+    opacity: .6;
+  }
+  .exp-sep { opacity: .4; }
+
+  /* ── EXPLAINER ── */
+  .exp-explainer {
+    border-top: 1px solid var(--rule, #e8e4de);
+    border-bottom: 1px solid var(--rule, #e8e4de);
+    padding: 2rem 1.75rem;
+    margin-bottom: 3rem;
+  }
+  .exp-explainer-inner {
+    max-width: var(--exp-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .exp-step {
+    display: flex;
+    gap: .9rem;
+    flex: 1;
+    min-width: 180px;
+  }
+  .exp-step-icon {
+    font-family: var(--exp-serif);
+    font-size: 1.4rem;
+    color: var(--exp-gold-soft);
+    opacity: .5;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: .15rem;
+  }
+  .exp-step-txt {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+  }
+  .exp-step-txt strong {
+    font-family: var(--exp-sans);
+    font-size: .8rem;
+    font-weight: 500;
+    letter-spacing: .04em;
+    color: var(--exp-ink);
+  }
+  .exp-step-txt span {
+    font-family: var(--exp-serif);
+    font-style: italic;
+    font-size: .82rem;
+    color: var(--exp-ink-mid);
+    line-height: 1.55;
+  }
+  .exp-step-arr {
+    font-size: .9rem;
+    color: var(--exp-gold-soft);
+    opacity: .3;
+    padding-top: .2rem;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* ── GRILLE ── */
+  .exp-grille {
+    max-width: var(--exp-max);
+    margin: 0 auto;
+    padding: 0 1.75rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* ── CARTE ── */
+  .exp-carte {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border: 1px solid var(--rule, #e8e4de);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--exp-bg);
+    transition: border-color .25s, transform .2s cubic-bezier(.16,.84,.44,1), box-shadow .25s;
+  }
+  .exp-carte:hover {
+    border-color: var(--exp-gold-soft);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(184,149,106,.12);
+  }
+  .exp-carte-halo {
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--exp-gold);
+    filter: blur(60px);
+    opacity: 0;
+    transition: opacity .4s;
+    pointer-events: none;
+  }
+  .exp-carte:hover .exp-carte-halo { opacity: .05; }
+  .exp-carte-inner {
+    position: relative;
+    padding: 1.75rem 1.75rem 0.6rem;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .exp-carte-meta {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .9rem;
+  }
+  .exp-carte-date {
+    font-family: var(--exp-sans);
+    font-size: .67rem;
+    font-weight: 300;
+    color: var(--exp-ink-soft);
+    letter-spacing: .04em;
+  }
+  .exp-carte-persos {
+    font-family: var(--exp-sans);
+    font-size: .65rem;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--exp-gold-soft);
+    background: var(--exp-gold-hl);
+    padding: .18em .6em;
+    border-radius: 2px;
+  }
+  .exp-carte-titre {
+    font-family: var(--exp-serif);
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: var(--exp-ink);
+    line-height: 1.3;
+    margin-bottom: .65rem;
+    letter-spacing: -.01em;
+  }
+  .exp-carte-desc {
+    font-family: var(--exp-serif);
+    font-style: italic;
+    font-size: .88rem;
+    color: var(--exp-ink-mid);
+    line-height: 1.6;
+    margin-bottom: 1.1rem;
+  }
+  .exp-carte-footer {
+    padding: 0.6rem 1.75rem 1.75rem;
+    margin-top: auto;
+  }
+  .exp-carte-concepts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin-bottom: 1.2rem;
+  }
+  .exp-tag {
+    font-family: var(--exp-sans);
+    font-size: .6rem;
+    font-weight: 400;
+    letter-spacing: .06em;
+    color: var(--exp-gold-soft);
+    border: 1px solid var(--exp-gold-hl);
+    padding: .22em .65em;
+    border-radius: 20px;
+    transition: background .18s, border-color .18s;
+  }
+  .exp-carte:hover .exp-tag {
+    background: var(--exp-gold-hl);
+    border-color: var(--exp-gold-soft);
+  }
+  .exp-carte-cta {
+    font-family: var(--exp-sans);
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    color: var(--exp-gold-soft);
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    margin-top: auto;
+  }
+  .exp-arr { transition: transform .2s cubic-bezier(.16,.84,.44,1); }
+  .exp-carte:hover .exp-arr { transform: translateX(4px); }
+
+  /* ── VIDE ── */
+  .exp-vide {
+    max-width: var(--exp-max);
+    margin: 0 auto;
+    padding: 5rem 1.75rem;
+  }
+  .exp-vide-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    text-align: center;
+    border: 1px dashed var(--rule, #e8e4de);
+    border-radius: 8px;
+    padding: 3.5rem 2rem;
+  }
+  .exp-vide-icon {
+    font-size: 2rem;
+    color: var(--exp-gold-soft);
+    opacity: .3;
+  }
+  .exp-vide-titre {
+    font-family: var(--exp-serif);
+    font-size: 1rem;
+    color: var(--exp-ink-mid);
+    margin: 0;
+  }
+
+  /* ── RETOUR ── */
+  .exp-back {
+    max-width: var(--exp-max);
+    margin: 0 auto;
+    padding: 1rem 1.75rem 4rem;
+    border-top: 1px solid var(--rule, #e8e4de);
+  }
+  .exp-back-lnk {
+    font-family: var(--exp-sans);
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--exp-ink-soft);
+    text-decoration: none;
+    transition: color .18s;
+  }
+  .exp-back-lnk:hover { color: var(--exp-gold); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .exp-hero { padding: 3.5rem 1.25rem 2.5rem; }
+    .exp-explainer { padding: 1.75rem 1.25rem; margin-bottom: 2rem; }
+    .exp-explainer-inner { flex-direction: column; gap: 1.25rem; }
+    .exp-step-arr { display: none; }
+    .exp-grille { padding: 0 1.25rem 2rem; }
+  }
+  @media (max-width: 600px) {
+    .exp-grille { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
+    .exp-hero { padding: 3rem 1rem 2rem; }
+    .exp-back { padding: 1rem 1rem 3rem; }
+  }
+</style>

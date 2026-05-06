@@ -1,0 +1,73 @@
+---
+// src/layouts/SousLaSurfaceGameLayout.astro
+// Layout dédié au mode jeu — Astro island avec React
+
+import Base from './Base.astro';
+import GameShell from '../components/game/GameShell';
+
+export interface Props {
+  title:        string;
+  description?: string;
+  slug:         string;
+  gameData:     Record<string, unknown>;
+}
+
+const { title, description, slug, gameData } = Astro.props;
+---
+
+<Base
+  title={`${title} — Mode expérience · Syncognie`}
+  description={description}
+>
+  <div class="slsgame-page">
+
+    <header class="slsgame-header">
+      <a href={`/sous-la-surface/${slug}`} class="slsgame-back">
+        ← Mode article
+      </a>
+      <span class="slsgame-mode-badge">Mode expérience</span>
+    </header>
+
+    <!-- L'île React — client:load = hydratation immédiate -->
+    <GameShell client:load data={gameData} />
+
+  </div>
+</Base>
+
+<style>
+  .slsgame-page {
+    background: #F5F2EE;
+    min-height: 100vh;
+  }
+  .slsgame-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #E4DDD4;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .slsgame-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #6e6660;
+    text-decoration: none;
+    transition: color .18s;
+  }
+  .slsgame-back:hover { color: #c8a96e; }
+  .slsgame-mode-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .62rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #c8a96e;
+    background: rgba(200,169,110,.08);
+    border: 1px solid rgba(200,169,110,.2);
+    padding: .25em .75em;
+    border-radius: 2px;
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+// src/pages/experience/[slug].astro
+// Route dynamique : /experience/fenetre-tolerance-couple
+
+import SousLaSurfaceGameLayout from '../../layouts/SousLaSurfaceGameLayout.astro';
+
+export async function getStaticPaths() {
+  const slugsAvecJeu = [
+    'fenetre-tolerance-couple',
+  ];
+  return slugsAvecJeu.map(slug => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+
+let gameData: Record<string, unknown> = {};
+try {
+  const gameFiles: Record<string, () => Promise<unknown>> = {
+    'fenetre-tolerance-couple': () =>
+      import('../../data/sous-la-surface/fenetre-tolerance-couple.game.json'),
+  };
+  const mod = await gameFiles[slug]?.();
+  gameData = (mod as any)?.default ?? {};
+} catch (e) {
+  console.error(`[experience] Impossible de charger le game.json pour ${slug}`, e);
+}
+
+const titre = (gameData.titre as string) ?? slug;
+const accroche = (gameData.accroche as string) ?? '';
+---
+
+<SousLaSurfaceGameLayout
+  title={titre}
+  description={accroche}
+  slug={slug}
+  gameData={gameData}
+/>
