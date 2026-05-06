@@ -97,11 +97,13 @@ function formatDate(d: Date) {
           {entry.data.description && (
             <p class="sls-carte-desc">{entry.data.description}</p>
           )}
-          {entry.data.illustration && (
-            <div class="sls-carte-illus">
-              <img src={entry.data.illustration} alt="" aria-hidden="true" loading="lazy" />
-            </div>
-          )}
+        </div>
+        {entry.data.illustration && (
+          <div class="sls-carte-illus">
+            <img src={entry.data.illustration} alt="" aria-hidden="true" loading="lazy" />
+          </div>
+        )}
+        <div class="sls-carte-footer">
           {entry.data.concepts && (
             <div class="sls-carte-concepts">
               {entry.data.concepts.slice(0, 4).map((c) => (
@@ -287,14 +289,15 @@ function formatDate(d: Date) {
     margin: 0 auto;
     padding: 0 1.75rem 2rem;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
   }
 
   /* ── CARTE ── */
   .sls-carte {
     position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
     text-decoration: none;
     border: 1px solid var(--rule, #e8e4de);
     border-radius: 6px;
@@ -322,7 +325,10 @@ function formatDate(d: Date) {
 
   .sls-carte-inner {
     position: relative;
-    padding: 1.75rem;
+    padding: 1.75rem 1.75rem 0.6rem;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
   }
   .sls-carte-meta {
     display: flex;
@@ -370,19 +376,26 @@ function formatDate(d: Date) {
     overflow: hidden;
   }
   .sls-carte-illus {
-    margin-bottom: 1.1rem;
-    border-radius: 4px;
+    width: 100%;
+    padding: 0 1.75rem;
     overflow: hidden;
+    box-sizing: border-box;
   }
   .sls-carte-illus img {
     display: block;
     width: 100%;
-    height: 180px;
+    height: 140px;
     object-fit: cover;
+    border-radius: 4px;
     transition: transform .4s cubic-bezier(.16,.84,.44,1);
   }
   .sls-carte:hover .sls-carte-illus img {
     transform: scale(1.03);
+  }
+
+  .sls-carte-footer {
+    padding: 0.6rem 1.75rem 1.75rem;
+    margin-top: auto;
   }
 
   .sls-carte-concepts {
@@ -415,6 +428,7 @@ function formatDate(d: Date) {
     display: flex;
     align-items: center;
     gap: .35rem;
+    margin-top: auto;
   }
   .sls-arr {
     transition: transform .2s cubic-bezier(.16,.84,.44,1);
