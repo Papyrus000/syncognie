@@ -1,0 +1,80 @@
+{
+  "incertitude": {
+    "penseur": "Michel Dugas · Nicholas Carleton · Psychologie clinique",
+    "nom": "L'intolérance à l'incertitude",
+    "corps": "L'angoisse ne vient pas toujours du contenu d'un événement, mais de l'espace laissé sans contour. Une phrase comme 'On peut parler ?' ouvre plusieurs mondes possibles en même temps. Le cerveau doit maintenir ces hypothèses actives, chercher un sens, préparer une réponse à une menace qui n'est pas encore définie. L'incertitude devient alors une menace en soi.",
+    "extrait": "Le message apparaît pendant que Mélanie se brosse les dents.",
+    "vie": "Ajouter du contexte aux messages chargés. Une phrase simple — 'rien de grave, je veux juste te parler d'hier' — peut éviter à l'autre une cascade d'hypothèses anxieuses.",
+    "jauges": {
+      "Ambiguïté perçue": 92,
+      "Besoin de certitude": 86,
+      "Menace ressentie": 78,
+      "Clarté disponible": 12
+    }
+  },
+  "prospection": {
+    "penseur": "Daniel Gilbert · Joseph LeDoux · Anticipation et menace",
+    "nom": "La prospection anxieuse",
+    "corps": "La prospection est la capacité à simuler l'avenir pour se préparer. Sous menace, elle devient anxieuse : l'esprit fabrique plusieurs scénarios négatifs et le corps commence à réagir comme si certains étaient déjà vrais. Imaginer n'est pas savoir, mais le système nerveux ne fait pas toujours clairement la différence quand l'enjeu affectif est fort.",
+    "extrait": "Son cerveau commence à produire des versions. Il veut rompre. Il a appris quelque chose. Il va lui reprocher hier soir. Il a besoin d'aide.",
+    "vie": "Nommer les scénarios comme des hypothèses, pas comme des faits. Écrire brièvement 'je ne sais pas encore' peut suffire à rendre au cerveau une marge entre simulation et réalité.",
+    "jauges": {
+      "Scénarios produits": 89,
+      "Préparation au pire": 81,
+      "Différence fait/hypothèse": 24,
+      "Activation corporelle": 76
+    }
+  },
+  "attachement_numerique": {
+    "penseur": "Bowlby · Ainsworth · Sue Johnson — à l'ère des messages",
+    "nom": "L'attachement numérique",
+    "corps": "Les technologies n'ont pas créé le besoin d'attachement : elles l'ont rendu permanent, mesurable, visible. Une bulle, une coche, une absence de réponse deviennent des indices de disponibilité affective. Les questions anciennes restent les mêmes : est-ce que je compte ? Est-ce que l'autre revient ? Est-ce que le lien tient quand je ne le vois pas ?",
+    "extrait": "Ce n'est pas exactement Johan qu'elle attend. C'est le signal. Le signe qu'elle compte assez pour qu'il précise, qu'il revienne, qu'il réduise lui-même l'angoisse qu'il vient d'ouvrir.",
+    "vie": "Ne pas confondre absence de réponse et absence de lien. Le texte appauvrit le contexte : il montre le silence, mais pas la fatigue, l'hésitation, le trajet ou la vie matérielle autour.",
+    "jauges": {
+      "Besoin de signe": 91,
+      "Peur du rejet": 83,
+      "Disponibilité perçue": 28,
+      "Sécurité du lien": 34
+    }
+  },
+  "controle": {
+    "penseur": "Ellen Langer · Psychologie du contrôle",
+    "nom": "L'illusion de contrôle",
+    "corps": "Quand l'essentiel échappe, l'esprit s'accroche à ce qu'il peut encore décider. Ouvrir ou ne pas ouvrir. Répondre vite ou tard. Effacer un brouillon. Ces micro-gestes donnent une impression de reprise dans une situation relationnelle incertaine. Le contrôle protège temporairement de la vulnérabilité, mais il ne remplace pas le contact.",
+    "extrait": "Elle laisse l'écran s'éteindre. C'est presque imperceptible, mais quelque chose en elle se redresse au moment où elle ne répond pas. Ne pas répondre devient la seule chose qu'elle contrôle.",
+    "vie": "Se demander : j'attends parce que j'ai besoin de temps, ou parce que je veux reprendre du pouvoir ? La première option protège la clarté. La seconde prolonge souvent la menace.",
+    "jauges": {
+      "Contrôle apparent": 74,
+      "Vulnérabilité évitée": 82,
+      "Contact réel": 19,
+      "Temps suspendu": 88
+    }
+  },
+  "boucle_recompense": {
+    "penseur": "B. F. Skinner · Judson Brewer · Boucles attentionnelles",
+    "nom": "La boucle de récompense imprévisible",
+    "corps": "L'attente d'un signal imprévisible capte fortement l'attention. Peut-être maintenant, peut-être dans trente secondes, peut-être jamais. Le téléphone ne donne pas seulement de l'information : il organise l'attente. La vérification répétée ressemble à une action, mais elle maintient la dépendance au soulagement possible.",
+    "extrait": "Mélanie pose le téléphone face contre table cette fois. Puis elle attend le deuxième message. Celui qui expliquerait le premier. Celui qui viendrait réduire l'espace. Celui qui ne vient pas.",
+    "vie": "Éloigner physiquement le téléphone dans les moments chargés. Ce n'est pas une question de volonté faible : un objet visible continue de proposer une boucle attentionnelle.",
+    "jauges": {
+      "Attente du signal": 94,
+      "Vérification compulsive": 79,
+      "Soulagement anticipé": 84,
+      "Attention libre": 17
+    }
+  },
+  "mentalisation_distance": {
+    "penseur": "Peter Fonagy · Mentalisation sous ambiguïté",
+    "nom": "La mentalisation à distance",
+    "corps": "Sous stress, imaginer ce que l'autre pense peut devenir une fausse mentalisation. L'esprit croit comprendre, mais il remplit surtout les blancs. L'autre n'est plus une personne complexe : il devient une intention figée, un verdict, une menace. La distance numérique amplifie ce phénomène parce qu'elle retire les correctifs corporels : voix, visage, hésitation, respiration.",
+    "extrait": "À force d'imaginer ce qu'il pense, elle ne voit plus Johan. Elle voit un tribunal. Une décision déjà prise.",
+    "vie": "Quand une intention paraît certaine à partir d'un message ambigu, ajouter mentalement : 'je ne sais pas encore.' Cette phrase protège la relation contre les certitudes fabriquées par l'angoisse.",
+    "jauges": {
+      "Projection": 87,
+      "Nuance disponible": 22,
+      "Certitude fabriquée": 81,
+      "Autre complexifié": 26
+    }
+  }
+}

@@ -119,7 +119,7 @@ const sl = stadeLabel(stade);
   }
   .sls-toc-label {
     font-family: var(--sls-sans);
-    font-size: .58rem;
+    font-size: .65rem;
     font-weight: 500;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -129,7 +129,7 @@ const sl = stadeLabel(stade);
   .sls-toc-back {
     display: block;
     font-family: var(--sls-sans);
-    font-size: .65rem;
+    font-size: .72rem;
     color: var(--sls-ink-muted);
     text-decoration: none;
     margin-bottom: 1.2rem;
@@ -197,7 +197,7 @@ const sl = stadeLabel(stade);
   #sls-toc a {
     display: block;
     font-family: var(--sls-sans);
-    font-size: .64rem;
+    font-size: .72rem;
     line-height: 1.5;
     color: var(--sls-ink-muted);
     text-decoration: none;
@@ -410,7 +410,7 @@ const sl = stadeLabel(stade);
   .sls-panel-placeholder-txt {
     font-family: var(--sls-serif);
     font-style: italic;
-    font-size: .82rem;
+    font-size: .9rem;
     color: var(--sls-ink-muted);
     line-height: 1.6;
   }
@@ -452,12 +452,36 @@ const sl = stadeLabel(stade);
   .sls-concept-card-body {
     padding: 1.1rem 1.25rem 1.25rem;
     font-family: var(--sls-serif);
-    font-size: .85rem;
+    font-size: 1.02rem;
     color: var(--sls-ink-soft);
-    line-height: 1.72;
+    line-height: 1.78;
   }
-  .sls-concept-card-body p { margin-bottom: .9rem; }
+  .sls-concept-card-body p { margin-bottom: 1rem; }
   .sls-concept-card-body p:last-child { margin-bottom: 0; }
+
+  /* Section "Dans la vraie vie" — générée par JS */
+  .sls-card-vie-wrap {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sls-border);
+  }
+  .sls-card-vie-label {
+    font-family: var(--sls-sans);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+    margin-bottom: .55rem;
+  }
+  .sls-card-vie-txt {
+    font-family: var(--sls-serif);
+    font-size: 1.02rem;
+    color: var(--sls-ink-soft);
+    line-height: 1.75;
+    margin: 0;
+  }
+
   .sls-concept-card-extrait {
     border-top: 1px solid var(--sls-border);
     padding: .9rem 1.25rem;
@@ -475,9 +499,9 @@ const sl = stadeLabel(stade);
   .sls-concept-card-extrait-txt {
     font-family: var(--sls-serif);
     font-style: italic;
-    font-size: .81rem;
+    font-size: .96rem;
     color: var(--sls-ink-soft);
-    line-height: 1.6;
+    line-height: 1.68;
     border-left: 2px solid var(--sls-blue-s);
     padding-left: .8rem;
   }
@@ -829,12 +853,36 @@ const sl = stadeLabel(stade);
   .sls-concept-card-body {
     padding: 1.1rem 1.25rem 1.25rem;
     font-family: 'Lora', Georgia, serif;
-    font-size: .85rem;
+    font-size: 1.02rem;
     color: #4A4237;
-    line-height: 1.72;
+    line-height: 1.78;
   }
-  .sls-concept-card-body p { margin-bottom: .9rem; }
+  .sls-concept-card-body p { margin-bottom: 1rem; }
   .sls-concept-card-body p:last-child { margin-bottom: 0; }
+
+  /* Section "Dans la vraie vie" */
+  .sls-card-vie-wrap {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #E4DDD4;
+  }
+  .sls-card-vie-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #9A8F82;
+    margin-bottom: .55rem;
+  }
+  .sls-card-vie-txt {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.02rem;
+    color: #4A4237;
+    line-height: 1.75;
+    margin: 0;
+  }
+
   .sls-concept-card-extrait {
     border-top: 1px solid #E4DDD4;
     padding: .9rem 1.25rem;
@@ -852,9 +900,9 @@ const sl = stadeLabel(stade);
   .sls-concept-card-extrait-txt {
     font-family: 'Lora', Georgia, serif;
     font-style: italic;
-    font-size: .81rem;
+    font-size: .96rem;
     color: #4A4237;
-    line-height: 1.6;
+    line-height: 1.68;
     border-left: 2px solid #5b8fa8;
     padding-left: .8rem;
   }
@@ -930,6 +978,11 @@ const sl = stadeLabel(stade);
   body.sls-night-mode .sls-concept-card-penseur      { color: #74aec8; }
   body.sls-night-mode .sls-concept-card-nom          { color: #f0ece4; }
   body.sls-night-mode .sls-concept-card-body         { color: #d8d0c2; }
+  
+  body.sls-night-mode .sls-card-vie-txt {
+  color: #d8d0c2;
+}
+  
   body.sls-night-mode .sls-concept-card-extrait      { border-top-color: #3e3830; background: rgba(42,39,32,.7); }
   body.sls-night-mode .sls-concept-card-extrait-lbl  { color: #9a9080; }
   body.sls-night-mode .sls-concept-card-extrait-txt  { color: #d8d0c2; border-left-color: #74aec8; }
@@ -1297,9 +1350,9 @@ const sl = stadeLabel(stade);
     ` : '';
 
     const vieHtml = data.vie ? `
-      <div style="margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--sls-border)">
-        <div style="font-family:var(--sls-sans);font-size:.58rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--sls-ink-muted);margin-bottom:.5rem;">Dans la vraie vie</div>
-        <p style="font-family:var(--sls-serif);font-size:.82rem;color:var(--sls-ink-soft);line-height:1.65;">${data.vie}</p>
+      <div class="sls-card-vie-wrap">
+        <div class="sls-card-vie-label">Dans la vraie vie</div>
+        <p class="sls-card-vie-txt">${data.vie}</p>
       </div>
     ` : '';
 
