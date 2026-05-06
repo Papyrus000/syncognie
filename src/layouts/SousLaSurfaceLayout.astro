@@ -71,6 +71,21 @@ const sl = stadeLabel(stade);
     background-image: none !important;
   }
 
+  /* ── Mode nuit ── */
+  body.sls-night-mode:has(.sls-wrap) {
+    --sls-bg:        #1a1915 !important;
+    --sls-paper:     #211f1b !important;
+    --sls-ink:       #f0ece4 !important;
+    --sls-ink-soft:  #c8bfb0 !important;
+    --sls-ink-muted: #7a7060 !important;
+    --sls-blue:      #5a9ab8 !important;
+    --sls-blue-s:    #74aec8 !important;
+    --sls-blue-hl:   rgba(90,154,184,.1) !important;
+    --sls-blue-hl2:  rgba(90,154,184,.2) !important;
+    --sls-border:    #332e27 !important;
+    background-color: #1a1915 !important;
+  }
+
   /* ── Barre de progression ── */
   .sls-progress {
     position: fixed;
@@ -606,6 +621,77 @@ const sl = stadeLabel(stade);
   @media (max-width: 520px) {
     .sls-art-titre { font-size: 1.3rem; }
   }
+
+  /* ── Cadre de configuration ── */
+  .sls-config {
+    margin-top: 1rem;
+    border: 1px solid var(--sls-border);
+    border-radius: 6px;
+    background: var(--sls-paper);
+    padding: .85rem 1rem;
+  }
+  .sls-config-lbl {
+    font-family: var(--sls-sans);
+    font-size: .58rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted);
+    margin-bottom: .75rem;
+  }
+  .sls-config-rows {
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+  }
+  .sls-config-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+  }
+  .sls-config-row-lbl {
+    font-family: var(--sls-sans);
+    font-size: .65rem;
+    color: var(--sls-ink-muted);
+    flex: 1;
+  }
+  .sls-config-btns {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+  }
+  .sls-cfg-btn {
+    width: 26px; height: 26px;
+    border: 1px solid var(--sls-border);
+    background: var(--sls-bg);
+    color: var(--sls-ink-muted);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s, border-color .15s, color .15s;
+    font-family: var(--sls-sans);
+    line-height: 1;
+  }
+  .sls-cfg-btn:hover {
+    background: var(--sls-blue-hl2);
+    border-color: var(--sls-blue-s);
+    color: var(--sls-blue);
+  }
+  .sls-cfg-btn--night.active {
+    background: var(--sls-blue-hl2);
+    border-color: var(--sls-blue);
+    color: var(--sls-blue);
+  }
+  .sls-cfg-btn svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 </style>
 
 <style is:global>
@@ -927,6 +1013,46 @@ const sl = stadeLabel(stade);
     <!-- Jauges cérébrales (optionnelles, injectées par JS) -->
     <div id="sls-brain-slot"></div>
 
+    <!-- Cadre de configuration -->
+    <div class="sls-config" id="sls-config">
+      <div class="sls-config-lbl">Lecture</div>
+      <div class="sls-config-rows">
+
+        <!-- Taille du texte -->
+        <div class="sls-config-row">
+          <span class="sls-config-row-lbl">Taille</span>
+          <div class="sls-config-btns">
+            <button class="sls-cfg-btn" id="sls-sz-down" aria-label="Réduire la taille">−</button>
+            <button class="sls-cfg-btn" id="sls-sz-up"   aria-label="Agrandir la taille">+</button>
+          </div>
+        </div>
+
+        <!-- Interligne -->
+        <div class="sls-config-row">
+          <span class="sls-config-row-lbl">Interligne</span>
+          <div class="sls-config-btns">
+            <button class="sls-cfg-btn" id="sls-lh-down" aria-label="Réduire l'interligne">
+              <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <button class="sls-cfg-btn" id="sls-lh-up" aria-label="Augmenter l'interligne">
+              <svg viewBox="0 0 24 24"><line x1="3" y1="4" x2="21" y2="4"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mode nuit -->
+        <div class="sls-config-row">
+          <span class="sls-config-row-lbl">Mode nuit</span>
+          <div class="sls-config-btns">
+            <button class="sls-cfg-btn sls-cfg-btn--night" id="sls-night" aria-label="Mode nuit">
+              <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </aside>
 
 </div>
@@ -948,6 +1074,45 @@ const sl = stadeLabel(stade);
   const placeholder = document.getElementById('sls-placeholder');
   const toc         = document.getElementById('sls-toc');
   const bar         = document.getElementById('sls-progress');
+
+  // ── 0. Contrôles de configuration ────────────────────────────────────
+  const szDown   = document.getElementById('sls-sz-down');
+  const szUp     = document.getElementById('sls-sz-up');
+  const lhDown   = document.getElementById('sls-lh-down');
+  const lhUp     = document.getElementById('sls-lh-up');
+  const nightBtn = document.getElementById('sls-night');
+
+  // Taille de corps
+  let fontSize = parseInt(localStorage.getItem('sls_fontsize') || '18', 10);
+  function applySize() {
+    document.documentElement.style.setProperty('--sls-base', fontSize + 'px');
+    localStorage.setItem('sls_fontsize', String(fontSize));
+  }
+  applySize();
+  szDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
+  szUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
+
+  // Interligne
+  const LH_STEPS = [1.55, 1.7, 1.87, 2.0, 2.15];
+  let lhIdx = parseInt(localStorage.getItem('sls_lh_idx') || '2', 10);
+  function applyLH() {
+    document.documentElement.style.setProperty('--sls-lh', String(LH_STEPS[lhIdx]));
+    localStorage.setItem('sls_lh_idx', String(lhIdx));
+  }
+  applyLH();
+  lhDown?.addEventListener('click', () => { if (lhIdx > 0)                   { lhIdx--; applyLH(); } });
+  lhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
+
+  // Mode nuit
+  function applyNight(on) {
+    document.body.classList.toggle('sls-night-mode', on);
+    nightBtn?.classList.toggle('active', on);
+    localStorage.setItem('sls_night', on ? '1' : '0');
+  }
+  applyNight(localStorage.getItem('sls_night') === '1');
+  nightBtn?.addEventListener('click', () => {
+    applyNight(!document.body.classList.contains('sls-night-mode'));
+  });
 
   // ── 1. Barre de progression ──────────────────────────────────────────
   const pctEl    = document.getElementById('sls-read-pct');
