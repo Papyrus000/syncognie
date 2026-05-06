@@ -1,0 +1,67 @@
+{
+  "identite_menacee": {
+    "penseur": "Claude Steele · Psychologie sociale",
+    "nom": "La menace de l'identité compétente",
+    "corps": "Une critique professionnelle n'est pas seulement un retour sur un travail. Elle active l'image de soi en tant que personne capable. Steele a montré que cette menace identitaire produit des effets cognitifs mesurables : difficulté à traiter l'information, tendance à sur-généraliser, effondrement partiel des capacités qu'on cherche précisément à défendre. Le paradoxe est brutal — au moment où on aurait le plus besoin de bien travailler pour répondre à la critique, le cerveau est le moins disponible pour le faire.",
+    "extrait": "Elle sait que les commentaires sont, pour certains, justifiés. C'est ça le problème. Pas qu'ils soient injustes. Qu'ils soient partiellement vrais.",
+    "vie": "Distinguer deux niveaux avant de répondre à un retour difficile. La critique du travail est de l'information. La menace identitaire qu'elle active est un état interne — réel, coûteux, mais distinct du contenu. Traiter l'un sans l'autre ne fonctionne pas.",
+    "jauges": {
+      "Menace identitaire": 84,
+      "Traitement cognitif": 38,
+      "Sur-généralisation": 76,
+      "Capacité d'ajustement": 32
+    }
+  },
+  "surface_acting": {
+    "penseur": "Arlie Russell Hochschild · Sociologie des émotions",
+    "nom": "Le travail émotionnel",
+    "corps": "Hochschild a nommé ce que beaucoup vivent sans pouvoir le décrire : le travail émotionnel. Gérer, dans un contexte professionnel, non seulement ce qu'on fait mais ce qu'on ressent — ou du moins ce qu'on montre. Afficher les émotions attendues, masquer les autres, ajuster le visage à ce que la situation exige. Ce travail invisible a un coût physiologique réel : le système nerveux reste en alerte alors que le visage signale le calme. Ce n'est pas de l'hypocrisie. C'est une compétence sociale que le monde professionnel exige en permanence et ne reconnaît jamais.",
+    "extrait": "Elle ajuste son expression. Pas grand-chose. Juste un relâchement des muscles autour de la bouche, une ouverture minime dans les yeux. La version d'elle-même qui peut traverser un couloir.",
+    "vie": "Nommer pour soi, au moins, ce qu'on vient de faire. 'Je viens de jouer une scène.' Ce simple acte de conscience interne empêche la dissociation de s'installer — on reste témoin de sa propre expérience plutôt que de la nier.",
+    "jauges": {
+      "Masque activé": 91,
+      "Coût physiologique": 78,
+      "Dissociation légère": 65,
+      "Conscience interne": 22
+    }
+  },
+  "rumination": {
+    "penseur": "Susan Nolen-Hoeksema · Psychologie clinique",
+    "nom": "La rumination comme fausse résolution",
+    "corps": "Réécouter le message trois fois n'est pas une recherche d'information. C'est une tentative de maîtrise. Nolen-Hoeksema a montré que la rumination entretient la détresse au lieu de la résoudre : elle crée l'illusion du traitement tout en maintenant le système nerveux dans un état d'alerte. Plus on rejoue, moins on intègre. Ce qui est piégeux, c'est que la rumination ressemble à de la réflexion — elle en a la forme sans en avoir la fonction. La réflexion produit des perspectives nouvelles. La rumination rejoue la même scène.",
+    "extrait": "Ce qu'elle cherche, en réécoutant, c'est autre chose. Le ton. La certitude qu'il avait. Cette façon de parler comme si l'insuffisance était déjà établie, un fait géologique.",
+    "vie": "Fixer une limite concrète au nombre de fois qu'on revient sur un événement douloureux avant d'avoir une action possible. Pas par volonté pure, mais par protocole : si je réécoute ce message une quatrième fois, c'est le signal qu'il me faut autre chose que ce message.",
+    "jauges": {
+      "Boucle de répétition": 88,
+      "Illusion de contrôle": 72,
+      "Détresse maintenue": 79,
+      "Action possible": 15
+    }
+  },
+  "sans_coregulation": {
+    "penseur": "Stephen Porges · Edward Tronick — fil rouge",
+    "nom": "La dérive sans filet",
+    "corps": "Le premier article montrait comment deux personnes se régulent mutuellement. Celui-ci montre ce qui se passe quand on dérive seule. Dans les toilettes du deuxième étage, Mélanie est hors de sa fenêtre de tolérance. Et personne ne le sait. Ce n'est pas un manque de volonté : c'est l'absence structurelle de co-régulation. Le signal externe de sécurité qui permettrait au système nerveux de redescendre n'existe pas dans ce contexte. Et ce que Tronick ajouterait : sans réparation possible, le circuit reste ouvert. La tension se déplace — vers le soir, vers l'appartement, vers Johan qui n'a rien fait.",
+    "extrait": "Elle entend Johan depuis le palier. Elle pose ses clés. Elle attend dans l'entrée, manteau encore sur les épaules, à le laisser finir.",
+    "vie": "Reconnaître que certains états ne se régulent pas seuls, et que ce n'est pas une faiblesse. Construire des micro-rituels de transition entre le travail et le reste : un trajet à pied, une voix amie, un arrêt délibéré avant de rentrer. Pas pour nier l'émotion, mais pour permettre au système nerveux de redescendre assez pour pouvoir la traiter — et ne pas la déposer ailleurs sans le savoir.",
+    "jauges": {
+      "Activation solitaire": 86,
+      "Signal sécurité disponible": 8,
+      "Fenêtre de tolérance": 29,
+      "Régulation possible seul": 21
+    }
+  },
+  "mentalisation_interne": {
+    "penseur": "Peter Fonagy · Mentalisation — prolongement",
+    "nom": "Se voir soi-même de l'intérieur",
+    "corps": "Dans le premier article, la mentalisation s'effondrait vers l'autre — on ne voyait plus la complexité de Johan. Ici, c'est une version différente et plus silencieuse : sous la pression professionnelle, Mélanie ne se voit plus elle-même clairement. Elle déplace des mots sans le remarquer. Elle passe quarante-cinq minutes dans une boucle comportementale sans en prendre conscience. Ce n'est pas de la paresse — c'est une mentalisation de soi effondrée. La capacité à observer son propre état interne, à le nommer, à en comprendre les causes, est exactement ce que le stress met hors ligne en premier.",
+    "extrait": "Elle s'aperçoit qu'elle n'a pas réécrit — elle a juste déplacé des mots. Les mêmes mots dans un ordre légèrement différent. Comme si en changeant la disposition, le problème disparaîtrait.",
+    "vie": "Dans les moments de blocage, se poser non pas 'comment résoudre ce problème' mais 'dans quel état suis-je en ce moment ?' La réponse à cette question précède toujours la réponse à la première. Et parfois, la réponse est : je ne suis pas en état de résoudre ça maintenant. Ce qui est déjà une information utile.",
+    "jauges": {
+      "Observation de soi": 18,
+      "Clarté sur état interne": 24,
+      "Boucle comportementale": 82,
+      "Conscience du blocage": 35
+    }
+  }
+}
