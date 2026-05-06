@@ -74,15 +74,15 @@ const sl = stadeLabel(stade);
   /* ── Mode nuit ── */
   body.sls-night-mode:has(.sls-wrap) {
     --sls-bg:        #1a1915 !important;
-    --sls-paper:     #211f1b !important;
+    --sls-paper:     #2a2720 !important;
     --sls-ink:       #f0ece4 !important;
-    --sls-ink-soft:  #c8bfb0 !important;
-    --sls-ink-muted: #7a7060 !important;
+    --sls-ink-soft:  #d8d0c2 !important;
+    --sls-ink-muted: #9a9080 !important;
     --sls-blue:      #5a9ab8 !important;
     --sls-blue-s:    #74aec8 !important;
-    --sls-blue-hl:   rgba(90,154,184,.1) !important;
-    --sls-blue-hl2:  rgba(90,154,184,.2) !important;
-    --sls-border:    #332e27 !important;
+    --sls-blue-hl:   rgba(90,154,184,.12) !important;
+    --sls-blue-hl2:  rgba(90,154,184,.22) !important;
+    --sls-border:    #3e3830 !important;
     background-color: #1a1915 !important;
   }
 
@@ -911,6 +911,35 @@ const sl = stadeLabel(stade);
     text-align: right;
     flex-shrink: 0;
   }
+
+  /* ── Surcharges mode nuit (is:global) ── */
+  body.sls-night-mode .sls-body p       { color: #d8d0c2; }
+  body.sls-night-mode .sls-body h2      { color: #f0ece4; }
+  body.sls-night-mode .sls-body h3      { color: #9a9080; }
+  body.sls-night-mode .sls-body strong  { color: #f0ece4; }
+  body.sls-night-mode .sls-body blockquote { border-left-color: #5a9ab8; }
+  body.sls-night-mode .sls-body blockquote p { color: #f0ece4; }
+  body.sls-night-mode .sls-body hr      { border-top-color: #3e3830; }
+
+  body.sls-night-mode #sls-toc a               { color: #9a9080; }
+  body.sls-night-mode #sls-toc a:hover         { color: #d8d0c2; border-left-color: #3e3830; }
+  body.sls-night-mode #sls-toc a.sls-toc-active { color: #5a9ab8; border-left-color: #5a9ab8; background: rgba(90,154,184,.12); }
+
+  body.sls-night-mode .sls-concept-card              { background: #2a2720; border-color: #3e3830; }
+  body.sls-night-mode .sls-concept-card-hd           { background: rgba(90,154,184,.1); border-bottom-color: #3e3830; }
+  body.sls-night-mode .sls-concept-card-penseur      { color: #74aec8; }
+  body.sls-night-mode .sls-concept-card-nom          { color: #f0ece4; }
+  body.sls-night-mode .sls-concept-card-body         { color: #d8d0c2; }
+  body.sls-night-mode .sls-concept-card-extrait      { border-top-color: #3e3830; background: rgba(42,39,32,.7); }
+  body.sls-night-mode .sls-concept-card-extrait-lbl  { color: #9a9080; }
+  body.sls-night-mode .sls-concept-card-extrait-txt  { color: #d8d0c2; border-left-color: #74aec8; }
+
+  body.sls-night-mode .sls-brain-bar      { background: #2a2720; border-color: #3e3830; }
+  body.sls-night-mode .sls-brain-bar-lbl  { color: #9a9080; }
+  body.sls-night-mode .sls-brain-key      { color: #9a9080; }
+  body.sls-night-mode .sls-brain-track    { background: #3e3830; }
+  body.sls-night-mode .sls-brain-fill     { background: #5a9ab8; }
+  body.sls-night-mode .sls-brain-val      { color: #5a9ab8; }
 </style>
 
 <!-- Barre de progression -->
