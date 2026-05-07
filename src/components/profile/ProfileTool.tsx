@@ -3,6 +3,7 @@
 // Architecture identique à CharacterSheet v2 — moteur inchangé
 
 import { useState, useMemo } from 'react';
+import { CATALOGUE, rankRecommandations } from '../../data/recommandations';
 
 import '../../components/game/CharacterSheet.css';
 
@@ -355,28 +356,7 @@ const PROFIL: Profil = {
   ],
 };
 
-// ── Catalogue de recommandations par défaut ───────────────────────────────
 
-const RECOMMANDATIONS_DEFAULT: Recommandation[] = [
-  {
-    condition: (p) => p.ressources < 40,
-    message:
-      'Vos ressources sont basses en ce moment. Avant d\'engager une conversation difficile, un temps de récupération — même court — peut changer le registre disponible.',
-    lien: '/sous-la-surface/recuperation',
-  },
-  {
-    condition: (p) => p.regulation < 45,
-    message:
-      'La régulation émotionnelle est fragilisée. C\'est souvent ici que les réactions automatiques prennent le dessus. Quelques pistes pour élargir la fenêtre avant d\'agir.',
-    lien: '/sous-la-surface/regulation',
-  },
-  {
-    condition: (p) => p.disponibilite > 65,
-    message:
-      'Vous êtes en bonne disponibilité relationnelle en ce moment. C\'est une fenêtre pour les conversations qui comptent — ou pour aller vers quelqu\'un.',
-    lien: '/sous-la-surface/communication',
-  },
-];
 
 // ── Avatar & helpers ──────────────────────────────────────────────────────
 
@@ -620,9 +600,9 @@ function ProfileAvatar({ profile }: { profile: ComputedProfile }) {
 
 // ── Bloc Recommandations ─────────────────────────────────────────────────
 
-function BlockRecommandations({ profile, catalogue }: { profile: ComputedProfile; catalogue: Recommandation[] }) {
-  const actives = catalogue.filter(r => r.condition(profile));
-  if (!actives.length) return null;
+function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalogue: Recommandation[] }) {
+  // catalogue est déjà filtré + trié + cappé par rankRecommandations en amont
+  if (!catalogue.length) return null;
 
   return (
     <div style={{
@@ -638,7 +618,7 @@ function BlockRecommandations({ profile, catalogue }: { profile: ComputedProfile
       <div style={{ fontSize: '.6rem', fontWeight: 700, letterSpacing: '.2em', textTransform: 'uppercase', color: '#5B6FE0' }}>
         Recommandations
       </div>
-      {actives.map((r, i) => (
+      {catalogue.map((r, i) => (
         <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '.3rem' }}>
           <p style={{ fontSize: '.72rem', fontWeight: 300, color: '#4A4438', lineHeight: 1.6, fontStyle: 'italic', margin: 0 }}>
             {r.message}
@@ -647,7 +627,7 @@ function BlockRecommandations({ profile, catalogue }: { profile: ComputedProfile
             href={r.lien}
             style={{ fontSize: '.68rem', color: '#5B6FE0', textDecoration: 'none', fontFamily: "'DM Mono', monospace", fontWeight: 400 }}
           >
-            Lire l'article →
+            {('labelLien' in r ? (r as any).labelLien : null) ?? 'Lire →'}
           </a>
         </div>
       ))}
@@ -714,7 +694,7 @@ type Props = {
 };
 
 export default function ProfileTool({ catalogue }: Props) {
-  const catalogueActif = catalogue ?? RECOMMANDATIONS_DEFAULT;
+  const catalogueActif = catalogue ?? CATALOGUE;
 
   const [catId,       setCatId]       = useState('environnement');
   const [varId,       setVarId]       = useState<string>('journee');
@@ -989,7 +969,10 @@ export default function ProfileTool({ catalogue }: Props) {
           </div>
 
           {/* Recommandations dynamiques */}
-          <BlockRecommandations profile={profile} catalogue={catalogueActif} />
+<BlockRecommandations
+  profile={profile}
+  catalogue={rankRecommandations(profile, catalogueActif, 2)}
+/>
 
         </aside>
       </div>
