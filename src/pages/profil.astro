@@ -1,0 +1,44 @@
+---
+// src/pages/profil.astro
+
+import BaseLayout from '../layouts/Base.astro';
+import ProfileTool from '../components/profile/ProfileTool';
+---
+
+<BaseLayout
+  title="Mon profil · en ce moment — Syncognie"
+  description="Évaluez votre état physiologique et émotionnel en ce moment. Sommeil, biologie, psychologie, activité — le profil se calcule en temps réel."
+>
+  <div class="profil-wrap">
+
+    <div class="profil-header">
+      <a class="profil-back" href="/">← Accueil</a>
+    </div>
+
+    <ProfileTool client:load />
+
+  </div>
+</BaseLayout>
+
+<style>
+  .profil-wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 5rem;
+  }
+
+  .profil-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .profil-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #8A8478;
+    text-decoration: none;
+    transition: color .18s;
+  }
+  .profil-back:hover { color: #1C1811; }
+</style>
