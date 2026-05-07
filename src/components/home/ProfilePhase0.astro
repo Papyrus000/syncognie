@@ -4,7 +4,7 @@
       <span class="profile-phase__orb profile-phase__orb--main"></span>
       <span class="profile-phase__orb profile-phase__orb--lower"></span>
       <span class="profile-phase__sparkles"></span>
-      <img src="/images/femme_v1.png" alt="" />
+      <img id="profile-femme" src="/images/femme_v1.png" alt="" />
     </div>
 
     <div class="profile-phase__content">
@@ -35,6 +35,15 @@
     </div>
   </div>
 </section>
+
+<script>
+  const TOTAL = 6;
+  const img = document.getElementById('profile-femme') as HTMLImageElement | null;
+  if (img) {
+    const n = Math.floor(Math.random() * TOTAL) + 1;
+    img.src = `/images/femme_v${n}.png`;
+  }
+</script>
 
 <style>
 .profile-phase {
@@ -459,4 +468,3 @@
   }
 }
 </style>
-
