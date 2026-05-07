@@ -618,11 +618,30 @@ const CATEGORIE_LABELS: Record<string, string> = {
 // ── Bloc Recommandations — section pleine largeur sous cs-layout ──────────
 
 type RecommandationScoree = Recommandation & {
-  poids?: 1 | 2 | 3;
+  poids?:     1 | 2 | 3;
   categorie?: string;
+  format?:    'outil-immediat' | 'outil-exploration' | 'recit' | 'lecture-courte' | 'lecture-longue';
   labelLien?: string;
-  message: string;
+  message:    string;
 };
+
+// Labels et icônes par format de ressource
+const FORMAT_LABELS: Record<string, string> = {
+  'outil-immediat':    'Outil · maintenant',
+  'outil-exploration': 'Outil · exploration',
+  'recit':             'Récit',
+  'lecture-courte':    'Lecture',
+  'lecture-longue':    'Lecture approfondie',
+};
+
+// Titre dynamique selon le poids dominant des recommandations affichées
+function titreParcours(catalogue: RecommandationScoree[]): string {
+  if (!catalogue.length) return 'Votre parcours du moment';
+  const poidsMax = Math.max(...catalogue.map(r => r.poids ?? 1));
+  if (poidsMax === 3) return 'Priorité maintenant';
+  if (poidsMax === 2) return 'Pour ce moment';
+  return 'À explorer';
+}
 
 function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalogue: RecommandationScoree[] }) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -654,6 +673,8 @@ function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalog
     </>
   );
 
+  const titre = titreParcours(catalogue);
+
   return (
     <>
       <div className="cs-parcours-bridge">
@@ -666,7 +687,7 @@ function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalog
         <div className="cs-parcours-hd">
           <div className="cs-parcours-titre-wrap">
             <span className="cs-parcours-eyebrow">Sélection pour vous</span>
-            <h2 className="cs-parcours-titre">Votre parcours du moment</h2>
+            <h2 className="cs-parcours-titre">{titre}</h2>
           </div>
           <span className="cs-parcours-count">
             {catalogue.length} ressource{catalogue.length > 1 ? 's' : ''}
@@ -675,10 +696,12 @@ function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalog
 
         <div className="cs-parcours-grid">
           {catalogue.map((rec, i) => {
-            const cat   = (rec as any).categorie as string | undefined;
-            const poids = (rec as any).poids as number | undefined;
-            const color = CATEGORIE_COLORS[cat ?? ''] ?? '#4a7fa5';
+            const cat      = (rec as any).categorie as string | undefined;
+            const poids    = (rec as any).poids as number | undefined;
+            const format   = (rec as any).format as string | undefined;
+            const color    = CATEGORIE_COLORS[cat ?? ''] ?? '#4a7fa5';
             const catLabel = CATEGORIE_LABELS[cat ?? ''] ?? (cat ?? 'Ressource');
+            const formatLabel = format ? FORMAT_LABELS[format] : undefined;
 
             return (
               <article
@@ -687,7 +710,20 @@ function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalog
                 style={{ '--cat-color': color } as React.CSSProperties}
               >
                 <div className="cs-parcours-card-meta">
-                  <span className="cs-parcours-card-cat">{catLabel}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '.15rem' }}>
+                    <span className="cs-parcours-card-cat">{catLabel}</span>
+                    {formatLabel && (
+                      <span style={{
+                        fontSize: '.58rem',
+                        fontFamily: "'DM Mono', monospace",
+                        letterSpacing: '.06em',
+                        color: `${color}88`,
+                        textTransform: 'uppercase',
+                      }}>
+                        {formatLabel}
+                      </span>
+                    )}
+                  </div>
                   {poids !== undefined && (
                     <div className="cs-parcours-card-poids" aria-label={`Pertinence : ${poids}/3`}>
                       {[1, 2, 3].map(n => (
