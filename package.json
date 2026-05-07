@@ -6,6 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "site:index": "node scripts/generate-site-index.mjs",
+    "site:links": "node scripts/generate-internal-links.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -16,6 +18,8 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "astro": "^6.1.9",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "typescript": "^5.9.3"
