@@ -1016,6 +1016,68 @@ export default function ProfileTool({ catalogue }: Props) {
           </div>
         </main>
 
+        {/* ── Mobile only : détail variable + profil vivant sous cs-centre ── */}
+        {/* Ces blocs sont masqués en desktop/tablette via display:none sur .cs-detail-mobile */}
+        <div className="cs-detail-mobile" style={{ '--cc': couleur } as React.CSSProperties}>
+          <div className="cs-detail-cat" style={{ color: couleur }}>{cat.label}</div>
+          <div className="cs-detail-titre">{varActive.label}</div>
+          <p className="cs-detail-desc">{varActive.description}</p>
+          <div className="cs-detail-bloc">
+            <div className="cs-detail-bloc-label">Source</div>
+            <div className="cs-detail-bloc-val">{varActive.source}</div>
+          </div>
+          {varActive.influence.length > 0 && (
+            <div className="cs-detail-bloc">
+              <div className="cs-detail-bloc-label">Ce que ça influence</div>
+              <div className="cs-detail-tags">
+                {varActive.influence.map(tag => (
+                  <span key={tag} className="cs-tag"
+                    style={{ borderColor: `${couleur}55`, color: couleur, background: `${couleur}12` }}>
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {varActive.contrainte && (
+            <div className="cs-detail-contrainte">
+              <span className="cs-detail-contrainte-ic">⚡</span>
+              {varActive.contrainte}
+            </div>
+          )}
+        </div>
+
+        <div className="cs-profil-vivant-mobile">
+          <div className="cs-profil-hd">
+            <span className="cs-profil-titre">Mon profil · en ce moment</span>
+            <span className="cs-profil-subtitle">temps réel</span>
+          </div>
+          <ProfileAvatar profile={profile} />
+          <div className="cs-jauges">
+            <Jauge label="Ressources"    value={profile.ressources}    labelQual={profile.labels.ressources}    couleur="#E85D26" />
+            <Jauge label="Régulation"    value={profile.regulation}    labelQual={profile.labels.regulation}    couleur="#5B6FE0" />
+            <Jauge label="Disponibilité" value={profile.disponibilite} labelQual={profile.labels.disponibilite} couleur="#2E9E6B" />
+          </div>
+          <div className="cs-profil-stats">
+            <div className="cs-profil-stat">
+              <span className="cs-profil-stat-label">État nerveux</span>
+              <span className="cs-profil-stat-val" style={{ color: profile.etatNerveux > 70 ? '#C0394B' : profile.etatNerveux > 50 ? '#D4821A' : '#2E9E6B' }}>
+                {profile.etatNerveux}/100
+              </span>
+            </div>
+            <div className="cs-profil-stat">
+              <span className="cs-profil-stat-label">Fenêtre de tolérance</span>
+              <span className="cs-profil-stat-val" style={{ color: profile.fenetreTolerance < 40 ? '#C0394B' : profile.fenetreTolerance < 60 ? '#D4821A' : '#2E9E6B' }}>
+                {profile.fenetreTolerance}/100
+              </span>
+            </div>
+            <div className="cs-profil-stat">
+              <span className="cs-profil-stat-label">Attachement</span>
+              <span className="cs-profil-stat-val" style={{ color: '#5B6FE0' }}>{profile.attachement}</span>
+            </div>
+          </div>
+        </div>
+
         {/* ── Droite : explication + profil vivant ── */}
         <aside className="cs-panel" style={{ '--cc': couleur } as React.CSSProperties}>
 

@@ -252,6 +252,11 @@
 }
 
 @media (max-width: 600px) {
+  /* Réduit les marges latérales héritées de profil-wrap + cs-root */
+  .cs-parcours {
+    margin-top: 1rem;
+  }
+
   .cs-parcours-grid {
     grid-template-columns: 1fr;
   }
@@ -262,6 +267,11 @@
 
   .cs-parcours-card {
     padding: 1rem 1.1rem .9rem;
+  }
+
+  /* Bridge : légèrement réduit */
+  .cs-parcours-bridge {
+    margin: 1.25rem 0 0;
   }
 }
 

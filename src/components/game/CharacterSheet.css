@@ -76,10 +76,108 @@
   .cs-panel { display: none; }
 }
 @media (max-width: 600px) {
+  /* ── Layout ── */
   .cs-layout { grid-template-columns: 1fr; }
-  .cs-nav { display: flex; flex-direction: row; flex-wrap: wrap; gap: .4rem; }
+
+  /* ── cs-root : padding réduit ── */
+  .cs-root { padding: 1.25rem .9rem 3rem; }
+
+  /* ── Nav : scroll horizontal, une seule ligne ── */
+  .cs-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: .35rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: .25rem;
+    position: static; /* désactive sticky inutile */
+    /* masque la scrollbar visuellement */
+  }
+  .cs-nav::-webkit-scrollbar { display: none; }
+
+  /* Boutons nav compacts sur mobile */
+  .cs-nav-item {
+    flex-shrink: 0;
+    padding: .45rem .65rem;
+    white-space: nowrap;
+  }
+  .cs-nav-item:hover { padding-left: .65rem; } /* neutralise le décalage desktop */
+
   .cs-nav-label { display: none; }
-  .cs-nav-comp { display: none; }
+  .cs-nav-comp  { display: none; }
+
+  /* ── cat-header : padding réduit ── */
+  .cs-cat-header { padding: .9rem 1rem; }
+
+  /* ── cs-vars : padding réduit ── */
+  .cs-vars { padding: .5rem; }
+
+  /* ── Slider : pouce plus grand pour le touch ── */
+  .cs-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  .cs-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* ── Panel droit masqué → blocs de substitution visibles sous cs-centre ── */
+  .cs-panel { display: none; }
+
+  .cs-detail-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #E8E2D8;
+    border-top: 3px solid var(--cc, #4a7fa5);
+    padding: 1rem;
+    margin-top: .75rem;
+  }
+
+  /* Profil vivant compact sous le détail, sur mobile */
+  .cs-profil-vivant-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #E8E2D8;
+    padding: .9rem 1rem 1rem;
+    margin-top: .5rem;
+  }
+
+  /* Jauges en row sur mobile */
+  .cs-profil-vivant-mobile .cs-jauges {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: .5rem;
+  }
+  .cs-profil-vivant-mobile .cs-jauge-hd {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .1rem;
+  }
+
+  /* Stats en 2 colonnes sur mobile */
+  .cs-profil-vivant-mobile .cs-profil-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 .5rem;
+    border-top: 1px solid #EDE8DF;
+    padding-top: .4rem;
+  }
+  .cs-profil-vivant-mobile .cs-profil-stat {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .05rem;
+    border-bottom: none;
+    padding: .25rem 0;
+  }
 }
 
 /* ── Colonne gauche ── */
@@ -343,6 +441,12 @@
   background: color-mix(in srgb, var(--cc) 12%, transparent) !important;
   color: var(--cc) !important;
   font-weight: 500;
+}
+
+/* Blocs de substitution du panel — visibles uniquement sur mobile */
+.cs-detail-mobile,
+.cs-profil-vivant-mobile {
+  display: none;
 }
 
 /* ── Colonne droite ── */
