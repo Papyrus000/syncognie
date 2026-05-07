@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import ProfilePhase0 from '../components/home/ProfilePhase0.astro';
 
 const allArticles = await getCollection('articles');
 const allCarnet   = await getCollection('carnet');
@@ -89,6 +90,8 @@ function formatDateShort(date: Date) {
       aria-label="Graphe d'émergence — des concepts qui se rencontrent, se frottent et font naître une propriété nouvelle"></canvas>
   </div>
 </section>
+
+<ProfilePhase0 />
 
 <!-- ══ PORTES ══ -->
 <div class="portes-wrap">

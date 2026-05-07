@@ -1,0 +1,213 @@
+<section class="profile-phase">
+  <div class="profile-phase__inner">
+
+    <div class="profile-phase__visual">
+      <img src="/images/femme_v1.png" alt="" />
+    </div>
+
+    <div class="profile-phase__content">
+<span class="profile-phase__eyebrow">
+  EXPÉRIENCE · 
+  <span class="phase-construction">
+    PHASE 0
+  </span>
+</span>
+
+      <h2>
+        Un parcours adapté sur le site.
+      </h2>
+
+      <p>
+        Déterminez votre profil à travers plusieurs 
+        paramètres pour obtenir un parcours personnalisé !
+      </p>
+
+      <div class="profile-phase__note">
+        ✦ Premières explorations autour d’un
+        parcours personnalisé.
+      </div>
+
+<div class="profile-phase__link-wrapper">
+  <a href="/experiences/personnage" class="profile-phase__link">
+    Créer son profil - phase 0
+  </a>
+</div>
+      
+    </div>
+
+  </div>
+</section>
+
+
+<style>
+.profile-phase {
+  position: relative;
+  padding: .5rem 2rem 1rem;
+}
+
+.profile-phase__inner {
+  max-width: 740px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 3.5rem;
+align-items: start;
+}
+
+.profile-phase__visual {
+  max-width: 250px;
+  justify-self: center;
+  margin-left: 2.0rem;
+}
+
+.profile-phase__visual::before {
+  content: "";
+
+  position: absolute;
+  inset: 10%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(224, 179, 92, 0.18),
+      transparent 70%
+    );
+
+  filter: blur(40px);
+  z-index: 0;
+}
+
+.profile-phase__visual img {
+  width: 100%;
+  margin: 0;
+  display: block;
+  opacity: 0.92;
+
+  filter:
+    drop-shadow(0 12px 18px rgba(0,0,0,0.10))
+    drop-shadow(0 30px 40px rgba(0,0,0,0.12));
+
+  transform: translateZ(0);
+
+}
+
+.profile-phase .profile-phase__eyebrow {
+  font-family: 'Mulish', sans-serif;
+
+  font-size: 0.62rem;
+
+  letter-spacing: 0.24em;
+
+  text-transform: uppercase;
+
+  color: rgba(139, 94, 60, 0.58);
+
+  margin-bottom: 0.6rem;
+}
+
+.profile-phase .profile-phase__content p {
+  font-family: 'Mulish', sans-serif;
+
+  font-size: 0.88rem;
+
+
+  line-height: 1.75;
+
+  color: var(--ink-soft);
+
+  max-width: 42ch;
+
+  margin: 0 0 0.65rem;
+}
+
+.profile-phase .profile-phase__content h2 {
+  font-family: 'Libre Baskerville', serif;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  line-height: 1.35;
+
+  letter-spacing: -0.01em;
+
+  color: rgba(26, 23, 20, 0.82);
+
+  margin: 0 0 0.7rem;
+
+  max-width: 22ch;
+}
+
+.profile-phase__note {
+  margin-top: 1rem;
+
+  padding: 0.55rem 0.8rem;
+
+  max-width: 40ch;
+
+  background: rgba(232,184,50,.05);
+
+  border-left: 2px solid rgba(232,184,50,.18);
+
+  font-family: 'Mulish', sans-serif;
+
+  font-size: 0.76rem;
+
+  font-style: italic;
+
+  line-height: 1.6;
+
+  color: var(--ink-soft);
+}
+
+.phase-construction {
+  color: #ff8a3d;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(255, 138, 61, 0.35);
+}
+
+
+.profile-phase__link-wrapper {
+  margin-top: 1.1rem;
+}
+
+.profile-phase__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+
+  background: rgba(226, 248, 238, 0.75);
+  border: 1px solid rgba(226, 248, 238, 0.75);
+
+  color: #2fa36f;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  box-shadow: 0 8px 22px rgba(227, 111, 44, 0.08);
+
+  transition: all 0.25s ease;
+}
+
+.profile-phase__link:hover {
+  color: #238458;
+  background: rgba(214, 244, 230, 0.92);
+  border-color: rgba(214, 244, 230, 0.92);
+  transform: translateY(-1px);
+}
+
+
+.profile-phase__content {
+  position: relative;
+  z-index: 2;
+}
+
+.profile-phase__link {
+  position: relative;
+  z-index: 3;
+  cursor: pointer;
+}
+</style>
