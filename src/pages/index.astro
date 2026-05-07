@@ -819,6 +819,9 @@ function formatDateShort(date: Date) {
   .hero { grid-template-columns: 1fr 210px; }
 }
 .hero-left { grid-column: 1; grid-row: 1; padding: 3.4rem 1.75rem 2.4rem; }
+@media (max-width: 768px) and (min-width: 581px) {
+  .hero-left { padding: 2.6rem 1.5rem 2rem; }
+}
 .hero-eyebrow {
   font-family: 'Mulish', sans-serif; font-size: .74rem; font-weight: 300;
   letter-spacing: .28em; text-transform: uppercase;
@@ -826,7 +829,7 @@ function formatDateShort(date: Date) {
 }
 .hero-titre {
   font-family: 'Libre Baskerville', Georgia, serif;
-  font-size: clamp(1.2rem, 2.6vw, 1.7rem); font-weight: 700;
+  font-size: clamp(1.25rem, 3.5vw, 1.4rem); font-weight: 700;
   line-height: 1.2; color: var(--ink); letter-spacing: -.018em; margin-bottom: .9rem;
 }
 .hero-titre em { font-style: italic; font-weight: 400; color: var(--gold); }
@@ -861,8 +864,8 @@ function formatDateShort(date: Date) {
   gap: 1.25rem;
   align-items: stretch;
 }
-@media (max-width: 560px) {
-  .portes-wrap { grid-template-columns: 1fr; margin-top: 2.5rem; }
+@media (max-width: 680px) {
+  .portes-wrap { grid-template-columns: 1fr; margin-top: 2.5rem; padding: 0 1rem; }
 }
 
 .porte {
@@ -999,7 +1002,7 @@ function formatDateShort(date: Date) {
   margin-bottom: 1.1rem;
 }
 .penseur {
-  display: grid; grid-template-columns: 86px 1fr auto;
+  display: grid; grid-template-columns: minmax(70px, 86px) 1fr auto;
   align-items: baseline; gap: .7rem;
   padding: .58rem 0;
   border-bottom: 1px solid rgba(196,153,58,0.07);
@@ -1106,9 +1109,13 @@ function formatDateShort(date: Date) {
   display: grid; grid-template-columns: 1fr 180px;
   gap: 2.4rem; align-items: start;
 }
-@media (max-width: 640px) {
-  .pubs-layout { grid-template-columns: 1fr; }
-  .pubs-sidebar { position: static; }
+@media (max-width: 768px) {
+  .pubs-layout { grid-template-columns: 1fr; padding: 0 1rem; }
+  .pubs-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .sidebar-sep-line { display: none; }
+}
+@media (max-width: 480px) {
+  .pubs-sidebar { grid-template-columns: 1fr; }
 }
 .articles-col { min-width: 0; }
 .article-item {
@@ -1546,8 +1553,9 @@ function formatDateShort(date: Date) {
   grid-template-columns: 3fr 1.15fr;
   gap: .8rem;
 }
-@media (max-width: 560px) {
+@media (max-width: 680px) {
   .explorer-row { grid-template-columns: 1fr; }
+  .cadre--orange { margin-top: .5rem; }
 }
 
 /* ══════════════════════════════════════
@@ -1999,6 +2007,27 @@ function formatDateShort(date: Date) {
 .cn-all:hover { opacity: 1; }
 
 /* ══════════════════════════════════════
+   TABLETTE PORTRAIT — 560–768px
+══════════════════════════════════════ */
+@media (max-width: 768px) and (min-width: 561px) {
+
+  .explorer,
+  .portes-wrap {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .toc-desc {
+    font-size: .72rem;
+    flex: 1.5;
+  }
+
+  .toc-mec-date {
+    min-width: 4.8rem;
+  }
+}
+
+/* ══════════════════════════════════════
    MOBILE PORTRAIT — max 560px
    Aucun impact au-dessus de 560px
 ══════════════════════════════════════ */
@@ -2006,10 +2035,17 @@ function formatDateShort(date: Date) {
 
   /* ── Hero ── */
   .hero-left {
-    padding: 2rem 1.25rem 1.6rem;
+    padding: 2rem 1rem 1.6rem;
   }
   .hero-titre {
-    font-size: clamp(1.3rem, 5vw, 1.6rem);
+    font-size: clamp(1.25rem, 6vw, 1.5rem);
+  }
+  .hero-sous {
+    max-width: 100%;
+    font-size: .84rem;
+  }
+  .hero-note {
+    max-width: 100%;
   }
 
   /* ── Sections — padding latéral réduit ── */
@@ -2044,7 +2080,8 @@ function formatDateShort(date: Date) {
     display: none;
   }
   .toc-mec-date {
-    min-width: 4.5rem;
+    min-width: 4rem;
+    font-size: .65rem;
   }
 
   /* ── Plancher de lisibilité typographique ── */

@@ -79,6 +79,20 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     background-image: none !important;
   }
 
+  /* Supprimer les gradients de Base.astro en mode nuit et mode flat */
+  body.jl-night-mode::before,
+  body.jl-night-mode::after,
+  body.jl-flat-mode::before,
+  body.jl-flat-mode::after {
+    display: none !important;
+  }
+
+  /* Mode flat : fond uni clair sans texture */
+  body.jl-flat-mode {
+    background-color: #F7F3EE !important;
+    background-image: none !important;
+  }
+
   /* Barre de progression */
   .jl-progress {
     position: fixed;
@@ -265,7 +279,12 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     </svg>
   </button>
   <span class="jl-ctrl-sep jl-ctrl-sep--wide"></span>
-  <button class="jl-ctrl-btn" id="jl-night" aria-label="Mode nuit">
+  <button class="jl-ctrl-btn jl-ctrl-btn--flat" id="jl-flat" aria-label="Mode clair sans gradient" title="Fond uni">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+  <button class="jl-ctrl-btn jl-ctrl-btn--night" id="jl-night" aria-label="Mode nuit" title="Mode nuit">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
     </svg>
@@ -381,6 +400,11 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     font-family: var(--jl-sans);
   }
   .jl-ctrl-btn:hover {
+    background: var(--jl-accent-hl);
+    color: var(--jl-accent);
+  }
+  .jl-ctrl-btn--flat.active,
+  .jl-ctrl-btn--night.active {
     background: var(--jl-accent-hl);
     color: var(--jl-accent);
   }
@@ -678,11 +702,27 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
   wDown?.addEventListener('click', () => { if (wIdx > 0) { wIdx--; applyW(); } });
   wUp?.addEventListener('click',   () => { if (wIdx < W_STEPS.length - 1) { wIdx++; applyW(); } });
 
-  // ── Mode nuit ──
-  if (localStorage.getItem('jl_night') === '1') document.body.classList.add('jl-night-mode');
+  // ── Mode nuit / flat ──
+  const flatBtn = document.getElementById('jl-flat');
+
+  function applyMode(mode) {
+    // mode: 'default' | 'flat' | 'night'
+    document.body.classList.toggle('jl-flat-mode',  mode === 'flat');
+    document.body.classList.toggle('jl-night-mode', mode === 'night');
+    flatBtn?.classList.toggle('active',  mode === 'flat');
+    nightBtn?.classList.toggle('active', mode === 'night');
+    localStorage.setItem('jl_mode', mode);
+  }
+
+  applyMode(localStorage.getItem('jl_mode') || 'default');
+
+  flatBtn?.addEventListener('click', () => {
+    const current = localStorage.getItem('jl_mode') || 'default';
+    applyMode(current === 'flat' ? 'default' : 'flat');
+  });
   nightBtn?.addEventListener('click', () => {
-    document.body.classList.toggle('jl-night-mode');
-    localStorage.setItem('jl_night', document.body.classList.contains('jl-night-mode') ? '1' : '0');
+    const current = localStorage.getItem('jl_mode') || 'default';
+    applyMode(current === 'night' ? 'default' : 'night');
   });
 
   // ── Mémorisation de position ──

@@ -94,6 +94,7 @@ const sl = stadeLabel(stade);
     --sls-green-hl2: rgba(61,143,110,.22) !important;
     --sls-border:    #3e3830 !important;
     background-color: #1a1915 !important;
+    background-image: none !important;
   }
 
   /* ── Barre de progression ── */
@@ -773,6 +774,11 @@ const sl = stadeLabel(stade);
     border-color: var(--sls-blue);
     color: var(--sls-blue);
   }
+  .sls-cfg-btn--flat.active {
+    background: var(--sls-blue-hl2);
+    border-color: var(--sls-blue);
+    color: var(--sls-blue);
+  }
   .sls-cfg-btn svg {
     width: 12px; height: 12px;
     stroke: currentColor;
@@ -792,7 +798,18 @@ const sl = stadeLabel(stade);
     --sls-green-hl:  rgba(74,158,127,.08);
     --sls-green-hl2: rgba(74,158,127,.18);
   }
+  /* Mode nuit — propager les variables sur :root pour que les éléments JS héritent */
   body.sls-night-mode {
+    --sls-bg:        #1a1915;
+    --sls-paper:     #2a2720;
+    --sls-ink:       #f0ece4;
+    --sls-ink-soft:  #d8d0c2;
+    --sls-ink-muted: #9a9080;
+    --sls-blue:      #5a9ab8;
+    --sls-blue-s:    #74aec8;
+    --sls-blue-hl:   rgba(90,154,184,.12);
+    --sls-blue-hl2:  rgba(90,154,184,.22);
+    --sls-border:    #3e3830;
     --sls-green:     #3d8f6e;
     --sls-green-s:   #5aaa88;
     --sls-green-hl:  rgba(61,143,110,.12);
@@ -1099,7 +1116,7 @@ const sl = stadeLabel(stade);
     font-family: 'Lora', Georgia, serif;
     font-size: var(--sls-base, 18.5px);
     line-height: var(--sls-lh, 1.87);
-    color: #4A4237;
+    color: var(--sls-ink-soft, #4A4237);
     margin-bottom: 1.4rem;
     text-align: justify;
     hyphens: auto;
@@ -1110,7 +1127,7 @@ const sl = stadeLabel(stade);
     font-family: 'Lora', Georgia, serif;
     font-size: 1.2rem;
     font-weight: 600;
-    color: #1C1811;
+    color: var(--sls-ink, #1C1811);
     margin: 3rem 0 1rem;
     letter-spacing: -.015em;
     line-height: 1.25;
@@ -1122,26 +1139,26 @@ const sl = stadeLabel(stade);
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: #9A8F82;
+    color: var(--sls-ink-muted, #9A8F82);
     margin: 2.5rem 0 .8rem;
     scroll-margin-top: 80px;
   }
   .sls-body blockquote {
-    border-left: 2px solid #3d7a9a;
+    border-left: 2px solid var(--sls-blue, #3d7a9a);
     margin: 2rem 0;
     padding: .4rem 0 .4rem 1.4rem;
   }
   .sls-body blockquote p {
     font-style: italic;
-    color: #1C1811;
+    color: var(--sls-ink, #1C1811);
     margin: 0;
     text-align: left;
   }
   .sls-body em  { font-style: italic; }
-  .sls-body strong { font-weight: 600; color: #1C1811; }
+  .sls-body strong { font-weight: 600; color: var(--sls-ink, #1C1811); }
   .sls-body hr {
     border: none;
-    border-top: 1px solid #E4DDD4;
+    border-top: 1px solid var(--sls-border, #E4DDD4);
     margin: 2.5rem 0;
   }
 
@@ -1167,8 +1184,8 @@ const sl = stadeLabel(stade);
 
   /* ── Panneau concept (injecté par JS) ── */
   .sls-concept-card {
-    background: #FAF8F4;
-    border: 1px solid #E4DDD4;
+    background: var(--sls-paper, #FAF8F4);
+    border: 1px solid var(--sls-border, #E4DDD4);
     border-radius: 6px;
     overflow: hidden;
     animation: sls-slide-in .25s cubic-bezier(.16,.84,.44,1) both;
@@ -1178,8 +1195,8 @@ const sl = stadeLabel(stade);
     to   { opacity: 1; transform: translateY(0); }
   }
   .sls-concept-card-hd {
-    background: rgba(61,122,154,.08);
-    border-bottom: 1px solid #E4DDD4;
+    background: var(--sls-blue-hl, rgba(61,122,154,.08));
+    border-bottom: 1px solid var(--sls-border, #E4DDD4);
     padding: 1rem 1.25rem .85rem;
   }
   .sls-concept-card-penseur {
@@ -1188,14 +1205,14 @@ const sl = stadeLabel(stade);
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: #5b8fa8;
+    color: var(--sls-blue-s, #5b8fa8);
     margin-bottom: .4rem;
   }
   .sls-concept-card-nom {
     font-family: 'Lora', Georgia, serif;
     font-size: 1.05rem;
     font-weight: 600;
-    color: #1C1811;
+    color: var(--sls-ink, #1C1811);
     line-height: 1.2;
     letter-spacing: -.015em;
   }
@@ -1203,7 +1220,7 @@ const sl = stadeLabel(stade);
     padding: 1.1rem 1.25rem 1.25rem;
     font-family: 'Lora', Georgia, serif;
     font-size: 1.02rem;
-    color: #4A4237;
+    color: var(--sls-ink-soft, #4A4237);
     line-height: 1.78;
   }
   .sls-concept-card-body p { margin-bottom: 1rem; }
@@ -1213,7 +1230,7 @@ const sl = stadeLabel(stade);
   .sls-card-vie-wrap {
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #E4DDD4;
+    border-top: 1px solid var(--sls-border, #E4DDD4);
   }
   .sls-card-vie-label {
     font-family: 'DM Sans', sans-serif;
@@ -1221,19 +1238,19 @@ const sl = stadeLabel(stade);
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: #9A8F82;
+    color: var(--sls-ink-muted, #9A8F82);
     margin-bottom: .55rem;
   }
   .sls-card-vie-txt {
     font-family: 'Lora', Georgia, serif;
     font-size: 1.02rem;
-    color: #4A4237;
+    color: var(--sls-ink-soft, #4A4237);
     line-height: 1.75;
     margin: 0;
   }
 
   .sls-concept-card-extrait {
-    border-top: 1px solid #E4DDD4;
+    border-top: 1px solid var(--sls-border, #E4DDD4);
     padding: .9rem 1.25rem;
     background: rgba(250,248,244,.7);
   }
@@ -1243,16 +1260,16 @@ const sl = stadeLabel(stade);
     font-weight: 500;
     letter-spacing: .14em;
     text-transform: uppercase;
-    color: #9A8F82;
+    color: var(--sls-ink-muted, #9A8F82);
     margin-bottom: .45rem;
   }
   .sls-concept-card-extrait-txt {
     font-family: 'Lora', Georgia, serif;
     font-style: italic;
     font-size: .96rem;
-    color: #4A4237;
+    color: var(--sls-ink-soft, #4A4237);
     line-height: 1.68;
-    border-left: 2px solid #5b8fa8;
+    border-left: 2px solid var(--sls-blue-s, #5b8fa8);
     padding-left: .8rem;
   }
 
@@ -1260,8 +1277,8 @@ const sl = stadeLabel(stade);
   .sls-brain-bar {
     margin-top: 1rem;
     padding: 1rem 1.25rem;
-    background: #FAF8F4;
-    border: 1px solid #E4DDD4;
+    background: var(--sls-paper, #FAF8F4);
+    border: 1px solid var(--sls-border, #E4DDD4);
     border-radius: 6px;
   }
   .sls-brain-bar-lbl {
@@ -1270,7 +1287,7 @@ const sl = stadeLabel(stade);
     font-weight: 500;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: #9A8F82;
+    color: var(--sls-ink-muted, #9A8F82);
     margin-bottom: .7rem;
   }
   .sls-brain-row {
@@ -1282,7 +1299,7 @@ const sl = stadeLabel(stade);
   .sls-brain-key {
     font-family: 'DM Sans', sans-serif;
     font-size: .65rem;
-    color: #9A8F82;
+    color: var(--sls-ink-muted, #9A8F82);
     width: 110px;
     flex-shrink: 0;
   }
@@ -1292,69 +1309,59 @@ const sl = stadeLabel(stade);
   .sls-brain-track {
     flex: 1;
     height: 4px;
-    background: #E4DDD4;
+    background: var(--sls-border, #E4DDD4);
     border-radius: 2px;
     overflow: hidden;
   }
   .sls-brain-fill {
     height: 100%;
     border-radius: 2px;
-    background: #3d7a9a;
+    background: var(--sls-blue, #3d7a9a);
     width: 0%;
     transition: width .6s cubic-bezier(.16,.84,.44,1);
   }
   .sls-brain-val {
     font-family: 'DM Sans', sans-serif;
     font-size: .62rem;
-    color: #3d7a9a;
+    color: var(--sls-blue, #3d7a9a);
     width: 28px;
     text-align: right;
     flex-shrink: 0;
   }
 
-  /* ── Surcharges mode nuit (is:global) ── */
-  body.sls-night-mode .sls-body p       { color: #d8d0c2; }
-  body.sls-night-mode .sls-body h2      { color: #f0ece4; }
-  body.sls-night-mode .sls-body h3      { color: #9a9080; }
-  body.sls-night-mode .sls-body strong  { color: #f0ece4; }
-  body.sls-night-mode .sls-body blockquote { border-left-color: #5a9ab8; }
-  body.sls-night-mode .sls-body blockquote p { color: #f0ece4; }
-  body.sls-night-mode .sls-body hr      { border-top-color: #3e3830; }
+  /* ── Surcharges mode nuit (is:global) — uniquement ce qui ne peut pas utiliser les variables ── */
 
+  /* ToC links (hardcoded dans is:global sans variable fallback) */
   body.sls-night-mode #sls-toc a               { color: #9a9080; }
   body.sls-night-mode #sls-toc a:hover         { color: #d8d0c2; border-left-color: #3e3830; }
   body.sls-night-mode #sls-toc a.sls-toc-active { color: #5a9ab8; border-left-color: #5a9ab8; background: rgba(90,154,184,.12); }
 
-  body.sls-night-mode .sls-concept-card              { background: #2a2720; border-color: #3e3830; }
-  body.sls-night-mode .sls-concept-card-hd           { background: rgba(90,154,184,.1); border-bottom-color: #3e3830; }
-  body.sls-night-mode .sls-concept-card-penseur      { color: #74aec8; }
-  body.sls-night-mode .sls-concept-card-nom          { color: #f0ece4; }
-  body.sls-night-mode .sls-concept-card-body         { color: #d8d0c2; }
-  
-  body.sls-night-mode .sls-card-vie-txt {
-  color: #d8d0c2;
-}
-  
-  body.sls-night-mode .sls-concept-card-extrait      { border-top-color: #3e3830; background: rgba(42,39,32,.7); }
-  body.sls-night-mode .sls-concept-card-extrait-lbl  { color: #9a9080; }
-  body.sls-night-mode .sls-concept-card-extrait-txt  { color: #d8d0c2; border-left-color: #74aec8; }
+  /* Extrait — background semi-transparent corrigé pour le mode nuit */
+  body.sls-night-mode .sls-concept-card-extrait { background: rgba(42,39,32,.7); }
 
-  body.sls-night-mode .sls-brain-bar      { background: #2a2720; border-color: #3e3830; }
-  body.sls-night-mode .sls-brain-bar-lbl  { color: #9a9080; }
-  body.sls-night-mode .sls-brain-key      { color: #9a9080; }
-  body.sls-night-mode .sls-brain-track    { background: #3e3830; }
-  body.sls-night-mode .sls-brain-fill     { background: #5a9ab8; }
-  body.sls-night-mode .sls-brain-val      { color: #5a9ab8; }
-
-  body.sls-night-mode .sls-fiche-card              { background: #2a2720; border-color: rgba(74,158,127,.2); }
-  body.sls-night-mode .sls-fiche-card-hd           { background: rgba(61,143,110,.1); border-bottom-color: rgba(74,158,127,.15); }
-  body.sls-night-mode .sls-fiche-card-penseur      { color: #5aaa88; }
-  body.sls-night-mode .sls-fiche-card-nom          { color: #f0ece4; }
-  body.sls-night-mode .sls-fiche-essentiel-txt     { color: #e8e0d4; border-left-color: #3d8f6e; }
-  body.sls-night-mode .sls-fiche-mots-list li      { color: #5aaa88; background: rgba(61,143,110,.12); border-color: rgba(61,143,110,.2); }
-  body.sls-night-mode .sls-fiche-usages-list li    { color: #d8d0c2; }
+  /* Fiche synthèse — jauges vertes (override couleur fill/val) */
   body.sls-night-mode .sls-fiche-jauges .sls-brain-fill { background: #3d8f6e; }
   body.sls-night-mode .sls-fiche-jauges .sls-brain-val  { color: #5aaa88; }
+
+  /* Popup définition */
+  body.sls-night-mode .sls-def-inner {
+    background: #2a2720;
+    border-color: rgba(74,158,127,.18);
+    border-left-color: #3d8f6e;
+  }
+  body.sls-night-mode .sls-def-titre   { color: #f0ece4; }
+  body.sls-night-mode .sls-def-body    { color: #d8d0c2; }
+  body.sls-night-mode .sls-def-source  { border-top-color: #3e3830; }
+
+  /* Drawer mobile */
+  body.sls-night-mode .sls-drawer {
+    background: #2a2720;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.45);
+  }
+  body.sls-night-mode .sls-drawer-handle::before { background: #3e3830; }
+  body.sls-night-mode .sls-drawer-header { border-bottom-color: #3e3830; }
+  body.sls-night-mode .sls-drawer-close { border-color: #3e3830; color: #9a9080; }
+  body.sls-night-mode .sls-drawer-overlay.sls-drawer--open { background: rgba(0,0,0,.6); }
 
   /* Annotations vertes en Partie II */
   .sls-anno--fiche {
@@ -1477,15 +1484,6 @@ const sl = stadeLabel(stade);
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
-
-  body.sls-night-mode .sls-drawer {
-    background: #2a2720;
-    box-shadow: 0 -8px 40px rgba(0,0,0,.45);
-  }
-  body.sls-night-mode .sls-drawer-handle::before { background: #3e3830; }
-  body.sls-night-mode .sls-drawer-header { border-bottom-color: #3e3830; }
-  body.sls-night-mode .sls-drawer-close { border-color: #3e3830; color: #9a9080; }
-  body.sls-night-mode .sls-drawer-overlay.sls-drawer--open { background: rgba(0,0,0,.6); }
 
   @media (min-width: 861px) {
     .sls-drawer, .sls-drawer-overlay { display: none !important; }
@@ -1619,7 +1617,10 @@ const sl = stadeLabel(stade);
         <div class="sls-config-row">
           <span class="sls-config-row-lbl">Mode nuit</span>
           <div class="sls-config-btns">
-            <button class="sls-cfg-btn sls-cfg-btn--night" id="sls-night" aria-label="Mode nuit">
+            <button class="sls-cfg-btn sls-cfg-btn--flat" id="sls-flat" aria-label="Mode clair sans gradient" title="Fond uni">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
+            <button class="sls-cfg-btn sls-cfg-btn--night" id="sls-night" aria-label="Mode nuit" title="Mode nuit">
               <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
             </button>
           </div>
@@ -1798,15 +1799,28 @@ const sl = stadeLabel(stade);
   lhDown?.addEventListener('click', () => { if (lhIdx > 0)                   { lhIdx--; applyLH(); } });
   lhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
 
-  // Mode nuit
-  function applyNight(on) {
-    document.body.classList.toggle('sls-night-mode', on);
-    nightBtn?.classList.toggle('active', on);
-    localStorage.setItem('sls_night', on ? '1' : '0');
+  // Mode nuit / clair flat
+  const flatBtn  = document.getElementById('sls-flat');
+
+  function applyMode(mode) {
+    // mode: 'default' | 'flat' | 'night'
+    document.body.classList.toggle('sls-flat-mode',  mode === 'flat');
+    document.body.classList.toggle('sls-night-mode', mode === 'night');
+    flatBtn?.classList.toggle('active',  mode === 'flat');
+    nightBtn?.classList.toggle('active', mode === 'night');
+    localStorage.setItem('sls_mode', mode);
   }
-  applyNight(localStorage.getItem('sls_night') === '1');
+
+  const savedMode = localStorage.getItem('sls_mode') || 'default';
+  applyMode(savedMode);
+
+  flatBtn?.addEventListener('click', () => {
+    const current = localStorage.getItem('sls_mode') || 'default';
+    applyMode(current === 'flat' ? 'default' : 'flat');
+  });
   nightBtn?.addEventListener('click', () => {
-    applyNight(!document.body.classList.contains('sls-night-mode'));
+    const current = localStorage.getItem('sls_mode') || 'default';
+    applyMode(current === 'night' ? 'default' : 'night');
   });
 
   // ── 1. Barre de progression ──────────────────────────────────────────

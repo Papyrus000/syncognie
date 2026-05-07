@@ -70,13 +70,56 @@ const ogImage = new URL(image, Astro.site).toString();
   }
 
   body {
+    position: relative;
+    overflow-x: hidden;
     background-color: var(--bg);
     background-image:
-      radial-gradient(ellipse at 20% 50%, rgba(180,140,90,.06) 0%, transparent 60%),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      radial-gradient(circle at 8% 26%, rgba(255,255,255,.72) 0 .10rem, transparent .16rem),
+      radial-gradient(circle at 34% 18%, rgba(255,255,255,.68) 0 .12rem, transparent .19rem),
+      radial-gradient(circle at 41% 58%, rgba(255,255,255,.62) 0 .08rem, transparent .15rem),
+      radial-gradient(circle at 79% 34%, rgba(255,255,255,.55) 0 .07rem, transparent .14rem),
+      radial-gradient(ellipse at 22% 38%, rgba(244,188,106,.20) 0%, rgba(244,188,106,.10) 31%, transparent 62%),
+      radial-gradient(ellipse at 82% 18%, rgba(255,255,255,.72) 0%, rgba(255,244,229,.42) 36%, transparent 70%),
+      radial-gradient(ellipse at 78% 82%, rgba(247,203,141,.16) 0%, transparent 66%),
+      linear-gradient(115deg, #fffaf3 0%, #fff5e8 42%, #fffaf5 72%, #fffdf9 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.024'/%3E%3C/svg%3E");
+    background-attachment: scroll, scroll, scroll, scroll, scroll, scroll, scroll, scroll, scroll;
     font-family: 'Libre Baskerville', Georgia, serif;
     color: var(--ink);
     min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 88px -12vw -18vh -12vw;
+    z-index: -1;
+    pointer-events: none;
+    opacity: .78;
+    background:
+      radial-gradient(ellipse at 26% 24%, rgba(255, 214, 151, .24), transparent 34%),
+      radial-gradient(ellipse at 41% 46%, rgba(255, 236, 198, .24), transparent 38%),
+      radial-gradient(circle at 28% 18%, rgba(255,255,255,.95) 0 .11rem, transparent .18rem),
+      radial-gradient(circle at 35% 51%, rgba(255,255,255,.82) 0 .08rem, transparent .15rem),
+      radial-gradient(circle at 4% 64%, rgba(255,255,255,.72) 0 .07rem, transparent .14rem),
+      linear-gradient(128deg, transparent 0 66%, rgba(255,255,255,.28) 66.25%, transparent 66.65%),
+      linear-gradient(132deg, transparent 0 70%, rgba(255,255,255,.22) 70.2%, transparent 70.55%);
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 28% 32%, rgba(124, 83, 43, .055), transparent 58%),
+      radial-gradient(ellipse at 52% 118%, rgba(236, 178, 95, .11), transparent 62%);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
   }
 
   @keyframes rise {
@@ -121,6 +164,22 @@ const ogImage = new URL(image, Astro.site).toString();
     font-style: italic;
     color: #8a7e75 !important;
     text-align: left;
+  }
+
+  /* ── Mode nuit : supprimer tous les gradients de fond ── */
+  body.sls-night-mode::before,
+  body.sls-night-mode::after {
+    display: none !important;
+  }
+
+  /* ── Mode clair flat : fond uni, sans gradients ── */
+  body.sls-flat-mode {
+    background-color: #f5f0e8 !important;
+    background-image: none !important;
+  }
+  body.sls-flat-mode::before,
+  body.sls-flat-mode::after {
+    display: none !important;
   }
 
   body.page-vies { position: relative; }
