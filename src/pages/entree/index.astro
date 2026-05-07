@@ -23,32 +23,32 @@ type Need = {
 
 const pistesRapides: DirectPath[] = [
   {
-    label: 'Lire une scène',
-    href: '/sous-la-surface',
-    kicker: 'vie réelle',
-    desc: 'Des situations annotées par les concepts.',
+    label: 'Lire une scène annotée',
+    href: '/sous-la-surface/message-non-repondu',
+    kicker: '3 min',
+    desc: 'Un message, une attente, ce qui se passe dessous.',
     icon: '◱',
   },
   {
-    label: 'Dernières entrées',
-    href: '/journal',
+    label: 'Voir une situation relationnelle',
+    href: '/sous-la-surface/fenetre-tolerance-couple',
+    kicker: 'scène',
+    desc: 'Quand deux états nerveux ne se rencontrent plus.',
+    icon: '◌',
+  },
+  {
+    label: 'Prendre un repère concret',
+    href: '/atelier/nuancier',
+    kicker: 'outil',
+    desc: 'Nommer plus finement ce qui est là.',
+    icon: '✦',
+  },
+  {
+    label: 'Lire le fil vivant',
+    href: '/journal/',
     kicker: 'récent',
-    desc: 'Le fil vivant du site, sans détour.',
+    desc: 'Entrer par les dernières notes du site.',
     icon: '✎',
-  },
-  {
-    label: 'Prendre un outil',
-    href: '/outils',
-    kicker: 'concret',
-    desc: 'Réguler, comprendre, agir maintenant.',
-    icon: '⌘',
-  },
-  {
-    label: 'Explorer une carte',
-    href: '/cartes',
-    kicker: 'mécanisme',
-    desc: 'Voir une structure d’un seul regard.',
-    icon: '□',
   },
 ];
 
@@ -61,21 +61,21 @@ const besoins: Need[] = [
   },
   {
     label: 'Je suis épuisé(e)',
-    href: '/journal/Le cortisol comprendre le stress et retrouver l’équilibre',
+    href: '/outils/cortisol',
     desc: 'stress · cortisol · récupération',
     tone: 'amber',
   },
   {
-    label: 'Comprendre une relation',
+    label: 'Une relation me travaille',
     href: '/articles/gottman-couple-attachement-desir',
     desc: 'attachement · désir · système',
     tone: 'rose',
   },
   {
-    label: 'Voir plus clair',
-    href: '/cartes',
-    desc: 'cartes · prismes · modèles',
-    tone: 'violet',
+    label: 'Je réagis trop vite',
+    href: '/sous-la-surface/fenetre-tolerance-couple',
+    desc: 'fenêtre · corps · régulation',
+    tone: 'green',
   },
   {
     label: 'Je comprends mais je recommence',
@@ -84,30 +84,55 @@ const besoins: Need[] = [
     tone: 'blue',
   },
   {
-    label: 'Je réagis trop vite',
-    href: '/sous-la-surface',
-    desc: 'corps · fenêtre · régulation',
-    tone: 'green',
+    label: 'Je veux voir plus clair',
+    href: '/articles/deux-escaliers-inference-argyris',
+    desc: 'inférence · récit · réalité',
+    tone: 'violet',
+  },
+  {
+    label: 'Je cherche du sens',
+    href: '/articles/pourquoi-c-est-ainsi',
+    desc: 'décision · évolution · liberté',
+    tone: 'violet',
+  },
+  {
+    label: 'Je veux retrouver de l’élan',
+    href: '/atelier/deci-ryan',
+    desc: 'motivation · autonomie · appartenance',
+    tone: 'amber',
   },
   {
     label: 'Mieux nommer ce que je ressens',
     href: '/atelier/nuancier',
     desc: 'nuance · émotion · précision',
-    tone: 'violet',
-  },
-  {
-    label: 'Retrouver de l’élan',
-    desc: 'motivation · énergie · direction',
-    tone: 'amber',
-  },
-  {
-    label: 'Apaiser une émotion',
-    desc: 'fenêtre · retour au calme',
     tone: 'blue',
   },
   {
-    label: 'Me reconnecter à moi',
-    desc: 'corps · attention · présence',
+    label: 'Dire quelque chose sans blesser',
+    href: '/atelier/rosenberg',
+    desc: 'CNV · besoin · demande',
+    tone: 'green',
+  },
+  {
+    label: 'Je suis attiré sans aimer vraiment',
+    href: '/articles/dialogue-02',
+    desc: 'désir · wanting · liking',
+    tone: 'coral',
+  },
+  {
+    label: 'Je veux comprendre mon rapport aux autres',
+    href: '/planches/bowlby',
+    desc: 'attachement · sécurité · distance',
+    tone: 'rose',
+  },
+  {
+    label: 'Mieux dormir',
+    desc: 'sommeil · irritabilité · réparation',
+    tone: 'blue',
+  },
+  {
+    label: 'Apaiser une émotion',
+    desc: 'retour au calme · ancrage',
     tone: 'green',
   },
 ];
@@ -169,7 +194,7 @@ const toneVars = {
           <header class="entry-card-head">
             <p class="entry-card-mode">Peu disponible</p>
             <h2>Une réponse immédiate.</h2>
-            <p>Choisissez une porte d’entrée pour obtenir tout de suite une piste.</p>
+            <p>Quatre entrées directes. Aucun questionnaire, aucune préparation.</p>
           </header>
 
           <div class="entry-direct-list">
@@ -193,7 +218,7 @@ const toneVars = {
           <header class="entry-card-head">
             <p class="entry-card-mode">Besoin précis</p>
             <h2>Partir de ce qui vous traverse.</h2>
-            <p>Sélectionnez un besoin. Si un parcours existe, vous y accédez directement.</p>
+            <p>Sélectionnez ce qui ressemble le plus à votre situation. Les pistes disponibles ouvrent directement une lecture.</p>
           </header>
 
           <div class="entry-need-cloud" aria-label="Besoins disponibles ou en construction">
@@ -212,7 +237,7 @@ const toneVars = {
             ))}
           </div>
 
-          <p class="entry-growing-note">✣ D’autres pistes arrivent au fil du jardin.</p>
+          <p class="entry-growing-note">✣ Les pistes grisées signalent les prochains parcours à écrire.</p>
         </article>
 
         <article class="entry-card entry-card--deep">
@@ -247,7 +272,7 @@ const toneVars = {
 
       <footer class="entry-footer-note">
         <span></span>
-        <p>Un site vivant. Chaque visite nourrit le parcours.</p>
+        <p>Choisir peu, mais choisir juste : une scène, un besoin ou une exploration complète.</p>
         <span></span>
       </footer>
     </section>
