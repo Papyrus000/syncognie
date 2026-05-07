@@ -550,24 +550,27 @@ function formatDateShort(date: Date) {
           <!-- ── XI. EXPÉRIENCES ── -->
           <!-- À coller dans index.astro juste après la section X (Sous la surface) -->
           <!-- Remplacer toc-section--last sur la section X par toc-section, et ajouter toc-section--last ici -->
-          <li class="toc-section toc-section--last">
-            <a class="toc-row toc-row--section" href="/experiences">
-              <span class="toc-n" style="color:#b8956a">XI</span>
-              <span class="toc-name">Expériences</span>
-              <span class="toc-dots"></span>
-              <span class="toc-desc">Simulateurs narratifs — jouer une scène, découvrir un concept</span>
-              <span class="toc-ct">1 expérience</span>
-            </a>
-            <ul class="toc-mecanique">
-              <li>
-                <a class="toc-mec-item" href="/experiences/fenetre-tolerance-couple">
-                  <span class="toc-mec-date">6 mai 2026</span>
-                  <span class="toc-mec-titre">22h14 — Mélanie &amp; Johan</span>
-                  <span class="toc-mec-arr">→</span>
-                </a>
-              </li>
-            </ul>
-          </li>
+<li class="toc-section toc-section--last">
+  <a class="toc-row toc-row--section" href="/experiences">
+    <span class="toc-n" style="color:#b8956a">XI</span>
+    <span class="toc-name">Expériences</span>
+    <span class="toc-dots"></span>
+    <span class="toc-desc">Simulateurs narratifs — jouer une scène, découvrir un concept</span>
+    <span class="toc-ct toc-ct--phase0">
+      <span class="toc-phase0-dot"></span>
+      Phase 0
+    </span>
+  </a>
+  <ul class="toc-mecanique">
+    <li>
+      <a class="toc-mec-item" href="/experiences/fenetre-tolerance-couple">
+        <span class="toc-mec-date">6 mai 2026</span>
+        <span class="toc-mec-titre">22h14 — Mélanie &amp; Johan</span>
+        <span class="toc-mec-arr">→</span>
+      </a>
+    </li>
+  </ul>
+</li>
 
 
         </ul>
@@ -2056,6 +2059,27 @@ function formatDateShort(date: Date) {
   }
 
 }
+
+.toc-ct--phase0 {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  color: #C0394B;
+  border-color: rgba(192,57,75,.3);
+  background: rgba(192,57,75,.06);
+}
+.toc-phase0-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: #C0394B;
+  animation: phase0-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes phase0-pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:.35; transform:scale(1.5); }
+}
+
 </style>
 
 <script>
