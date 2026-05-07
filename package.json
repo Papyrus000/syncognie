@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "site:index": "node scripts/generate-site-index.mjs",
     "site:links": "node scripts/generate-internal-links.mjs",
+    "site:catalog": "node scripts/generate-catalog.mjs",
     "astro": "astro"
   },
   "dependencies": {
