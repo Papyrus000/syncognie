@@ -129,7 +129,7 @@ export const CATALOGUE: RecommandationScoree[] = [
       'Le style évitant crée une distance qui protège — et qui coûte. ' +
       'La théorie de l\'attachement, de Bowlby à Johnson, ' +
       'pose les bases pour comprendre comment ce pattern se maintient.',
-    lien: '/planches/bowlby',
+    lien: '/planches',
     labelLien: 'Bowlby & Ainsworth — la théorie de l\'attachement →',
   },
 
@@ -141,8 +141,8 @@ export const CATALOGUE: RecommandationScoree[] = [
       'Le style désorganisé oscille entre besoin de proximité et peur du lien. ' +
       'Esther Perel sur les paradoxes du couple — sécurité et désir, ' +
       'intimité et indépendance — peut ouvrir une lecture différente.',
-    lien: '/planches/perel',
-    labelLien: 'Esther Perel — comprendre le couple moderne →',
+    lien: '/planches',
+    labelLien: 'Esther Perel — planches →',
   },
 
   {
@@ -179,7 +179,7 @@ export const CATALOGUE: RecommandationScoree[] = [
       'Bonnes conditions pour observer les patterns relationnels à froid. ' +
       'John Gottman a prédit le divorce avec 90% de précision — ' +
       'ses 4 cavaliers et le ratio 5:1 sont des repères utiles.',
-    lien: '/planches/gottman-1',
+    lien: '/planches',
     labelLien: 'John Gottman — le scientifique de l\'amour →',
   },
 

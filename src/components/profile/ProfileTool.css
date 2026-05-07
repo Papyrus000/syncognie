@@ -1,0 +1,292 @@
+/* src/components/profile/ProfileTool.css
+   ─────────────────────────────────────────────────────────────────────────────
+   Styles pour la section « Parcours personnalisé » (BlockRecommandations)
+   placée SOUS le cs-layout 3 colonnes.
+   Préfixe exclusif : cs-parcours-*
+   Dépendances : Lora, DM Sans, DM Mono (déjà chargées via CharacterSheet.css)
+   ─────────────────────────────────────────────────────────────────────────────
+*/
+
+/* ── Bridge visuel (séparateur animé entre layout et parcours) ─────────────── */
+.cs-parcours-bridge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.cs-parcours-bridge::before,
+.cs-parcours-bridge::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #D8D2C8 40%, #D8D2C8 60%, transparent);
+}
+
+.cs-parcours-bridge-label {
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #A89880;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Section wrapper ───────────────────────────────────────────────────────── */
+.cs-parcours {
+  margin-top: 1.25rem;
+  padding: 1.75rem 0 2.5rem;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s cubic-bezier(.4, 0, .2, 1),
+              transform .55s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Classe ajoutée par JS (IntersectionObserver ou après mount) */
+.cs-parcours--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Header de section */
+.cs-parcours-hd {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.cs-parcours-titre-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.cs-parcours-eyebrow {
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #4a7fa5;
+}
+
+.cs-parcours-titre {
+  font-family: 'Lora', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1C1811;
+  line-height: 1.25;
+}
+
+.cs-parcours-count {
+  font-family: 'DM Mono', monospace;
+  font-size: .7rem;
+  color: #A89880;
+  align-self: flex-end;
+  padding-bottom: .1rem;
+  white-space: nowrap;
+}
+
+/* ── Grille de cards ───────────────────────────────────────────────────────── */
+.cs-parcours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Card individuelle ─────────────────────────────────────────────────────── */
+.cs-parcours-card {
+  background: white;
+  border: 1.5px solid #E8E2D8;
+  border-radius: 8px;
+  padding: 1.25rem 1.35rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent coloré en haut, couleur par catégorie via custom property */
+.cs-parcours-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--cat-color, #4a7fa5);
+  border-radius: 8px 8px 0 0;
+}
+
+.cs-parcours-card:hover {
+  border-color: color-mix(in srgb, var(--cat-color, #4a7fa5) 40%, transparent);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--cat-color, #4a7fa5) 12%, transparent);
+  transform: translateY(-2px);
+}
+
+/* ── Catégorie + poids ─────────────────────────────────────────────────────── */
+.cs-parcours-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.cs-parcours-card-cat {
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--cat-color, #4a7fa5);
+}
+
+/* Poids visualisé en dots (1, 2 ou 3 points pleins/vides) */
+.cs-parcours-card-poids {
+  display: flex;
+  gap: .25rem;
+  align-items: center;
+}
+
+.cs-parcours-poids-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cat-color, #4a7fa5);
+  background: transparent;
+  transition: background .2s;
+}
+
+.cs-parcours-poids-dot--actif {
+  background: var(--cat-color, #4a7fa5);
+}
+
+/* ── Titre de la recommandation ────────────────────────────────────────────── */
+.cs-parcours-card-titre {
+  font-family: 'Lora', serif;
+  font-size: .95rem;
+  font-weight: 600;
+  color: #1C1811;
+  line-height: 1.4;
+}
+
+/* ── Description courte ────────────────────────────────────────────────────── */
+.cs-parcours-card-desc {
+  font-size: .8rem;
+  font-weight: 300;
+  color: #6A6258;
+  line-height: 1.65;
+  font-style: italic;
+  flex: 1;
+}
+
+/* ── Lien en bas de card ───────────────────────────────────────────────────── */
+.cs-parcours-card-lien {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--cat-color, #4a7fa5);
+  text-decoration: none;
+  border-top: 1px solid #F0ECE4;
+  padding-top: .75rem;
+  margin-top: .1rem;
+  transition: gap .2s;
+}
+
+.cs-parcours-card-lien:hover {
+  gap: .65rem;
+}
+
+.cs-parcours-card-lien-arrow {
+  font-size: .85em;
+  transition: transform .2s;
+}
+
+.cs-parcours-card:hover .cs-parcours-card-lien-arrow {
+  transform: translateX(3px);
+}
+
+/* ── État vide (aucune recommandation) ─────────────────────────────────────── */
+.cs-parcours-vide {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #A89880;
+  font-size: .8rem;
+  font-style: italic;
+  border: 1.5px dashed #D8D2C8;
+  border-radius: 8px;
+  background: #FEFCF8;
+}
+
+/* ── Couleurs par catégorie ────────────────────────────────────────────────── */
+/*
+  Usage dans le JSX :
+  style={{ '--cat-color': CATEGORIE_COLORS[rec.categorie] } as React.CSSProperties}
+*/
+/* Valeurs exportées depuis ici pour référence :
+   biologie    → #5C8E6B  (vert sauge)
+   regulation  → #4a7fa5  (bleu ardoise — couleur principale du projet)
+   relation    → #A06B5A  (terre cuite)
+   exploration → #7A6EA0  (prune doux)
+*/
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  /* Sur tablette, le cs-panel est caché : les recommandations
+     deviennent le SEUL endroit visible → on les valorise davantage */
+  .cs-parcours {
+    margin-top: 1.5rem;
+  }
+
+  .cs-parcours-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .cs-parcours-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-parcours-titre {
+    font-size: 1rem;
+  }
+
+  .cs-parcours-card {
+    padding: 1rem 1.1rem .9rem;
+  }
+}
+
+/* ── Animation stagger pour les cards ─────────────────────────────────────── */
+/* Appliqué automatiquement via :nth-child */
+.cs-parcours--visible .cs-parcours-card:nth-child(1) {
+  animation: cs-card-in .4s cubic-bezier(.4, 0, .2, 1) .05s both;
+}
+.cs-parcours--visible .cs-parcours-card:nth-child(2) {
+  animation: cs-card-in .4s cubic-bezier(.4, 0, .2, 1) .15s both;
+}
+.cs-parcours--visible .cs-parcours-card:nth-child(3) {
+  animation: cs-card-in .4s cubic-bezier(.4, 0, .2, 1) .25s both;
+}
+.cs-parcours--visible .cs-parcours-card:nth-child(n+4) {
+  animation: cs-card-in .4s cubic-bezier(.4, 0, .2, 1) .32s both;
+}
+
+@keyframes cs-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

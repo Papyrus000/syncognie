@@ -2,10 +2,11 @@
 // Profil personnel Syncognie — visiteur · 2e personne · standalone
 // Architecture identique à CharacterSheet v2 — moteur inchangé
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { CATALOGUE, rankRecommandations } from '../../data/recommandations';
 
 import '../../components/game/CharacterSheet.css';
+import './ProfileTool.css';
 
 // ── Avatars PNG (chemins statiques — fichiers dans public/images/profile/) ─
 const AVATAR_EQUILIBRE = '/images/profile/avatar-equilibre.png';
@@ -598,40 +599,122 @@ function ProfileAvatar({ profile }: { profile: ComputedProfile }) {
   );
 }
 
-// ── Bloc Recommandations ─────────────────────────────────────────────────
+// ── Couleurs et labels par catégorie ─────────────────────────────────────
 
-function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalogue: Recommandation[] }) {
-  // catalogue est déjà filtré + trié + cappé par rankRecommandations en amont
-  if (!catalogue.length) return null;
+const CATEGORIE_COLORS: Record<string, string> = {
+  biologie:    '#5C8E6B',
+  regulation:  '#4a7fa5',
+  relation:    '#A06B5A',
+  exploration: '#7A6EA0',
+};
+
+const CATEGORIE_LABELS: Record<string, string> = {
+  biologie:    'Biologie',
+  regulation:  'Régulation',
+  relation:    'Relation',
+  exploration: 'Exploration',
+};
+
+// ── Bloc Recommandations — section pleine largeur sous cs-layout ──────────
+
+type RecommandationScoree = Recommandation & {
+  poids?: 1 | 2 | 3;
+  categorie?: string;
+  labelLien?: string;
+  message: string;
+};
+
+function BlockRecommandations({ catalogue }: { profile: ComputedProfile; catalogue: RecommandationScoree[] }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    // Fallback : déclenche après 400ms si observer ne se trigger pas
+    const t = setTimeout(() => setVisible(true), 400);
+    return () => { obs.disconnect(); clearTimeout(t); };
+  }, []);
+
+  if (!catalogue.length) return (
+    <>
+      <div className="cs-parcours-bridge">
+        <span className="cs-parcours-bridge-label">Parcours personnalisé</span>
+      </div>
+      <section className="cs-parcours cs-parcours--visible" ref={sectionRef}>
+        <div className="cs-parcours-vide">
+          Ajustez vos paramètres pour découvrir vos recommandations.
+        </div>
+      </section>
+    </>
+  );
 
   return (
-    <div style={{
-      background: 'white',
-      borderRadius: 8,
-      border: '1px solid #E8E2D8',
-      borderTop: '3px solid #5B6FE0',
-      padding: '1rem 1.2rem',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '.7rem',
-    }}>
-      <div style={{ fontSize: '.6rem', fontWeight: 700, letterSpacing: '.2em', textTransform: 'uppercase', color: '#5B6FE0' }}>
-        Recommandations
+    <>
+      <div className="cs-parcours-bridge">
+        <span className="cs-parcours-bridge-label">Parcours personnalisé</span>
       </div>
-      {catalogue.map((r, i) => (
-        <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '.3rem' }}>
-          <p style={{ fontSize: '.72rem', fontWeight: 300, color: '#4A4438', lineHeight: 1.6, fontStyle: 'italic', margin: 0 }}>
-            {r.message}
-          </p>
-          <a
-            href={r.lien}
-            style={{ fontSize: '.68rem', color: '#5B6FE0', textDecoration: 'none', fontFamily: "'DM Mono', monospace", fontWeight: 400 }}
-          >
-            {('labelLien' in r ? (r as any).labelLien : null) ?? 'Lire →'}
-          </a>
+      <section
+        ref={sectionRef}
+        className={`cs-parcours${visible ? ' cs-parcours--visible' : ''}`}
+      >
+        <div className="cs-parcours-hd">
+          <div className="cs-parcours-titre-wrap">
+            <span className="cs-parcours-eyebrow">Sélection pour vous</span>
+            <h2 className="cs-parcours-titre">Votre parcours du moment</h2>
+          </div>
+          <span className="cs-parcours-count">
+            {catalogue.length} ressource{catalogue.length > 1 ? 's' : ''}
+          </span>
         </div>
-      ))}
-    </div>
+
+        <div className="cs-parcours-grid">
+          {catalogue.map((rec, i) => {
+            const cat   = (rec as any).categorie as string | undefined;
+            const poids = (rec as any).poids as number | undefined;
+            const color = CATEGORIE_COLORS[cat ?? ''] ?? '#4a7fa5';
+            const catLabel = CATEGORIE_LABELS[cat ?? ''] ?? (cat ?? 'Ressource');
+
+            return (
+              <article
+                key={i}
+                className="cs-parcours-card"
+                style={{ '--cat-color': color } as React.CSSProperties}
+              >
+                <div className="cs-parcours-card-meta">
+                  <span className="cs-parcours-card-cat">{catLabel}</span>
+                  {poids !== undefined && (
+                    <div className="cs-parcours-card-poids" aria-label={`Pertinence : ${poids}/3`}>
+                      {[1, 2, 3].map(n => (
+                        <span
+                          key={n}
+                          className={`cs-parcours-poids-dot${poids >= n ? ' cs-parcours-poids-dot--actif' : ''}`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <p className="cs-parcours-card-desc">{rec.message}</p>
+
+                <a
+                  href={rec.lien}
+                  className="cs-parcours-card-lien"
+                >
+                  {rec.labelLien ?? 'Voir la ressource'}
+                  <span className="cs-parcours-card-lien-arrow" aria-hidden="true">→</span>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -968,14 +1051,14 @@ export default function ProfileTool({ catalogue }: Props) {
             </div>
           </div>
 
-          {/* Recommandations dynamiques */}
-<BlockRecommandations
-  profile={profile}
-  catalogue={rankRecommandations(profile, catalogueActif, 2)}
-/>
-
         </aside>
       </div>
+
+      {/* ── Parcours personnalisé — pleine largeur, hors cs-layout ── */}
+      <BlockRecommandations
+        profile={profile}
+        catalogue={rankRecommandations(profile, catalogueActif, 3) as any}
+      />
     </div>
   );
 }
