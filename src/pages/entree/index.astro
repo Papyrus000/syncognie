@@ -5,6 +5,7 @@
 // besoins activables, et exploration profonde vers /profil.
 
 import BaseLayout from '../../layouts/Base.astro';
+import EntryGatewayExperimental from '../../components/entry/EntryGatewayExperimental.astro';
 
 type DirectPath = {
   label: string;
@@ -159,6 +160,7 @@ const toneVars = {
   violet: '--need-tone:#8b5cf6; --need-soft:#f1ecff; --need-glow:rgba(139,92,246,.19);',
   rose: '--need-tone:#e85d8f; --need-soft:#fff0f6; --need-glow:rgba(232,93,143,.18);',
 };
+
 ---
 
 <BaseLayout
@@ -166,6 +168,16 @@ const toneVars = {
   description="Choisir une façon d’entrer dans Syncognie selon sa disponibilité, son besoin du moment ou son envie d’explorer."
 >
   <main class="entry-page">
+    <nav class="entry-version-switch" aria-label="Version de la page d’entrée">
+      <a class="entry-version-link is-active" href="/entree" data-entry-version="legacy" aria-current="page">Actuel</a>
+      <a class="entry-version-link" href="/entree?v=2" data-entry-version="v2">V2 laboratoire</a>
+    </nav>
+
+    <div data-entry-panel="v2" hidden>
+      <EntryGatewayExperimental />
+    </div>
+
+    <div data-entry-panel="legacy">
     <div class="entry-ambient" aria-hidden="true">
       <span class="entry-wash entry-wash--cyan"></span>
       <span class="entry-wash entry-wash--coral"></span>
@@ -290,10 +302,107 @@ const toneVars = {
         <span></span>
       </footer>
     </section>
+    </div>
   </main>
+
+  <script is:inline>
+    const links = document.querySelectorAll('[data-entry-version]');
+    const panels = document.querySelectorAll('[data-entry-panel]');
+    const entryPage = document.querySelector('.entry-page');
+
+    document.documentElement.classList.add('entry-route');
+
+    function showEntryVersion(version) {
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.entryPanel !== version;
+      });
+
+      entryPage?.classList.toggle('is-v2', version === 'v2');
+      document.documentElement.classList.toggle('entry-route-v2', version === 'v2');
+
+      links.forEach((link) => {
+        const isActive = link.dataset.entryVersion === version;
+        link.classList.toggle('is-active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'page');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    function getVersionFromUrl() {
+      return new URLSearchParams(window.location.search).get('v') === '2'
+        ? 'v2'
+        : 'legacy';
+    }
+
+    showEntryVersion(getVersionFromUrl());
+
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const version = link.dataset.entryVersion;
+        const url = version === 'v2' ? '/entree?v=2' : '/entree';
+        window.history.pushState({}, '', url);
+        showEntryVersion(version);
+      });
+    });
+
+    window.addEventListener('popstate', () => {
+      showEntryVersion(getVersionFromUrl());
+    });
+  </script>
 </BaseLayout>
 
 <style>
+  .entry-version-switch {
+    position: absolute;
+    top: .75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    width: min(100% - 2rem, 1180px);
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+    pointer-events: none;
+  }
+
+  .entry-version-switch > * {
+    pointer-events: auto;
+  }
+
+  .entry-version-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .48rem .76rem;
+    border: 1px solid rgba(42, 37, 32, .10);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .48);
+    color: rgba(42, 37, 32, .68);
+    font-family: var(--entry-sans);
+    font-size: .72rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 10px 24px rgba(42, 37, 32, .045);
+    backdrop-filter: blur(12px);
+    transition: opacity .18s, transform .18s, background .18s, color .18s, border-color .18s;
+  }
+
+  .entry-version-link:hover {
+    transform: translateY(-1px);
+    color: rgba(42, 37, 32, .92);
+    border-color: rgba(42, 37, 32, .18);
+  }
+
+  .entry-version-link.is-active {
+    background: rgba(42, 37, 32, .88);
+    color: #fffaf3;
+    border-color: rgba(42, 37, 32, .88);
+  }
+
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap');
 
   :root {
@@ -941,5 +1050,74 @@ const toneVars = {
     .entry-radar { display: none; }
     .entry-footer-note { grid-template-columns: 1fr; gap: .7rem; text-align: center; }
     .entry-footer-note span { display: none; }
+  }
+
+
+  .entry-page.is-v2 {
+    min-height: 100svh;
+    overflow: visible;
+    background: #fff;
+    color: #1f1f1f;
+  }
+
+  .entry-page.is-v2 .entry-version-link {
+    background: #fff;
+    border-color: #e6e6e6;
+    color: #555;
+    box-shadow: none;
+    backdrop-filter: none;
+    font-size: .68rem;
+    line-height: 1;
+  }
+
+  .entry-page.is-v2 .entry-version-link.is-active {
+    background: #1f1f1f;
+    border-color: #1f1f1f;
+    color: #fff;
+  }
+
+  :global(html.entry-route-v2),
+  :global(html.entry-route-v2 body) {
+    background: #fff !important;
+  }
+
+  /* V2 : on garde le footer global du site, mais on neutralise seulement
+     la bande décorative beige qui précède le bloc sombre du footer. */
+  :global(html.entry-route body > footer),
+  :global(html.entry-route .site-footer),
+  :global(html.entry-route footer.site-footer),
+  :global(html.entry-route-v2 body > footer),
+  :global(html.entry-route-v2 .site-footer),
+  :global(html.entry-route-v2 footer.site-footer) {
+    margin-top: 0 !important;
+  }
+
+  :global(html.entry-route body > footer::before),
+  :global(html.entry-route body > footer::after),
+  :global(html.entry-route .site-footer::before),
+  :global(html.entry-route .site-footer::after),
+  :global(html.entry-route footer.site-footer::before),
+  :global(html.entry-route footer.site-footer::after),
+  :global(html.entry-route-v2 body > footer::before),
+  :global(html.entry-route-v2 body > footer::after),
+  :global(html.entry-route-v2 .site-footer::before),
+  :global(html.entry-route-v2 .site-footer::after),
+  :global(html.entry-route-v2 footer.site-footer::before),
+  :global(html.entry-route-v2 footer.site-footer::after) {
+    content: none !important;
+    display: none !important;
+  }
+
+  :global(html.entry-route [class*="footer"][class*="ambient"]),
+  :global(html.entry-route [class*="footer"][class*="glow"]),
+  :global(html.entry-route [class*="footer"][class*="wash"]),
+  :global(html.entry-route [class*="footer"][class*="veil"]),
+  :global(html.entry-route [class*="footer"][class*="halo"]),
+  :global(html.entry-route-v2 [class*="footer"][class*="ambient"]),
+  :global(html.entry-route-v2 [class*="footer"][class*="glow"]),
+  :global(html.entry-route-v2 [class*="footer"][class*="wash"]),
+  :global(html.entry-route-v2 [class*="footer"][class*="veil"]),
+  :global(html.entry-route-v2 [class*="footer"][class*="halo"]) {
+    display: none !important;
   }
 </style>

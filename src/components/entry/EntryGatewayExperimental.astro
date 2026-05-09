@@ -1,0 +1,78 @@
+---
+---
+
+<section class="entry-v2" aria-label="Entrée expérimentale">
+  <header class="entry-v2__header">
+    <p class="entry-v2__eyebrow">Laboratoire V2</p>
+    <h1>Entrée expérimentale</h1>
+    <p>
+      Base vierge pour brancher progressivement le moteur éditorial et cognitif.
+    </p>
+  </header>
+
+  <footer class="entry-v2__footer">
+    <p>Structure minimale · moteur à venir</p>
+  </footer>
+</section>
+
+<style>
+  .entry-v2 {
+    width: min(100% - 2rem, 880px);
+    min-height: calc(100svh - 5.25rem);
+    margin: 0 auto;
+    padding: 3rem 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fff;
+    color: #1f1f1f;
+  }
+
+  .entry-v2__header {
+    max-width: 46rem;
+  }
+
+  .entry-v2__eyebrow {
+    margin: 0 0 .75rem;
+    font-size: .68rem;
+    line-height: 1.2;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #777;
+  }
+
+  .entry-v2 h1 {
+    margin: 0 0 .75rem;
+    font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+    line-height: 1.15;
+    font-weight: 600;
+    color: #1f1f1f;
+  }
+
+  .entry-v2__header p:not(.entry-v2__eyebrow) {
+    margin: 0;
+    max-width: 38rem;
+    font-size: .84rem;
+    line-height: 1.65;
+    color: #555;
+  }
+
+  .entry-v2__footer {
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+  }
+
+  .entry-v2__footer p {
+    margin: 0;
+    font-size: .72rem;
+    line-height: 1.5;
+    color: #777;
+  }
+
+  @media (max-width: 640px) {
+    .entry-v2 {
+      width: min(100% - 1.25rem, 880px);
+      padding-top: 2.5rem;
+    }
+  }
+</style>

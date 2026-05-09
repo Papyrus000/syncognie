@@ -11,6 +11,10 @@ const entries = index.entries
     return String(a.section).localeCompare(String(b.section));
   });
 
+const plannedRoutes = index.audits?.plannedRoutes || [];
+const declaredMissing = index.audits?.declaredWithoutPhysicalPage || [];
+const referencedMissing = index.audits?.referencedWithoutPhysicalPage || [];
+
 function formatEntry(entry) {
   const tags = entry.tags?.length ? `\n  - Tags : ${entry.tags.join(", ")}` : "";
   const description = entry.description ? `\n  - Description : ${entry.description}` : "";
@@ -22,6 +26,14 @@ function formatEntry(entry) {
 - Type : ${entry.kind}
 - Fichier : \`${entry.file}\`${description}${tags}${words}
 `;
+}
+
+function formatPlannedRoute(item) {
+  return `- \`${item.route}\` — ${item.title || "Sans titre"} (${item.status || "statut inconnu"})`;
+}
+
+function formatMissingRoute(item) {
+  return `- \`${item.route}\`${item.coveredByDynamicRoute ? " — couverte par une route dynamique" : ""}`;
 }
 
 const sections = {};
@@ -41,10 +53,35 @@ Généré le : ${new Date().toLocaleString("fr-FR")}
 - Entrées : ${index.totals.entries}
 - Contenus : ${index.totals.contents}
 - Pages : ${index.totals.pages}
-- Outils : ${index.totals.tools}
+- Outils publiés : ${index.totals.tools}
 - Fichiers data : ${index.totals.dataFiles}
+- Ressources déclarées : ${index.totals.declaredResources}
+- Routes déclarées : ${index.totals.declaredRoutes}
+- Routes actives déclarées sans page : ${index.totals.declaredWithoutPhysicalPage}
+- Liens internes actifs sans page : ${index.totals.referencedWithoutPhysicalPage}
+
+## État de l’audit
 
 `;
+
+if (declaredMissing.length === 0 && referencedMissing.length === 0) {
+  md += `Aucune route active manquante détectée.\n\n`;
+} else {
+  if (declaredMissing.length) {
+    md += `### Routes déclarées sans page\n\n`;
+    md += declaredMissing.map(formatMissingRoute).join("\n") + "\n\n";
+  }
+
+  if (referencedMissing.length) {
+    md += `### Liens internes sans page\n\n`;
+    md += referencedMissing.map(formatMissingRoute).join("\n") + "\n\n";
+  }
+}
+
+if (plannedRoutes.length) {
+  md += `## Ressources planifiées\n\n`;
+  md += plannedRoutes.map(formatPlannedRoute).join("\n") + "\n\n";
+}
 
 for (const [section, items] of Object.entries(sections)) {
   md += `\n# ${section}\n\n`;
