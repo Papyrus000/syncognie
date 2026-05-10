@@ -1,0 +1,947 @@
+---
+// src/components/entry/LabMelanie.astro
+// Laboratoire interactif — Melanie 17h00 — version consolidee
+
+import { situationMelanie } from '../../engine/situation-melanie';
+import { evaluerAvecInformateurs } from '../../engine/engine';
+
+const situation = situationMelanie;
+const resultatInitial = evaluerAvecInformateurs(
+  situation.prior,
+  situation.anglesMortsInitiaux,
+  situation.informateurs,
+  []
+);
+
+const situationJSON = JSON.stringify(situation);
+---
+
+<div class="lab" id="lab-root">
+
+  <!-- ① SITUATION NUE -->
+  <header class="lab-header">
+    <p class="lab-eyebrow">V2 laboratoire — modele incomplet</p>
+    <h1 class="lab-titre">{situation.titre}</h1>
+    <p class="lab-contexte">{situation.contexte}</p>
+    <div class="lab-question-wrap">
+      <span class="lab-question-label">Question centrale</span>
+      <p class="lab-question">{situation.question}</p>
+    </div>
+  </header>
+
+  <!-- ② INFORMATEURS -->
+  <section class="section-informateurs">
+    <div class="section-head">
+      <span class="section-label">Contexte de Melanie</span>
+      <span class="section-sub">Activez des elements. Le modele se construit en temps reel.</span>
+    </div>
+    <div class="informateurs-grid" id="informateurs-grid">
+      {situation.informateurs.map(inf => (
+        <button
+          class="inf-btn"
+          data-id={inf.id}
+          aria-pressed="false"
+        >
+          <div class="inf-top">
+            <span class="inf-couche" data-couche={inf.couche}>{inf.couche}</span>
+            <span class="inf-effet" data-vers={inf.effet.vers} data-poids={inf.effet.poids}>
+              {inf.effet.vers === 'sport' ? '↗' : inf.effet.vers === 'repos' ? '↙' : '→'}
+              {'●'.repeat(inf.effet.poids)}
+            </span>
+          </div>
+          <span class="inf-label">{inf.label}</span>
+          <span class="inf-desc">{inf.description}</span>
+          <div class="inf-impact" hidden>
+            <p>{inf.impact}</p>
+          </div>
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- ③ MOTEUR — visible apres le premier informateur -->
+  <section class="section-moteur" id="section-moteur" hidden>
+
+    <!-- Lisibilite -->
+    <div class="moteur-lisibilite">
+      <div class="lisibilite-head">
+        <span class="lisibilite-label">Lisibilite du modele</span>
+        <span class="lisibilite-pct" id="lisibilite-pct">0 %</span>
+      </div>
+      <div class="lisibilite-track">
+        <div class="lisibilite-bar" id="lisibilite-bar"></div>
+      </div>
+      <p class="lisibilite-note" id="lisibilite-note"></p>
+    </div>
+
+    <!-- Balance des forces -->
+    <div class="moteur-balance">
+      <div class="section-head">
+        <span class="section-label">Balance des forces</span>
+      </div>
+
+      <!-- Vecteur -->
+      <div class="balance-vecteur">
+        <span class="vecteur-pole">repos</span>
+        <div class="vecteur-track">
+          <div class="vecteur-fill-repos" id="vecteur-fill-repos"></div>
+          <div class="vecteur-fill-sport" id="vecteur-fill-sport"></div>
+          <div class="vecteur-cursor" id="vecteur-cursor"></div>
+        </div>
+        <span class="vecteur-pole vecteur-pole--right">sport</span>
+      </div>
+      <p class="balance-hypothese" id="balance-hypothese"></p>
+
+      <!-- Deux colonnes de forces -->
+      <div class="balance-cols">
+        <div class="balance-col balance-col--repos">
+          <p class="balance-col-titre">Tire vers le repos</p>
+          <div class="balance-forces" id="forces-repos"></div>
+        </div>
+        <div class="balance-col balance-col--sport">
+          <p class="balance-col-titre">Tire vers le sport</p>
+          <div class="balance-forces" id="forces-sport"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Couches actives -->
+    <div class="moteur-couches">
+      <div class="section-head">
+        <span class="section-label">Couches explicatives</span>
+      </div>
+      <div class="couches-barres" id="couches-barres">
+        {['biologique','cognitive','narrative','sociale','emotionnelle','environnementale'].map(c => (
+          <div class="couche-ligne" data-couche={c}>
+            <span class="couche-nom">{c}</span>
+            <div class="couche-barre-track">
+              <div class="couche-barre"></div>
+            </div>
+            <span class="couche-statut">absente</span>
+          </div>
+        ))}
+      </div>
+      <p class="couches-legende">
+        <span class="dot dot--couverte"></span>couverte
+        <span class="dot dot--faible"></span>faible
+        <span class="dot dot--absente"></span>absente
+      </p>
+    </div>
+
+    <!-- Concepts en contexte -->
+    <div class="moteur-concepts" id="moteur-concepts" hidden>
+      <div class="section-head">
+        <span class="section-label">Modeles en jeu</span>
+        <span class="section-sub">Concepts actives par le contexte</span>
+      </div>
+      <div class="concepts-list" id="concepts-list"></div>
+    </div>
+
+    <!-- Angles morts -->
+    <div class="moteur-angles">
+      <div class="section-head">
+        <span class="section-label">Angles morts</span>
+        <span class="section-sub">Ce que le modele ne voit pas encore</span>
+      </div>
+      <ul class="angles-list" id="angles-list">
+        {resultatInitial.anglesMorts.map(a => (
+          <li data-couche={a.couche}>{a.label}</li>
+        ))}
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ④ ACTIONS — visibles des qu'il y a au moins 1 informateur -->
+  <section class="section-actions" id="section-actions" hidden>
+    <div class="section-head">
+      <span class="section-label">Si Melanie choisit...</span>
+      <span class="section-sub">Benefices et couts selon son etat actuel</span>
+    </div>
+    <div class="actions-grid" id="actions-grid">
+      {situation.actions.map(action => (
+        <div class="action-card" data-action-id={action.id} id={`action-${action.id}`}>
+          <div class="action-head">
+            <span class="action-icon">{action.icon}</span>
+            <span class="action-label">{action.label}</span>
+          </div>
+          <div class="action-body">
+            <div class="action-col action-col--benefices">
+              <p class="action-col-titre action-col-titre--b">+ Benefices</p>
+              <div class="action-items" id={`ben-base-${action.id}`}>
+                {action.benefices.map(b => (
+                  <div class="action-item action-item--b" data-intensite={b.intensite}>
+                    <span class="item-dots">{'●'.repeat(b.intensite)}</span>
+                    <span class="item-label">{b.label}</span>
+                    <span class="item-couche">{b.couche}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="action-items action-items--cond" id={`ben-cond-${action.id}`}></div>
+            </div>
+            <div class="action-col action-col--couts">
+              <p class="action-col-titre action-col-titre--c">− Couts</p>
+              <div class="action-items" id={`cout-base-${action.id}`}>
+                {action.couts.map(c => (
+                  <div class="action-item action-item--c" data-intensite={c.intensite}>
+                    <span class="item-dots">{'●'.repeat(c.intensite)}</span>
+                    <span class="item-label">{c.label}</span>
+                    <span class="item-couche">{c.couche}</span>
+                  </div>
+                ))}
+              </div>
+              <div class="action-items action-items--cond" id={`cout-cond-${action.id}`}></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+</div>
+
+<script define:vars={{ situationJSON }}>
+const situation = JSON.parse(situationJSON);
+const COUCHES = ['biologique','cognitive','narrative','sociale','emotionnelle','environnementale'];
+let actifs = new Set();
+
+// ── Moteur client ─────────────────────────────────────────────────────────────
+
+function dedupe(items, key) {
+  const seen = new Set();
+  return items.filter(item => {
+    const k = item[key] ?? '';
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+
+function evaluer() {
+  const informateursActifs = situation.informateurs.filter(i => actifs.has(i.id));
+  const leves = new Set(informateursActifs.flatMap(i => i.anglesMortsLeves ?? []));
+
+  const forces = dedupe(
+    informateursActifs.flatMap(i => (i.forces ?? []).map(f => ({ ...f, source: i.id }))),
+    'label'
+  );
+  const concepts = dedupe(
+    informateursActifs.flatMap(i => i.concepts ?? []),
+    'name'
+  );
+  const anglesMorts = dedupe([
+    ...situation.anglesMortsInitiaux.filter(a => !leves.has(a.label)),
+    ...informateursActifs.flatMap(i => i.anglesMortsAjoutes ?? []),
+  ], 'label');
+
+  const couvertes = new Set([...forces.map(f => f.couche), ...concepts.map(c => c.couche)]);
+  const faibles = new Set(anglesMorts.filter(a => !couvertes.has(a.couche)).map(a => a.couche));
+  const absentes = COUCHES.filter(c => !couvertes.has(c) && !faibles.has(c));
+
+  const lisibilite = Math.round(
+    ([...couvertes].length * 1 + [...faibles].length * 0.4) / COUCHES.length * 100
+  );
+
+  // Orientation
+  let score = situation.prior.score;
+  for (const inf of informateursActifs) {
+    const d = inf.effet.vers === 'sport' ? inf.effet.poids : inf.effet.vers === 'repos' ? -inf.effet.poids : 0;
+    score += d;
+  }
+  score = Math.max(-6, Math.min(6, score));
+
+  let orientation;
+  if (score <= -3) orientation = 'repos probable';
+  else if (score < 0) orientation = 'legere tendance repos';
+  else if (score === 0) orientation = 'incertain';
+  else if (score <= 3) orientation = 'legere tendance sport';
+  else orientation = 'sport probable';
+
+  const n = informateursActifs.length;
+  let confiance;
+  if (n === 0) confiance = 'tres faible';
+  else if (n <= 2) confiance = 'faible';
+  else if (n <= 4) confiance = 'moderee';
+  else confiance = 'elevee';
+
+  const prefixe = {
+    'tres faible': "Trop peu d'elements.",
+    'faible': "Direction entrevue, modele tres fragile.",
+    'moderee': "Orientation qui se dessine — zones d'ombre importantes.",
+    'elevee': "Contexte riche, mais le modele reste incomplet.",
+  };
+  const corps = {
+    'repos probable': "La balance penche nettement vers le repos.",
+    'legere tendance repos': "Legere inclinaison vers le repos — rien de certain.",
+    'incertain': "Les forces se neutralisent. Les deux options restent ouvertes.",
+    'legere tendance sport': "Legere inclinaison vers le sport — rien de certain.",
+    'sport probable': "La balance penche vers le sport, malgre des angles morts.",
+  };
+  const hypothese = n === 0
+    ? "Impossible a estimer. Aucune information sur cette personne."
+    : `${prefixe[confiance]} ${corps[orientation]}`;
+
+  // Intensite par couche (pour les barres)
+  const intensiteCouche = {};
+  for (const c of COUCHES) intensiteCouche[c] = 0;
+  for (const f of forces) intensiteCouche[f.couche] = (intensiteCouche[f.couche] || 0) + 1;
+  for (const c of concepts) intensiteCouche[c.couche] = (intensiteCouche[c.couche] || 0) + 0.5;
+
+  return { forces, concepts, anglesMorts, couvertes, faibles, absentes, lisibilite, orientation, confiance, hypothese, score, intensiteCouche };
+}
+
+// ── Rendu lisibilite ──────────────────────────────────────────────────────────
+
+function noteNiveau(pct) {
+  if (pct === 0) return "Aucune donnee.";
+  if (pct < 25) return "Lecture tres fragile.";
+  if (pct < 50) return "Contexte partiel, hypothese provisoire.";
+  if (pct < 75) return "Plusieurs couches activees, lecture plausible.";
+  if (pct < 100) return "Contexte riche, tensions visibles.";
+  return "Jamais vraiment complet — le vivant reste ouvert.";
+}
+
+// ── Rendu principal ───────────────────────────────────────────────────────────
+
+function render(etat) {
+  const n = actifs.size;
+
+  // Sections visibles
+  document.getElementById('section-moteur')[n > 0 ? 'removeAttribute' : 'setAttribute']('hidden', '');
+  document.getElementById('section-actions')[n > 0 ? 'removeAttribute' : 'setAttribute']('hidden', '');
+
+  if (n === 0) return;
+
+  // Lisibilite
+  document.getElementById('lisibilite-pct').textContent = etat.lisibilite + ' %';
+  document.getElementById('lisibilite-bar').style.width = etat.lisibilite + '%';
+  document.getElementById('lisibilite-note').textContent = etat.lisibilite + ' % — ' + noteNiveau(etat.lisibilite);
+
+  // Vecteur
+  const pct = Math.round((etat.score + 6) / 12 * 100);
+  const centre = 42; // prior = -1 = 42%
+  document.getElementById('vecteur-cursor').style.left = pct + '%';
+  if (pct < 50) {
+    document.getElementById('vecteur-fill-repos').style.width = (50 - pct) + '%';
+    document.getElementById('vecteur-fill-repos').style.left = pct + '%';
+    document.getElementById('vecteur-fill-sport').style.width = '0';
+  } else {
+    document.getElementById('vecteur-fill-sport').style.width = (pct - 50) + '%';
+    document.getElementById('vecteur-fill-sport').style.left = '50%';
+    document.getElementById('vecteur-fill-repos').style.width = '0';
+  }
+  document.getElementById('balance-hypothese').textContent = etat.hypothese;
+
+  // Balance forces
+  const forcesRepos = etat.forces.filter(f => f.polarite === 'defavorable');
+  const forcesSport = etat.forces.filter(f => f.polarite === 'favorable');
+
+  function renderForces(containerId, forces) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = forces.length
+      ? forces.map(f => `
+          <div class="force-item">
+            <span class="force-couche-dot" data-couche="${f.couche}"></span>
+            <span class="force-text">${f.label}</span>
+            <span class="force-couche-label">${f.couche}</span>
+          </div>`).join('')
+      : '<p class="forces-vide">Aucune force dans cette direction</p>';
+  }
+  renderForces('forces-repos', forcesRepos);
+  renderForces('forces-sport', forcesSport);
+
+  // Couches barres
+  const maxIntensite = Math.max(1, ...Object.values(etat.intensiteCouche));
+  document.querySelectorAll('.couche-ligne').forEach(ligne => {
+    const c = ligne.dataset.couche;
+    const barre = ligne.querySelector('.couche-barre');
+    const statut = ligne.querySelector('.couche-statut');
+    const est = etat.couvertes.has(c) ? 'couverte' : etat.faibles.has(c) ? 'faible' : 'absente';
+    ligne.dataset.statut = est;
+    statut.textContent = est;
+    const w = est === 'absente' ? 0 : Math.max(8, Math.round((etat.intensiteCouche[c] / maxIntensite) * 100));
+    barre.style.width = w + '%';
+  });
+
+  // Concepts
+  const cb = document.getElementById('moteur-concepts');
+  const cl = document.getElementById('concepts-list');
+  if (etat.concepts.length) {
+    cb.removeAttribute('hidden');
+    cl.innerHTML = etat.concepts.map(c => `
+      <details class="concept">
+        <summary>
+          <span class="concept-name">${c.name}</span>
+          <span class="concept-couche">${c.couche}</span>
+        </summary>
+        <p>${c.text}</p>
+      </details>`).join('');
+  } else {
+    cb.setAttribute('hidden', '');
+  }
+
+  // Angles morts
+  const al = document.getElementById('angles-list');
+  al.innerHTML = etat.anglesMorts.length
+    ? etat.anglesMorts.map(a => `<li data-couche="${a.couche}">${a.label}</li>`).join('')
+    : '<li class="angles-vide">Tous les angles morts identifies sont leves — mais le modele reste incomplet.</li>';
+
+  // Actions : consequences conditionnelles
+  situation.actions.forEach(action => {
+    const benCond = document.getElementById(`ben-cond-${action.id}`);
+    const coutCond = document.getElementById(`cout-cond-${action.id}`);
+    const condActifs = action.conditionnels.filter(c => actifs.has(c.siInformateurActif));
+
+    benCond.innerHTML = condActifs.filter(c => c.type === 'benefice').map(c => `
+      <div class="action-item action-item--b action-item--cond" data-intensite="${c.intensite}">
+        <span class="item-dots cond-marker">★${'●'.repeat(c.intensite)}</span>
+        <span class="item-label">${c.label}</span>
+        <span class="item-couche">${c.couche}</span>
+      </div>`).join('');
+
+    coutCond.innerHTML = condActifs.filter(c => c.type === 'cout').map(c => `
+      <div class="action-item action-item--c action-item--cond" data-intensite="${c.intensite}">
+        <span class="item-dots cond-marker">★${'●'.repeat(c.intensite)}</span>
+        <span class="item-label">${c.label}</span>
+        <span class="item-couche">${c.couche}</span>
+      </div>`).join('');
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
+render(evaluer());
+
+// ── Interactions ──────────────────────────────────────────────────────────────
+
+document.getElementById('informateurs-grid').addEventListener('click', e => {
+  const btn = e.target.closest('.inf-btn');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const isActive = actifs.has(id);
+  if (isActive) {
+    actifs.delete(id);
+    btn.setAttribute('aria-pressed', 'false');
+    btn.classList.remove('is-active');
+    btn.querySelector('.inf-impact').setAttribute('hidden', '');
+  } else {
+    actifs.add(id);
+    btn.setAttribute('aria-pressed', 'true');
+    btn.classList.add('is-active');
+    btn.querySelector('.inf-impact').removeAttribute('hidden');
+  }
+  render(evaluer());
+});
+</script>
+
+<style>
+  /* ── Base ── */
+  .lab {
+    background: #fff;
+    color: #111;
+    min-height: 100vh;
+    padding: 4rem 1.5rem 8rem;
+    font-family: 'Georgia', serif;
+  }
+
+  /* ── Sections communes ── */
+  .section-head {
+    margin-bottom: 1.2rem;
+  }
+  .section-label {
+    display: block;
+    font-family: system-ui, sans-serif;
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    color: #999;
+    margin-bottom: .25rem;
+  }
+  .section-sub {
+    display: block;
+    font-family: system-ui, sans-serif;
+    font-size: .78rem;
+    color: #bbb;
+  }
+
+  /* ── Header ── */
+  .lab-header {
+    max-width: 640px;
+    margin: 0 auto 3rem;
+  }
+  .lab-eyebrow {
+    font-family: system-ui, sans-serif;
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: #bbb;
+    margin-bottom: 1.2rem;
+  }
+  .lab-titre {
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: .7rem;
+  }
+  .lab-contexte {
+    font-size: .95rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 1.2rem;
+  }
+  .lab-question-wrap {
+    border-left: 2px solid #e0e0e0;
+    padding-left: 1rem;
+  }
+  .lab-question-label {
+    font-family: system-ui, sans-serif;
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: #ccc;
+    display: block;
+    margin-bottom: .3rem;
+  }
+  .lab-question {
+    font-size: 1rem;
+    font-style: italic;
+    color: #333;
+  }
+
+  /* ── Informateurs ── */
+  .section-informateurs {
+    max-width: 640px;
+    margin: 0 auto 3rem;
+  }
+  .informateurs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+  .inf-btn {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    padding: .85rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .inf-btn:hover { border-color: #ccc; }
+  .inf-btn.is-active {
+    border-color: #111;
+    background: #fafafa;
+  }
+  .inf-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .4rem;
+  }
+  .inf-couche {
+    font-family: system-ui, sans-serif;
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #bbb;
+  }
+  .inf-btn.is-active .inf-couche { color: #777; }
+  .inf-effet {
+    font-family: system-ui, sans-serif;
+    font-size: .7rem;
+    color: #ccc;
+  }
+  .inf-effet[data-vers="sport"] { color: #444; }
+  .inf-effet[data-vers="repos"] { color: #aaa; }
+  .inf-label {
+    display: block;
+    font-family: system-ui, sans-serif;
+    font-size: .88rem;
+    color: #222;
+    margin-bottom: .2rem;
+  }
+  .inf-desc {
+    display: block;
+    font-size: .8rem;
+    color: #aaa;
+    font-style: italic;
+    line-height: 1.5;
+  }
+  .inf-impact {
+    margin-top: .8rem;
+    padding-top: .8rem;
+    border-top: 1px solid #f0f0f0;
+  }
+  .inf-impact p {
+    font-size: .83rem;
+    line-height: 1.75;
+    color: #555;
+  }
+
+  /* ── Moteur ── */
+  .section-moteur {
+    max-width: 640px;
+    margin: 0 auto 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  /* Lisibilite */
+  .moteur-lisibilite {}
+  .lisibilite-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: .5rem;
+  }
+  .lisibilite-label {
+    font-family: system-ui, sans-serif;
+    font-size: .78rem;
+    color: #777;
+  }
+  .lisibilite-pct {
+    font-family: system-ui, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 200;
+    color: #111;
+    transition: all .3s;
+  }
+  .lisibilite-track {
+    height: 2px;
+    background: #f0f0f0;
+    margin-bottom: .4rem;
+  }
+  .lisibilite-bar {
+    height: 100%;
+    background: #111;
+    transition: width .4s ease;
+    width: 0;
+  }
+  .lisibilite-note {
+    font-family: system-ui, sans-serif;
+    font-size: .75rem;
+    color: #bbb;
+    font-style: italic;
+  }
+
+  /* Balance */
+  .balance-vecteur {
+    display: grid;
+    grid-template-columns: 2.8rem 1fr 2.8rem;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: .8rem;
+  }
+  .vecteur-pole {
+    font-family: system-ui, sans-serif;
+    font-size: .68rem;
+    color: #ccc;
+  }
+  .vecteur-pole--right { text-align: right; }
+  .vecteur-track {
+    height: 2px;
+    background: #f0f0f0;
+    position: relative;
+  }
+  .vecteur-fill-repos, .vecteur-fill-sport {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all .4s ease;
+  }
+  .vecteur-fill-repos { background: #ddd; }
+  .vecteur-fill-sport { background: #555; }
+  .vecteur-cursor {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    background: #111;
+    border-radius: 50%;
+    transition: left .45s ease;
+    left: 42%;
+  }
+  .balance-hypothese {
+    font-size: .88rem;
+    line-height: 1.7;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 1.4rem;
+  }
+  .balance-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .balance-col {}
+  .balance-col-titre {
+    font-family: system-ui, sans-serif;
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .6rem;
+  }
+  .balance-col--repos .balance-col-titre { color: #bbb; }
+  .balance-col--sport .balance-col-titre { color: #555; }
+  .balance-forces {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+  .force-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .5rem;
+    font-family: system-ui, sans-serif;
+    font-size: .8rem;
+    color: #444;
+    line-height: 1.4;
+  }
+  .force-couche-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ccc;
+    flex-shrink: 0;
+    margin-top: .35rem;
+  }
+  .force-text { flex: 1; }
+  .force-couche-label {
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #ccc;
+    flex-shrink: 0;
+    margin-top: .1rem;
+  }
+  .forces-vide {
+    font-size: .78rem;
+    color: #ddd;
+    font-style: italic;
+  }
+
+  /* Couches barres */
+  .couches-barres {
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    margin-bottom: .6rem;
+  }
+  .couche-ligne {
+    display: grid;
+    grid-template-columns: 7rem 1fr 4rem;
+    align-items: center;
+    gap: .8rem;
+  }
+  .couche-nom {
+    font-family: system-ui, sans-serif;
+    font-size: .75rem;
+    color: #888;
+  }
+  .couche-ligne[data-statut="couverte"] .couche-nom { color: #222; }
+  .couche-ligne[data-statut="faible"] .couche-nom { color: #aaa; }
+  .couche-ligne[data-statut="absente"] .couche-nom { color: #ddd; }
+  .couche-barre-track {
+    height: 3px;
+    background: #f5f5f5;
+  }
+  .couche-barre {
+    height: 100%;
+    background: #222;
+    transition: width .4s ease;
+    width: 0;
+  }
+  .couche-ligne[data-statut="faible"] .couche-barre { background: #ccc; }
+  .couche-ligne[data-statut="absente"] .couche-barre { background: #eee; }
+  .couche-statut {
+    font-family: system-ui, sans-serif;
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #ccc;
+    text-align: right;
+  }
+  .couche-ligne[data-statut="couverte"] .couche-statut { color: #555; }
+  .couches-legende {
+    font-family: system-ui, sans-serif;
+    font-size: .68rem;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+  }
+  .dot {
+    display: inline-block;
+    width: .38rem;
+    height: .38rem;
+    border-radius: 50%;
+    margin-right: .2rem;
+  }
+  .dot--couverte { background: #222; }
+  .dot--faible   { background: #ccc; }
+  .dot--absente  { background: #f0f0f0; border: 1px solid #ddd; }
+
+  /* Concepts */
+  .concepts-list {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+  .concept {
+    border: 1px solid #f0f0f0;
+    padding: .75rem .9rem;
+  }
+  .concept summary {
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    list-style: none;
+  }
+  .concept summary::-webkit-details-marker { display: none; }
+  .concept-name {
+    font-family: system-ui, sans-serif;
+    font-size: .85rem;
+    color: #222;
+  }
+  .concept-couche {
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #ccc;
+  }
+  .concept p {
+    margin-top: .7rem;
+    font-size: .85rem;
+    line-height: 1.75;
+    color: #666;
+  }
+
+  /* Angles morts */
+  .angles-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+  .angles-list li {
+    font-family: system-ui, sans-serif;
+    font-size: .82rem;
+    color: #bbb;
+    padding-left: .9rem;
+    position: relative;
+    line-height: 1.5;
+  }
+  .angles-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #e0e0e0;
+  }
+  .angles-vide { color: #ddd !important; font-style: italic; }
+
+  /* ── Actions ── */
+  .section-actions {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid #f0f0f0;
+  }
+  .actions-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .action-card {
+    border: 1px solid #ebebeb;
+  }
+  .action-head {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    padding: .9rem 1rem;
+    border-bottom: 1px solid #f5f5f5;
+    background: #fafafa;
+  }
+  .action-icon {
+    font-size: 1rem;
+    color: #888;
+  }
+  .action-label {
+    font-family: system-ui, sans-serif;
+    font-size: .92rem;
+    font-weight: 500;
+    color: #222;
+  }
+  .action-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .action-col {
+    padding: .9rem 1rem;
+  }
+  .action-col--benefices {
+    border-right: 1px solid #f5f5f5;
+  }
+  .action-col-titre {
+    font-family: system-ui, sans-serif;
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .7rem;
+  }
+  .action-col-titre--b { color: #555; }
+  .action-col-titre--c { color: #bbb; }
+  .action-items {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+  .action-items--cond {
+    margin-top: .4rem;
+    padding-top: .4rem;
+    border-top: 1px dashed #f0f0f0;
+  }
+  .action-items--cond:empty { display: none; }
+  .action-item {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+  }
+  .item-dots {
+    font-family: system-ui, sans-serif;
+    font-size: .65rem;
+    letter-spacing: .05em;
+  }
+  .action-item--b .item-dots { color: #555; }
+  .action-item--c .item-dots { color: #ccc; }
+  .cond-marker { color: #888; }
+  .item-label {
+    font-family: system-ui, sans-serif;
+    font-size: .8rem;
+    line-height: 1.4;
+  }
+  .action-item--b .item-label { color: #333; }
+  .action-item--c .item-label { color: #888; }
+  .action-item--cond .item-label { font-style: italic; }
+  .item-couche {
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: #ccc;
+  }
+
+  @media (max-width: 680px) {
+    .lab { padding: 2.5rem 1rem 6rem; }
+    .lab-titre { font-size: 1.3rem; }
+    .balance-cols { grid-template-columns: 1fr; gap: 1.4rem; }
+    .action-body { grid-template-columns: 1fr; }
+    .action-col--benefices { border-right: none; border-bottom: 1px solid #f5f5f5; }
+    .couche-ligne { grid-template-columns: 5.5rem 1fr 3rem; }
+  }
+</style>

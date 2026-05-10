@@ -5,7 +5,8 @@
 // besoins activables, et exploration profonde vers /profil.
 
 import BaseLayout from '../../layouts/Base.astro';
-import EntryGatewayExperimental from '../../components/entry/EntryGatewayExperimental.astro';
+import LabMelanie from '../../components/entry/LabMelanie.astro';
+import LifeSimulator from '../../components/entry/LifeSimulator.astro';
 
 type DirectPath = {
   label: string;
@@ -171,10 +172,15 @@ const toneVars = {
     <nav class="entry-version-switch" aria-label="Version de la page d’entrée">
       <a class="entry-version-link is-active" href="/entree" data-entry-version="legacy" aria-current="page">Actuel</a>
       <a class="entry-version-link" href="/entree?v=2" data-entry-version="v2">V2 laboratoire</a>
+      <a class="entry-version-link" href="/entree?v=3" data-entry-version="v3">V3 simulateur</a>
     </nav>
 
+    <div data-entry-panel="v3" hidden>
+      <LifeSimulator />
+    </div>
+
     <div data-entry-panel="v2" hidden>
-      <EntryGatewayExperimental />
+      <LabMelanie />
     </div>
 
     <div data-entry-panel="legacy">
@@ -317,8 +323,8 @@ const toneVars = {
         panel.hidden = panel.dataset.entryPanel !== version;
       });
 
-      entryPage?.classList.toggle('is-v2', version === 'v2');
-      document.documentElement.classList.toggle('entry-route-v2', version === 'v2');
+      entryPage?.classList.toggle('is-v2', version === 'v2' || version === 'v3');
+      document.documentElement.classList.toggle('entry-route-v2', version === 'v2' || version === 'v3');
 
       links.forEach((link) => {
         const isActive = link.dataset.entryVersion === version;
@@ -332,9 +338,10 @@ const toneVars = {
     }
 
     function getVersionFromUrl() {
-      return new URLSearchParams(window.location.search).get('v') === '2'
-        ? 'v2'
-        : 'legacy';
+      const v = new URLSearchParams(window.location.search).get('v');
+      if (v === '2') return 'v2';
+      if (v === '3') return 'v3';
+      return 'legacy';
     }
 
     showEntryVersion(getVersionFromUrl());
@@ -343,7 +350,7 @@ const toneVars = {
       link.addEventListener('click', (event) => {
         event.preventDefault();
         const version = link.dataset.entryVersion;
-        const url = version === 'v2' ? '/entree?v=2' : '/entree';
+        const url = version === 'v2' ? '/entree?v=2' : version === 'v3' ? '/entree?v=3' : '/entree';
         window.history.pushState({}, '', url);
         showEntryVersion(version);
       });
@@ -1120,4 +1127,51 @@ const toneVars = {
   :global(html.entry-route-v2 [class*="footer"][class*="halo"]) {
     display: none !important;
   }
+
+  /* Correctif page /entree :
+     la bande beige vient du footer global ou de sa couche décorative.
+     On ne supprime pas le footer : on neutralise uniquement la transition décorative
+     entre le contenu blanc et le bloc sombre du footer. */
+  :global(html),
+  :global(body) {
+    background: #fff;
+  }
+
+  :global(body:has(.entry-page) footer:not(.entry-footer-note)),
+  :global(body.entry-route footer:not(.entry-footer-note)),
+  :global(html.entry-route body footer:not(.entry-footer-note)) {
+    margin-top: 0 !important;
+    background-color: #17130f !important;
+    background-image: none !important;
+  }
+
+  :global(body:has(.entry-page) footer:not(.entry-footer-note)::before),
+  :global(body:has(.entry-page) footer:not(.entry-footer-note)::after),
+  :global(body.entry-route footer:not(.entry-footer-note)::before),
+  :global(body.entry-route footer:not(.entry-footer-note)::after),
+  :global(html.entry-route body footer:not(.entry-footer-note)::before),
+  :global(html.entry-route body footer:not(.entry-footer-note)::after) {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+  }
+
+  :global(body:has(.entry-page) [class*="footer"][class*="ambient"]),
+  :global(body:has(.entry-page) [class*="footer"][class*="glow"]),
+  :global(body:has(.entry-page) [class*="footer"][class*="wash"]),
+  :global(body:has(.entry-page) [class*="footer"][class*="veil"]),
+  :global(body:has(.entry-page) [class*="footer"][class*="halo"]),
+  :global(body:has(.entry-page) [class*="footer"][class*="transition"]) {
+    display: none !important;
+  }
+
+  .entry-page.is-v2 {
+    background: #fff;
+    overflow: visible;
+  }
+
+  .entry-page.is-v2 [data-entry-panel="v2"] {
+    background: #fff;
+  }
+
 </style>

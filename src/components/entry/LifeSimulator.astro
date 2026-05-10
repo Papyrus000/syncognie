@@ -1,0 +1,567 @@
+---
+// src/components/entry/LifeSimulator.astro
+// ─────────────────────────────────────────────────────────────────────────────
+// V3 — Simulateur de compromis humains
+// CE FICHIER : UI uniquement. Pas de donnees, pas de logique de calcul.
+//
+// Les donnees viennent de : src/data/index.ts
+// La logique de calcul vient de : src/engine/calculator.ts
+//
+// Pour modifier l'affichage → ce fichier
+// Pour modifier les effets d'une pratique → src/data/pratiques/
+// Pour modifier la logique de calcul → src/engine/calculator.ts
+// ─────────────────────────────────────────────────────────────────────────────
+
+import { TOUTES_PRATIQUES, TOUTES_SYNERGIES, PRATIQUES_PAR_CATEGORIE } from "../../data"
+
+// Labels des categories pour l'affichage
+const LABELS_CATEGORIES: Record<string, string> = {
+  sommeil:           "Sommeil",
+  alimentation:      "Alimentation",
+  physique:          "Activite physique",
+  "systeme-nerveux": "Systeme nerveux",
+  substances:        "Substances",
+}
+---
+
+<div class="sim" id="sim-root"
+  data-pratiques={JSON.stringify(TOUTES_PRATIQUES)}
+  data-synergies={JSON.stringify(TOUTES_SYNERGIES)}
+>
+
+  <!-- ETAPE 1 : PROFIL -->
+  <div class="sim-step" id="step-profil" data-step="profil">
+    <div class="sim-step-inner">
+
+      <header class="sim-header">
+        <p class="sim-eyebrow">V3 — Simulateur de compromis</p>
+        <h1 class="sim-title">Quel humain<br><em>etes-vous en train</em><br>de devenir ?</h1>
+        <p class="sim-lead">
+          Chaque choix consomme quelque chose.<br>
+          Certaines combinaisons s'amplifient.<br>
+          D'autres s'annulent ou se detruisent.
+        </p>
+        <p class="sim-note">
+          Ce simulateur ne predit pas. Il revele les tensions.
+        </p>
+      </header>
+
+      <div class="profil-grid">
+        <div class="profil-section">
+          <p class="profil-label">Sexe biologique</p>
+          <div class="profil-choices" id="sexe-choices">
+            <button class="profil-btn" data-key="sexe" data-val="F">
+              <span class="profil-btn-main">Femme</span>
+              <span class="profil-btn-sub">Cycles hormonaux, oestrogenes, progesterone</span>
+            </button>
+            <button class="profil-btn" data-key="sexe" data-val="M">
+              <span class="profil-btn-main">Homme</span>
+              <span class="profil-btn-sub">Testosterone dominante, cycle circadien stable</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="profil-section">
+          <p class="profil-label">Tranche d'age</p>
+          <div class="profil-choices" id="age-choices">
+            <button class="profil-btn" data-key="age" data-val="18-25">
+              <span class="profil-btn-main">18 – 25 ans</span>
+              <span class="profil-btn-sub">Recuperation rapide, plasticite maximale</span>
+            </button>
+            <button class="profil-btn" data-key="age" data-val="26-35">
+              <span class="profil-btn-main">26 – 35 ans</span>
+              <span class="profil-btn-sub">Pic de performance, premiers arbitrages</span>
+            </button>
+            <button class="profil-btn" data-key="age" data-val="36-50">
+              <span class="profil-btn-main">36 – 50 ans</span>
+              <span class="profil-btn-sub">Recuperation plus lente, gestion fine</span>
+            </button>
+            <button class="profil-btn" data-key="age" data-val="50+">
+              <span class="profil-btn-main">50 ans et plus</span>
+              <span class="profil-btn-sub">Adaptation, longevite, prudence</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="sim-cta" id="cta-profil" disabled>
+        Voir mes reservoirs &rarr;
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ETAPE 2 : RESERVOIRS + PRATIQUES -->
+  <div class="sim-step" id="step-sim" data-step="sim" hidden>
+    <div class="sim-step-inner sim-step-inner--wide">
+
+      <!-- Reservoirs — valeurs mises a jour par le moteur JS -->
+      <div class="reservoirs-zone">
+        <div class="reservoirs-header">
+          <p class="zone-label">Reservoirs</p>
+          <p class="zone-sub" id="profil-display"></p>
+        </div>
+
+        <div class="reservoirs-grid" id="reservoirs-grid">
+          {[
+            { id: "met", label: "Energie metabolique", desc: "Glucose, glycogene, cetones, ATP disponible" },
+            { id: "nerv", label: "Capital nerveux",     desc: "SNP/SNS, cortisol, fenetres de tolerance" },
+            { id: "cog",  label: "Masse cognitive",     desc: "Memoire de travail, attention, volonte" },
+            { id: "rec",  label: "Recuperation",        desc: "Sommeil, reparation cellulaire, inflammation" },
+          ].map(r => (
+            <div class="reservoir" data-res={r.id}>
+              <div class="res-top">
+                <span class="res-icon">⬡</span>
+                <span class="res-name">{r.label}</span>
+                <span class="res-val" id={`res-val-${r.id}`}>100</span>
+              </div>
+              <div class="res-track">
+                <div class="res-bar" id={`res-bar-${r.id}`}></div>
+                <div class="res-seuil" id={`res-seuil-${r.id}`}></div>
+              </div>
+              <p class="res-desc">{r.desc}</p>
+              <div class="res-effects" id={`res-fx-${r.id}`}></div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Verdict -->
+        <div class="verdict" id="verdict">
+          <p class="verdict-text" id="verdict-text">Ajoutez des pratiques pour voir les tensions.</p>
+          <div class="synergies" id="synergies"></div>
+          <div class="alertes-temporelles" id="alertes-temporelles"></div>
+          <div class="alertes" id="alertes"></div>
+        </div>
+      </div>
+
+      <!-- Pratiques — generees depuis les donnees -->
+      <div class="pratiques-zone">
+        <div class="pratiques-header">
+          <p class="zone-label">Pratiques</p>
+          <p class="zone-sub">Selectionnez ce que vous faites sur une journee</p>
+        </div>
+
+        <div class="pratiques-categories" id="pratiques-cats">
+          {Object.entries(PRATIQUES_PAR_CATEGORIE).map(([cat, pratiques]) => (
+            <div class="cat">
+              <p class="cat-label">{LABELS_CATEGORIES[cat]}</p>
+              <div class="cat-items">
+                {pratiques.map(p => (
+                  <div class="pratique-wrap">
+                    <button class="pratique-btn" data-id={p.id}>
+                      <span class="prat-name">{p.label}</span>
+                      <span class="prat-tags">
+                        {Object.entries(p.effets).map(([res, effet]) => {
+                          if (!effet || effet.delta === 0) return null
+                          const sign = effet.delta > 0 ? "+" : ""
+                          const cls = effet.delta > 0 ? "tag--pos" : "tag--neg"
+                          return <span class={`tag ${cls}`}>{res} {sign}{effet.delta}</span>
+                        })}
+                      </span>
+                      <span class="prat-note">{p.note_ui}</span>
+                    </button>
+                    {p.effets_repetes ? (
+                      <div class="temporel-panel" id={`tp-${p.id}`} hidden>
+                        <div class="temporel-inner">
+                          <p class="temporel-title">Effets dans le temps</p>
+                          <div class="temporel-row">
+                            <label class="temporel-label">Jours consecutifs <span class="temporel-hint">malus si &ge;4j</span></label>
+                            <div class="temporel-ctrl">
+                              <input type="range" id={`jours-${p.id}`} class="t-slider" data-pratique={p.id} data-dim="jours_consecutifs" min="1" max="14" value="1" step="1" />
+                              <span class="t-val" id={`jours-val-${p.id}`}>1j</span>
+                            </div>
+                          </div>
+                          <div class="temporel-row">
+                            <label class="temporel-label">Semaines regulieres <span class="temporel-hint">bonus si &ge;3 sem.</span></label>
+                            <div class="temporel-ctrl">
+                              <input type="range" id={`sem-${p.id}`} class="t-slider" data-pratique={p.id} data-dim="semaines_regulier" min="0" max="12" value="0" step="1" />
+                              <span class="t-val" id={`sem-val-${p.id}`}>0 sem.</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── MOTEUR CLIENT — importe les donnees serialisees depuis Astro ──────────────
+//
+// Les donnees (PRATIQUES, SYNERGIES) sont injectees depuis le frontmatter Astro
+// via des variables JSON. Le moteur de calcul est re-implemente ici en JS pur
+// pour fonctionner cote client sans bundler.
+//
+// Si le moteur devient complexe (effets temporels, cascade), extraire dans
+// un fichier .js importe via <script src="..."> ou via Vite.
+
+// Donnees injectees depuis Astro (serialisees JSON au build)
+const PRATIQUES_DATA = JSON.parse(document.getElementById('sim-root').dataset.pratiques || '[]')
+const SYNERGIES_DATA = JSON.parse(document.getElementById('sim-root').dataset.synergies || '[]')
+
+// ── Profil et etat ────────────────────────────────────────────────────────────
+let profil = { sexe: null, age: null }
+let actifs = new Set()
+// Contexte temporel : { par_pratique: { [id]: { jours_consecutifs, semaines_regulier } } }
+let temporel = { par_pratique: {} }
+const SEUIL_J4 = 4
+const SEUIL_ADAPT_SEMAINES = 3
+
+// ── Tables profil → base ──────────────────────────────────────────────────────
+const BASE_PROFIL = {
+  "F-18-25": { met: 70,  nerv: 66,  cog: 70,  rec: 77 },
+  "F-26-35": { met: 66,  nerv: 66,  cog: 70,  rec: 70 },
+  "F-36-50": { met: 63,  nerv: 63,  cog: 66,  rec: 63 },
+  "F-50+":   { met: 59,  nerv: 59,  cog: 63,  rec: 56 },
+  "M-18-25": { met: 73,  nerv: 70,  cog: 70,  rec: 73 },
+  "M-26-35": { met: 70,  nerv: 70,  cog: 70,  rec: 70 },
+  "M-36-50": { met: 64,  nerv: 64,  cog: 66,  rec: 61 },
+  "M-50+":   { met: 59,  nerv: 61,  cog: 63,  rec: 56 },
+}
+const LABEL_PROFIL = {
+  "F-18-25": "Femme 18-25", "F-26-35": "Femme 26-35",
+  "F-36-50": "Femme 36-50", "F-50+":   "Femme 50+",
+  "M-18-25": "Homme 18-25", "M-26-35": "Homme 26-35",
+  "M-36-50": "Homme 36-50", "M-50+":   "Homme 50+",
+}
+
+// ── Moteur de calcul ──────────────────────────────────────────────────────────
+function calculer() {
+  const cles = ['met', 'nerv', 'cog', 'rec']
+  const cle_profil = profil.sexe && profil.age ? `${profil.sexe}-${profil.age}` : null
+  const base = cle_profil ? BASE_PROFIL[cle_profil] : { met: 70, nerv: 70, cog: 70, rec: 70 }
+
+  const effets  = { met: 0, nerv: 0, cog: 0, rec: 0 }
+  const sources = { met: [], nerv: [], cog: [], rec: [] }
+
+  for (const id of actifs) {
+    const p = PRATIQUES_DATA.find(x => x.id === id)
+    if (!p) continue
+    for (const cle of cles) {
+      const e = p.effets[cle]
+      if (!e || e.delta === 0) continue
+      effets[cle] += e.delta
+      sources[cle].push({ id, delta: e.delta })
+    }
+  }
+
+  const synergies_actives = SYNERGIES_DATA.filter(s =>
+    !s.deprecated && s.pratiques.every(id => actifs.has(id))
+  )
+
+  const bonus = { met: 0, nerv: 0, cog: 0, rec: 0 }
+  for (const syn of synergies_actives) {
+    for (const cle of cles) {
+      bonus[cle] += (syn.effets[cle] || 0)
+    }
+  }
+
+  // Effets temporels (J4 malus + adaptation bonus)
+  const temporels  = { met: 0, nerv: 0, cog: 0, rec: 0 }
+  const base_mods  = { met: 0, nerv: 0, cog: 0, rec: 0 }
+  const alertes_temp = []
+  for (const id of actifs) {
+    const p = PRATIQUES_DATA.find(x => x.id === id)
+    if (!p || !p.effets_repetes) continue
+    const ctx = temporel.par_pratique[id]
+    if (!ctx) continue
+    const jours = ctx.jours_consecutifs || 0
+    if (jours >= SEUIL_J4 && p.effets_repetes.J4) {
+      let emis = false
+      for (const cle of cles) {
+        const ej = p.effets_repetes.J4[cle]
+        if (!ej) continue
+        temporels[cle] += ej.delta
+        if (!emis) { alertes_temp.push({ type: 'malus', msg: p.label + ' — ' + jours + 'j consecutifs : malus accumulation actif.' }); emis = true }
+      }
+    }
+    const semaines = ctx.semaines_regulier || 0
+    if (semaines >= SEUIL_ADAPT_SEMAINES && p.effets_repetes.adaptation) {
+      let emis = false
+      for (const cle of cles) {
+        const ea = p.effets_repetes.adaptation[cle]
+        if (!ea) continue
+        base_mods[cle] += ea.base_modifier
+        if (!emis) { alertes_temp.push({ type: 'bonus', msg: p.label + ' — ' + semaines + ' sem. : bonus adaptation actif.' }); emis = true }
+      }
+    }
+  }
+
+  const totaux = {}
+  for (const cle of cles) {
+    const b = (base[cle] || 70) + base_mods[cle]
+    totaux[cle] = Math.max(0, Math.min(150, b + effets[cle] + bonus[cle] + temporels[cle]))
+  }
+
+  return { totaux, sources, synergies_actives, alertes_temp, temporels }
+}
+
+// ── Verdict ───────────────────────────────────────────────────────────────────
+function verdict(totaux) {
+  const vals = Object.values(totaux)
+  const min = Math.min(...vals)
+  const moy = vals.reduce((a, b) => a + b, 0) / vals.length
+  if (actifs.size === 0) return "Ajoutez des pratiques pour voir les tensions."
+  if (min <= 10) return "Zone critique. Un ou plusieurs reservoirs sont epuises. Le systeme est en danger de cascade."
+  if (min <= 30) return "Tension severe. L'adaptation est possible mais la fenetre de recuperation est etroite."
+  if (min <= 50 && moy >= 60) return "Desequilibre : certaines dimensions compensent d'autres. Soutenable a court terme."
+  if (moy >= 80) return "Combinaison favorable. Les reservoirs se renforcent mutuellement."
+  if (moy >= 60) return "Equilibre raisonnable. Des marges d'optimisation existent."
+  return "Combinaison chargee. La recuperation sera determinante."
+}
+
+// ── Rendu ─────────────────────────────────────────────────────────────────────
+function render() {
+  const { totaux, sources, synergies_actives, alertes_temp, temporels } = calculer()
+  const NOMS = { met: 'met', nerv: 'nerv', cog: 'cog', rec: 'rec' }
+
+  for (const cle of ['met', 'nerv', 'cog', 'rec']) {
+    const val = totaux[cle]
+    const pct = Math.round(val / 150 * 100)
+
+    document.getElementById(`res-val-${cle}`).textContent = val
+
+    const bar = document.getElementById(`res-bar-${cle}`)
+    bar.style.width = pct + '%'
+    bar.className = 'res-bar'
+      + (val <= 20 ? ' res-bar--crit' : val <= 45 ? ' res-bar--low' : val >= 90 ? ' res-bar--high' : '')
+
+    document.getElementById(`res-seuil-${cle}`).style.left = Math.round(30 / 150 * 100) + '%'
+
+    const fx = document.getElementById(`res-fx-${cle}`)
+    const srcs = sources[cle]
+    if (srcs && srcs.length > 0) {
+      fx.innerHTML = srcs.map(s => {
+        const sign = s.delta > 0 ? '+' : ''
+        const cls  = s.delta > 0 ? 'fx-pos' : 'fx-neg'
+        const nom  = document.querySelector(`[data-id="${s.id}"] .prat-name`)?.textContent || s.id
+        return `<span class="fx-item ${cls}">${sign}${s.delta} ${nom}</span>`
+      }).join('')
+    } else {
+      fx.innerHTML = ''
+    }
+    // Badge temporel
+    if (temporels && temporels[cle] !== 0) {
+      const sign = temporels[cle] > 0 ? '+' : ''
+      const cls  = temporels[cle] > 0 ? 'fx-pos fx-temp' : 'fx-neg fx-temp'
+      fx.innerHTML += '<span class="fx-item ' + cls + '" title="Effet temporel">' + sign + temporels[cle] + ' ⏱</span>'
+    }
+  }
+
+  document.getElementById('verdict-text').textContent = verdict(totaux)
+
+  const synEl = document.getElementById('synergies')
+  if (synergies_actives.length > 0) {
+    synEl.innerHTML = synergies_actives.map(s => `
+      <div class="synergie ${s.type === 'amplification' ? 'synergie--pos' : 'synergie--neg'}">
+        <p class="syn-label">${s.label_ui}</p>
+        <p class="syn-detail">${s.detail_ui}</p>
+        ${s.condition_hormese ? `<p class="syn-hormese">⚠ ${s.condition_hormese.label_ui}</p>` : ''}
+      </div>
+    `).join('')
+  } else {
+    synEl.innerHTML = ''
+  }
+
+  // Alertes temporelles
+  const atEl = document.getElementById('alertes-temporelles')
+  if (atEl) {
+    atEl.innerHTML = alertes_temp.map(a =>
+      '<p class="alerte alerte--temp alerte--' + a.type + '">' + (a.type === 'malus' ? '▼' : '▲') + ' ' + a.msg + '</p>'
+    ).join('')
+  }
+
+  // Alertes groupes exclusifs
+  const msgs = []
+  const sommeils = ['sommeil-4','sommeil-6','sommeil-8','sommeil-9plus'].filter(id => actifs.has(id))
+  if (sommeils.length > 1) msgs.push("Plusieurs durees de sommeil selectionnees — une seule est possible.")
+  const alims = ['jeune-16','jeune-24','keto','equilibre','ultra-transforme','glucides-charge'].filter(id => actifs.has(id))
+  if (alims.length > 2) msgs.push("Combinaison alimentaire complexe — verifiez la coherence.")
+  document.getElementById('alertes').innerHTML = msgs.map(m => `<p class="alerte">${m}</p>`).join('')
+}
+
+// ── Interactions ──────────────────────────────────────────────────────────────
+document.querySelectorAll('.profil-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.dataset.key
+    const val = btn.dataset.val
+    profil[key] = val
+    document.querySelectorAll(`[data-key="${key}"]`).forEach(b => b.classList.remove('is-active'))
+    btn.classList.add('is-active')
+    document.getElementById('cta-profil').disabled = !(profil.sexe && profil.age)
+  })
+})
+
+document.getElementById('cta-profil').addEventListener('click', () => {
+  document.getElementById('step-profil').hidden = true
+  document.getElementById('step-sim').removeAttribute('hidden')
+  const cle = `${profil.sexe}-${profil.age}`
+  document.getElementById('profil-display').textContent = LABEL_PROFIL[cle] || ''
+  render()
+})
+
+// Sync panneau temporel
+function syncPanneauTemporel(id, actif) {
+  const panel = document.getElementById('tp-' + id)
+  if (!panel) return
+  if (actif) {
+    panel.removeAttribute('hidden')
+    if (!temporel.par_pratique[id]) temporel.par_pratique[id] = { jours_consecutifs: 1, semaines_regulier: 0 }
+  } else {
+    panel.setAttribute('hidden', '')
+    delete temporel.par_pratique[id]
+  }
+}
+
+document.querySelectorAll('.pratique-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.id
+    if (actifs.has(id)) { actifs.delete(id); btn.classList.remove('is-active'); syncPanneauTemporel(id, false) }
+    else                { actifs.add(id);    btn.classList.add('is-active');    syncPanneauTemporel(id, true) }
+    render()
+  })
+})
+
+// Sliders temporels
+document.addEventListener('input', e => {
+  const slider = e.target
+  if (!slider.classList.contains('t-slider')) return
+  const id  = slider.dataset.pratique
+  const dim = slider.dataset.dim
+  const val = parseInt(slider.value, 10)
+  const labelEl = document.getElementById(dim === 'jours_consecutifs' ? 'jours-val-' + id : 'sem-val-' + id)
+  if (labelEl) {
+    labelEl.textContent = dim === 'jours_consecutifs' ? val + 'j' : val + ' sem.'
+    labelEl.className = dim === 'jours_consecutifs'
+      ? (val >= SEUIL_J4 ? 't-val t-val--warn' : 't-val')
+      : (val >= SEUIL_ADAPT_SEMAINES ? 't-val t-val--ok' : 't-val')
+  }
+  if (!temporel.par_pratique[id]) temporel.par_pratique[id] = { jours_consecutifs: 1, semaines_regulier: 0 }
+  temporel.par_pratique[id][dim] = val
+  render()
+})
+</script>
+
+<!-- Injection des donnees JSON pour le script client -->
+<script type="application/json" id="sim-pratiques">{JSON.stringify(TOUTES_PRATIQUES)}</script>
+<script type="application/json" id="sim-synergies">{JSON.stringify(TOUTES_SYNERGIES)}</script>
+
+<script>
+// Lecture des donnees injectees
+const _pratiques = JSON.parse(document.getElementById('sim-pratiques').textContent)
+const _synergies = JSON.parse(document.getElementById('sim-synergies').textContent)
+// Remplace les consts du bloc precedent
+Object.assign(window, { __PRATIQUES: _pratiques, __SYNERGIES: _synergies })
+</script>
+
+<style>
+  /* ── Base blanc — coherent avec V1/V2 ── */
+  .sim { background: #fff; color: #111; min-height: 100vh; font-family: 'Georgia', serif; }
+  .sim-step { width: 100%; }
+  .sim-step-inner { max-width: 560px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .sim-step-inner--wide {
+    max-width: 1100px; display: grid;
+    grid-template-columns: 340px 1fr; gap: 3rem;
+    align-items: start; padding: 3rem 2rem 6rem;
+  }
+  .sim-header { margin-bottom: 3rem; }
+  .sim-eyebrow { font-family: system-ui, sans-serif; font-size: .6rem; text-transform: uppercase; letter-spacing: .16em; color: #bbb; margin-bottom: 1.5rem; }
+  .sim-title { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 400; line-height: 1.15; color: #111; margin-bottom: 1.2rem; }
+  .sim-title em { font-style: italic; color: #888; }
+  .sim-lead { font-size: .95rem; line-height: 1.85; color: #555; margin-bottom: .6rem; }
+  .sim-note { font-family: system-ui, sans-serif; font-size: .72rem; color: #aaa; font-style: italic; border-left: 1px solid #e8e8e8; padding-left: .8rem; }
+  .profil-grid { display: flex; flex-direction: column; gap: 2rem; margin-bottom: 2.5rem; }
+  .profil-label { font-family: system-ui, sans-serif; font-size: .62rem; text-transform: uppercase; letter-spacing: .12em; color: #bbb; margin-bottom: .8rem; }
+  .profil-choices { display: flex; flex-direction: column; gap: .4rem; }
+  .profil-btn { background: #fff; border: 1px solid #ebebeb; padding: .9rem 1.1rem; text-align: left; cursor: pointer; transition: border-color .15s, background .15s; display: flex; flex-direction: column; gap: .25rem; }
+  .profil-btn:hover { border-color: #ccc; background: #fafafa; }
+  .profil-btn.is-active { border-color: #111; background: #fafafa; }
+  .profil-btn-main { font-family: system-ui, sans-serif; font-size: .9rem; color: #555; display: block; }
+  .profil-btn.is-active .profil-btn-main { color: #111; }
+  .profil-btn-sub { font-size: .75rem; color: #ccc; display: block; font-style: italic; }
+  .profil-btn.is-active .profil-btn-sub { color: #888; }
+  .sim-cta { width: 100%; background: #111; color: #fff; border: none; padding: 1rem; font-family: system-ui, sans-serif; font-size: .88rem; cursor: pointer; transition: background .15s, opacity .15s; letter-spacing: .04em; }
+  .sim-cta:disabled { opacity: .2; cursor: default; }
+  .sim-cta:not(:disabled):hover { background: #333; }
+  .zone-label { font-family: system-ui, sans-serif; font-size: .6rem; text-transform: uppercase; letter-spacing: .14em; color: #bbb; display: block; margin-bottom: .25rem; }
+  .zone-sub { font-family: system-ui, sans-serif; font-size: .75rem; color: #aaa; display: block; margin-bottom: 1.4rem; }
+  .reservoirs-zone { position: sticky; top: 1.5rem; }
+  .reservoirs-header { margin-bottom: 1.2rem; }
+  .reservoirs-grid { display: flex; flex-direction: column; gap: .8rem; margin-bottom: 1.5rem; }
+  .reservoir { background: #fafafa; border: 1px solid #ebebeb; padding: .9rem 1rem; }
+  .res-top { display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem; }
+  .res-icon { font-size: .7rem; color: #ddd; }
+  .res-name { font-family: system-ui, sans-serif; font-size: .8rem; color: #888; flex: 1; }
+  .res-val { font-family: system-ui, sans-serif; font-size: 1.1rem; font-weight: 300; color: #111; min-width: 2.5rem; text-align: right; transition: color .3s; }
+  .res-track { height: 2px; background: #ebebeb; position: relative; margin-bottom: .5rem; }
+  .res-bar { height: 100%; background: #222; transition: width .4s ease, background .3s; width: 0; }
+  .res-bar--high { background: #4a7a4a; }
+  .res-bar--low  { background: #a07a3a; }
+  .res-bar--crit { background: #8a3a3a; }
+  .res-seuil { position: absolute; top: -2px; bottom: -2px; width: 1px; background: #ddd; }
+  .res-desc { font-size: .72rem; color: #ccc; line-height: 1.4; margin-bottom: .4rem; font-family: system-ui, sans-serif; }
+  .res-effects { display: flex; flex-wrap: wrap; gap: .3rem; }
+  .fx-item { font-family: system-ui, sans-serif; font-size: .62rem; padding: .15rem .4rem; background: #fff; border: 1px solid #e8e8e8; }
+  .fx-pos { color: #4a7a4a; border-color: #d0e8d0; }
+  .fx-neg { color: #8a3a3a; border-color: #e8d0d0; }
+  .verdict { margin-bottom: 1.2rem; }
+  .verdict-text { font-family: system-ui, sans-serif; font-size: .8rem; color: #888; font-style: italic; line-height: 1.6; margin-bottom: .8rem; }
+  .synergie { padding: .6rem .8rem; margin-bottom: .4rem; border-left: 2px solid; }
+  .synergie--pos { border-color: #c0dcc0; background: #f4faf4; }
+  .synergie--neg { border-color: #dcc0c0; background: #faf4f4; }
+  .syn-label { font-family: system-ui, sans-serif; font-size: .72rem; font-weight: 600; margin-bottom: .2rem; }
+  .synergie--pos .syn-label { color: #4a7a4a; }
+  .synergie--neg .syn-label { color: #8a3a3a; }
+  .syn-detail { font-size: .75rem; color: #888; line-height: 1.5; }
+  .syn-hormese { font-size: .7rem; color: #9a8a4a; font-style: italic; margin-top: .3rem; }
+  .alerte { font-family: system-ui, sans-serif; font-size: .72rem; color: #9a8a3a; padding: .4rem .6rem; background: #fafaf0; border: 1px solid #e8e8c0; margin-top: .3rem; }
+  .pratiques-zone { min-width: 0; }
+  .pratiques-header { margin-bottom: 1.2rem; }
+  .pratiques-categories { display: flex; flex-direction: column; gap: 2rem; }
+  .cat-label { font-family: system-ui, sans-serif; font-size: .6rem; text-transform: uppercase; letter-spacing: .12em; color: #bbb; margin-bottom: .7rem; padding-bottom: .4rem; border-bottom: 1px solid #ebebeb; }
+  .cat-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .4rem; }
+  .pratique-btn { background: #fff; border: 1px solid #ebebeb; padding: .75rem .85rem; text-align: left; cursor: pointer; transition: border-color .12s, background .12s; display: flex; flex-direction: column; gap: .35rem; }
+  .pratique-btn:hover { border-color: #ccc; background: #fafafa; }
+  .pratique-btn.is-active { border-color: #111; background: #fafafa; }
+  .prat-name { font-family: system-ui, sans-serif; font-size: .82rem; color: #555; display: block; }
+  .pratique-btn.is-active .prat-name { color: #111; }
+  .prat-tags { display: flex; flex-wrap: wrap; gap: .25rem; }
+  .tag { font-family: system-ui, sans-serif; font-size: .6rem; padding: .1rem .35rem; border: 1px solid; }
+  .tag--pos { color: #4a7a4a; border-color: #c8e0c8; background: #f4faf4; }
+  .tag--neg { color: #8a3a3a; border-color: #e0c8c8; background: #faf4f4; }
+  .tag--neu { color: #aaa; border-color: #ebebeb; background: #fafafa; }
+  .prat-note { font-size: .7rem; color: #ccc; font-style: italic; line-height: 1.4; display: block; font-family: system-ui, sans-serif; }
+  .pratique-btn.is-active .prat-note { color: #888; }
+  @media (max-width: 860px) { .sim-step-inner--wide { grid-template-columns: 1fr; padding: 2rem 1rem 5rem; } .reservoirs-zone { position: static; } }
+  @media (max-width: 480px) { .sim-step-inner { padding: 2.5rem 1rem 5rem; } .cat-items { grid-template-columns: 1fr 1fr; } }
+  /* ── Panneau temporel ── */
+  .pratique-wrap { display: flex; flex-direction: column; }
+  .temporel-panel { border: 1px solid #e8e8e8; border-top: none; background: #fafaf8; }
+  .temporel-inner { padding: .6rem .85rem .7rem; }
+  .temporel-title { font-family: system-ui, sans-serif; font-size: .58rem; text-transform: uppercase; letter-spacing: .1em; color: #bbb; margin-bottom: .5rem; }
+  .temporel-row { display: flex; flex-direction: column; gap: .2rem; margin-bottom: .45rem; }
+  .temporel-row:last-child { margin-bottom: 0; }
+  .temporel-label { font-family: system-ui, sans-serif; font-size: .7rem; color: #888; display: flex; justify-content: space-between; }
+  .temporel-hint { font-size: .6rem; color: #ccc; font-style: italic; }
+  .temporel-ctrl { display: flex; align-items: center; gap: .5rem; }
+  .t-slider { flex: 1; -webkit-appearance: none; height: 2px; background: #e0e0e0; outline: none; cursor: pointer; }
+  .t-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: #555; cursor: pointer; border-radius: 0; border: none; }
+  .t-slider::-moz-range-thumb { width: 10px; height: 10px; background: #555; cursor: pointer; border-radius: 0; border: none; }
+  .t-val { font-family: system-ui, sans-serif; font-size: .68rem; color: #aaa; min-width: 3rem; text-align: right; }
+  .t-val--warn { color: #a06030; font-weight: 600; }
+  .t-val--ok   { color: #3a6a4a; font-weight: 600; }
+  .fx-temp { font-style: italic; background: #f8f8f4; }
+  .alertes-temporelles { margin-bottom: .2rem; }
+  .alerte--temp { display: flex; gap: .4rem; align-items: baseline; }
+  .alerte--malus { color: #8a5a3a; background: #faf4f0; border-color: #e8d0c0; }
+  .alerte--bonus { color: #3a6a4a; background: #f0faf4; border-color: #c0e0cc; }
+</style>

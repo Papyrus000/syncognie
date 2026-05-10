@@ -146,7 +146,7 @@ const conceptSchema = z.object({
   extrait:  z.string().optional(),
   vie:      z.string().optional(),
   fiche:    ficheSyntheseSchema.optional(), // Présent = fiche Partie II disponible
-  jauges:   z.record(z.number()).optional(),
+  jauges:   z.record(z.string(), z.number()).optional(),
 });
 
 // ── Collection NOUVELLE : sous-la-surface ──

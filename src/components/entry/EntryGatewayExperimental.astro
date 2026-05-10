@@ -1,78 +1,373 @@
 ---
+// src/components/entry/EntryGatewayExperimental.astro
+// V2 laboratoire — consomme le moteur. Ne contient plus de données en dur.
+
+import { situationActive } from '../../engine/situation';
+import { evaluerSituation } from '../../engine/engine';
+
+const { titre, contexte, actions, etat } = situationActive;
+const { forces, concepts, anglesMorts, couches, lisibilite } = evaluerSituation(etat);
+
+const favorable = forces.filter((f) => f.polarite === 'favorable');
+const defavorable = forces.filter((f) => f.polarite === 'défavorable');
 ---
 
-<section class="entry-v2" aria-label="Entrée expérimentale">
-  <header class="entry-v2__header">
-    <p class="entry-v2__eyebrow">Laboratoire V2</p>
-    <h1>Entrée expérimentale</h1>
-    <p>
-      Base vierge pour brancher progressivement le moteur éditorial et cognitif.
-    </p>
-  </header>
+<section class="lab">
+  <div class="lab-inner">
 
-  <footer class="entry-v2__footer">
-    <p>Structure minimale · moteur à venir</p>
-  </footer>
+    <div class="lab-label">
+      V2 laboratoire — modèle incomplet
+    </div>
+
+    <h1 class="lab-title">{titre}</h1>
+
+    <p class="lab-text">{contexte}</p>
+
+    <!-- État actuel -->
+    <div class="block">
+      <div class="block-title">État actuel</div>
+      <ul class="simple-list">
+        <li>fatigue mentale : {etat.fatigueMentale}</li>
+        <li>stress : {etat.stress}</li>
+        <li>sommeil récent : {etat.sommeil}</li>
+      </ul>
+    </div>
+
+    <!-- Actions possibles -->
+    <div class="block">
+      <div class="block-title">Actions possibles</div>
+      <div class="choices">
+        {actions.map((action) => (
+          <button class="choice">
+            <span>{action.label}</span>
+            <small>{action.note}</small>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Forces détectées -->
+    <div class="block">
+      <div class="block-title">Forces actuellement détectées</div>
+      <div class="two-cols">
+        <div>
+          <div class="sub">Facteurs favorables</div>
+          <ul class="simple-list">
+            {favorable.map((f) => (
+              <li>+ {f.label}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div class="sub">Facteurs défavorables</div>
+          <ul class="simple-list">
+            {defavorable.map((f) => (
+              <li>- {f.label}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Couches explicatives -->
+    <div class="block">
+      <div class="block-title">Couches explicatives</div>
+      <div class="couches-grid">
+        {couches.couvertes.map((c) => (
+          <span class="couche couche--couverte">{c}</span>
+        ))}
+        {couches.faibles.map((c) => (
+          <span class="couche couche--faible">{c} ·?</span>
+        ))}
+        {couches.absentes.map((c) => (
+          <span class="couche couche--absente">{c}</span>
+        ))}
+      </div>
+      <p class="couches-legende">
+        <span class="dot dot--couverte"></span> couverte
+        <span class="dot dot--faible"></span> faible
+        <span class="dot dot--absente"></span> absente
+      </p>
+    </div>
+
+    <!-- Concepts activés -->
+    <div class="block">
+      <div class="block-title">Concepts activés</div>
+      <div class="concepts">
+        {concepts.map((concept) => (
+          <details class="concept">
+            <summary>
+              {concept.name}
+              <span class="concept-couche">{concept.couche}</span>
+            </summary>
+            <p>{concept.text}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+
+    <!-- Incomplétude -->
+    <div class="block">
+      <div class="block-title">Incomplétude actuelle du modèle</div>
+      <p class="muted">
+        Le système identifie les couches visibles et les angles morts.
+        Il ne prétend pas à l'exhaustivité.
+      </p>
+
+      <div class="progress-wrap">
+        <div class="progress-label">
+          Lisibilité actuelle du modèle : {lisibilite}%
+        </div>
+        <div class="progress">
+          <div class="progress-bar" style={`width: ${lisibilite}%`}></div>
+        </div>
+      </div>
+
+      <div class="sub margin-top">Angles morts actuels</div>
+      <ul class="simple-list">
+        {anglesMorts.map((a) => (
+          <li>• {a.label}</li>
+        ))}
+      </ul>
+    </div>
+
+  </div>
 </section>
 
 <style>
-  .entry-v2 {
-    width: min(100% - 2rem, 880px);
-    min-height: calc(100svh - 5.25rem);
+  .lab {
+    background: white;
+    color: #111;
+    min-height: 100vh;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .lab-inner {
+    max-width: 760px;
     margin: 0 auto;
-    padding: 3rem 0 1.5rem;
+  }
+
+  .lab-label {
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: #777;
+    margin-bottom: 2rem;
+  }
+
+  .lab-title {
+    font-size: 1.55rem;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .lab-text {
+    font-size: .95rem;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 3rem;
+  }
+
+  .block {
+    margin-bottom: 3rem;
+  }
+
+  .block-title {
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+
+  .sub {
+    font-size: .82rem;
+    color: #333;
+    margin-bottom: .8rem;
+  }
+
+  .simple-list {
+    margin: 0;
+    padding-left: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background: #fff;
-    color: #1f1f1f;
+    gap: .5rem;
+    font-size: .92rem;
+    line-height: 1.7;
+    color: #222;
   }
 
-  .entry-v2__header {
-    max-width: 46rem;
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
   }
 
-  .entry-v2__eyebrow {
-    margin: 0 0 .75rem;
-    font-size: .68rem;
-    line-height: 1.2;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: #777;
+  .choice {
+    border: 1px solid #ddd;
+    background: white;
+    padding: 1rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    cursor: pointer;
+    transition: border-color .15s;
   }
 
-  .entry-v2 h1 {
-    margin: 0 0 .75rem;
-    font-size: clamp(1.15rem, 1.6vw, 1.45rem);
-    line-height: 1.15;
-    font-weight: 600;
-    color: #1f1f1f;
+  .choice:hover {
+    border-color: #999;
   }
 
-  .entry-v2__header p:not(.entry-v2__eyebrow) {
-    margin: 0;
-    max-width: 38rem;
-    font-size: .84rem;
-    line-height: 1.65;
-    color: #555;
+  .choice span {
+    font-size: .95rem;
   }
 
-  .entry-v2__footer {
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
-  }
-
-  .entry-v2__footer p {
-    margin: 0;
-    font-size: .72rem;
+  .choice small {
+    color: #666;
     line-height: 1.5;
-    color: #777;
   }
 
-  @media (max-width: 640px) {
-    .entry-v2 {
-      width: min(100% - 1.25rem, 880px);
-      padding-top: 2.5rem;
+  .two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Couches explicatives */
+  .couches-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: .8rem;
+  }
+
+  .couche {
+    font-size: .75rem;
+    padding: .3rem .7rem;
+    border: 1px solid;
+    border-radius: 2px;
+  }
+
+  .couche--couverte {
+    border-color: #222;
+    color: #111;
+    background: #f9f9f9;
+  }
+
+  .couche--faible {
+    border-color: #bbb;
+    color: #777;
+    background: white;
+    border-style: dashed;
+  }
+
+  .couche--absente {
+    border-color: #e5e5e5;
+    color: #bbb;
+    background: white;
+  }
+
+  .couches-legende {
+    font-size: .72rem;
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    margin-top: .5rem;
+  }
+
+  .dot {
+    display: inline-block;
+    width: .45rem;
+    height: .45rem;
+    border-radius: 50%;
+    margin-right: .25rem;
+  }
+
+  .dot--couverte { background: #222; }
+  .dot--faible   { background: #bbb; }
+  .dot--absente  { background: #e5e5e5; border: 1px solid #ccc; }
+
+  /* Concepts */
+  .concepts {
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+  }
+
+  .concept {
+    border: 1px solid #e2e2e2;
+    padding: .9rem 1rem;
+  }
+
+  .concept summary {
+    cursor: pointer;
+    font-size: .92rem;
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+  }
+
+  .concept-couche {
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #aaa;
+  }
+
+  .concept p {
+    margin-top: .8rem;
+    color: #444;
+    line-height: 1.7;
+    font-size: .9rem;
+  }
+
+  /* Incomplétude */
+  .muted {
+    color: #555;
+    line-height: 1.8;
+    font-size: .92rem;
+  }
+
+  .progress-wrap {
+    margin-top: 1.5rem;
+  }
+
+  .progress-label {
+    font-size: .85rem;
+    margin-bottom: .6rem;
+    color: #333;
+  }
+
+  .progress {
+    height: 8px;
+    background: #eee;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: #222;
+    transition: width .4s ease;
+  }
+
+  .margin-top {
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 720px) {
+    .two-cols {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .lab {
+      padding: 3rem 1rem 5rem;
+    }
+
+    .lab-title {
+      font-size: 1.3rem;
     }
   }
 </style>
