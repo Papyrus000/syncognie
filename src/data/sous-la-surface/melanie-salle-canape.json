@@ -1,0 +1,226 @@
+{
+  "charge-allostatique": {
+    "penseur": "Bruce McEwen · Allostasie et stress",
+    "nom": "La charge allostatique",
+    "corps": "La charge allostatique désigne l’usure cumulative produite par les adaptations répétées au stress. Une journée n’a pas besoin d’être dramatique pour laisser une trace : interruptions, demandes, vigilance, tensions sociales et décisions successives peuvent rendre une action simple beaucoup plus coûteuse le soir.",
+    "extrait": "Le corps n’est pas forcément épuisé au sens visible du terme. Mais le système semble plus lourd.",
+    "vie": "Avant de conclure à un manque de discipline, regarder la charge globale de la journée : sommeil, stress, conflits, interruptions, alimentation, bruit, sollicitations.",
+    "fiche": {
+      "essentiel": "La fatigue du soir n’est pas seulement physique. Elle peut être le résultat d’une accumulation de micro-contraintes qui modifie la capacité à initier une action.",
+      "mots_cles": [
+        "Allostasie",
+        "Stress cumulatif",
+        "Saturation",
+        "Récupération",
+        "Ressources"
+      ],
+      "usages": [
+        "Évaluer la journée avant d’interpréter le comportement : surcharge ou simple évitement ?",
+        "Prévoir les séances difficiles les jours de faible charge plutôt que toujours compter sur la volonté.",
+        "Utiliser une version minimale de l’action lorsque la charge globale est élevée."
+      ]
+    },
+    "jauges": {
+      "Charge accumulée": 82,
+      "Ressources disponibles": 34,
+      "Coût perçu": 78,
+      "Tolérance effort": 41
+    }
+  },
+  "economie-attentionnelle": {
+    "penseur": "Herbert Simon · Économie de l’attention",
+    "nom": "L’économie attentionnelle",
+    "corps": "Dans un monde saturé d’informations, l’attention devient une ressource rare. Le téléphone propose une récompense immédiate à coût d’entrée quasi nul. Face à lui, la salle de sport demande une transition, un déplacement et un effort différé.",
+    "extrait": "Le téléphone ne demande presque aucun coût d’activation. Il est déjà là, disponible, fluide.",
+    "vie": "Le téléphone n’est pas seulement un objet neutre. Dans les moments de fatigue, il devient une option comportementale à très faible friction.",
+    "fiche": {
+      "essentiel": "Ce qui capte l’attention gagne souvent avant même que la décision consciente commence.",
+      "mots_cles": [
+        "Attention",
+        "Friction faible",
+        "Scroll",
+        "Micro-récompense",
+        "Disponibilité"
+      ],
+      "usages": [
+        "Éloigner le téléphone des moments de transition.",
+        "Décider avant d’ouvrir l’écran.",
+        "Créer une routine qui rend l’action utile plus accessible que l’option numérique."
+      ]
+    },
+    "jauges": {
+      "Attraction écran": 86,
+      "Friction numérique": 12,
+      "Attention disponible": 37,
+      "Risque de dérive": 81
+    }
+  },
+  "cout-activation": {
+    "penseur": "Psychologie comportementale · Friction et activation",
+    "nom": "Le coût d’activation",
+    "corps": "Le coût d’activation correspond à l’énergie nécessaire pour passer d’un état à un autre. Souvent, le problème n’est pas la séance elle-même, mais la transition : sortir, conduire, se changer, s’exposer au regard des autres, commencer.",
+    "extrait": "Le coût réel n’est parfois pas l’activité elle-même. C’est le redémarrage.",
+    "vie": "Réduire le seuil d’entrée : viser dix minutes, entrer seulement dans la salle, préparer le sac, supprimer les étapes inutiles.",
+    "fiche": {
+      "essentiel": "Le démarrage coûte parfois plus que l’action. Réduire le coût d’entrée peut être plus efficace qu’augmenter la motivation.",
+      "mots_cles": [
+        "Démarrage",
+        "Friction",
+        "Transition",
+        "Inertie",
+        "Seuil d’entrée"
+      ],
+      "usages": [
+        "Transformer une séance complète en première étape minuscule.",
+        "Préparer les affaires avant que la fatigue apparaisse.",
+        "Éviter les étapes intermédiaires qui permettent au canapé de gagner."
+      ]
+    },
+    "jauges": {
+      "Inertie": 74,
+      "Seuil d’entrée": 83,
+      "Élan disponible": 32,
+      "Probabilité démarrage": 39
+    }
+  },
+  "recompense-immediate": {
+    "penseur": "Économie comportementale · Présentisme",
+    "nom": "La récompense immédiate",
+    "corps": "Quand les ressources diminuent, le système nerveux privilégie souvent les options qui réduisent vite la tension. Le canapé ou le scroll ne sont pas seulement du plaisir : ils peuvent fonctionner comme des stratégies rapides de régulation.",
+    "extrait": "Le système nerveux privilégie souvent le soulagement immédiat lorsque les ressources diminuent.",
+    "vie": "Reconnaître la fonction du comportement : chercher du repos, de l’anesthésie, du calme ou une récompense facile. Ensuite seulement, choisir une meilleure stratégie.",
+    "fiche": {
+      "essentiel": "Le soulagement immédiat peut gagner parce qu’il répond à une tension présente, même si son bénéfice est faible ou fragile.",
+      "mots_cles": [
+        "Soulagement",
+        "Présent",
+        "Récompense",
+        "Régulation",
+        "Court terme"
+      ],
+      "usages": [
+        "Remplacer le scroll par une régulation courte mais consciente.",
+        "Prévoir une séance minimale qui promet un bénéfice proche.",
+        "Ne pas combattre le besoin de soulagement : le réorienter."
+      ]
+    },
+    "jauges": {
+      "Soulagement immédiat": 88,
+      "Bénéfice futur perçu": 42,
+      "Tension présente": 76,
+      "Contrôle inhibiteur": 35
+    }
+  },
+  "prediction-energie": {
+    "penseur": "Cerveau prédictif · Karl Friston et modèles prédictifs",
+    "nom": "La prédiction énergétique",
+    "corps": "Le cerveau ne mesure pas seulement l’énergie disponible : il prédit le coût probable des actions. Le soir, après une journée chargée, il peut surestimer le coût du mouvement et sous-estimer le bénéfice obtenu après l’action.",
+    "extrait": "Le cerveau tente constamment d’anticiper le coût énergétique des actions.",
+    "vie": "Se demander si la fatigue est un état fixe ou une prédiction. Parfois, dix minutes de mouvement modifient l’estimation interne.",
+    "fiche": {
+      "essentiel": "La fatigue est aussi une prédiction de coût. Elle peut être juste, exagérée, ou modifiable par une première action très courte.",
+      "mots_cles": [
+        "Prédiction",
+        "Coût énergétique",
+        "Anticipation",
+        "Fatigue",
+        "Action"
+      ],
+      "usages": [
+        "Tester une entrée minimale avant de conclure que l’action est impossible.",
+        "Distinguer fatigue dangereuse, fatigue normale et inertie prédictive.",
+        "Utiliser l’échauffement comme réévaluation du coût réel."
+      ]
+    },
+    "jauges": {
+      "Coût anticipé": 84,
+      "Bénéfice anticipé": 46,
+      "Erreur de prédiction possible": 67,
+      "Réévaluation après action": 72
+    }
+  },
+  "identite-comportementale": {
+    "penseur": "William James · Soi et habitudes",
+    "nom": "L’identité comportementale",
+    "corps": "Un comportement devient plus stable lorsqu’il cesse d’être une décision isolée et commence à appartenir à l’image que la personne a d’elle-même. Aller à la salle n’est alors plus seulement un effort, mais la confirmation d’une trajectoire.",
+    "extrait": "Ne plus seulement aller à la salle, mais devenir quelqu’un qui maintient ce rendez-vous avec soi.",
+    "vie": "Construire l’identité par des preuves modestes : chaque séance minimale compte parce qu’elle maintient la continuité.",
+    "fiche": {
+      "essentiel": "L’identité réduit la négociation interne. Mais elle se construit par répétition, pas par déclaration.",
+      "mots_cles": [
+        "Identité",
+        "Preuve",
+        "Continuité",
+        "Soi",
+        "Régularité"
+      ],
+      "usages": [
+        "Valoriser la continuité plutôt que la performance.",
+        "Utiliser des phrases identitaires sobres : je suis quelqu’un qui se présente.",
+        "Protéger les petites preuves les jours difficiles."
+      ]
+    },
+    "jauges": {
+      "Identité active": 54,
+      "Continuité": 61,
+      "Négociation interne": 76,
+      "Preuve personnelle": 58
+    }
+  },
+  "habitudes-automatisation": {
+    "penseur": "William James · Wendy Wood",
+    "nom": "Les habitudes",
+    "corps": "Une habitude est une compression cognitive : moins il faut décider, moins l’action consomme d’attention. Quand une routine est fragile, chaque séance redevient une négociation complète avec l’état du jour.",
+    "extrait": "Tant que l’habitude n’est pas consolidée, chaque séance reste une discussion intérieure complète.",
+    "vie": "Rendre la séquence stable : même horaire, même sac, même trajet, même seuil minimal. L’objectif est de réduire la part de débat.",
+    "fiche": {
+      "essentiel": "Une habitude solide protège l’action de l’humeur du moment. Elle déplace l’effort de la décision vers l’automatisme.",
+      "mots_cles": [
+        "Routine",
+        "Automatisation",
+        "Déclencheur",
+        "Répétition",
+        "Contexte"
+      ],
+      "usages": [
+        "Associer la salle à un déclencheur précis.",
+        "Répéter la même première étape.",
+        "Éviter de modifier trop souvent la routine."
+      ]
+    },
+    "jauges": {
+      "Automatisation": 43,
+      "Décision nécessaire": 79,
+      "Stabilité routine": 48,
+      "Friction restante": 71
+    }
+  },
+  "arbitrage": {
+    "penseur": "Systèmes de décision · Lecture intégrative",
+    "nom": "L’arbitrage invisible",
+    "corps": "La décision oppose plusieurs systèmes : soulagement immédiat, préservation des ressources, bénéfice futur, identité, friction, attention disponible. Ce n’est pas un duel simple entre volonté et paresse.",
+    "extrait": "Une forme d’arbitrage silencieux entre plusieurs systèmes concurrents.",
+    "vie": "Demander quel système gagne à cet instant, puis modifier l’environnement pour que l’action souhaitée n’ait pas besoin d’héroïsme.",
+    "fiche": {
+      "essentiel": "Le comportement observable est la surface d’un arbitrage interne entre coûts, ressources, récompenses et identité.",
+      "mots_cles": [
+        "Arbitrage",
+        "Coût",
+        "Ressources",
+        "Identité",
+        "Décision"
+      ],
+      "usages": [
+        "Cartographier les forces en présence avant de juger le comportement.",
+        "Réduire la friction plutôt que moraliser la décision.",
+        "Prévoir une version minimale qui respecte l’état réel du système."
+      ]
+    },
+    "jauges": {
+      "Coût immédiat": 81,
+      "Bénéfice futur": 63,
+      "Soulagement rapide": 86,
+      "Trajectoire long terme": 57
+    }
+  }
+}
