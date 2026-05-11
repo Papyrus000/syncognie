@@ -367,7 +367,56 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
   </article>
 </div>
 
-</Base>
+<!-- ── Barre de lecture mobile (portrait uniquement) ── -->
+<div class="jl-mobile-toolbar" id="jl-mobile-toolbar" aria-label="Contrôles de lecture">
+
+  <div class="jl-toolbar-group">
+    <span class="jl-toolbar-lbl">Taille</span>
+    <button class="jl-toolbar-btn" id="jl-mob-sz-down" aria-label="Réduire la taille du texte">A−</button>
+    <button class="jl-toolbar-btn" id="jl-mob-sz-up"   aria-label="Agrandir la taille du texte">A+</button>
+  </div>
+
+  <div class="jl-toolbar-sep" aria-hidden="true"></div>
+
+  <div class="jl-toolbar-group">
+    <span class="jl-toolbar-lbl">Interligne</span>
+    <button class="jl-toolbar-btn" id="jl-mob-lh-down" aria-label="Réduire l'interligne">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <button class="jl-toolbar-btn" id="jl-mob-lh-up" aria-label="Augmenter l'interligne">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="4" x2="21" y2="4"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+    </button>
+  </div>
+
+  <div class="jl-toolbar-sep" aria-hidden="true"></div>
+
+  <button class="jl-toolbar-btn jl-toolbar-btn--flat" id="jl-mob-flat" aria-label="Mode clair sans gradient" title="Fond uni">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+
+  <button class="jl-toolbar-btn jl-toolbar-btn--night" id="jl-mob-night" aria-label="Mode nuit" title="Mode nuit">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+  <div class="jl-toolbar-sep" aria-hidden="true"></div>
+
+  <button class="jl-toolbar-btn jl-toolbar-btn--toc" id="jl-mob-toc" aria-label="Ouvrir le sommaire" title="Sommaire">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="10" y2="6"/><line x1="3" y1="12" x2="16" y2="12"/><line x1="3" y1="18" x2="13" y2="18"/></svg>
+  </button>
+
+</div>
+
+<!-- ── Drawer sommaire mobile ── -->
+<div class="jl-toc-drawer" id="jl-toc-drawer" role="dialog" aria-modal="true" aria-label="Sommaire">
+  <div class="jl-toc-drawer-handle" id="jl-toc-drawer-handle" aria-hidden="true"></div>
+  <div class="jl-toc-drawer-header">
+    <span class="jl-toc-drawer-title">Sommaire</span>
+    <button class="jl-toc-drawer-close" id="jl-toc-drawer-close" aria-label="Fermer le sommaire">
+      <svg viewBox="0 0 11 11"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8"/></svg>
+    </button>
+  </div>
+  <div class="jl-toc-drawer-body" id="jl-toc-drawer-body"></div>
+</div>
 
 <style>
   /* ── CONTRÔLES FLOTTANTS ── */
@@ -650,6 +699,212 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     .jl-controls { display: none; }
     .jl-nav-inner { grid-template-columns: 1fr; }
   }
+
+  /* ── Barre de lecture mobile (portrait uniquement) ── */
+  .jl-mobile-toolbar { display: none; }
+
+  @media (max-width: 860px) and (orientation: portrait) {
+    .jl-mobile-toolbar {
+      display: flex;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 700;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .55rem 1rem;
+      padding-bottom: calc(.55rem + env(safe-area-inset-bottom, 0px));
+      background: var(--jl-paper, #FAF7F2);
+      border-top: 1px solid var(--jl-border, #E4DDD4);
+      box-shadow: 0 -4px 16px rgba(28,24,17,.07);
+    }
+    /* Masquer les contrôles flottants quand la toolbar est visible */
+    .jl-controls { display: none; }
+
+    /* Décaler le bas du contenu */
+    .jl-wrap {
+      padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .jl-toolbar-sep {
+      width: 1px; height: 20px;
+      background: var(--jl-border, #E4DDD4);
+      flex-shrink: 0;
+      margin: 0 .15rem;
+    }
+    .jl-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+    .jl-toolbar-lbl {
+      font-family: var(--jl-sans, 'DM Sans', sans-serif);
+      font-size: .58rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--jl-ink-muted, #9A8F82);
+    }
+    .jl-toolbar-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--jl-border, #E4DDD4);
+      background: var(--jl-bg, #F7F3EE);
+      color: var(--jl-ink-muted, #9A8F82);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .95rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, border-color .15s, color .15s;
+      font-family: var(--jl-sans, 'DM Sans', sans-serif);
+      line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .jl-toolbar-btn:active {
+      background: var(--jl-accent-hl, #F0DDD0);
+      border-color: var(--jl-accent, #B85C2A);
+      color: var(--jl-accent, #B85C2A);
+    }
+    .jl-toolbar-btn.active {
+      background: var(--jl-accent-hl, #F0DDD0);
+      border-color: var(--jl-accent, #B85C2A);
+      color: var(--jl-accent, #B85C2A);
+    }
+    .jl-toolbar-btn svg {
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+  }
+
+  /* Mode nuit — toolbar */
+  body.jl-night-mode .jl-mobile-toolbar {
+    background: #1C1914;
+    border-top-color: #2E2820;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.3);
+  }
+
+  /* ── Drawer sommaire mobile (portrait uniquement) ── */
+  .jl-toc-drawer { display: none; }
+
+  @media (max-width: 860px) and (orientation: portrait) {
+    .jl-toc-drawer {
+      display: block;
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 850;
+      max-height: 70vh;
+      background: var(--jl-paper, #FAF7F2);
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -8px 40px rgba(28,24,17,.18);
+      transform: translateY(100%);
+      transition: transform .35s cubic-bezier(.32,.72,0,1);
+      will-change: transform;
+      overflow: hidden;
+      padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+    }
+    .jl-toc-drawer.jl-toc-drawer--open {
+      display: flex;
+      flex-direction: column;
+      transform: translateY(0);
+    }
+  }
+
+  .jl-toc-drawer-handle {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .85rem 0 .5rem;
+    cursor: grab;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .jl-toc-drawer-handle::before {
+    content: '';
+    display: block;
+    width: 36px; height: 4px;
+    background: var(--jl-border, #E4DDD4);
+    border-radius: 2px;
+  }
+  .jl-toc-drawer-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem .75rem;
+    border-bottom: 1px solid var(--jl-border, #E4DDD4);
+  }
+  .jl-toc-drawer-title {
+    font-family: var(--jl-sans, 'DM Sans', sans-serif);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--jl-ink-muted, #9A8F82);
+  }
+  .jl-toc-drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    background: none;
+    border: 1px solid var(--jl-border, #E4DDD4);
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--jl-ink-muted, #9A8F82);
+    transition: color .15s, border-color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .jl-toc-drawer-close svg {
+    width: 11px; height: 11px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round;
+  }
+  .jl-toc-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.1rem 1.25rem 1rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .jl-toc-drawer-body a {
+    display: block;
+    font-family: var(--jl-sans, 'DM Sans', sans-serif);
+    font-size: .82rem;
+    line-height: 1.5;
+    color: var(--jl-ink-muted, #9A8F82);
+    text-decoration: none;
+    padding: .5rem .6rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 3px 3px 0;
+    transition: color .18s, border-color .18s, background .18s;
+  }
+  .jl-toc-drawer-body a:active {
+    color: var(--jl-accent, #B85C2A);
+    border-left-color: var(--jl-accent, #B85C2A);
+    background: var(--jl-accent-hl, #F0DDD0);
+  }
+  .jl-toc-drawer-back {
+    display: block;
+    font-family: var(--jl-sans, 'DM Sans', sans-serif);
+    font-size: .75rem;
+    color: var(--jl-ink-muted, #9A8F82);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    padding-bottom: .9rem;
+    border-bottom: 1px solid var(--jl-border, #E4DDD4);
+  }
+
+  /* Mode nuit — drawer sommaire */
+  body.jl-night-mode .jl-toc-drawer {
+    background: #1C1914;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.45);
+  }
+  body.jl-night-mode .jl-toc-drawer-handle::before { background: #2E2820; }
+  body.jl-night-mode .jl-toc-drawer-header { border-bottom-color: #2E2820; }
+  body.jl-night-mode .jl-toc-drawer-close { border-color: #2E2820; }
+  body.jl-night-mode .jl-toc-drawer-body a { color: #6E6458; }
+  body.jl-night-mode .jl-toc-drawer-back { color: #6E6458; border-bottom-color: #2E2820; }
 </style>
 
 <script define:vars={{ slug, lecture }}>
@@ -680,6 +935,18 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
   szDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
   szUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
 
+  // Boutons mobile toolbar
+  const mobSzDown  = document.getElementById('jl-mob-sz-down');
+  const mobSzUp    = document.getElementById('jl-mob-sz-up');
+  const mobLhDown  = document.getElementById('jl-mob-lh-down');
+  const mobLhUp    = document.getElementById('jl-mob-lh-up');
+  const mobFlat    = document.getElementById('jl-mob-flat');
+  const mobNight   = document.getElementById('jl-mob-night');
+  const mobTocBtn  = document.getElementById('jl-mob-toc');
+
+  mobSzDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
+  mobSzUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
+
   // ── Interligne ──
   const LH_STEPS = [1.6, 1.7, 1.87, 2.0, 2.15, 2.3];
   let lhIdx = parseInt(localStorage.getItem('jl_lh_idx') || '2', 10);
@@ -690,6 +957,8 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
   applyLH();
   lhDown?.addEventListener('click', () => { if (lhIdx > 0) { lhIdx--; applyLH(); } });
   lhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
+  mobLhDown?.addEventListener('click', () => { if (lhIdx > 0) { lhIdx--; applyLH(); } });
+  mobLhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
 
   // ── Largeur de mesure ──
   const W_STEPS = ['52ch', '58ch', '66ch', '72ch', '78ch'];
@@ -711,6 +980,8 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     document.body.classList.toggle('jl-night-mode', mode === 'night');
     flatBtn?.classList.toggle('active',  mode === 'flat');
     nightBtn?.classList.toggle('active', mode === 'night');
+    mobFlat?.classList.toggle('active',  mode === 'flat');
+    mobNight?.classList.toggle('active', mode === 'night');
     localStorage.setItem('jl_mode', mode);
   }
 
@@ -724,6 +995,63 @@ const genreLabel = genre ? (genreLabels[genre] ?? genre) : undefined;
     const current = localStorage.getItem('jl_mode') || 'default';
     applyMode(current === 'night' ? 'default' : 'night');
   });
+  mobFlat?.addEventListener('click', () => {
+    const current = localStorage.getItem('jl_mode') || 'default';
+    applyMode(current === 'flat' ? 'default' : 'flat');
+  });
+  mobNight?.addEventListener('click', () => {
+    const current = localStorage.getItem('jl_mode') || 'default';
+    applyMode(current === 'night' ? 'default' : 'night');
+  });
+
+  // ── Drawer sommaire mobile ──────────────────────────────────────────
+  const tocDrawer      = document.getElementById('jl-toc-drawer');
+  const tocDrawerBody  = document.getElementById('jl-toc-drawer-body');
+  const tocDrawerClose = document.getElementById('jl-toc-drawer-close');
+  const tocDrawerHand  = document.getElementById('jl-toc-drawer-handle');
+
+  function tocOpen()  { tocDrawer?.classList.add('jl-toc-drawer--open');    document.body.style.overflow = 'hidden'; }
+  function tocClose() { tocDrawer?.classList.remove('jl-toc-drawer--open'); document.body.style.overflow = ''; }
+
+  mobTocBtn?.addEventListener('click', () => {
+    if (tocDrawer?.classList.contains('jl-toc-drawer--open')) { tocClose(); return; }
+    // Remplir au premier appel
+    if (tocDrawerBody && tocDrawerBody.childElementCount === 0) {
+      const backHref = window.location.pathname.startsWith('/journal') ? '/journal' : '/nouvelles';
+      const back = document.createElement('a');
+      back.href = backHref;
+      back.className = 'jl-toc-drawer-back';
+      back.textContent = '← ' + (backHref === '/journal' ? 'Journal' : 'Nouvelles');
+      tocDrawerBody.appendChild(back);
+      document.querySelectorAll('#jl-toc a').forEach(srcA => {
+        const a = document.createElement('a');
+        a.href = srcA.getAttribute('href') || '#';
+        a.textContent = srcA.textContent || '';
+        if (srcA.style.paddingLeft) a.style.paddingLeft = '1.4rem';
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          tocClose();
+          const id = a.getAttribute('href')?.replace('#', '');
+          if (id) setTimeout(() => {
+            const el = document.getElementById(id);
+            if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 76, behavior: 'smooth' });
+          }, 320);
+        });
+        tocDrawerBody.appendChild(a);
+      });
+    }
+    tocOpen();
+  });
+
+  tocDrawerClose?.addEventListener('click', tocClose);
+
+  // Drag-to-dismiss
+  let _td = 0, _tc = 0;
+  tocDrawerHand?.addEventListener('touchstart', (e) => { _td = e.touches[0].clientY; _tc = 0; if (tocDrawer) tocDrawer.style.transition = 'none'; }, { passive: true });
+  tocDrawerHand?.addEventListener('touchmove',  (e) => { const d = e.touches[0].clientY - _td; _tc = d; if (d > 0 && tocDrawer) tocDrawer.style.transform = `translateY(${d}px)`; }, { passive: true });
+  tocDrawerHand?.addEventListener('touchend',   () => { if (tocDrawer) tocDrawer.style.transition = ''; if (_tc > 80) { tocClose(); if (tocDrawer) tocDrawer.style.transform = ''; } else { if (tocDrawer) tocDrawer.style.transform = ''; } });
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') tocClose(); });
 
   // ── Mémorisation de position ──
   window.addEventListener('load', () => {
