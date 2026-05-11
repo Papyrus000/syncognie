@@ -669,6 +669,38 @@ const sl = stadeLabel(stade);
     }
   }
 
+  /* ── Paysage smartphone : optimisations spécifiques ── */
+  @media (max-width: 860px) and (orientation: landscape) {
+    /* Réduire les marges verticales pour maximiser l'espace texte */
+    .sls-wrap {
+      padding-top: 1.2rem;
+    }
+    .sls-art-header {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+    }
+    .sls-art-titre {
+      font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+      margin-bottom: .5rem;
+    }
+    .sls-art-desc {
+      font-size: .9rem;
+      margin-bottom: .8rem;
+    }
+    .sls-hint {
+      padding: .6rem .85rem;
+      margin-bottom: 1.5rem;
+    }
+    .sls-body h2 {
+      margin-top: 2rem;
+      scroll-margin-top: 60px;
+    }
+    /* Barre de progression plus près du haut en paysage */
+    .sls-progress {
+      top: 44px;
+    }
+  }
+
   /* ── Mobile portrait (max 430px) ── */
   @media (max-width: 430px) {
     .sls-wrap {
@@ -1488,6 +1520,134 @@ const sl = stadeLabel(stade);
   @media (min-width: 861px) {
     .sls-drawer, .sls-drawer-overlay { display: none !important; }
   }
+
+  /* ── Barre de lecture mobile (remplace le panneau config masqué) ── */
+  .sls-mobile-toolbar {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .sls-mobile-toolbar {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 700;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .55rem 1rem;
+      padding-bottom: calc(.55rem + env(safe-area-inset-bottom, 0px));
+      background: var(--sls-paper, #FAF8F4);
+      border-top: 1px solid var(--sls-border, #E4DDD4);
+      box-shadow: 0 -4px 16px rgba(28,24,17,.07);
+    }
+
+    /* Séparateur vertical */
+    .sls-toolbar-sep {
+      width: 1px;
+      height: 20px;
+      background: var(--sls-border, #E4DDD4);
+      flex-shrink: 0;
+      margin: 0 .15rem;
+    }
+
+    /* Label de groupe */
+    .sls-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .sls-toolbar-lbl {
+      font-family: var(--sls-sans, 'DM Sans', sans-serif);
+      font-size: .58rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--sls-ink-muted, #9A8F82);
+    }
+
+    /* Boutons toolbar — plus grands que desktop pour le touch */
+    .sls-toolbar-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--sls-border, #E4DDD4);
+      background: var(--sls-bg, #F5F2EE);
+      color: var(--sls-ink-muted, #9A8F82);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .15s, border-color .15s, color .15s;
+      font-family: var(--sls-sans, 'DM Sans', sans-serif);
+      line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .sls-toolbar-btn:active {
+      background: var(--sls-blue-hl2, rgba(61,122,154,.18));
+      border-color: var(--sls-blue-s, #74aec8);
+      color: var(--sls-blue, #5a9ab8);
+    }
+    .sls-toolbar-btn.active {
+      background: var(--sls-blue-hl2, rgba(61,122,154,.18));
+      border-color: var(--sls-blue, #5a9ab8);
+      color: var(--sls-blue, #5a9ab8);
+    }
+    .sls-toolbar-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Décaler le contenu pour ne pas qu'il soit caché sous la toolbar */
+    .sls-wrap {
+      padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    /* Décaler le drawer pour qu'il s'arrête au-dessus de la toolbar */
+    .sls-drawer {
+      bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: 0;
+      border-radius: 16px 16px 0 0;
+    }
+  }
+
+  /* Paysage smartphone : toolbar plus compacte */
+  @media (max-width: 860px) and (orientation: landscape) {
+    .sls-mobile-toolbar {
+      padding: .4rem 1rem;
+      padding-bottom: calc(.4rem + env(safe-area-inset-bottom, 0px));
+    }
+    .sls-toolbar-btn {
+      width: 32px;
+      height: 32px;
+    }
+    /* En paysage, masquer les labels de groupe pour gagner de la place */
+    .sls-toolbar-lbl {
+      display: none;
+    }
+    /* Drawer plus petit en paysage pour laisser plus de texte visible */
+    .sls-drawer {
+      max-height: 60vh;
+      bottom: calc(46px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  /* Mode nuit — toolbar */
+  body.sls-night-mode .sls-mobile-toolbar {
+    background: #2a2720;
+    border-top-color: #3e3830;
+    box-shadow: 0 -4px 16px rgba(0,0,0,.3);
+  }
 </style>
 
 <!-- Barre de progression -->
@@ -1649,6 +1809,43 @@ const sl = stadeLabel(stade);
 <div id="sls-concepts-data" hidden set:text={conceptsJson}></div>
 <div id="sls-registre-data" hidden set:text={slsRegistreJson}></div>
 
+<!-- ── Barre de lecture mobile (portrait + paysage) ── -->
+<div class="sls-mobile-toolbar" id="sls-mobile-toolbar" aria-label="Contrôles de lecture">
+
+  <!-- Taille du texte -->
+  <div class="sls-toolbar-group">
+    <span class="sls-toolbar-lbl">Taille</span>
+    <button class="sls-toolbar-btn" id="sls-mob-sz-down" aria-label="Réduire la taille du texte" title="Texte −">A−</button>
+    <button class="sls-toolbar-btn" id="sls-mob-sz-up"   aria-label="Agrandir la taille du texte" title="Texte +">A+</button>
+  </div>
+
+  <div class="sls-toolbar-sep" aria-hidden="true"></div>
+
+  <!-- Interligne -->
+  <div class="sls-toolbar-group">
+    <span class="sls-toolbar-lbl">Interligne</span>
+    <button class="sls-toolbar-btn" id="sls-mob-lh-down" aria-label="Réduire l'interligne" title="Interligne −">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <button class="sls-toolbar-btn" id="sls-mob-lh-up" aria-label="Augmenter l'interligne" title="Interligne +">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="4" x2="21" y2="4"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="20" x2="21" y2="20"/></svg>
+    </button>
+  </div>
+
+  <div class="sls-toolbar-sep" aria-hidden="true"></div>
+
+  <!-- Mode clair flat -->
+  <button class="sls-toolbar-btn sls-toolbar-btn--flat" id="sls-mob-flat" aria-label="Mode clair sans gradient" title="Mode clair">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+
+  <!-- Mode nuit -->
+  <button class="sls-toolbar-btn sls-toolbar-btn--night" id="sls-mob-night" aria-label="Mode nuit" title="Mode nuit">
+    <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+
+</div>
+
 <script>
 (function () {
   const _prog  = document.getElementById('sls-progress');
@@ -1778,6 +1975,14 @@ const sl = stadeLabel(stade);
   const lhUp     = document.getElementById('sls-lh-up');
   const nightBtn = document.getElementById('sls-night');
 
+  // Boutons mobile toolbar (miroirs des boutons desktop)
+  const mobSzDown  = document.getElementById('sls-mob-sz-down');
+  const mobSzUp    = document.getElementById('sls-mob-sz-up');
+  const mobLhDown  = document.getElementById('sls-mob-lh-down');
+  const mobLhUp    = document.getElementById('sls-mob-lh-up');
+  const mobNight   = document.getElementById('sls-mob-night');
+  const mobFlat    = document.getElementById('sls-mob-flat');
+
   // Taille de corps
   let fontSize = parseInt(localStorage.getItem('sls_fontsize') || '18', 10);
   function applySize() {
@@ -1787,6 +1992,8 @@ const sl = stadeLabel(stade);
   applySize();
   szDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
   szUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
+  mobSzDown?.addEventListener('click', () => { if (fontSize > 14) { fontSize--; applySize(); } });
+  mobSzUp?.addEventListener('click',   () => { if (fontSize < 24) { fontSize++; applySize(); } });
 
   // Interligne
   const LH_STEPS = [1.55, 1.7, 1.87, 2.0, 2.15];
@@ -1798,6 +2005,8 @@ const sl = stadeLabel(stade);
   applyLH();
   lhDown?.addEventListener('click', () => { if (lhIdx > 0)                   { lhIdx--; applyLH(); } });
   lhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
+  mobLhDown?.addEventListener('click', () => { if (lhIdx > 0)                   { lhIdx--; applyLH(); } });
+  mobLhUp?.addEventListener('click',   () => { if (lhIdx < LH_STEPS.length - 1) { lhIdx++; applyLH(); } });
 
   // Mode nuit / clair flat
   const flatBtn  = document.getElementById('sls-flat');
@@ -1808,6 +2017,9 @@ const sl = stadeLabel(stade);
     document.body.classList.toggle('sls-night-mode', mode === 'night');
     flatBtn?.classList.toggle('active',  mode === 'flat');
     nightBtn?.classList.toggle('active', mode === 'night');
+    // Synchroniser les boutons de la toolbar mobile
+    mobFlat?.classList.toggle('active',  mode === 'flat');
+    mobNight?.classList.toggle('active', mode === 'night');
     localStorage.setItem('sls_mode', mode);
   }
 
@@ -1819,6 +2031,14 @@ const sl = stadeLabel(stade);
     applyMode(current === 'flat' ? 'default' : 'flat');
   });
   nightBtn?.addEventListener('click', () => {
+    const current = localStorage.getItem('sls_mode') || 'default';
+    applyMode(current === 'night' ? 'default' : 'night');
+  });
+  mobFlat?.addEventListener('click', () => {
+    const current = localStorage.getItem('sls_mode') || 'default';
+    applyMode(current === 'flat' ? 'default' : 'flat');
+  });
+  mobNight?.addEventListener('click', () => {
     const current = localStorage.getItem('sls_mode') || 'default';
     applyMode(current === 'night' ? 'default' : 'night');
   });
