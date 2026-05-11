@@ -1,0 +1,385 @@
+{
+  "fatigue-decisionnelle": {
+    "penseur": "Roy Baumeister · decision fatigue & ego depletion (années 1990–2000) · révisé par Kurzban, Inzlicht, Job & Dweck (2010–2016)",
+    "nom": "La fatigue décisionnelle",
+
+    "sidebar_p1": {
+      "prisme": "Chaque décision de la journée laisse une trace — et à 18h27, le compteur est presque vide.",
+      "lecture": "Quand Mélanie 'se sent chargée', ce n'est pas une métaphore. Une journée d'arbitrages, d'e-mails répondus, de tensions gérées, de priorités pesées a progressivement érodé la disponibilité cognitive qu'une décision coûteuse demande. La séance de sport n'est pas une décision difficile en soi — elle est difficile maintenant, dans cet état, à cet instant. Le même choix, posé à 9h du matin, aurait une autre issue."
+    },
+
+    "corps": "La fatigue décisionnelle désigne la dégradation progressive de la qualité des décisions au fil d'une journée. Chaque choix effectué — même minuscule — consomme une part de la capacité d'autorégulation. Quand cette réserve s'épuise, le comportement par défaut prend le dessus : l'option la moins coûteuse, la plus immédiate, la plus familière.",
+
+    "approfondissement": {
+      "scientifique": "Roy Baumeister et ses collègues ont documenté dès 1998 une série d'effets cohérents : les décisions de fin de journée tendent à être de moins bonne qualité, les comportements d'impulsion augmentent, la capacité d'inhibition se réduit. Les études les plus connues portaient sur des juges de libération conditionnelle (Danziger et al., 2011) ou des choix de consommation en magasin.",
+      "controverses": "Depuis 2010, ce modèle a fait l'objet d'une remise en cause substantielle. Une méta-analyse préregistrée à grande échelle (Hagger et al., 2016, Perspectives on Psychological Science) a trouvé des effets nuls ou négligeables dans des conditions contrôlées strictes. Carter & McCullough (2014) ont montré que les études positives souffraient de biais de publication. Surtout, Job, Dweck & Walton (2010) ont apporté une découverte troublante : l'effet de fatigue décisionnelle n'apparaît que chez les personnes qui croient que la volonté est une ressource limitée. Ceux qui croient la volonté illimitée ne montrent pas l'effet. Ce résultat suggère que la 'déplétion' est partiellement auto-réalisatrice — construite par la croyance, pas uniquement par la physiologie.",
+      "alternatives": "Le modèle le plus solide aujourd'hui est l'opportunistic-cost model de Kurzban, Duckworth, Kable & Myers (2013) : la fatigue n'est pas un épuisement de ressource mais une réévaluation dynamique des coûts d'opportunité. Le cerveau compare en permanence l'utilité marginale de la tâche actuelle contre celle des alternatives disponibles. Quand les alternatives semblent plus rentables — ou quand l'effort de la tâche actuelle semble disproportionné — le système 'se fatigue'. Ce modèle prédit les mêmes comportements que Baumeister sans invoquer de ressource biologiquement épuisable. Il est plus compatible avec les données d'imagerie cérébrale actuelles. Un cadre complémentaire est celui d'Inzlicht & Schmeichel (2012) : la fatigue est une réorientation motivationnelle vers des récompenses immédiates — moins une incapacité qu'un changement de cap attentionnel.",
+      "champ": "Ce concept s'applique à tout contexte où des décisions séquentielles doivent être prises sur une même journée : médecins en fin de visite, juges en fin d'audience, acheteurs en fin de parcours commercial. Sa limite principale est que l'effet est modéré par les croyances individuelles et le contexte — il ne s'applique pas de façon universelle ni mécanique."
+    },
+
+    "extrait": "Elle se sent chargée. Son système a déjà beaucoup décidé aujourd'hui.",
+
+    "vie": "Placer les décisions importantes en début de journée. Réduire le nombre de micro-décisions inutiles (tenues, menus, trajets). Formuler les règles comportementales à l'avance, avant l'état de charge.",
+
+    "fiche": {
+      "essentiel": "Le soir, la décision coûteuse se heurte à un système qui a déjà beaucoup arbitré. Que ce soit par épuisement d'une ressource ou par réévaluation des coûts d'opportunité, le résultat pratique est le même : l'option par défaut gagne plus facilement.",
+      "connexions": [
+        "Épuisement de l'ego : le même auteur, une description complémentaire de l'état résultant.",
+        "Opportunistic-cost model (Kurzban) : l'explication alternative la plus solide aujourd'hui.",
+        "Architecture du choix : si la réserve est basse, l'environnement décide à la place."
+      ],
+      "distinctions": "Ne pas confondre avec le simple 'coup de mou du soir' : la fatigue décisionnelle est spécifiquement liée au volume de décisions prises, pas à la fatigue physique ou émotionnelle générale.",
+      "mots_cles": ["Fatigue décisionnelle", "Autorégulation", "Ressource cognitive", "Comportement par défaut", "Baumeister", "Kurzban", "Opportunistic-cost"],
+      "usages": [
+        "Décider des règles comportementales le matin, avant la fatigue.",
+        "Réduire les micro-décisions qui épuisent la réserve inutilement.",
+        "Prévoir une version minimale de l'action pour les fins de journée.",
+        "Identifier le moment de la journée où la réserve est la plus haute."
+      ],
+      "retenir": "Ce n'est pas toujours la motivation qui manque le soir. C'est la disponibilité pour la délibération coûteuse — et le comportement par défaut qui en profite."
+    },
+
+    "jauges": {
+      "Réserve décisionnelle restante": 22,
+      "Décisions déjà effectuées": 88,
+      "Comportement par défaut actif": 79,
+      "Seuil d'effort perçu": 84
+    }
+  },
+
+  "architecture-choix": {
+    "penseur": "Richard Thaler & Cass Sunstein · Nudge (2008) · Herbert Simon · rationalité limitée",
+    "nom": "L'architecture du choix",
+
+    "sidebar_p1": {
+      "prisme": "L'environnement ne propose pas des options — il en favorise certaines avant même que la délibération commence.",
+      "lecture": "Le téléphone est à l'avant. Le sac est derrière. Cette asymétrie spatiale de quelques dizaines de centimètres est structurellement décisive : ce qui est accessible tend à être choisi, surtout quand les ressources délibératives sont basses. Mélanie n'a pas 'cédé' au téléphone — l'architecture de l'habitacle a simplement rendu une option plus probable que l'autre, silencieusement, avant qu'elle ait eu le temps de peser."
+    },
+
+    "corps": "L'architecture du choix désigne la façon dont la disposition physique et contextuelle des options influence les décisions, indépendamment des préférences conscientes. Ce n'est pas ce qu'on veut qui détermine ce qu'on choisit — c'est souvent ce qui est le plus proche, le plus visible, le plus accessible. L'environnement n'est jamais neutre : il oriente silencieusement.",
+
+    "approfondissement": {
+      "scientifique": "Thaler et Sunstein ont formalisé dans Nudge (2008) l'idée que tout contexte décisionnel a une architecture — un arrangement implicite qui favorise certaines options. Leur concept central est le 'default' : l'option qui s'applique si on ne fait rien. Les études montrent que les options par défaut sont choisies de façon disproportionnée, dans des domaines aussi variés que l'épargne retraite, le don d'organes ou les menus de cantine. Ce biais de statu quo est robuste et bien répliqué.",
+      "controverses": "L'architecture du choix est l'un des concepts les plus solides empiriquement de l'économie comportementale. Les critiques principales portent sur l'éthique (qui décide de l'architecture ?) et sur la taille d'effet : les nudges sont plus efficaces pour les comportements automatiques que pour les décisions impliquant des valeurs profondes. Johnson & Goldstein (2003) ont montré sur le don d'organes que le même fait — être donneur ou non — produit des taux radicalement différents selon que l'opt-out ou l'opt-in est le défaut. L'effet est réel. Sa transposabilité à tous les contextes est plus limitée.",
+      "alternatives": "L'économie attentionnelle (Herbert Simon sur la rationalité limitée, Michael Goldhaber en 1997 au contexte numérique) est le cadre macro qui explique pourquoi le téléphone a été conçu pour être là : dans un monde d'information abondante, l'attention est la ressource rare, et les plateformes optimisent pour la capter. Ce cadre est utile pour comprendre pourquoi l'objet existe sous cette forme — mais dans la voiture, le mécanisme immédiat est plus physique et plus simple que la compétition attentionnelle globale. Un autre cadre connexe est la théorie des affordances (Gibson, 1979) : les objets présentent des 'possibilités d'action' perceptuelles directes, indépendamment de l'intention. Le téléphone, visible et à portée, affordait l'action avant toute décision consciente.",
+      "champ": "Applicable à tout design d'environnement : organisation physique d'un espace de travail, disposition d'une cuisine, paramètres par défaut d'une application, ordre des options dans un formulaire. La limite est que l'architecture ne suffit pas quand la motivation est profondément négative — elle déplace les probabilités, elle ne les inverse pas."
+    },
+
+    "extrait": "Le téléphone n'a pas besoin de la convaincre. Il est déjà dans sa main.",
+
+    "vie": "Placer l'action souhaitée plus près physiquement que l'option concurrente. Mettre le téléphone dans le sac, pas sur le siège avant. Préparer le sac de sport à l'avant du coffre. Concevoir l'environnement comme une décision prise à l'avance.",
+
+    "fiche": {
+      "essentiel": "Modifier l'environnement, c'est modifier qui gagne l'arbitrage — avant même que la volonté entre en jeu. Le meilleur moment pour décider est avant d'être dans l'état où la décision est coûteuse.",
+      "connexions": [
+        "Fatigue décisionnelle : quand les ressources baissent, l'architecture pèse encore plus lourd.",
+        "Coût d'activation : l'architecture détermine quelle friction est subie en premier.",
+        "Affordances (Gibson) : la perception directe des possibilités d'action précède la délibération."
+      ],
+      "distinctions": "L'économie attentionnelle explique pourquoi le téléphone a été conçu pour capter — l'architecture du choix explique ce qui se passe dans la voiture, maintenant. Ce sont deux niveaux d'analyse différents.",
+      "mots_cles": ["Architecture du choix", "Nudge", "Option par défaut", "Accessibilité", "Thaler & Sunstein", "Affordances", "Environnement décisionnel"],
+      "usages": [
+        "Mettre le sac de sport à l'avant du coffre, pas derrière.",
+        "Poser le téléphone dans un endroit moins accessible pendant les moments de transition.",
+        "Concevoir l'environnement comme une stratégie, pas comme un décor.",
+        "Rendre l'action souhaitée l'option la plus facile à initier."
+      ],
+      "retenir": "On ne lutte pas contre l'architecture — on la refait. La décision la plus efficace est celle qu'on prend en concevant l'environnement, pas celle qu'on prend dedans."
+    },
+
+    "jauges": {
+      "Accessibilité du téléphone": 95,
+      "Accessibilité du sac": 38,
+      "Friction numérique": 8,
+      "Friction vers la salle": 76
+    }
+  },
+
+  "cout-activation": {
+    "penseur": "Kurt Lewin · théorie du champ (1951) · BJ Fogg · Tiny Habits (2019) · Pychyl & Sirois · procrastination comme régulation émotionnelle (2013)",
+    "nom": "Le coût d'activation",
+
+    "sidebar_p1": {
+      "prisme": "Ce qui bloque n'est pas la séance — c'est le passage d'un état à un autre.",
+      "lecture": "Mélanie ne fuit pas l'entraînement. Elle fuit la transition : relancer la voiture, traverser la ville, se garer, entrer, se changer. Vus séparément, chacun de ces micro-seuils est presque rien. Vus ensemble, le cerveau les additionne en un bloc unique qui paraît infranchissable depuis l'immobilité. C'est le coût d'activation — l'énergie de la mise en mouvement, pas l'énergie de l'action elle-même."
+    },
+
+    "corps": "Le coût d'activation désigne l'énergie nécessaire pour passer d'un état à un autre — pas l'énergie de l'action, mais celle de la transition. Quitter l'immobilité, changer de contexte physique, enclencher une séquence nouvelle : chaque micro-étape a un coût, et le cerveau tend à les additionner en un seul bloc perçu comme massif.",
+
+    "approfondissement": {
+      "scientifique": "Le concept s'inscrit dans la lignée de la théorie du champ de Kurt Lewin (1951), qui décrivait le comportement comme résultant de forces en tension dans un espace psychologique — certaines poussant vers l'action (forces motrices), d'autres s'y opposant (forces restrictives). La friction comportementale en est une application contemporaine : réduire les forces restrictives est souvent plus efficace qu'augmenter les forces motrices. BJ Fogg a rendu cela opérationnel avec sa B=MAP (Behavior = Motivation × Ability × Prompt) : quand l'Ability est perçue comme trop basse, même une forte motivation ne suffit pas à déclencher le comportement.",
+      "controverses": "La notion de 'friction' comme levier comportemental est bien documentée en économie comportementale (Thaler, Sunstein, Ariely). Mais l'attribution à Fogg comme théoricien principal est réductrice : il a surtout opérationnalisé pour un public grand public des principes déjà formalisés. Pychyl & Sirois (2013) apportent une nuance importante : la procrastination n'est pas un calcul de coûts — c'est une stratégie de régulation émotionnelle. On ne fuit pas la tâche parce qu'elle coûte trop d'énergie ; on fuit l'état émotionnel désagréable qu'elle anticipe. C'est distinct du coût d'activation pur — et parfois plus proche de ce que vit Mélanie.",
+      "alternatives": "La théorie de l'inertie comportementale (behavioral inertia) issue de la psychologie sociale décrit la même résistance au changement d'état, mais en soulignant le rôle du contexte et des routines installées. Le concept de 'implementation intentions' de Peter Gollwitzer (1999) est la réponse comportementale la plus validée : formuler à l'avance 'quand X se produit, je fais Y' réduit drastiquement le coût d'activation en pré-décidant la transition. Des méta-analyses (Gollwitzer & Sheeran, 2006) montrent des effets moyens à larges sur les comportements de santé.",
+      "champ": "Applicable à tout comportement dont le démarrage est disproportionnellement difficile par rapport à sa continuation. Exercice physique, travail profond, conversations difficiles. La limite : réduire la friction ne suffit pas si la source du blocage est émotionnelle (anxiété, évitement) plutôt que purement structurelle."
+    },
+
+    "extrait": "Le plus difficile n'est peut-être pas de s'entraîner. C'est de quitter l'état dans lequel elle se trouve.",
+
+    "vie": "Réduire la taille de la première action. Remplacer 'faire une séance' par 'entrer dans la salle'. Préparer les affaires avant la fatigue. Supprimer les étapes intermédiaires où l'on peut renoncer.",
+
+    "fiche": {
+      "essentiel": "L'obstacle principal n'est presque jamais l'action — c'est le démarrage. Réduire le seuil d'entrée est souvent plus efficace que chercher plus de motivation. Une fois en mouvement, la résistance change de nature.",
+      "connexions": [
+        "Implementation intentions (Gollwitzer) : formuler la transition à l'avance supprime la friction décisionnelle.",
+        "Procrastination comme régulation émotionnelle (Pychyl & Sirois) : quand le blocage est émotionnel, pas structurel.",
+        "Architecture du choix : ce qui est proche réduit mécaniquement le coût d'activation."
+      ],
+      "distinctions": "Le coût d'activation est structurel — il porte sur la séquence physique. La procrastination émotionnelle (Pychyl) porte sur l'état affectif anticipé. Les deux peuvent coexister mais appellent des réponses différentes.",
+      "mots_cles": ["Coût d'activation", "Friction", "Seuil d'entrée", "Inertie", "Tiny Habits", "BJ Fogg", "Lewin", "Implementation intentions"],
+      "usages": [
+        "Formuler une première action minuscule, non l'action complète.",
+        "Préparer les affaires avant l'état de charge.",
+        "Supprimer les étapes intermédiaires entre la décision et l'action.",
+        "Utiliser 'quand je sors du bureau, je mets le sac à l'avant' comme intention d'implémentation."
+      ],
+      "retenir": "Quand l'action paraît énorme, réduire la porte d'entrée est plus puissant que renforcer la motivation. La première étape est le levier, pas l'objectif final."
+    },
+
+    "jauges": {
+      "Inertie actuelle": 81,
+      "Seuil d'entrée perçu": 87,
+      "Élan disponible": 28,
+      "Probabilité de démarrage": 33
+    }
+  },
+
+  "epuisement-ego": {
+    "penseur": "Roy Baumeister · ego depletion (1998) · révisé par Inzlicht & Schmeichel (2012) · Job, Dweck & Walton (2010) · Shenhav et al. · effort-based decision making (2017)",
+    "nom": "L'épuisement de l'ego — et ses révisions",
+
+    "sidebar_p1": {
+      "prisme": "Ce n'est pas du plaisir que promet le canapé — c'est la suspension de l'effort d'être soi.",
+      "lecture": "Toute la journée, Mélanie a dû se tenir, choisir, inhiber, répondre, s'adapter. À 18h27, ce que cherche son système n'est pas une récompense — c'est l'arrêt de la régulation. Le canapé promet exactement cela : ne plus avoir à s'autorégulation, ne plus peser, ne plus décider. Ce que Baumeister a appelé épuisement de l'ego décrit cet état — même si le mécanisme sous-jacent est aujourd'hui plus débattu que la description elle-même."
+    },
+
+    "corps": "L'épuisement de l'ego désigne l'état dans lequel la capacité d'autorégulation est temporairement réduite après un effort prolongé de contrôle, d'inhibition ou de prise de décision. Ce n'est pas une humeur — c'est un état fonctionnel : la tolérance à la frustration baisse, la résistance à l'impulsion diminue, l'option immédiate devient difficile à refuser.",
+
+    "approfondissement": {
+      "scientifique": "Baumeister (1998) proposait un modèle de ressource : l'autorégulation puise dans une réserve partagée, dont l'épuisement est partiellement corrélé à la glycémie. Ce modèle a généré des centaines d'études et une importante littérature clinique et appliquée.",
+      "controverses": "Le modèle de la ressource épuisable est aujourd'hui l'un des plus débattus de la psychologie sociale. La méta-analyse préregistrée de Hagger et al. (2016) a trouvé un effet quasi nul dans des conditions de contrôle strict. Carter & McCullough (2014) ont démontré que les études positives reflétaient probablement un biais de publication. La découverte la plus déstabilisante est celle de Job, Dweck & Walton (2010) : l'effet d'ego depletion n'apparaît que chez les personnes qui croient que la volonté est une ressource limitée. L'effet est donc partiellement auto-réalisateur — une croyance culturelle, pas seulement un fait biologique. Baumeister lui-même a partiellement révisé sa position.\n\nInzlicht & Schmeichel (2012) proposent un modèle alternatif : non pas une déplétion de ressource mais un déplacement motivationnel. Après un effort prolongé, l'attention se réoriente vers des récompenses immédiates — non pas parce que la capacité est épuisée, mais parce que le système recalibr ses priorités. C'est un changement de cap, pas une panne.",
+      "alternatives": "Le modèle d'Inzlicht & Schmeichel (reorientation motivationnelle) est empiriquement plus solide. Celui de Shenhav, Botvinick & Cohen (2013, 2017) sur l'effort-based decision making apporte le niveau neuroscientifique : le cortex cingulaire antérieur (ACC) calcule en permanence le rapport coût/bénéfice de l'effort cognitif. Quand le coût perçu dépasse le bénéfice attendu, l'ACC 'désinvestit' la tâche. Ce n'est pas une défaillance — c'est un calcul adaptatif. Ce cadre est compatible avec l'expérience de Mélanie : son système ne cède pas par faiblesse, il réévalue rationnellement l'arbitrage à la lumière des ressources disponibles.",
+      "champ": "Le concept reste phénoménologiquement précis — l'état décrit correspond à quelque chose de réel et de reconnaissable. Sa valeur est descriptive et clinique. Sa valeur mécaniste est plus incertaine. Applicable à tout contexte de régulation prolongée : parentalité, professions d'aide, gestion de conflits interpersonnels."
+    },
+
+    "extrait": "Ce qui l'attire n'est pas le plaisir. C'est la fin de l'effort d'être soi.",
+
+    "vie": "Reconnaître l'état comme un signal, pas comme un défaut. Prévoir une vraie récupération — pas le scroll, mais un repos choisi. Ne pas prendre de décisions importantes dans cet état si possible.",
+
+    "fiche": {
+      "essentiel": "Le canapé promet l'arrêt de la régulation, pas une récompense. Ce que cherche Mélanie est légitime : son système a besoin de récupération réelle. La question est de distinguer la récupération véritable (sommeil, silence, repos passif choisi) du pseudo-repos (scroll, stimulation passive) qui maintient l'activation.",
+      "connexions": [
+        "Reorientation motivationnelle (Inzlicht) : le mécanisme alternatif le plus solide.",
+        "Effort-based decision making (Shenhav) : le niveau neuroscientifique du même phénomène.",
+        "Delay discounting (Ainslie) : connexe mais distinct — suppose une délibération intertemporelle que l'état d'épuisement rend précisément difficile."
+      ],
+      "distinctions": "Le delay discounting (Ainslie) décrit la dévaluation hyperbolique des récompenses futures. Il suppose qu'on est en train de peser deux options dans le temps — ce qui n'est pas ce qui se passe ici. Mélanie ne fait pas un calcul intertemporel : elle fuit un état présent inconfortable.",
+      "mots_cles": ["Épuisement de l'ego", "Autorégulation", "Inzlicht", "Reorientation motivationnelle", "Effort-based decision making", "Shenhav", "ACC", "Récupération"],
+      "usages": [
+        "Identifier le besoin réel : repos, pas stimulation passive.",
+        "Préférer une vraie récupération courte à un scroll long.",
+        "Prévoir une règle minimale avant l'état d'épuisement.",
+        "Ne pas se juger sur des décisions prises dans un état de recalibration du système."
+      ],
+      "retenir": "Ce qu'on appelle manque de volonté le soir est probablement une réévaluation des coûts d'effort par un système qui recalibre ses priorités. La réponse n'est pas l'effort — c'est la récupération réelle, ou la pré-décision formulée avant d'entrer dans cet état."
+    },
+
+    "jauges": {
+      "Capacité d'inhibition restante": 29,
+      "Besoin de soulagement": 88,
+      "Résistance à l'impulsion": 31,
+      "Qualité de récupération disponible": 24
+    }
+  },
+
+  "affective-forecasting": {
+    "penseur": "Timothy Wilson & Daniel Gilbert · affective forecasting (2000–2005) · impact bias · Daniel Kahneman · focusing illusion",
+    "nom": "L'affective forecasting",
+
+    "sidebar_p1": {
+      "prisme": "On prédit toujours depuis l'état où l'on est — et on se trompe presque toujours.",
+      "lecture": "Mélanie sait que quelque chose change après dix minutes. Elle l'a vécu. Et pourtant, ce savoir ne pèse pas dans sa décision de ce soir : ce qu'elle anticipe, c'est la séance vue depuis la fatigue, depuis l'immobilité, depuis l'inertie du moment. L'état présent contamine la prédiction de l'état futur. Wilson et Gilbert ont nommé ce biais systematic — pas une erreur de jugement, mais une structure de l'esprit humain."
+    },
+
+    "corps": "L'affective forecasting désigne la capacité à anticiper ses états émotionnels futurs — et les erreurs systématiques qu'on y commet. On surestime généralement l'intensité et la durée des expériences négatives à venir. On sous-estime sa propre capacité à s'adapter une fois dans l'action. Ce biais, nommé impact bias par Wilson et Gilbert, fait paraître la séance plus pénible qu'elle ne le sera.",
+
+    "approfondissement": {
+      "scientifique": "Wilson & Gilbert (2003, 2005) ont produit une série d'études montrant que les humains surestiment systématiquement l'impact émotionnel d'événements futurs — positifs comme négatifs. L'impact bias désigne cette surestimation. Un mécanisme connexe est la focusing illusion, identifiée par Kahneman & Schkade (1998) : quand on pense à un événement futur, on y focalise exclusivement, ignorant tous les autres éléments de la vie qui continueront d'exister. La séance de ce soir est évaluée comme si elle était toute la soirée — pas comme un épisode parmi d'autres.",
+      "controverses": "L'affective forecasting est l'un des concepts les plus robustes de la psychologie du bonheur. Les critiques portent surtout sur les conditions limites : l'effet est plus marqué pour les événements à distance temporelle moyenne, moins pour les événements très proches ou très lointains. Une limite importante est que les gens peuvent apprendre à corriger leurs prédictions avec de la pratique — ce que suggère le conseil d'utiliser la mémoire plutôt que l'imagination.",
+      "alternatives": "Le predictive processing (Karl Friston, free energy principle) est le cadre neuroscientifique sous-jacent : le cerveau génère en permanence des modèles prédictifs et minimise l'écart entre prédiction et expérience réelle. C'est l'architecture computationnelle qui explique pourquoi l'affective forecasting existe. Mais ce cadre est d'une complexité considérable — l'un des plus ambitieux et des plus débattus des neurosciences actuelles. Son application à une scène ordinaire comme celle-ci est techniquement justifiée mais pédagogiquement disproportionnée. Wilson et Gilbert permettent de comprendre le phénomène comportemental. Friston permettrait d'en comprendre l'architecture neuronale — à un niveau d'abstraction bien supérieur à ce que la scène requiert. Un cadre plus accessible et plus directement applicable est le concept de 'mood-as-information' (Schwarz & Clore, 1983) : on utilise son état affectif actuel comme information sur le futur, même quand cet état n'est pas pertinent pour l'évaluation.",
+      "champ": "Applicable à toute situation où on évalue une expérience future depuis un état émotionnel présent : anticipation d'une performance, d'une confrontation, d'un effort physique, d'une conversation difficile. Le remède empirique le plus validé est la consultation de la mémoire épisodique ('surrogation affective' : comment une autre personne dans cette situation s'est-elle sentie ?)."
+    },
+
+    "extrait": "Elle ne voit pas la séance telle qu'elle sera. Elle la voit depuis l'état où elle est.",
+
+    "vie": "Utiliser la mémoire plutôt que la prédiction : 'comment me suis-je sentie après la dernière séance ?' est une meilleure boussole que 'comment vais-je me sentir ce soir ?'. Tester la prédiction avec une entrée minimale avant de décider.",
+
+    "fiche": {
+      "essentiel": "On évalue ce qui vient depuis là où on est — et on se trompe presque toujours dans la même direction : on surestime le coût, on sous-estime la capacité d'adaptation. La mémoire des expériences passées est un correctif plus fiable que l'imagination prospective.",
+      "connexions": [
+        "Focusing illusion (Kahneman) : on isole la séance de son contexte, ce qui amplifie le coût perçu.",
+        "Mood-as-information (Schwarz & Clore) : l'humeur présente colore l'évaluation future comme si elle était informative.",
+        "Coût d'activation : la prédiction surestimée amplifie la résistance au démarrage."
+      ],
+      "distinctions": "Le predictive processing (Friston) explique le mécanisme neurologique de fond — mais il est d'un niveau de complexité disproportionné pour analyser une décision du soir. L'affective forecasting en est l'application comportementale directement observable.",
+      "mots_cles": ["Affective forecasting", "Impact bias", "Focusing illusion", "Wilson & Gilbert", "Mood-as-information", "Mémoire affective", "Schwarz & Clore"],
+      "usages": [
+        "Remplacer la prédiction par le souvenir : 'comment me suis-je sentie après ?'",
+        "Tester la prédiction avec dix minutes avant de décider d'arrêter.",
+        "Noter après les séances comment on s'est senti pour corriger les prédictions futures.",
+        "Reconnaître que l'état actuel biaise systématiquement la prévision dans le même sens."
+      ],
+      "retenir": "On évalue ce qui vient depuis là où on est — et on se trompe presque toujours. La mémoire corrige mieux que l'imagination. 'Comment me suis-je sentie après la dernière fois ?' est la meilleure boussole disponible."
+    },
+
+    "jauges": {
+      "Précision de la prédiction": 31,
+      "Surestimation du coût futur": 82,
+      "Mémoire affective disponible": 58,
+      "Biais d'impact actif": 79
+    }
+  },
+
+  "identite-comportementale": {
+    "penseur": "Edward Deci & Richard Ryan · Self-Determination Theory (depuis 1985) · James Clear · Atomic Habits (2018) · William James (1890)",
+    "nom": "L'identité comportementale",
+
+    "sidebar_p1": {
+      "prisme": "À 18h27, la question n'est plus seulement 'aller ou ne pas aller'. C'est 'qui suis-je en train de devenir ?'",
+      "lecture": "Une voix existe dans la voiture, moins spectaculaire que les autres. Elle ne crie pas. Elle ne promet pas de résultats. Elle dit simplement que cette séance compte pour ce qu'elle maintient, pas pour ce qu'elle produit physiquement. Si Mélanie a commencé à se voir comme quelqu'un qui va à la salle, chaque interruption rouvre une question plus large que le sport. C'est ce que Deci et Ryan appellent régulation intégrée — quand l'action est devenue une expression de soi, pas une obligation externe."
+    },
+
+    "corps": "La motivation la plus stable n'est pas celle qui vise un résultat externe — c'est celle qui est intégrée à l'identité. Deci et Ryan appellent régulation intégrée la forme de motivation où l'action est cohérente avec qui l'on est, pas seulement avec ce qu'on veut obtenir. Une action répétée devient alors une preuve de soi — et la continuité compte plus que la performance.",
+
+    "approfondissement": {
+      "scientifique": "La Self-Determination Theory (Deci & Ryan, 1985, 2000) est l'un des cadres les plus développés et les mieux validés de la psychologie de la motivation. Elle distingue différentes formes de régulation motivationnelle sur un continuum allant de l'amotivation à la régulation intégrée, en passant par la régulation externe (pression, récompense), introjectée (culpabilité, honte) et identifiée (choix personnel). La régulation intégrée — où l'action est cohérente avec ses valeurs et son identité — est la forme la plus stable et la plus résistante aux obstacles situationnels. Des centaines d'études en sport, éducation et santé valident ce gradient.",
+      "controverses": "La SDT est robuste. Les débats portent principalement sur la mesure précise des différentes formes de régulation et sur les variations culturelles : dans des contextes collectivistes, la régulation externe peut être vécue différemment que dans des contextes individualistes. James Clear (*Atomic Habits*, 2018) a proposé une reformulation très opérationnelle (*outcome-based* vs *identity-based*) qui est directement inspirée de la SDT — sans toujours le nommer explicitement. Sa valeur est pédagogique, pas scientifique originale.",
+      "alternatives": "Le concept de narrative identity (McAdams, 1993) apporte une dimension complémentaire : l'identité n'est pas seulement un stock de valeurs mais une histoire qu'on se raconte sur soi-même. Aller à la salle contribue à maintenir la cohérence de ce récit. Cette perspective est particulièrement utile pour comprendre pourquoi les ruptures (blessure, vacances, maladie) sont si difficiles à surmonter : elles menacent la continuité narrative. Le concept de self-efficacy (Bandura, 1977) est aussi connexe : la croyance en sa propre capacité à accomplir l'action est un prédicteur puissant du comportement — plus que la motivation déclarée.",
+      "champ": "Applicable à tous les comportements de santé à long terme, à la construction de pratiques professionnelles, aux relations. Limite : l'identité comportementale met du temps à se construire — elle n'est pas disponible au moment où on en a besoin, mais seulement après une phase de répétitions."
+    },
+
+    "extrait": "Ce n'est plus seulement la question d'aller à la salle. C'est la question de rester quelqu'un qui y retourne.",
+
+    "vie": "Valoriser la présence plutôt que la performance. Formuler l'action comme une continuité : 'c'est ce que je fais', pas 'je dois le faire'. Protéger les petites preuves les jours difficiles — ce sont elles qui construisent l'identité.",
+
+    "fiche": {
+      "essentiel": "L'identité comportementale réduit la négociation interne. On ne se demande plus 'ai-je envie ?' mais 'est-ce ce que fait quelqu'un comme moi ?'. Elle se construit par accumulation de petites preuves cohérentes — surtout les jours où ça coûte quelque chose.",
+      "connexions": [
+        "Self-efficacy (Bandura) : la croyance en sa capacité est un prédicteur aussi puissant que l'identité.",
+        "Narrative identity (McAdams) : l'action maintient la cohérence du récit de soi.",
+        "Habitudes (Wendy Wood) : une fois automatisée, l'action cesse de requérir l'identité comme moteur."
+      ],
+      "distinctions": "La SDT (Deci & Ryan) est le cadre scientifique. James Clear en est la version opérationnelle grand public, utile mais non originale. Ne pas les confondre dans un contexte académique.",
+      "mots_cles": ["Identité comportementale", "Self-Determination Theory", "Régulation intégrée", "Deci & Ryan", "Narrative identity", "Self-efficacy", "Bandura"],
+      "usages": [
+        "Formuler l'action comme une continuité, pas un exploit.",
+        "Valoriser la présence le jour difficile autant que la performance le jour facile.",
+        "Construire l'identité par petites preuves répétées, pas par déclarations.",
+        "Mesurer la séance à son impact identitaire autant qu'à son impact physique."
+      ],
+      "retenir": "On ne construit pas une identité par déclaration. On la construit par accumulation de preuves modestes, surtout les jours où ça coûte quelque chose. Une séance de dix minutes vaut parfois plus qu'une heure — pour ce qu'elle dit de qui on est en train de devenir."
+    },
+
+    "jauges": {
+      "Identité sportive consolidée": 48,
+      "Négociation interne": 81,
+      "Force de la dernière preuve": 52,
+      "Continuité maintenue": 61
+    }
+  },
+
+  "habitudes-automatisation": {
+    "penseur": "Wendy Wood · Good Habits, Bad Habits (2019) · Ann Graybiel · neurosciences des ganglions de la base · Peter Gollwitzer · implementation intentions (1999)",
+    "nom": "Les habitudes",
+
+    "sidebar_p1": {
+      "prisme": "Une habitude non installée oblige à refaire chaque soir la même délibération entière.",
+      "lecture": "Si aller à la salle était une habitude solidement ancrée dans un contexte stable — même heure, même trajet, même déclencheur — la scène dans la voiture n'aurait pas lieu. Le comportement se lancerait presque mécaniquement, sans requérir le Système 2. Ce soir, l'habitude n'est pas là. Et son absence force une décision complète au moment précis où les ressources sont au plus bas."
+    },
+
+    "corps": "Une habitude est une action progressivement déléguée à l'automatisme par la répétition dans un contexte stable. Wendy Wood a montré que les habitudes solides se déclenchent directement par le contexte — sans récompense consciente nécessaire. Même moment, même lieu, même séquence : le comportement se lance presque mécaniquement, sans délibération.",
+
+    "approfondissement": {
+      "scientifique": "Wendy Wood (USC) a produit certaines des recherches les plus rigoureuses sur les habitudes. Sa contribution centrale est la distinction entre comportement délibératif et comportement contextuel : les habitudes ne passent pas par la récompense consciente — elles sont encodées par la répétition dans un contexte stable (même lieu, même moment, même séquence). C'est la stabilité du contexte qui déclenche le comportement, pas la motivation du moment. Ann Graybiel (MIT) a identifié le mécanisme neurologique : les ganglions de la base et le striatum encodent les séquences comportementales répétées, les rendant progressivement indépendantes du cortex préfrontal. L'automatisation libère les ressources cognitives pour d'autres tâches.",
+      "controverses": "Charles Duhigg a popularisé la boucle habitude (déclencheur → routine → récompense) dans The Power of Habit (2012) : utile comme cadre d'entrée, mais plus descriptive que mécaniste. Les recherches de Wood montrent que la récompense consciente n'est pas nécessaire à l'installation d'une habitude — c'est la répétition dans un contexte stable qui compte. Le délai d'automatisation réel est aussi moins fixe que la vulgarisation le laisse entendre : '21 jours' est un mythe. Lally et al. (2010) ont montré que la durée réelle varie entre 18 et 254 jours selon la complexité du comportement et les variations de contexte.",
+      "alternatives": "Les implementation intentions de Peter Gollwitzer (1999) sont la réponse la plus validée pour la phase pré-habitude — quand la routine n'est pas encore automatisée. En formulant à l'avance 'quand je sors du bureau à 18h, je mets le sac à l'avant', on crée un lien si-alors qui simule le déclenchement automatique avant que l'habitude soit réellement installée. Des méta-analyses montrent des effets substantiels sur les comportements de santé. La notion de habit stacking (Clear, Wood) — associer un nouveau comportement à une habitude existante — exploite le même mécanisme de déclenchement contextuel.",
+      "champ": "Applicable à tous les comportements répétitifs dans un contexte stable. Limite majeure : les habitudes sont très sensibles aux changements de contexte (déménagement, vacances, horaires modifiés). Wood appelle ces moments des 'fresh starts' — des fenêtres où les automatismes sont suspendus et où l'installation de nouvelles habitudes est paradoxalement plus facile."
+    },
+
+    "extrait": "Tant que l'habitude n'est pas installée, chaque séance redevient une discussion entière.",
+
+    "vie": "Répéter la même première étape dans le même contexte. Associer l'action à un déclencheur contextuel précis. Préférer la régularité modeste à la performance irrégulière pendant la phase de construction.",
+
+    "fiche": {
+      "essentiel": "Les habitudes solides protègent l'action contre les variations de ressources et de motivation. Elles ne demandent plus de délibération — elles suivent le contexte. Tant qu'elles ne sont pas là, chaque séance redevient une décision entière — et une décision prise dans l'état du soir.",
+      "connexions": [
+        "Implementation intentions (Gollwitzer) : la solution de transition avant l'automatisation réelle.",
+        "Ganglions de la base (Graybiel) : le mécanisme neurologique de l'automatisation.",
+        "Fresh starts (Wood) : les changements de contexte sont des fenêtres d'installation, pas seulement des menaces."
+      ],
+      "distinctions": "La boucle habitude de Duhigg (déclencheur/routine/récompense) est descriptive. Le mécanisme réel selon Wood est contextuel, pas récompense-dépendant. '21 jours' est un mythe — la durée réelle est très variable.",
+      "mots_cles": ["Habitude", "Automatisation", "Déclencheur contextuel", "Wendy Wood", "Striatum", "Gollwitzer", "Implementation intentions", "Fresh starts"],
+      "usages": [
+        "Répéter la même première étape dans le même contexte.",
+        "Associer l'action à un déclencheur précis — heure, lieu, séquence.",
+        "Utiliser les changements de vie comme fenêtres d'installation.",
+        "Préférer la régularité imparfaite à la performance irrégulière."
+      ],
+      "retenir": "L'automatisme protège certaines décisions importantes des variations de ressources. Il ne se construit pas par volonté — il se construit par répétition dans un contexte stable. La régularité imparfaite vaut mieux que la performance irrégulière."
+    },
+
+    "jauges": {
+      "Automatisation actuelle": 38,
+      "Délibération nécessaire ce soir": 86,
+      "Stabilité du contexte déclencheur": 44,
+      "Friction restante": 78
+    }
+  },
+
+  "processus-duaux": {
+    "penseur": "Keith Stanovich & Richard West (1990s) · Daniel Kahneman · Thinking, Fast and Slow (2011) · Jonathan Evans · raffinements du modèle dual",
+    "nom": "Le modèle des processus duaux",
+
+    "sidebar_p1": {
+      "prisme": "La scène visible est simple. Ce qui se joue en dessous est une question de ressources — pas de caractère.",
+      "lecture": "À 18h27, le Système 2 de Mélanie — celui qui délibère, projette, inhibe — est précisément celui qui a le moins de ressources disponibles. Et c'est lui qui porte seul l'option salle. Le Système 1 a tout pour lui : le téléphone déjà en main, le canapé imaginé sans effort, l'inertie de l'immobilité. Ce n'est pas un combat entre la volonté et la paresse. C'est un déséquilibre de ressources entre deux systèmes qui ne jouent pas à armes égales ce soir."
+    },
+
+    "corps": "Le modèle des processus duaux décrit la coexistence de deux systèmes cognitifs : un Système 1 rapide, automatique, économe en énergie, qui traite l'information sans effort conscient ; et un Système 2 lent, délibératif, coûteux, qui raisonne, inhibe, projette. Quand le second est affaibli, le premier gouverne.",
+
+    "approfondissement": {
+      "scientifique": "Stanovich & West ont introduit la terminologie Système 1 / Système 2 dans les années 1990. Kahneman l'a rendue accessible à un large public dans Thinking, Fast and Slow (2011). Le cadre est puissant parce qu'il intègre des décennies de recherches en cognition, jugement et prise de décision. Il prédit correctement de nombreux biais cognitifs (représentativité, disponibilité, ancrage) comme résultant de l'heuristique du Système 1 non corrigée par le Système 2.",
+      "controverses": "Le modèle dual est utile mais ses limites sont bien documentées. Jonathan Evans (l'un des théoriciens fondateurs) a proposé un modèle tripartite : au-delà du Système 1 et du Système 2, il distingue le 'mind in the moment' (traitement contextuel) de l'intelligence analytique (capacité à raisonner abstractement). La dichotomie binaire est simplificatrice. Keith Stanovich lui-même a différencié le Système 2 en deux composantes : la capacité algorithmique (calcul, logique) et la rationalité dispositionnelle (tendance à l'utiliser). Des chercheurs comme Gerd Gigerenzen contestent l'idée que le Système 1 est systématiquement 'biaisé' — ils montrent que les heuristiques rapides sont souvent adaptativement supérieures dans des environnements incertains. La division Système 1 / Système 2 est un outil pédagogique puissant, pas une cartographie neuroanatomique précise.",
+      "alternatives": "Le cadre du predictive coding / predictive processing (Friston, Clark) offre une alternative unitaire : il n'y aurait pas deux systèmes mais un seul moteur prédictif fonctionnant à différentes vitesses et niveaux hiérarchiques selon les contraintes. Ce cadre est prometteur mais d'une complexité technique considérable. Pour la scène de Mélanie, le modèle dual reste le cadre le plus directement lisible — à condition de l'utiliser comme métaphore fonctionnelle plutôt que comme description anatomique.",
+      "champ": "Le processus dual est le cadre intégrateur de la scène entière — il donne un langage commun à tous les mécanismes précédents. Sa valeur est architecturale : il montre comment des phénomènes apparemment distincts (fatigue décisionnelle, architecture du choix, épuisement de l'ego) convergent dans le même sens."
+    },
+
+    "extrait": "La scène visible est simple. Ce qui se joue en dessous ne l'est pas.",
+
+    "vie": "Reconnaître dans quel état se trouve le Système 2 avant de prendre une décision importante. Concevoir l'environnement pour que le Système 1 serve l'action souhaitée — par l'habitude, l'architecture du choix, la règle préformulée.",
+
+    "fiche": {
+      "essentiel": "Quand le Système 2 est affaibli, l'option automatique et immédiate tend à l'emporter. La stratégie n'est pas de renforcer le Système 2 dans l'état de fatigue — c'est de faire en sorte que le Système 1 serve déjà la bonne direction, par l'architecture, la règle préformulée, l'habitude.",
+      "connexions": [
+        "Tous les concepts précédents convergent ici : la fatigue décisionnelle affaiblit le S2, l'architecture du choix active le S1, le coût d'activation élève le seuil S2, l'absence d'habitude prive le S1 de la séquence automatique.",
+        "Gigerenzen : les heuristiques du S1 ne sont pas toujours biaisées — parfois elles sont adaptativement meilleures que la délibération.",
+        "Modèle tripartite (Evans) : la dichotomie binaire est utile mais simplificatrice."
+      ],
+      "distinctions": "Le modèle dual est une métaphore fonctionnelle, pas une neuroanatomie précise. Utiliser 'Système 1' et 'Système 2' comme raccourcis pédagogiques est légitime. Les confondre avec des structures cérébrales localisées est une erreur.",
+      "mots_cles": ["Système 1", "Système 2", "Processus duaux", "Kahneman", "Stanovich & West", "Evans", "Gigerenzen", "Automatisme", "Délibération"],
+      "usages": [
+        "Évaluer l'état du Système 2 avant une décision importante.",
+        "Concevoir l'environnement pour que le Système 1 serve l'objectif.",
+        "Utiliser les règles préformulées pour court-circuiter la délibération coûteuse.",
+        "Identifier ce qui affaiblit le Système 2 dans la journée pour le protéger."
+      ],
+      "retenir": "Ce soir, dans cette voiture, le Système 2 tient seul l'option salle — avec le moins de ressources disponibles. La bonne stratégie n'est pas de le renforcer dans cet état. C'est d'avoir fait en sorte, avant, que le Système 1 serve déjà la bonne direction."
+    },
+
+    "jauges": {
+      "Système 1 actif": 88,
+      "Ressources Système 2": 24,
+      "Options automatiques disponibles": 71,
+      "Délibération possible": 29
+    }
+  }
+}

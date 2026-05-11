@@ -1,0 +1,239 @@
+{
+  "intention-implementation": {
+    "penseur": "Peter Gollwitzer (NYU) · implementation intentions (1999) · Gabriele Oettingen (mental contrasting)",
+    "nom": "L'intention d'implémentation",
+    "corps": "Une intention d'implémentation est une formulation comportementale de la forme 'si situation X, alors action Y'. Elle encode à l'avance une réponse dans un contexte précis, avant que la fatigue ou la charge du moment ne parasitent la décision. Elle transforme une intention abstraite en déclencheur automatique lié à la situation.",
+    "extrait": "Avant la fatigue du soir, elle avait décidé une fois pour toutes : mardi et jeudi, après le travail, avant de rentrer.",
+    "vie": "Formuler la règle comportementale au bon moment — le matin, pas le soir. Être précis sur le contexte déclencheur : heure, lieu, séquence. Distinguer l'intention générale ('je veux faire du sport') de l'intention d'implémentation ('si c'est mardi après le travail, alors je vais à la salle avant de rentrer').",
+    "fiche": {
+      "essentiel": "L'intention d'implémentation délègue la décision au contexte. Quand la situation se présente, la réponse est déjà là — elle n'a pas besoin d'être construite depuis un état de ressources basses. Ce n'est pas de la discipline. C'est de l'ingénierie décisionnelle.",
+      "distinction_cle": "Gabriele Oettingen a développé le mental contrasting comme complément : alterner la projection positive d'un objectif avec l'anticipation réaliste des obstacles renforce la robustesse de l'intention d'implémentation. La technique combinée s'appelle WOOP (Wish, Outcome, Obstacle, Plan). Utile pour les intentions difficiles à tenir, mais l'intention d'implémentation seule suffit pour la plupart des comportements réguliers.",
+      "mots_cles": [
+        "Intention d'implémentation",
+        "Si-alors",
+        "Gollwitzer",
+        "Déclencheur contextuel",
+        "Ingénierie décisionnelle",
+        "WOOP",
+        "Oettingen"
+      ],
+      "usages": [
+        "Formuler la règle comportementale avant l'état de fatigue.",
+        "Être précis : heure, lieu, séquence — pas seulement objectif.",
+        "Tester la formulation si-alors pour les comportements qui échouent régulièrement le soir.",
+        "Distinguer ce qu'on veut (intention) de quand et comment on le fait (implémentation)."
+      ],
+      "retenir": "Une décision bien formulée avant la fatigue vaut mieux que dix décisions prises dans la fatigue. La forme si-alors encode la réponse dans la situation elle-même."
+    },
+    "jauges": {
+      "Clarté du déclencheur": 91,
+      "Dépendance à la motivation": 18,
+      "Robustesse face à la charge": 84,
+      "Automatisation de la règle": 76
+    }
+  },
+
+  "consolidation-habitude": {
+    "penseur": "Wendy Wood (Good Habits, Bad Habits, 2019) · Ann Graybiel (MIT, ganglions de la base)",
+    "nom": "La consolidation de l'habitude",
+    "corps": "Une habitude consolidée est directement déclenchée par le contexte — sans délibération, sans récompense consciente, sans motivation du moment. Le trajet cesse d'être un choix : il devient une route. Ce basculement ne se produit pas d'un coup : il est le résultat d'une répétition suffisante dans un contexte stable.",
+    "extrait": "Le trajet ne se calcule plus. Il se suit.",
+    "vie": "Stabiliser le contexte déclencheur : même heure, même lieu, même première étape. Éviter de modifier la routine pendant la phase de consolidation. Comprendre que les interruptions de contexte (voyages, maladies, déménagements) ne détruisent pas la motivation — elles désactivent le déclencheur automatique.",
+    "fiche": {
+      "essentiel": "Le contexte fait le travail que la volonté ne peut pas tenir indéfiniment. Une habitude consolidée ne dépend plus de l'état du moment — elle suit le contexte, comme un trajet qu'on connaît par cœur.",
+      "distinction_cle": "Ann Graybiel (MIT) a identifié les structures neurologiques en jeu : les ganglions de la base et le striatum encodent progressivement les séquences comportementales répétées, les rendant indépendantes du cortex préfrontal. Ce que Wood décrit comportementalement — le contexte comme déclencheur — Graybiel le localise dans le câblage cérébral. Les deux lectures sont complémentaires.",
+      "mots_cles": [
+        "Consolidation",
+        "Contexte déclencheur",
+        "Wendy Wood",
+        "Automatisation",
+        "Striatum",
+        "Ganglions de la base",
+        "Graybiel"
+      ],
+      "usages": [
+        "Stabiliser le contexte : même heure, même lieu, même séquence.",
+        "Ne pas modifier la routine pendant la phase de construction.",
+        "Après une interruption, reconstituer le contexte avant de chercher la motivation.",
+        "Identifier les perturbations de contexte qui ont cassé des habitudes passées."
+      ],
+      "retenir": "Ce n'est pas la volonté qui tient l'habitude sur la durée — c'est la stabilité du contexte. Protéger le contexte, c'est protéger l'habitude."
+    },
+    "jauges": {
+      "Stabilité du contexte": 87,
+      "Délibération nécessaire": 21,
+      "Résistance aux perturbations": 74,
+      "Automatisation atteinte": 82
+    }
+  },
+
+  "momentum-comportemental": {
+    "penseur": "John Nevin (behavioral momentum, 1988) · R. Douglas Fields (neuroplasticité, myélinisation)",
+    "nom": "Le momentum comportemental",
+    "corps": "Un comportement répété devient progressivement plus résistant à l'interruption. Plus il a été émis dans un contexte donné, plus il faut de force pour le stopper. C'est l'inertie positive : ce qui était difficile à initier devient difficile à arrêter. Les interruptions ralentissent le momentum mais ne l'annulent pas.",
+    "extrait": "Elle n'a pas eu à surmonter quelque chose. Le mouvement était déjà là, avant elle.",
+    "vie": "Comprendre que les semaines blanches ne remettent pas tout à zéro. L'histoire comportementale accumulée résiste. Reprendre rapidement après une interruption préserve le momentum. Chaque séance effectuée augmente légèrement la résistance de l'habitude aux perturbations suivantes.",
+    "fiche": {
+      "essentiel": "Chaque répétition augmente la résistance du comportement à l'interruption. Ce n'est pas une métaphore — c'est un phénomène mesurable. L'histoire comportementale ne disparaît pas avec une semaine blanche.",
+      "distinction_cle": "R. Douglas Fields a montré que la répétition d'une séquence comportementale épaissit la gaine de myéline autour des axones concernés, accélérant la transmission neuronale et rendant le circuit plus efficace. Ce mécanisme de myélinisation est la base physiologique du momentum : chaque répétition recâble littéralement le cerveau, rendant la séquence plus fluide et plus automatique. Ce niveau de détail neurologique dépasse la scène ordinaire de Mélanie, mais il donne une réalité biologique à ce qui pourrait sembler abstrait.",
+      "mots_cles": [
+        "Momentum comportemental",
+        "Résistance à l'interruption",
+        "Nevin",
+        "Neuroplasticité",
+        "Myélinisation",
+        "Fields",
+        "Inertie positive"
+      ],
+      "usages": [
+        "Reprendre rapidement après une interruption — le momentum se reconstitue.",
+        "Ne pas interpréter une semaine blanche comme un retour à zéro.",
+        "Comprendre que chaque séance effectuée renforce structurellement la suivante.",
+        "Distinguer la résistance acquise (momentum) de la motivation du moment."
+      ],
+      "retenir": "Le mouvement accumulé est une ressource. Il résiste aux perturbations si on le reprend avant qu'il ne se soit entièrement dissipé."
+    },
+    "jauges": {
+      "Momentum accumulé": 78,
+      "Résistance à l'interruption": 71,
+      "Myélinisation en cours": 65,
+      "Temps de reprise après interruption": 34
+    }
+  },
+
+  "violation-abstinence": {
+    "penseur": "Alan Marlatt & Judith Gordon (relapse prevention, 1985) · William Miller (motivational interviewing)",
+    "nom": "La violation de l'abstinence",
+    "corps": "La violation de l'abstinence désigne la réaction psychologique qui suit une interruption d'un comportement régulier : culpabilité, sentiment d'échec, tentation d'abandonner totalement parce qu'on a 'déjà raté'. Ce n'est pas l'interruption qui brise l'habitude — c'est l'interprétation qu'on en fait.",
+    "extrait": "Ces interruptions auraient pu tout défaire. Elles n'ont pas tout défait.",
+    "vie": "Traiter la rechute comme une information, pas comme un verdict. Distinguer l'écart ponctuel de la rupture durable. Prévoir à l'avance comment on répondra à une interruption — formuler une règle de reprise — réduit l'effet de la violation sur la trajectoire globale.",
+    "fiche": {
+      "essentiel": "Ce n'est pas l'interruption qui brise l'habitude. C'est la façon dont on l'interprète. Une semaine blanche traitée comme un échec devient un récit d'échec. La même semaine traitée comme une donnée reste une parenthèse.",
+      "distinction_cle": "William Miller, dans ses travaux sur l'entretien motivationnel, a montré que la façon dont un thérapeute (ou qu'on se parle à soi-même) réagit à une rechute détermine largement si elle reste isolée ou devient un pattern. L'auto-compassion après un écart — documentée par Kristin Neff — prédit mieux la reprise que l'auto-critique. Ces travaux dépassent le cadre strict de Marlatt mais en prolongent l'intuition centrale.",
+      "mots_cles": [
+        "Violation de l'abstinence",
+        "Rechute",
+        "Marlatt & Gordon",
+        "Interprétation de l'écart",
+        "Prévention des rechutes",
+        "Auto-compassion",
+        "Neff"
+      ],
+      "usages": [
+        "Préparer à l'avance une règle de reprise : 'si je rate une semaine, je reprends le mardi suivant sans négocier'.",
+        "Traiter l'interruption comme une information sur le contexte, pas sur la personne.",
+        "Éviter l'auto-critique disproportionnée après un écart — elle augmente la probabilité de l'écart suivant.",
+        "Distinguer la trajectoire (longue) de l'écart (ponctuel)."
+      ],
+      "retenir": "Une rechute n'est pas un retour à zéro. C'est une donnée sur ce qui a rendu la situation difficile — et une occasion de renforcer la règle de reprise."
+    },
+    "jauges": {
+      "Qualité d'interprétation des écarts": 74,
+      "Culpabilité après interruption": 38,
+      "Vitesse de reprise": 81,
+      "Résistance au tout-ou-rien": 69
+    }
+  },
+
+  "coherence-identitaire": {
+    "penseur": "Robert Cialdini (influence et cohérence) · Edward Deci & Richard Ryan (Self-Determination Theory)",
+    "nom": "La cohérence identitaire",
+    "corps": "Une fois qu'un comportement est associé à une identité — même fragile, même partielle — il tend à se perpétuer par cohérence. On agit pour rester qui on pense être. Ce mécanisme est une économie cognitive : se redéfinir chaque soir coûterait trop cher. Mais sa robustesse dépend de la qualité de la motivation sous-jacente.",
+    "extrait": "Ce n'est plus une question de motivation. C'est une question de qui elle est le mardi et le jeudi à cette heure-là.",
+    "vie": "Laisser le comportement définir l'identité progressivement — ne pas forcer la déclaration avant que les preuves soient là. Distinguer la cohérence fondée sur la valeur (durable) de celle fondée sur la culpabilité ou le regard extérieur (fragile). Protéger les petites preuves les jours difficiles.",
+    "fiche": {
+      "essentiel": "La cohérence identitaire réduit la négociation à long terme. On n'arbitre plus chaque soir — on agit pour rester cohérent avec qui on est devenu. Mais cette cohérence n'est protectrice que si elle repose sur une motivation intégrée, pas sur la contrainte.",
+      "distinction_cle": "Deci et Ryan distinguent plusieurs qualités de motivation : introjectée (je fais pour éviter la culpabilité), identifiée (c'est important pour moi), intégrée (c'est qui je suis). Seule la régulation intégrée produit une cohérence identitaire vraiment résistante aux obstacles. Une cohérence basée sur la honte ou le regard des autres cède plus facilement sous la pression.",
+      "mots_cles": [
+        "Cohérence identitaire",
+        "Cialdini",
+        "Régulation intégrée",
+        "Deci & Ryan",
+        "SDT",
+        "Engagement",
+        "Identité comportementale"
+      ],
+      "usages": [
+        "Laisser les preuves construire l'identité avant de la déclarer.",
+        "Distinguer 'je fais pour ne pas me sentir coupable' de 'je fais parce que c'est qui je suis'.",
+        "Protéger les petites preuves des jours difficiles — ce sont elles qui consolident.",
+        "Utiliser l'engagement public avec prudence — il peut renforcer la cohérence ou créer une pression contre-productive."
+      ],
+      "retenir": "La cohérence identitaire est un levier puissant — mais elle est fragile si elle repose sur la peur plutôt que sur la valeur. La motivation intégrée est la seule qui tient vraiment sur la durée."
+    },
+    "jauges": {
+      "Solidité de l'identité sportive": 79,
+      "Qualité de la motivation": 82,
+      "Négociation interne résiduelle": 24,
+      "Résistance aux jours difficiles": 71
+    }
+  },
+
+  "keystone-habits": {
+    "penseur": "Charles Duhigg (The Power of Habit, 2012) · recherches sur les effets de débordement comportemental",
+    "nom": "Les keystone habits",
+    "corps": "Certaines habitudes ont des effets de débordement sur d'autres comportements. En changeant une routine centrale, on modifie parfois sans l'avoir prévu le sommeil, l'alimentation, l'énergie, la productivité. Ces habitudes-clés fonctionnent comme des points d'ancrage qui réorganisent silencieusement le reste — sans intention explicite.",
+    "extrait": "Elle n'a pas seulement modifié ses mardis et jeudis.",
+    "vie": "Observer les effets de débordement d'une nouvelle habitude sur les comportements adjacents. Ne pas forcer tous les changements en même temps — identifier l'habitude-clé qui en déclenchera d'autres. Rester attentif aux réorganisations spontanées qui suivent une habitude centrale.",
+    "fiche": {
+      "essentiel": "Certaines habitudes ne restent pas dans leur domaine. Elles déclenchent des réorganisations adjacentes — dans le sommeil, l'alimentation, l'énergie — sans qu'on les ait explicitement décidées. Ce sont des points de levier dans un système de comportements interdépendants.",
+      "distinction_cle": "Les effets de débordement comportemental sont documentés mais difficiles à prédire individuellement. Duhigg est prudent sur la généralisation : toutes les habitudes ne sont pas des keystone habits, et celles qui le sont varient selon les personnes. Ce concept est plus utile comme cadre d'observation que comme promesse de résultat.",
+      "mots_cles": [
+        "Keystone habits",
+        "Habitudes-clés",
+        "Effets de débordement",
+        "Duhigg",
+        "Comportements interdépendants",
+        "Point de levier",
+        "Réorganisation spontanée"
+      ],
+      "usages": [
+        "Observer ce qui change autour de la nouvelle habitude sans l'avoir prévu.",
+        "Identifier quelle habitude pourrait fonctionner comme point de levier.",
+        "Ne pas forcer tous les changements simultanément — laisser les effets de débordement opérer.",
+        "Tracer les changements adjacents pour les rendre visibles."
+      ],
+      "retenir": "Certaines habitudes en entraînent d'autres. Trouver le bon point d'ancrage peut produire des changements qu'on n'avait pas explicitement planifiés."
+    },
+    "jauges": {
+      "Effets de débordement observés": 61,
+      "Habitudes adjacentes modifiées": 54,
+      "Intentionnalité des changements": 32,
+      "Potentiel de levier": 73
+    }
+  },
+
+  "retournement-processus-duaux": {
+    "penseur": "Keith Stanovich & Richard West (Système 1 / Système 2, années 1990) · Daniel Kahneman (Thinking, Fast and Slow, 2011)",
+    "nom": "Le retournement des processus duaux",
+    "corps": "Ce qui mobilisait le Système 2 — délibératif, coûteux, épuisable — peut progressivement être délégué au Système 1 — automatique, rapide, économe. C'est le basculement central de la formation d'une habitude : une décision coûteuse devient une séquence gratuite. Le Système 2 reste disponible — mais il n'est plus nécessaire pour initier le mouvement.",
+    "extrait": "Ce n'est plus une question de motivation. Ce n'est plus une question du tout.",
+    "vie": "Viser le basculement : non pas décider mieux chaque soir, mais concevoir les conditions pour ne plus avoir à décider. Identifier ce qui reste dans le Système 2 (improvisation, adaptation, intensité) et ce qui peut migrer vers le Système 1 (démarrage, trajet, séquence d'entrée).",
+    "fiche": {
+      "essentiel": "Le basculement Système 2 → Système 1 est le signe que l'habitude est consolidée. Ce qui coûtait est devenu gratuit. Le Système 2 est libéré pour autre chose — la réunion de demain, ce qu'on va manger, rien de précis.",
+      "distinction_cle": "Stanovich et West ont introduit la distinction Système 1 / Système 2 dans les années 1990. Kahneman l'a popularisée en 2011. Des chercheurs comme Jonathan Evans ont proposé des raffinements — les deux systèmes ne sont pas strictement séparés mais interactifs, et la distinction binaire est parfois simplificatrice. Elle reste néanmoins un cadre utile et bien soutenu empiriquement pour lire ce type de basculement.",
+      "mots_cles": [
+        "Système 1",
+        "Système 2",
+        "Processus duaux",
+        "Basculement",
+        "Stanovich & West",
+        "Kahneman",
+        "Délégation à l'automatisme"
+      ],
+      "usages": [
+        "Identifier ce qui peut migrer du Système 2 vers le Système 1 dans une routine.",
+        "Concevoir les conditions pour ne plus avoir à décider — pas pour mieux décider.",
+        "Mesurer le basculement : est-ce que le démarrage coûte encore quelque chose ?",
+        "Préserver le Système 2 pour les décisions qui en ont vraiment besoin."
+      ],
+      "retenir": "L'objectif n'est pas de mieux décider chaque soir. C'est de concevoir les conditions pour que la décision devienne inutile."
+    },
+    "jauges": {
+      "Part du Système 1 dans la séquence": 81,
+      "Coût d'initiation restant": 19,
+      "Ressources Système 2 préservées": 78,
+      "Basculement accompli": 84
+    }
+  }
+}
