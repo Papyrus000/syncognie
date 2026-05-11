@@ -1648,6 +1648,141 @@ const sl = stadeLabel(stade);
     border-top-color: #3e3830;
     box-shadow: 0 -4px 16px rgba(0,0,0,.3);
   }
+
+  /* ── Drawer sommaire mobile (portrait uniquement) ── */
+  .sls-toc-drawer {
+    display: none;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 850;
+    max-height: 70vh;
+    background: var(--sls-paper, #FAF8F4);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 40px rgba(28,24,17,.18);
+    transform: translateY(100%);
+    transition: transform .35s cubic-bezier(.32,.72,0,1);
+    will-change: transform;
+    overflow: hidden;
+    /* S'arrête au-dessus de la toolbar */
+    padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+  }
+  .sls-toc-drawer.sls-toc-drawer--open {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(0);
+  }
+  .sls-toc-drawer-handle {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .85rem 0 .5rem;
+    cursor: grab;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sls-toc-drawer-handle::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: var(--sls-border, #E4DDD4);
+    border-radius: 2px;
+  }
+  .sls-toc-drawer-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem .75rem;
+    border-bottom: 1px solid var(--sls-border, #E4DDD4);
+  }
+  .sls-toc-drawer-title {
+    font-family: var(--sls-sans, 'DM Sans', sans-serif);
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--sls-ink-muted, #9A8F82);
+  }
+  .sls-toc-drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    background: none;
+    border: 1px solid var(--sls-border, #E4DDD4);
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--sls-ink-muted, #9A8F82);
+    transition: color .15s, border-color .15s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sls-toc-drawer-close svg {
+    width: 11px; height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .sls-toc-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.1rem 1.25rem 1rem;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  /* Liens ToC dans le drawer — légèrement plus grands pour le touch */
+  .sls-toc-drawer-body a {
+    display: block;
+    font-family: var(--sls-sans, 'DM Sans', sans-serif);
+    font-size: .82rem;
+    line-height: 1.5;
+    color: var(--sls-ink-muted, #9A8F82);
+    text-decoration: none;
+    padding: .5rem .6rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 3px 3px 0;
+    transition: color .18s, border-color .18s, background .18s;
+  }
+  .sls-toc-drawer-body a:active {
+    color: var(--sls-blue, #5a9ab8);
+    border-left-color: var(--sls-blue, #5a9ab8);
+    background: var(--sls-blue-hl, rgba(61,122,154,.08));
+  }
+  .sls-toc-drawer-back {
+    display: block;
+    font-family: var(--sls-sans, 'DM Sans', sans-serif);
+    font-size: .75rem;
+    color: var(--sls-ink-muted, #9A8F82);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    padding-bottom: .9rem;
+    border-bottom: 1px solid var(--sls-border, #E4DDD4);
+  }
+
+  /* Bouton sommaire — masqué en paysage */
+  @media (max-width: 860px) and (orientation: landscape) {
+    .sls-toolbar-btn--toc {
+      display: none;
+    }
+    .sls-toolbar-sep--toc {
+      display: none;
+    }
+    .sls-toc-drawer {
+      display: none !important;
+    }
+  }
+
+  /* Mode nuit — drawer sommaire */
+  body.sls-night-mode .sls-toc-drawer {
+    background: #2a2720;
+    box-shadow: 0 -8px 40px rgba(0,0,0,.45);
+  }
+  body.sls-night-mode .sls-toc-drawer-handle::before { background: #3e3830; }
+  body.sls-night-mode .sls-toc-drawer-header { border-bottom-color: #3e3830; }
+  body.sls-night-mode .sls-toc-drawer-close { border-color: #3e3830; color: #9a9080; }
+  body.sls-night-mode .sls-toc-drawer-body a { color: #9a9080; }
+  body.sls-night-mode .sls-toc-drawer-back { color: #9a9080; border-bottom-color: #3e3830; }
 </style>
 
 <!-- Barre de progression -->
@@ -1844,6 +1979,25 @@ const sl = stadeLabel(stade);
     <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
   </button>
 
+  <div class="sls-toolbar-sep sls-toolbar-sep--toc" aria-hidden="true"></div>
+
+  <!-- Sommaire -->
+  <button class="sls-toolbar-btn sls-toolbar-btn--toc" id="sls-mob-toc" aria-label="Ouvrir le sommaire" title="Sommaire">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="10" y2="6"/><line x1="3" y1="12" x2="16" y2="12"/><line x1="3" y1="18" x2="13" y2="18"/></svg>
+  </button>
+
+</div>
+
+<!-- ── Drawer sommaire mobile (portrait uniquement) ── -->
+<div class="sls-toc-drawer" id="sls-toc-drawer" role="dialog" aria-modal="true" aria-label="Sommaire">
+  <div class="sls-toc-drawer-handle" id="sls-toc-drawer-handle" aria-hidden="true"></div>
+  <div class="sls-toc-drawer-header">
+    <span class="sls-toc-drawer-title">Sommaire</span>
+    <button class="sls-toc-drawer-close" id="sls-toc-drawer-close" aria-label="Fermer le sommaire">
+      <svg viewBox="0 0 11 11"><path d="M1.5 1.5l8 8M9.5 1.5l-8 8"/></svg>
+    </button>
+  </div>
+  <div class="sls-toc-drawer-body" id="sls-toc-drawer-body"></div>
 </div>
 
 <script>
@@ -1871,6 +2025,93 @@ const sl = stadeLabel(stade);
   const drawerLabel   = document.getElementById('sls-drawer-label');
 
   function isMobile() { return window.innerWidth <= 860; }
+
+  // ── Drawer ToC mobile (portrait uniquement) ─────────────────────────
+  const tocDrawer       = document.getElementById('sls-toc-drawer');
+  const tocDrawerBody   = document.getElementById('sls-toc-drawer-body');
+  const tocDrawerClose  = document.getElementById('sls-toc-drawer-close');
+  const tocDrawerHandle = document.getElementById('sls-toc-drawer-handle');
+  const mobTocBtn       = document.getElementById('sls-mob-toc');
+
+  function tocDrawerOpen() {
+    tocDrawer?.classList.add('sls-toc-drawer--open');
+    document.body.style.overflow = 'hidden';
+  }
+  function tocDrawerClose_fn() {
+    tocDrawer?.classList.remove('sls-toc-drawer--open');
+    document.body.style.overflow = '';
+  }
+
+  mobTocBtn?.addEventListener('click', () => {
+    if (tocDrawer?.classList.contains('sls-toc-drawer--open')) {
+      tocDrawerClose_fn();
+    } else {
+      // Remplir le drawer avec la ToC au premier appel
+      if (tocDrawerBody && tocDrawerBody.childElementCount === 0) {
+        // Lien retour
+        const back = document.createElement('a');
+        back.href = '/sous-la-surface';
+        back.className = 'sls-toc-drawer-back';
+        back.textContent = '← Sous la surface';
+        tocDrawerBody.appendChild(back);
+        // Copier les liens de la ToC desktop
+        const srcLinks = document.querySelectorAll('#sls-toc a');
+        srcLinks.forEach(srcA => {
+          const a = document.createElement('a');
+          a.href       = srcA.getAttribute('href') || '#';
+          a.textContent = srcA.textContent || '';
+          if (srcA.style.paddingLeft) a.style.paddingLeft = '1.4rem'; // h3 indent
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            tocDrawerClose_fn();
+            const targetId = a.getAttribute('href')?.replace('#', '');
+            if (targetId) {
+              const target = document.getElementById(targetId);
+              if (target) {
+                setTimeout(() => {
+                  const top = target.getBoundingClientRect().top + window.scrollY - 80;
+                  window.scrollTo({ top, behavior: 'smooth' });
+                }, 320); // laisser le drawer se fermer
+              }
+            }
+          });
+          tocDrawerBody.appendChild(a);
+        });
+      }
+      tocDrawerOpen();
+    }
+  });
+
+  tocDrawerClose?.addEventListener('click', tocDrawerClose_fn);
+
+  // Drag-to-dismiss sur le handle du drawer ToC
+  let _tocDragStart = 0, _tocDragCurrent = 0;
+  tocDrawerHandle?.addEventListener('touchstart', (e) => {
+    _tocDragStart = e.touches[0].clientY;
+    _tocDragCurrent = 0;
+    if (tocDrawer) tocDrawer.style.transition = 'none';
+  }, { passive: true });
+  tocDrawerHandle?.addEventListener('touchmove', (e) => {
+    const delta = e.touches[0].clientY - _tocDragStart;
+    _tocDragCurrent = delta;
+    if (delta > 0 && tocDrawer) tocDrawer.style.transform = `translateY(${delta}px)`;
+  }, { passive: true });
+  tocDrawerHandle?.addEventListener('touchend', () => {
+    if (tocDrawer) tocDrawer.style.transition = '';
+    if (_tocDragCurrent > 80) {
+      tocDrawerClose_fn();
+      if (tocDrawer) tocDrawer.style.transform = '';
+    } else {
+      if (tocDrawer) tocDrawer.style.transform = '';
+    }
+  });
+
+  // Fermeture par Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && tocDrawer?.classList.contains('sls-toc-drawer--open')) {
+      tocDrawerClose_fn();
+    }
+  });
 
   // Sauvegarde de la position de scroll avant ouverture
   let _savedScrollY = 0;
